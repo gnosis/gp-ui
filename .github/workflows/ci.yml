@@ -9,8 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
         APP_ID: 1
-        PR_NUMBER: $(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
-        https://$PULL_REQUEST_NAME--$REPO_NAME_ALPHANUMERIC.$REVIEW_ENVIRONMENT_DOMAIN
+        PR_NUMBER: $(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')        
 
     steps:
       - name: Checkout code
@@ -54,6 +53,7 @@ jobs:
           repo-token-user-login: 'github-actions[bot]'
           # if: success() && steps.findPr.outputs.number
           # PR: ${{ steps.findPr.outputs.pr }}
+          #REVIEW_FEATURE_URL: https://$PULL_REQUEST_NAME--$REPO_NAME_ALPHANUMERIC.$REVIEW_ENVIRONMENT_DOMAIN
 
 
       # TODO: Conditionally run integration tests
