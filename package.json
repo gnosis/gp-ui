@@ -67,6 +67,7 @@
     "@types/react": "^16.9.19",
     "@types/react-is": "^16.7.1",
     "@types/react-select": "^3.0.10",
+    "@types/styled-theming": "^2.2.5",
     "@walletconnect/web3-provider": "1.0.0-rc.0",
     "bignumber.js": "^9.0.0",
     "bn.js": "^4.11.9",
@@ -90,6 +91,7 @@
     "react-select": "^3.0.8",
     "react-toastify": "^5.5.0",
     "styled-components": "^5.0.0",
+    "styled-theming": "^2.2.0",
     "web3": "^1.2.9",
     "web3modal": "^1.6.3"
   },
@@ -159,6 +161,7 @@
     "markdown-it-link-attributes": "^3.0.0",
     "playwright": "^1.5.2",
     "playwright-cli": "^0.152.0",
+    "polished": "^4.0.5",
     "preload-webpack-plugin": "^3.0.0-beta.4",
     "prettier": "^2.1.2",
     "react-dev-utils": "^10.0.0",
