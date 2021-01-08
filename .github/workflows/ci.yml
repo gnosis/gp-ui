@@ -47,7 +47,6 @@ jobs:
         with:
           message: |
             PR number ${{ steps.findPr.outputs.number }} ${ steps.findPr.outputs.number }
-            $REPO_NAME_ALPHANUMERIC
             ${{ REPO_NAME_ALPHANUMERIC }}
             * **🔭 [Explorer Dapp](${{ REVIEW_FEATURE_URL }})**: Explorer test app
             * **📈 [Trade Dapp](${{ REVIEW_FEATURE_URL }}/trade.html)**: Trade test app
