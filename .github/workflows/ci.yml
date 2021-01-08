@@ -46,9 +46,12 @@ jobs:
       - uses: mshick/add-pr-comment@v1
         with:
           message: |
-            * **🔭 [Explorer Dapp]($REVIEW_FEATURE_URL)**: Explorer test app
-            * **📈 [Trade Dapp]($REVIEW_FEATURE_URL/trade.html)**: Trade test app
-            * **📚 [Storybook]($REVIEW_FEATURE_URL/storybook/)**: Component stories
+            PR number ${{ steps.findPr.outputs.number }} ${ steps.findPr.outputs.number }
+            $REPO_NAME_ALPHANUMERIC
+            ${{ REPO_NAME_ALPHANUMERIC }}
+            * **🔭 [Explorer Dapp](${{ REVIEW_FEATURE_URL }})**: Explorer test app
+            * **📈 [Trade Dapp](${{ REVIEW_FEATURE_URL }}/trade.html)**: Trade test app
+            * **📚 [Storybook](${{ REVIEW_FEATURE_URL }}/storybook/)**: Component stories
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           repo-token-user-login: 'github-actions[bot]'
           if: success() && steps.findPr.outputs.number
