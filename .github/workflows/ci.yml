@@ -10,7 +10,6 @@ jobs:
     env:
         APP_ID: 1
         REPO_NAME_ALPHANUMERIC: gpui
-        REVIEW_ENVIRONMENT_DOMAIN: review.gnosisdev.com
 
     steps:
       - name: Checkout code
@@ -54,7 +53,7 @@ jobs:
           repo-token-user-login: 'github-actions[bot]'
           if: success() && steps.findPr.outputs.number
         env:
-          REVIEW_FEATURE_URL: https://${{ steps.findPr.outputs.pr }}--$REPO_NAME_ALPHANUMERIC.$REVIEW_ENVIRONMENT_DOMAIN
+          REVIEW_FEATURE_URL: https://${{ steps.findPr.outputs.number }}--${REPO_NAME_ALPHANUMERIC}.review.gnosisdev.com
 
       # TODO: Conditionally run integration tests
       #- if [[ $TRAVIS_TAG != "" || $TRAVIS_BRANCH = master || $TRAVIS_BRANCH = develop ]]; then
