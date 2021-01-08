@@ -9,7 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
         APP_ID: 1
-        PR_NUMBER: $(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')        
 
     steps:
       - name: Checkout code
