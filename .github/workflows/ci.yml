@@ -58,7 +58,7 @@ jobs:
 
       # TODO: Deploy
       - name: Deploy
-        run: 'echo "DEPLOY: Not implemented yet!'
+        run: 'echo "DEPLOY: Not implemented yet!"'
       # run: ./travis/deploy_pull_request.sh
 
       # TODO: Push to Amazon S3 Buckets
