@@ -7,6 +7,8 @@ jobs:
   ci:
     name: Continuous Integration
     runs-on: ubuntu-latest
+    env:
+        APP_ID: 1
 
     steps:
       - name: Checkout code
@@ -31,6 +33,8 @@ jobs:
 
       - name: Coveralls GitHub Action
         uses: coverallsapp/github-action@v1.1.2
+        with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build Web Apps
         run: yarn build
