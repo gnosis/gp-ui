@@ -316,7 +316,7 @@ export class WalletApiImpl implements WalletApi {
             /* webpackChunkName: "@walletconnect"*/
             '@walletconnect/web3-provider'
             // '@walletconnect/web3-provider/dist/umd/index.min.js' // this also works
-            // because inde.min is a full bundle minified with all correct dependencies
+            // because index.min is a full bundle minified with all correct dependencies
           )
         ).default,
       }
