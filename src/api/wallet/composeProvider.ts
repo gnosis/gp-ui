@@ -5,12 +5,12 @@ import RpcEngine, {
   JsonRpcResponse,
   JsonRpcError,
 } from 'json-rpc-engine'
-import providerFromEngine from 'eth-json-rpc-middleware/providerFromEngine'
 import { TransactionConfig } from 'web3-core'
 import { numberToHex, hexToNumber } from 'web3-utils'
 import { isWalletConnectProvider, Provider } from './providerUtils'
 import { logDebug } from 'utils'
 import { web3 } from 'api'
+import { createLoggerMiddleware } from './loggerMiddleware'
 
 import {
   addTxPendingApproval,
@@ -19,6 +19,7 @@ import {
   removeAllTxsPendingApproval,
   removeTxPendingApproval,
 } from 'components/OuterModal'
+import { CHAIN_CALLS_RATE_LIMIT } from 'const'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const sanitizeErrorData = (jsonRpcError?: JsonRpcError<any>): void => {
@@ -27,6 +28,38 @@ const sanitizeErrorData = (jsonRpcError?: JsonRpcError<any>): void => {
   if (jsonRpcError.data?.originalError) {
     jsonRpcError.data = jsonRpcError.data.originalError.data
   }
+}
+
+type RpcCallBack<T extends unknown> = (error: JsonRpcError<T>, res: JsonRpcResponse<T>) => void
+
+function providerFromEngine<T extends Provider>(engine: JsonRpcEngine): T {
+  const sendAsync = engine.handle.bind(engine)
+
+  const send = <T extends unknown>(req: JsonRpcRequest<T>, callback: RpcCallBack<T>): void => {
+    if (!callback) throw new Error('Web3 Provider - must provide callback to "send" method')
+    engine.handle(req, callback)
+  }
+  const request = <T extends unknown>(req: JsonRpcRequest<T>): Promise<JsonRpcResponse<T>['result']> => {
+    return new Promise((resolve, reject) => {
+      engine.handle(req, (error: JsonRpcError<T>, res: JsonRpcResponse<T>) => {
+        // console.log('CPROV::handled error:', error, 'res:', res)
+        if (error) {
+          reject(error)
+          return
+        }
+
+        resolve(res.result)
+      })
+    })
+  }
+
+  return ({ request, send, sendAsync } as unknown) as T
+}
+
+type RequestMethod = <T extends unknown>(req: JsonRpcRequest<T>) => Promise<JsonRpcResponse<T>['result']>
+
+const supportsRequestMethod = (provider: Provider): provider is Provider & { request: RequestMethod } => {
+  return 'request' in provider
 }
 
 // custom providerAsMiddleware
@@ -66,6 +99,23 @@ function providerAsMiddleware(provider: Provider): JsonRpcMiddleware {
           end(error)
         },
       )
+    }
+  }
+
+  if (supportsRequestMethod(provider)) {
+    return async (req, res, _next, end): Promise<void> => {
+      try {
+        // send request to provider
+        const providerRes = await provider.request(req)
+        console.log('CPROV::providerResult', providerRes)
+
+        // attach result from provider
+        res.result = providerRes
+        end()
+      } catch (error) {
+        // forward any error
+        end(error)
+      }
     }
   }
 
@@ -197,6 +247,11 @@ export const composeProvider = <T extends Provider>(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const engine = new (RpcEngine as any)() as JsonRpcEngine
 
+  if (process.env.NODE_ENV === 'development') {
+    // Logger middleware
+    engine.push(createLoggerMiddleware())
+  }
+
   engine.push(
     createConditionalMiddleware<[]>(
       (req) => req.method === 'eth_gasPrice',
@@ -299,6 +354,50 @@ export const composeProvider = <T extends Provider>(
     ),
   )
 
+  // rate limit a function
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function rateLimit<T extends (...args: any[]) => void>(fn: T, delay: number): (...args: Parameters<T>) => void {
+    const queue: Parameters<T>[] = []
+    let timer: NodeJS.Timeout | null = null
+
+    // escape hatch to monitor the queue
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ;(window as any).callsQueue = queue
+
+    function processQueue(): void {
+      const params = queue.shift()
+      if (params) fn(...params)
+      if (queue.length === 0 && timer) {
+        clearInterval(timer)
+        timer = null
+      }
+    }
+
+    return function limited(...args: Parameters<T>): void {
+      queue.push(args)
+      if (!timer) {
+        processQueue() // start immediately on the first invocation
+        timer = setInterval(processQueue, delay)
+      }
+    }
+  }
+
+  if (CHAIN_CALLS_RATE_LIMIT > 0) {
+    const passThroughMware: JsonRpcMiddleware = (_req, _res, next) => next()
+    // consecutive calls with CHAIN_CALLS_RATE_LIMIT in between
+    const rateLimitedPassThrough = rateLimit(passThroughMware, CHAIN_CALLS_RATE_LIMIT)
+
+    engine.push((req, res, next, error) => {
+      // tx signing is wallet-dependent
+      if (req.method === 'eth_sendTransaction') {
+        return next()
+      }
+
+      // execute only once in CHAIN_CALLS_RATE_LIMIT ms
+      rateLimitedPassThrough(req, res, next, error)
+    })
+  }
+
   const walletMiddleware = providerAsMiddleware(provider)
   engine.push(wrapInTimeout(walletMiddleware))
 
@@ -306,7 +405,8 @@ export const composeProvider = <T extends Provider>(
 
   const providerProxy = new Proxy(composedProvider, {
     get: function (target, prop, receiver): unknown {
-      if (prop === 'sendAsync' || prop === 'send') {
+      // console.log('CPROV::Proxy, target, prop', target, prop)
+      if (prop === 'request' || prop === 'sendAsync' || prop === 'send') {
         // composedProvider handles it
         return Reflect.get(target, prop, receiver)
       }
