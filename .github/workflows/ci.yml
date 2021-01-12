@@ -20,45 +20,45 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # - name: Set up node
-      #   uses: actions/setup-node@v2
-      #   with:
-      #     node-version: 12
+      - name: Set up node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 12
 
-      # - name: Set output of cache
-      #   id: yarn-cache
-      #   run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: Set output of cache
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
 
-      # - name: Install dependencies
-      #   run: yarn install --frozen-lockfile
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
 
-      # - name: Coverage
-      #   run: yarn test:coverage
+      - name: Coverage
+        run: yarn test:coverage
 
-      # - name: Coveralls
-      #   uses: coverallsapp/github-action@v1.1.2
-      #   with:
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Coveralls
+        uses: coverallsapp/github-action@v1.1.2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      # - name: Build Web Apps
-      #   run: yarn build
+      - name: Build Web Apps
+        run: yarn build
 
       - uses: jwalton/gh-find-current-pr@v1
         id: findPr
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      # - uses: mshick/add-pr-comment@v1
-      #   with:
-      #     message: |
-      #       * **🔭 [Explorer Dapp](${{ env.REVIEW_FEATURE_URL }})**: Explorer test app
-      #       * **📈 [Trade Dapp](${{ env.REVIEW_FEATURE_URL }}/trade.html)**: Trade test app
-      #       * **📚 [Storybook](${{ env.REVIEW_FEATURE_URL }}/storybook/)**: Component stories
-      #     repo-token: ${{ secrets.GITHUB_TOKEN }}
-      #     repo-token-user-login: 'github-actions[bot]'
-      #     if: success() && steps.findPr.outputs.number
-      #   env:
-      #     REVIEW_FEATURE_URL: https://pr${{ steps.findPr.outputs.number }}--${{ env.REPO_NAME_SLUG }}.review.gnosisdev.com
+      - uses: mshick/add-pr-comment@v1
+        with:
+          message: |
+            * **🔭 [Explorer Dapp](${{ env.REVIEW_FEATURE_URL }})**: Explorer test app
+            * **📈 [Trade Dapp](${{ env.REVIEW_FEATURE_URL }}/trade.html)**: Trade test app
+            * **📚 [Storybook](${{ env.REVIEW_FEATURE_URL }}/storybook/)**: Component stories
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token-user-login: 'github-actions[bot]'
+          if: success() && steps.findPr.outputs.number
+        env:
+          REVIEW_FEATURE_URL: https://pr${{ steps.findPr.outputs.number }}--${{ env.REPO_NAME_SLUG }}.review.gnosisdev.com
 
       # # TODO: Conditionally run integration tests
       # #- if [[ $TRAVIS_TAG != "" || $TRAVIS_BRANCH = master || $TRAVIS_BRANCH = develop ]]; then
@@ -77,14 +77,6 @@ jobs:
       # - name: Build Storybook
       #   run: yarn build-storybook -o dist/storybook;
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-2
-
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -93,24 +85,7 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Copy files to S3 with the AWS CLI
-        run: aws s3 sync docs s3://${{ secrets.AWS_REVIEW_BUCKET_NAME }}/${{ env.REPO_NAME_SLUG }}/pr${{ steps.findPr.outputs.number }} --delete
-                     
-      # - uses: shallwefootball/s3-upload-action@master
-      #   with:
-      #     aws_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
-      #     aws_bucket: "${{ secrets.AWS_REVIEW_BUCKET_NAME }}/${{ env.REPO_NAME_SLUG }}/pr${{ steps.findPr.outputs.number }}"          
-      #     source_dir: docs
+        run: aws s3 sync dist s3://${{ secrets.AWS_REVIEW_BUCKET_NAME }}/${{ env.REPO_NAME_SLUG }}/pr${{ steps.findPr.outputs.number }} --delete
 
-      # - name: Deploy to S3
-      #   uses: jakejarvis/s3-sync-action@master
-      #   with:
-      #     args: --delete
-      #   if: success() && steps.findPr.outputs.number
-      #   env:
-      #     AWS_S3_BUCKET: "${{ secrets.AWS_REVIEW_BUCKET_NAME }}/${{ env.REPO_NAME_SLUG }}/pr${{ steps.findPr.outputs.number }}"
-      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #     AWS_REGION: ${{ secrets.AWS_REGION }}
-      #     SOURCE_DIR: docs
+      
     
