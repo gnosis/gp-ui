@@ -93,7 +93,7 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Copy files to S3 with the AWS CLI
-        run: aws s3 cp docs s3://${{ secrets.AWS_REVIEW_BUCKET_NAME }}/${{ env.REPO_NAME_SLUG }}/pr${{ steps.findPr.outputs.number }}
+        run: aws s3 cp docs/ s3://${{ secrets.AWS_REVIEW_BUCKET_NAME }}/${{ env.REPO_NAME_SLUG }}/pr${{ steps.findPr.outputs.number }}/
 
       # - uses: shallwefootball/s3-upload-action@master
       #   with:
