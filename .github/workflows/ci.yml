@@ -43,10 +43,10 @@ jobs:
       # - name: Build Web Apps
       #   run: yarn build
 
-      # - uses: jwalton/gh-find-current-pr@v1
-      #   id: findPr
-      #   with:
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: jwalton/gh-find-current-pr@v1
+        id: findPr
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       # - uses: mshick/add-pr-comment@v1
       #   with:
