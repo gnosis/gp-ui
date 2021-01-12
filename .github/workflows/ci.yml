@@ -77,7 +77,7 @@ jobs:
         if: success() && steps.findPr.outputs.number
         run: aws s3 sync dist s3://${{ secrets.AWS_REVIEW_BUCKET_NAME }}/${{ env.REPO_NAME_SLUG }}/pr${{ steps.findPr.outputs.number }} --delete
     
-      - name: Publish PRaul comment with app URLs
+      - name: "PRaul: Comment PR with app URLs"
         uses: mshick/add-pr-comment@v1
         with:
           message: |
