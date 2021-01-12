@@ -77,15 +77,22 @@ jobs:
       # - name: Build Storybook
       #   run: yarn build-storybook -o dist/storybook;
 
-      - name: Deploy to S3
-        uses: jakejarvis/s3-sync-action@master
+      - uses: shallwefootball/s3-upload-action@master
         with:
-          args: --delete
-        if: success() && steps.findPr.outputs.number
-        env:
-          AWS_S3_BUCKET: "${{ secrets.AWS_REVIEW_BUCKET_NAME }}/${{ env.REPO_NAME_SLUG }}/pr${{ steps.findPr.outputs.number }}"
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-          SOURCE_DIR: docs
+          aws_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
+          aws_bucket: "${{ secrets.AWS_REVIEW_BUCKET_NAME }}/${{ env.REPO_NAME_SLUG }}/pr${{ steps.findPr.outputs.number }}"          
+          source_dir: docs
+
+      # - name: Deploy to S3
+      #   uses: jakejarvis/s3-sync-action@master
+      #   with:
+      #     args: --delete
+      #   if: success() && steps.findPr.outputs.number
+      #   env:
+      #     AWS_S3_BUCKET: "${{ secrets.AWS_REVIEW_BUCKET_NAME }}/${{ env.REPO_NAME_SLUG }}/pr${{ steps.findPr.outputs.number }}"
+      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     AWS_REGION: ${{ secrets.AWS_REGION }}
+      #     SOURCE_DIR: docs
     
