@@ -91,11 +91,11 @@ jobs:
           REVIEW_FEATURE_URL: https://pr${{ steps.findPr.outputs.number }}--${{ env.REPO_NAME_SLUG }}.review.gnosisdev.com
 
       - name: "Deploy to S3: Develop"
-        #if: github.ref == 'refs/heads/develop'
+        if: github.ref == 'refs/heads/develop'
         run: aws s3 sync dist s3://${{ secrets.AWS_DEV_BUCKET_NAME }} --delete
 
       - name: "Deploy to S3: Staging"
-        #if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master'
         run: aws s3 sync dist s3://${{ secrets.AWS_STAGING_BUCKET_NAME }} --delete
 
       
