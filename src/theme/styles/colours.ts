@@ -1,3 +1,40 @@
+import { Theme } from 'theme'
+
+export type Color = string
+export interface Colors {
+  // text colours
+  textPrimary1: Color
+  textSecondary1: Color
+  textSecondary2: Color
+  textActive1: Color
+  textDisabled: Color
+
+  // backgrounds / greys
+  bg1: Color
+  bg2: Color
+  bgDisabled: Color
+
+  // gradients
+  gradient1: Color
+  gradient2: Color
+
+  // Base
+  white: Color
+  black: Color
+  red1: Color
+  red2: Color
+  red3?: Color
+  green1: Color
+  green2: Color
+  green3?: Color
+  yellow1: Color
+  yellow2: Color
+  yellow3?: Color
+  blue1: Color
+  blue2: Color
+  blue3?: Color
+}
+
 export const BASE_COLOURS = {
   // base
   white: '#FFF',
@@ -16,9 +53,10 @@ export const BASE_COLOURS = {
 
 export const LIGHT_COLOURS = {
   // text
-  primaryText1: '#FFF',
-  secondaryText1: '#EDEDED',
-  secondaryText2: '#9797B8',
+  textPrimary1: '#FFF',
+  textSecondary1: '#EDEDED',
+  textSecondary2: '#9797B8',
+  textActive1: '',
   textDisabled: '#31323E',
 
   // backgrounds / greys
@@ -33,9 +71,10 @@ export const LIGHT_COLOURS = {
 
 export const DARK_COLOURS = {
   // text
-  primaryText1: '#FFF',
-  secondaryText1: '#EDEDED',
-  secondaryText2: '#9797B8',
+  textPrimary1: '#FFF',
+  textSecondary1: '#EDEDED',
+  textSecondary2: '#9797B8',
+  textActive1: '',
   textDisabled: '#31323E',
 
   // backgrounds / greys
@@ -50,4 +89,24 @@ export const DARK_COLOURS = {
   // TODO: add to theme, not colour palette
   // gradientForm1: 'linear-gradient(270deg, #8958FF 0%, #3F77FF 100%)',
   // gradientForm2: 'linear-gradient(270deg, #8958FF 30%, #3F77FF 100%)',
+}
+
+// UTILS
+export function getThemePalette(colourTheme: Theme): Colors {
+  let THEME_COLOURS = LIGHT_COLOURS
+
+  switch (colourTheme) {
+    case Theme.LIGHT:
+      THEME_COLOURS = LIGHT_COLOURS
+      break
+    case Theme.DARK:
+      THEME_COLOURS = DARK_COLOURS
+      break
+    default:
+      THEME_COLOURS = DARK_COLOURS
+  }
+  return {
+    ...BASE_COLOURS,
+    ...THEME_COLOURS,
+  }
 }
