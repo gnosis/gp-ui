@@ -33,6 +33,5 @@ export const createMockHook = <T extends (...args: any) => any>(name: string, de
 }
 
 export const mockHookDecorator: BaseDecorators<JSX.Element>[0] = (Story, { parameters }) => {
-  console.log(`-------------- loaded mock hook decorator`)
   return <MockHookContext.Provider value={parameters}>{Story()}</MockHookContext.Provider>
 }
