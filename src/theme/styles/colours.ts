@@ -39,13 +39,13 @@ export const DARK_COLOURS = {
   textDisabled: '#31323E',
 
   // backgrounds / greys
-  bg1: '#212429',
-  bg2: '#2C2F36',
+  bg1: '#181923',
+  bg2: '#2C2D3F',
   bgDisabled: '#ffffff80',
 
   // gradients
-  gradient1: '#8958FF',
-  gradient2: '#3F77FF',
+  gradient1: '#21222E',
+  gradient2: '#2C2D3F',
 
   // TODO: add to theme, not colour palette
   // gradientForm1: 'linear-gradient(270deg, #8958FF 0%, #3F77FF 100%)',
