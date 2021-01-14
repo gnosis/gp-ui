@@ -49,7 +49,7 @@ const HEADER = (
   />
 )
 
-export const SwapAppV1: React.FC = () => {
+export const ExplorerApp: React.FC = () => {
   // Deal with incorrect network
   useNetworkCheck()
 
@@ -73,7 +73,7 @@ export const SwapAppV1: React.FC = () => {
 
 export default hot(
   withGlobalContext(
-    SwapAppV1,
+    ExplorerApp,
     // Initial State
     INITIAL_STATE,
     rootReducer,
