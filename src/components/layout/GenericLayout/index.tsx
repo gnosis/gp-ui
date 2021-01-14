@@ -1,22 +1,41 @@
 import React from 'react'
-import { Header } from './Header'
-import { Footer } from './Footer'
+
 import ThemeProvider, { StaticGlobalStyle, ThemedGlobalStyle } from 'theme'
-export interface Props {
-  menu?: React.ReactNode
-  navTools?: React.ReactNode
+
+import { Footer } from './Footer'
+import { Header } from './Header'
+
+export type Props = {
+  header?: JSX.Element | null
+  footer?: JSX.Element | null
+  children: React.ReactNode
 }
 
-export const GenericLayout: React.FC<Props> = ({ children, menu, navTools }) => (
-  <div>
-    <StaticGlobalStyle />
-    <ThemeProvider>
-      <ThemedGlobalStyle />
-      <Header menu={menu} tools={navTools} />
-      {children}
-      <Footer />
-    </ThemeProvider>
-  </div>
-)
+const defaultHeader = <Header />
+const defaultFooter = <Footer />
+
+/**
+ * Generic layout with optional header and footer
+ * Applies global and theme styles to all children
+ *
+ * If not header/footer set, use default.
+ * If a custom passed in will be used instead.
+ * To remove header/footer, pass null
+ */
+export const GenericLayout: React.FC<Props> = (props) => {
+  const { children, header, footer } = props
+
+  return (
+    <div>
+      <StaticGlobalStyle />
+      <ThemeProvider>
+        <ThemedGlobalStyle />
+        {header !== null && (header || defaultHeader)}
+        {children}
+        {footer !== null && (footer || defaultFooter)}
+      </ThemeProvider>
+    </div>
+  )
+}
 
 export default GenericLayout
