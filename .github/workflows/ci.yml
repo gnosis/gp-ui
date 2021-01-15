@@ -3,13 +3,14 @@ name: Continuous Integration
 # Run on every commit
 on: push
 
+env:
+  APP_ID: 1
+  REPO_NAME_SLUG: gpui
+
 jobs:
-  ci:
+  test:    
     name: Continuous Integration
     runs-on: ubuntu-latest
-    env:
-        APP_ID: 1
-        REPO_NAME_SLUG: gpui
 
     steps:
       - name: Checkout code
@@ -53,6 +54,12 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
+  build:
+    needs: test
+    name: Build
+    runs-on: ubuntu-latest    
+
+    steps:
       - name: Build Web Apps
         run: yarn build
 
