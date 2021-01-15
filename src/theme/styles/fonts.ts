@@ -5,6 +5,7 @@ import InterBold from 'assets/fonts/Inter-Bold.woff2'
 import RobotoMono from 'assets/fonts/RobotoMono-Regular.woff2'
 
 import { Theme } from 'theme'
+import { logDebug } from 'utils'
 
 export const fontFace = css`
   @font-face {
@@ -53,18 +54,8 @@ const DEFAULT_FONT = {
 }
 
 export function getFonts(mode: Theme): Fonts {
-  let FONT: Fonts
-
-  switch (mode) {
-    case Theme.LIGHT:
-    case Theme.DARK:
-      FONT = DEFAULT_FONT
-      break
-    default:
-      FONT = DEFAULT_FONT
-      break
-  }
-  return FONT
+  logDebug(`[THEME] Loading ${mode} theme font`)
+  return DEFAULT_FONT
 }
 
 export default fontFace

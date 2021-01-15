@@ -1,4 +1,5 @@
 import { Theme } from 'theme'
+import { logDebug } from 'utils'
 
 export type Color = string
 export interface Colors {
@@ -92,10 +93,11 @@ export const DARK_COLOURS = {
 }
 
 // UTILS
-export function getThemePalette(colourTheme: Theme): Colors {
+export function getThemePalette(mode: Theme): Colors {
+  logDebug(`[THEME] Loading ${mode} theme colour palette`)
   let THEME_COLOURS = LIGHT_COLOURS
 
-  switch (colourTheme) {
+  switch (mode) {
     case Theme.LIGHT:
       THEME_COLOURS = LIGHT_COLOURS
       break
