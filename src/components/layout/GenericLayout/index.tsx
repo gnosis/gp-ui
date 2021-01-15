@@ -21,24 +21,16 @@ const defaultFooter = <Footer />
  * If a custom passed in will be used instead.
  * To remove header/footer, pass null
  */
-export const GenericLayout: React.FC<Props> = ({
-  header = defaultHeader,
-  footer = defaultFooter,
-  children,
-}) => {
-  const { children, header, footer } = props
-
-  return (
-    <div>
-      <StaticGlobalStyle />
-      <ThemeProvider>
-        <ThemedGlobalStyle />
-        {header}
-        {children}
-        {footer}
-      </ThemeProvider>
-    </div>
-  )
-}
+export const GenericLayout: React.FC<Props> = ({ header = defaultHeader, footer = defaultFooter, children }) => (
+  <div>
+    <StaticGlobalStyle />
+    <ThemeProvider>
+      <ThemedGlobalStyle />
+      {header}
+      {children}
+      {footer}
+    </ThemeProvider>
+  </div>
+)
 
 export default GenericLayout
