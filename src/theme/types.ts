@@ -13,5 +13,19 @@ declare module 'styled-components' {
     mode: Theme
     // used to key in on component variants
     componentKey?: keyof JSX.IntrinsicElements
+    // Media query templates
+    // can be used like:
+    /* 
+    theme.mediaQueries.upToSmall`
+      font-size: 2rem;
+      margin: 0;
+    `
+    */
+    mediaQueries: {
+      upToExtraSmall: ThemedCssFunction<DefaultTheme>
+      upToSmall: ThemedCssFunction<DefaultTheme>
+      upToMedium: ThemedCssFunction<DefaultTheme>
+      upToLarge: ThemedCssFunction<DefaultTheme>
+    }
   }
 }
