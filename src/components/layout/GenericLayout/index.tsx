@@ -1,15 +1,14 @@
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
 
 import ThemeProvider, { StaticGlobalStyle, ThemedGlobalStyle } from 'theme'
 
 import { Footer } from './Footer'
 import { Header } from './Header'
 
-export type Props = {
+export type Props = PropsWithChildren<{
   header?: JSX.Element | null
   footer?: JSX.Element | null
-  children: React.ReactNode
-}
+}>
 
 const defaultHeader = <Header />
 const defaultFooter = <Footer />
