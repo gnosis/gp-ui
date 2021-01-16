@@ -11,22 +11,13 @@ import {
 
 import { useThemeMode } from 'hooks/useThemeManager'
 import { getFonts, getThemePalette, mediaWidthTemplates as mediaQueries } from './styles'
-import { Theme } from './types'
 
-const getBaseTheme = ({
-  mode,
-  componentKey,
-}: {
-  mode: Theme
-  componentKey?: Partial<DefaultTheme['componentKey']>
-}): Pick<DefaultTheme, 'mode' | 'componentKey' | 'mediaQueries'> => ({
-  mode,
-  // unfold in any extensions
-  // for example to make big/small buttons -> see src/components/Button ThemeWrappedButtonBase
-  // to see it in action
-  componentKey,
+const getBaseTheme = (): Pick<DefaultTheme, 'mediaQueries' | 'mq'> => ({
   // media queries
   mediaQueries,
+  get mq(): DefaultTheme['mq'] {
+    return this.mediaQueries
+  },
 })
 
 // This type is all React.ReactElement & StyledComponents combined
@@ -45,14 +36,16 @@ const ThemeProvider: React.FC<{ componentKey?: Partial<DefaultTheme['componentKe
     const fontPalette = getFonts(mode)
 
     const computedTheme: DefaultTheme = {
+      mode,
+      componentKey,
       // Compute the app colour pallette using the passed in themeMode
       ...themePalette,
       ...fontPalette,
-      ...getBaseTheme({ mode, componentKey }),
+      ...getBaseTheme(),
     }
 
     return computedTheme
-  }, [mode, componentKey])
+  }, [componentKey, mode])
 
   // We want to pass the ThemeProvider theme to all children implicitly, no need to manually pass it
   return (
