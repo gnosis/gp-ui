@@ -1,27 +1,44 @@
-import { ThemedCssFunction, DefaultTheme, CSSObject, FlattenSimpleInterpolation, css } from 'styled-components'
+import { ThemedCssFunction, DefaultTheme, CSSObject, css, FlattenSimpleInterpolation } from 'styled-components'
 
-const MEDIA_WIDTHS = {
-  upToExtraSmall: 500,
-  upToSmall: 720,
-  upToMedium: 960,
-  upToLarge: 1280,
+const PORTRAIT = 'portrait'
+const LANDSCAPE = 'landscape'
+
+// Use this to set the media widths
+export const MEDIA_WIDTHS = {
+  extraSmall: 500,
+  small: 720,
+  medium: 960,
+  large: 1280,
 }
 
-type MediaWidthKeys = keyof typeof MEDIA_WIDTHS
+// this builds our end media object that shouldn't be tweaked by us
+const mediaQueriesObject = {
+  upToExtraSmall: [0, MEDIA_WIDTHS.extraSmall, PORTRAIT],
+  upToSmall: [0, MEDIA_WIDTHS.small, PORTRAIT],
+  upToMedium: [0, MEDIA_WIDTHS.medium, PORTRAIT],
+  upToLarge: [0, MEDIA_WIDTHS.large, PORTRAIT],
 
-type MediaWidth = {
+  tabletPortrait: [MEDIA_WIDTHS.small, MEDIA_WIDTHS.medium, PORTRAIT],
+  tabletLandscape: [MEDIA_WIDTHS.small, MEDIA_WIDTHS.medium, LANDSCAPE],
+}
+
+type MediaWidthKeys = keyof typeof mediaQueriesObject
+
+export type MediaWidth = {
   [key in MediaWidthKeys]: ThemedCssFunction<DefaultTheme>
 }
 
-export const mediaWidthTemplates = Object.keys(MEDIA_WIDTHS).reduce<MediaWidth>((accumulator, size: unknown) => {
-  ;(accumulator[size as MediaWidthKeys] as unknown) = (
-    a: CSSObject,
-    b: CSSObject,
-    c: CSSObject,
-  ): ThemedCssFunction<DefaultTheme> | FlattenSimpleInterpolation => css`
-    @media (max-width: ${MEDIA_WIDTHS[size as MediaWidthKeys]}px) {
-      ${css(a, b, c)}
-    }
-  `
-  return accumulator
-}, {} as MediaWidth)
+export const mediaWidthTemplates = Object.keys(mediaQueriesObject).reduce<MediaWidth>(
+  (accumulator, size: MediaWidthKeys) => {
+    const [min, max, orientation] = mediaQueriesObject[size]
+    accumulator[size] = (a: CSSObject, b: CSSObject, c: CSSObject): FlattenSimpleInterpolation =>
+      css`
+        @media (min-device-width: ${min}px) and (max-device-width: ${max}px),
+          (min-device-width: ${min}px) and (max-device-width: ${max}px) and (orientation: ${orientation}) {
+          ${css(a, b, c)}
+        }
+      `
+    return accumulator
+  },
+  {} as MediaWidth,
+)
