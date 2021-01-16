@@ -55,6 +55,14 @@ type ThemeProps = {
         flex-direction: row;
         justify-content: flex-start;
     `
+ * @example {
+ *  upToExtraSmall: 500,
+ *  upToSmall: 720,
+ *  upToMedium: 960,
+ *  upToLarge: 1280,
+ *  tabletPortrait: 720 to 960, orientation: portrait,
+ *  tabletLandscape: 720 to 960, orientation: landscape,
+ * }
  */
 export const applyMediaStyles = (mediaSize: keyof MediaWidth) => (
   stylesAndStuff: CSSObject | TemplateStringsArray,
