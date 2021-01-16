@@ -42,3 +42,20 @@ export const mediaWidthTemplates = Object.keys(mediaQueriesObject).reduce<MediaW
   },
   {} as MediaWidth,
 )
+
+type ThemeProps = {
+  theme: DefaultTheme
+}
+
+/**
+ * @name applyMediaStyles
+ * @param mediaSize size to activate on
+ * @example 
+ *  applyMediaStyles('upToMedium')`
+        flex-direction: row;
+        justify-content: flex-start;
+    `
+ */
+export const applyMediaStyles = (mediaSize: keyof MediaWidth) => (
+  stylesAndStuff: CSSObject | TemplateStringsArray,
+) => ({ theme }: ThemeProps): FlattenSimpleInterpolation => theme.mq[mediaSize](stylesAndStuff)
