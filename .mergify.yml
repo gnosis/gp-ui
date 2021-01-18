@@ -1,5 +1,5 @@
 pull_request_rules:
-  - name: Merge approved and green PRs with merge-when-green label
+  - name: Merge approved and green PRs without merge blocking PR labels
     conditions:
       - "#approved-reviews-by>=2"
       - label!=["WIP", "Don't merge", "On hold"]
