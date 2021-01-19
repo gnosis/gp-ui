@@ -4,11 +4,6 @@ import { SimpleTable } from 'components/common/SimpleTable'
 
 const Table = styled(SimpleTable)`
   tr > td {
-    /* &:first-of-type,
-    &:last-of-type {
-      padding: 0 0 0 1rem;
-    } */
-
     &:not(:first-of-type) {
       text-align: right;
     }
