@@ -46,7 +46,7 @@ const HEADER = (
     <th>Limit price</th>
     <th>Amount WETH</th>
     <th>Filled WETH</th>
-    <th>Epxires</th>
+    <th>Expires</th>
     <th>Status</th>
   </tr>
 )
