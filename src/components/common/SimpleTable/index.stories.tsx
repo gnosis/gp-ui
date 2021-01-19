@@ -10,20 +10,23 @@ export default {
   title: 'Common/SimpleTable',
   component: SimpleTable,
   decorators: [ThemeToggler, GlobalStyles],
+  argTypes: { header: { control: null }, children: { control: null } },
 } as Meta
 
-const header = (
-  <tr>
-    <th>Name</th>
-    <th>Year</th>
-  </tr>
-)
-const Template: Story<Props> = (args) => <SimpleTable {...args} />
+const Template: Story<Props & { Component?: typeof SimpleTable }> = (args) => {
+  const { Component = SimpleTable, ...rest } = args
+  return <Component {...rest} />
+}
 
 export const BasicTable = Template.bind({})
 BasicTable.args = {
   numColumns: 2,
-  header,
+  header: (
+    <tr>
+      <th>Name</th>
+      <th>Year</th>
+    </tr>
+  ),
   children: (
     <>
       <tr>
