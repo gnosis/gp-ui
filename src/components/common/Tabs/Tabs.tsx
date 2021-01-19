@@ -12,17 +12,17 @@ export interface TabItemType {
   readonly count?: number
 }
 export interface TabThemeType {
-  readonly activeBg?: string
-  readonly activeBgAlt?: string
-  readonly inactiveBg?: string
-  readonly activeText?: string
-  readonly inactiveText?: string
-  readonly activeBorder?: string
-  readonly inactiveBorder?: string
-  readonly letterSpacing?: string
-  readonly fontWeight?: string
-  readonly fontSize?: string
-  readonly borderRadius?: boolean
+  readonly activeBg: string
+  readonly activeBgAlt: string
+  readonly inactiveBg: string
+  readonly activeText: string
+  readonly inactiveText: string
+  readonly activeBorder: string
+  readonly inactiveBorder: string
+  readonly letterSpacing: string
+  readonly fontWeight: string
+  readonly fontSize: string
+  readonly borderRadius: boolean
 }
 interface Props {
   readonly tabItems: TabItemType[]
@@ -43,28 +43,50 @@ const Wrapper = styled.div`
   }
 `
 
+export const DEFAULT_TAB_THEME: TabThemeType = {
+  activeBg: '--color-transparent',
+  inactiveBg: '--color-transparent',
+  activeText: '--color-text-primary',
+  inactiveText: '--color-text-secondary2',
+  activeBorder: '--color-text-primary',
+  inactiveBorder: '--color-text-secondary2',
+  fontSize: '--font-size-default',
+  activeBgAlt: 'initial',
+  letterSpacing: 'initial',
+  fontWeight: 'normal',
+  borderRadius: false,
+}
+
 const Tabs: React.FC<Props> = (props) => {
-  const [activeTab, setActiveTab] = useState<number>(1)
-  const { tabTheme } = props
+  const { tabTheme = DEFAULT_TAB_THEME, tabItems } = props
+
+  const [activeTab, setActiveTab] = useState(1)
 
   return (
     <Wrapper>
       <div role="tablist" className="tablist">
-        {props.tabItems.map(({ id, title, count }) => (
+        {tabItems.map(({ id, title, count }) => (
           <TabItem
             key={id}
             id={id}
             title={title}
-            onTabClick={(): void => setActiveTab(id)}
+            onTabClick={setActiveTab}
             isActive={activeTab === id}
             tabTheme={tabTheme}
             count={count}
           />
         ))}
       </div>
-      <TabContent tabItems={props.tabItems} activeTab={activeTab} />
+      <TabContent tabItems={tabItems} activeTab={activeTab} />
     </Wrapper>
   )
 }
 
 export default Tabs
+
+export function getTabTheme(tabStyles: Partial<TabThemeType> = {}): TabThemeType {
+  return {
+    ...DEFAULT_TAB_THEME,
+    ...tabStyles,
+  }
+}
