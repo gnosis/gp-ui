@@ -1,26 +1,23 @@
 import React from 'react'
-import Tabs, { getTabTheme, TabItemType } from 'components/common/Tabs/Tabs'
+import Tabs, { getTabTheme, TabItemInterface } from 'components/common/Tabs/Tabs'
 import { OrdersWidgetDemo as Wrapper } from './OrdersWidgetDemo.styled'
 import { ActiveOrdersContent } from './ActiveOrdersContent'
 
-const tabItems: TabItemType[] = [
+const tabItems: TabItemInterface[] = [
   {
     id: 1,
-    title: 'Active Orders',
+    tab: 'Active Orders: ' + 5,
     content: <ActiveOrdersContent />,
-    count: 5,
   },
   {
     id: 2,
-    title: 'Order History',
+    tab: 'Order History: ' + 10,
     content: <ActiveOrdersContent />,
-    count: 10,
   },
   {
     id: 3,
-    title: 'Closed Orders',
+    tab: 'Closed Orders: ' + 21,
     content: 'content',
-    count: 21,
   },
 ]
 

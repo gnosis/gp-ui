@@ -1,20 +1,20 @@
 import React from 'react'
 import styled from 'styled-components'
-import Tabs, { getTabTheme, TabItemType } from 'components/common/Tabs/Tabs'
+import Tabs, { getTabTheme, TabItemInterface } from 'components/common/Tabs/Tabs'
 import OrderBook from 'components/OrderBook'
 import PairTradeHistory from 'components/PairTradeHistory'
 import { OrderBookTradesStyled as Wrapper } from './OrderBookTrades.styled'
 import { dummyOrders } from 'components/OrderBook/dummyTradingData'
 
-const tabItems = (orders: OrderBookWidgetsProp['orders']): TabItemType[] => [
+const tabItems = (orders: OrderBookWidgetsProp['orders']): TabItemInterface[] => [
   {
     id: 1,
-    title: 'Orderbook',
+    tab: 'Orderbook',
     content: <OrderBook orders={orders} />,
   },
   {
     id: 2,
-    title: 'Trades',
+    tab: 'Trades',
     content: <PairTradeHistory />,
   },
 ]

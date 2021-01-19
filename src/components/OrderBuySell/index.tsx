@@ -1,16 +1,16 @@
 import React from 'react'
 import styled from 'styled-components'
-import Tabs, { getTabTheme, TabItemType } from 'components/common/Tabs/Tabs'
+import Tabs, { getTabTheme, TabItemInterface } from 'components/common/Tabs/Tabs'
 
-const tabItems: TabItemType[] = [
+const tabItems: TabItemInterface[] = [
   {
     id: 1,
-    title: 'BUY',
+    tab: 'BUY',
     content: '- buy component -',
   },
   {
     id: 2,
-    title: 'SELL',
+    tab: 'SELL',
     content: '- sell component -',
   },
 ]

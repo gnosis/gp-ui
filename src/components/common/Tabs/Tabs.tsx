@@ -5,13 +5,15 @@ import styled from 'styled-components'
 import TabItem from 'components/common/Tabs/TabItem'
 import TabContent from 'components/common/Tabs/TabContent'
 
-export interface TabItemType {
-  readonly id: number
-  readonly title: string
+type TabId = number
+
+export interface TabItemInterface {
+  readonly tab: React.ReactNode
   readonly content: React.ReactNode
-  readonly count?: number
+  readonly id: TabId
 }
-export interface TabThemeType {
+
+export interface TabTheme {
   readonly activeBg: string
   readonly activeBgAlt: string
   readonly inactiveBg: string
@@ -25,8 +27,9 @@ export interface TabThemeType {
   readonly borderRadius: boolean
 }
 interface Props {
-  readonly tabItems: TabItemType[]
-  readonly tabTheme: TabThemeType
+  readonly tabItems: TabItemInterface[]
+  readonly tabTheme: TabTheme
+  readonly defaultTab?: TabId
 }
 
 const Wrapper = styled.div`
@@ -43,7 +46,7 @@ const Wrapper = styled.div`
   }
 `
 
-export const DEFAULT_TAB_THEME: TabThemeType = {
+export const DEFAULT_TAB_THEME: TabTheme = {
   activeBg: '--color-transparent',
   inactiveBg: '--color-transparent',
   activeText: '--color-text-primary',
@@ -58,22 +61,21 @@ export const DEFAULT_TAB_THEME: TabThemeType = {
 }
 
 const Tabs: React.FC<Props> = (props) => {
-  const { tabTheme = DEFAULT_TAB_THEME, tabItems } = props
+  const { tabTheme = DEFAULT_TAB_THEME, tabItems, defaultTab = 1 } = props
 
-  const [activeTab, setActiveTab] = useState(1)
+  const [activeTab, setActiveTab] = useState(defaultTab)
 
   return (
     <Wrapper>
       <div role="tablist" className="tablist">
-        {tabItems.map(({ id, title, count }) => (
+        {tabItems.map(({ tab, id }) => (
           <TabItem
             key={id}
             id={id}
-            title={title}
+            tab={tab}
             onTabClick={setActiveTab}
             isActive={activeTab === id}
             tabTheme={tabTheme}
-            count={count}
           />
         ))}
       </div>
@@ -84,7 +86,7 @@ const Tabs: React.FC<Props> = (props) => {
 
 export default Tabs
 
-export function getTabTheme(tabStyles: Partial<TabThemeType> = {}): TabThemeType {
+export function getTabTheme(tabStyles: Partial<TabTheme> = {}): TabTheme {
   return {
     ...DEFAULT_TAB_THEME,
     ...tabStyles,

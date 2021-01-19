@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import Tabs, { getTabTheme, TabItemType } from 'components/common/Tabs/Tabs'
+import Tabs, { getTabTheme } from 'components/common/Tabs/Tabs'
 
 import OrderBookWidget from 'components/OrderBookWidget'
 import PriceChart from 'components/PriceChart'
@@ -32,15 +32,15 @@ const demo = {
   networkId: 1,
 }
 
-const tabItems: TabItemType[] = [
+const tabItems = [
   {
     id: 1,
-    title: 'Price Chart',
+    tab: 'Price Chart',
     content: <PriceChart />,
   },
   {
     id: 2,
-    title: 'Depth Chart',
+    tab: 'Depth Chart',
     content: <OrderBookWidget baseToken={demo.baseToken} quoteToken={demo.quoteToken} networkId={demo.networkId} />,
   },
 ]
