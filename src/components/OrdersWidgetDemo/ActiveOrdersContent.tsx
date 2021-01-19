@@ -3,7 +3,26 @@ import styled from 'styled-components'
 import { SimpleTable, Props as SimpleTableProps } from 'components/SimpleTable'
 
 const Wrapper = styled(SimpleTable)<SimpleTableProps>`
-  color: red;
+  > table tr > td {
+    /* &:first-of-type,
+    &:last-of-type {
+      padding: 0 0 0 1rem;
+    } */
+
+    &:not(:first-of-type) {
+      text-align: right;
+    }
+
+    &.long {
+      color: var(--color-long);
+      border-left: 2px solid var(--color-long);
+    }
+
+    &.short {
+      color: var(--color-short);
+      border-left: 2px solid var(--color-short);
+    }
+  }
 `
 
 const CancelledOrderButton = styled.button`

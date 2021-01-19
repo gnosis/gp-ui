@@ -32,30 +32,6 @@ const Wrapper = styled.div`
     color: var(--color-text-secondary2);
     transition: color 0.1s ease-in-out;
     box-sizing: border-box;
-
-    /* &:first-of-type,
-    &:last-of-type {
-      padding: 0 0 0 1rem;
-    } */
-
-    &:not(:first-of-type) {
-      text-align: right;
-    }
-
-    &.long {
-      color: var(--color-long);
-      border-left: 2px solid var(--color-long);
-    }
-
-    &.short {
-      color: var(--color-short);
-      border-left: 2px solid var(--color-short);
-    }
-
-    &.action {
-      /* justify-content: space-between;
-      align-items: center; */
-    }
   }
 
   > table > thead {
@@ -135,13 +111,14 @@ const Wrapper = styled.div`
 export interface Props {
   header: JSX.Element
   children: React.ReactNode
+  className?: string
 }
 
 export const SimpleTable: React.FC = (props: Props) => {
-  const { header, children } = props
+  const { header, children, className } = props
 
   return (
-    <Wrapper>
+    <Wrapper className={className}>
       <table>
         <thead>{header}</thead>
         <tbody>{children}</tbody>
