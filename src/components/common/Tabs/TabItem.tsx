@@ -1,21 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
-import { TabThemeType } from 'components/common/Tabs/Tabs'
+import { TabItemInterface, TabTheme } from 'components/common/Tabs/Tabs'
 import { ButtonBase } from '../Button'
 
-interface TabProps {
-  title: string
+interface TabProps extends Omit<TabItemInterface, 'content'> {
   isActive: boolean
-  readonly id: number
-  readonly count?: number
-  readonly tabTheme: TabThemeType
+  readonly tabTheme: TabTheme
   onTabClick: (id: number) => void
 }
 
-interface TabItemWrapperProps {
-  isActive: boolean
-  readonly tabTheme: TabThemeType
-}
+type TabItemWrapperProps = Pick<TabProps, 'isActive' | 'tabTheme'>
 
 const TabItemBase = styled(ButtonBase)`
   display: flex;
@@ -24,6 +18,7 @@ const TabItemBase = styled(ButtonBase)`
   justify-content: center;
 
   border: 0;
+  border-radius: 0;
   /* TODO: move this into baseStyles or sth similar */
   height: var(--height-button-default);
 
@@ -33,7 +28,7 @@ const TabItemBase = styled(ButtonBase)`
 `
 
 // TODO: replace with DefaultTheme and remove `var` approach
-// Make Tabs and TabItem it's own common component with theme
+// Make Tabs and TabItemBase it's own common component with theme
 const TabItemWrapper = styled(TabItemBase)<TabItemWrapperProps>`
   background: ${({ isActive, tabTheme }): string => `var(${isActive ? tabTheme.activeBg : tabTheme.inactiveBg})`};
   color: ${({ isActive, tabTheme }): string =>
@@ -65,7 +60,7 @@ const TabItemWrapper = styled(TabItemBase)<TabItemWrapperProps>`
 `
 
 const TabItem: React.FC<TabProps> = (props) => {
-  const { onTabClick, id, title, isActive, tabTheme } = props
+  const { onTabClick, id, tab, isActive, tabTheme } = props
 
   return (
     <TabItemWrapper
@@ -75,7 +70,7 @@ const TabItem: React.FC<TabProps> = (props) => {
       onClick={(): void => onTabClick(id)}
       tabTheme={tabTheme}
     >
-      {title}
+      {tab}
     </TabItemWrapper>
   )
 }

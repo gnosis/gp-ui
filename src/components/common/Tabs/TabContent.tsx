@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react'
-import { TabItemType } from 'components/common/Tabs/Tabs'
+import { TabItemInterface } from 'components/common/Tabs/Tabs'
 
 type Props = {
-  tabItems: TabItemType[]
+  tabItems: TabItemInterface[]
   activeTab: number
 }
 
