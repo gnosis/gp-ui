@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { SimpleTable, Props as SimpleTableProps } from 'components/SimpleTable'
 
-const Wrapper = styled(SimpleTable)<SimpleTableProps>`
+const Table = styled(SimpleTable)<SimpleTableProps>`
   > table tr > td {
     /* &:first-of-type,
     &:last-of-type {
@@ -23,6 +23,11 @@ const Wrapper = styled(SimpleTable)<SimpleTableProps>`
       border-left: 2px solid var(--color-short);
     }
   }
+
+  > table > thead > tr,
+  > table > tbody > tr {
+    grid-template-columns: 5rem minmax(14rem, 1fr) repeat(5, 1fr) 7rem;
+  }
 `
 
 const CancelledOrderButton = styled.button`
@@ -33,7 +38,7 @@ const CancelledOrderButton = styled.button`
   cursor: pointer;
 `
 
-const Header = (
+const HEADER = (
   <tr>
     <th>Side</th>
     <th>Date</th>
@@ -48,7 +53,7 @@ const Header = (
 
 export const ActiveOrdersContent: React.FC = () => {
   return (
-    <Wrapper header={Header}>
+    <Table header={HEADER}>
       {[...Array(30).keys()].map((i) => (
         <tr key={i}>
           <td className={i % 2 === 1 ? 'long' : 'short'}>{i % 2 === 1 ? 'Buy' : 'Sell'}</td>
@@ -65,6 +70,6 @@ export const ActiveOrdersContent: React.FC = () => {
           </td>
         </tr>
       ))}
-    </Wrapper>
+    </Table>
   )
 }
