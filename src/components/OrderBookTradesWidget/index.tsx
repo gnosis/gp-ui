@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import Tabs, { TabItemType, TabThemeType } from 'components/common/Tabs/Tabs'
+import Tabs, { getTabTheme, TabItemType } from 'components/common/Tabs/Tabs'
 import OrderBook from 'components/OrderBook'
 import PairTradeHistory from 'components/PairTradeHistory'
 import { OrderBookTradesStyled as Wrapper } from './OrderBookTrades.styled'
@@ -20,7 +20,7 @@ const tabItems = (orders: OrderBookWidgetsProp['orders']): TabItemType[] => [
 ]
 
 // Provide a custom theme
-const tabThemeConfig: TabThemeType = {
+const tabThemeConfig = getTabTheme({
   activeBg: '--color-transparent',
   inactiveBg: '--color-transparent',
   activeText: '--color-text-primary',
@@ -29,7 +29,7 @@ const tabThemeConfig: TabThemeType = {
   inactiveBorder: '--color-text-secondary2',
   borderRadius: false,
   fontSize: '--font-size-default',
-}
+})
 
 const TabsWrapper = styled.div`
   display: flex;

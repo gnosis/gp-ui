@@ -1,5 +1,5 @@
 import React from 'react'
-import Tabs, { TabItemType, TabThemeType } from 'components/common/Tabs/Tabs'
+import Tabs, { getTabTheme, TabItemType } from 'components/common/Tabs/Tabs'
 import { OrdersWidgetDemo as Wrapper } from './OrdersWidgetDemo.styled'
 import { ActiveOrdersContent } from './ActiveOrdersContent'
 
@@ -25,7 +25,7 @@ const tabItems: TabItemType[] = [
 ]
 
 // Provide a custom theme
-const tabThemeConfig: TabThemeType = {
+const tabThemeConfig = getTabTheme({
   activeBg: '--color-primary',
   activeText: '--color-text-primary',
   inactiveBg: '--color-transparent',
@@ -33,7 +33,7 @@ const tabThemeConfig: TabThemeType = {
   fontWeight: '--font-weight-normal',
   fontSize: '--font-size-default',
   letterSpacing: '0.03rem',
-}
+})
 
 const OrdersWidgetDemo: React.FC = () => {
   return (

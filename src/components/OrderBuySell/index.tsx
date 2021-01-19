@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import Tabs, { TabItemType, TabThemeType } from 'components/common/Tabs/Tabs'
+import Tabs, { getTabTheme, TabItemType } from 'components/common/Tabs/Tabs'
 
 const tabItems: TabItemType[] = [
   {
@@ -15,13 +15,13 @@ const tabItems: TabItemType[] = [
   },
 ]
 
-const tabThemeConfig: TabThemeType = {
+const tabThemeConfig = getTabTheme({
   activeBg: '--color-long',
   activeBgAlt: '--color-short',
   inactiveBg: '--color-primary',
   activeText: '--color-primary',
   inactiveText: '--color-primary2',
-}
+})
 
 const Wrapper = styled.div`
   display: flex;

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import Tabs, { TabItemType, TabThemeType } from 'components/common/Tabs/Tabs'
+import Tabs, { getTabTheme, TabItemType } from 'components/common/Tabs/Tabs'
 
 import OrderBookWidget from 'components/OrderBookWidget'
 import PriceChart from 'components/PriceChart'
@@ -32,7 +32,7 @@ const demo = {
   networkId: 1,
 }
 
-const tabItems = (): TabItemType[] => [
+const tabItems: TabItemType[] = [
   {
     id: 1,
     title: 'Price Chart',
@@ -46,7 +46,7 @@ const tabItems = (): TabItemType[] => [
 ]
 
 // Provide a custom tabTheme
-const tabThemeConfig: TabThemeType = {
+const tabThemeConfig = getTabTheme({
   activeBg: '--color-transparent',
   inactiveBg: '--color-transparent',
   activeText: '--color-text-primary',
@@ -55,7 +55,7 @@ const tabThemeConfig: TabThemeType = {
   inactiveBorder: '--color-text-secondary2',
   borderRadius: false,
   fontSize: '--font-size-default',
-}
+})
 
 const TabsWrapper = styled.div`
   display: flex;
@@ -84,7 +84,7 @@ const TabsWrapper = styled.div`
 export const PriceDepthChartWidget: React.FC = () => (
   <Wrapper>
     <TabsWrapper>
-      <Tabs tabItems={tabItems()} tabTheme={tabThemeConfig} />
+      <Tabs tabItems={tabItems} tabTheme={tabThemeConfig} />
     </TabsWrapper>
   </Wrapper>
 )
