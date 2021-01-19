@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { SimpleTable, Props as SimpleTableProps } from 'components/SimpleTable'
+import { SimpleTable, Props as SimpleTableProps } from 'components/common/SimpleTable'
 
 const Table = styled(SimpleTable)<SimpleTableProps>`
   > table tr > td {
