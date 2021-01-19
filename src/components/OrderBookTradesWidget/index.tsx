@@ -21,14 +21,14 @@ const tabItems = (orders: OrderBookWidgetsProp['orders']): TabItemInterface[] =>
 
 // Provide a custom theme
 const tabThemeConfig = getTabTheme({
-  activeBg: '--color-transparent',
-  inactiveBg: '--color-transparent',
-  activeText: '--color-text-primary',
-  inactiveText: '--color-text-secondary2',
-  activeBorder: '--color-text-primary',
-  inactiveBorder: '--color-text-secondary2',
+  activeBg: 'var(--color-transparent)',
+  inactiveBg: 'var(--color-transparent)',
+  activeText: 'var(--color-text-primary)',
+  inactiveText: 'var(--color-text-secondary2)',
+  activeBorder: 'var(--color-text-primary)',
+  inactiveBorder: 'var(--color-text-secondary2)',
   borderRadius: false,
-  fontSize: '--font-size-default',
+  fontSize: 'var(--font-size-default)',
 })
 
 const TabsWrapper = styled.div`

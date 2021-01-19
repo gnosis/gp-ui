@@ -16,11 +16,15 @@ const tabItems: TabItemInterface[] = [
 ]
 
 const tabThemeConfig = getTabTheme({
-  activeBg: '--color-long',
-  activeBgAlt: '--color-short',
-  inactiveBg: '--color-primary',
-  activeText: '--color-primary',
-  inactiveText: '--color-primary2',
+  activeBg: 'var(--color-long)',
+  activeBgAlt: 'var(--color-short)',
+  inactiveBg: 'var(--color-primary)',
+  activeText: 'var(--color-primary)',
+  inactiveText: 'var(--color-primary2)',
+  activeBorder: 'none',
+  fontSize: 'var(--font-size-large)',
+  fontWeight: 'var(--font-weight-bold)',
+  borderRadius: true,
 })
 
 const Wrapper = styled.div`

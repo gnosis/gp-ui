@@ -30,16 +30,15 @@ const TabItemBase = styled(ButtonBase)`
 // TODO: replace with DefaultTheme and remove `var` approach
 // Make Tabs and TabItemBase it's own common component with theme
 const TabItemWrapper = styled(TabItemBase)<TabItemWrapperProps>`
-  background: ${({ isActive, tabTheme }): string => `var(${isActive ? tabTheme.activeBg : tabTheme.inactiveBg})`};
-  color: ${({ isActive, tabTheme }): string =>
-    isActive ? `var(${tabTheme.activeText})` : `var(${tabTheme.inactiveText})`};
+  background: ${({ isActive, tabTheme }): string => (isActive ? tabTheme.activeBg : tabTheme.inactiveBg)};
+  color: ${({ isActive, tabTheme }): string => (isActive ? tabTheme.activeText : tabTheme.inactiveText)};
 
   font-weight: ${({ tabTheme }): string => tabTheme.fontWeight};
   font-size: ${({ tabTheme }): string => tabTheme.fontSize};
   letter-spacing: ${({ tabTheme }): string => tabTheme.letterSpacing};
 
   border-bottom: ${({ isActive, tabTheme }): string =>
-    `.1rem solid var(${isActive ? tabTheme.activeBorder : tabTheme.inactiveBorder})`};
+    `.1rem solid ${isActive ? tabTheme.activeBorder : tabTheme.inactiveBorder}`};
 
   /* TODO: Provide alternative :focus styling because of using outline: 0; */
 
@@ -55,7 +54,7 @@ const TabItemWrapper = styled(TabItemBase)<TabItemWrapperProps>`
       `${!tabTheme.borderRadius ? '0' : 'var(--border-radius-default)'}`};
     border-bottom-right-radius: ${({ tabTheme }): string =>
       `${!tabTheme.borderRadius ? '0' : 'var(--border-radius-default)'}`};
-    ${({ isActive, tabTheme }): string | false => isActive && `background: var(${tabTheme.activeBgAlt});`}
+    ${({ isActive, tabTheme }): string | false => isActive && `background: ${tabTheme.activeBgAlt};`}
   }
 `
 

@@ -47,16 +47,16 @@ const Wrapper = styled.div`
 `
 
 export const DEFAULT_TAB_THEME: TabTheme = {
-  activeBg: '--color-transparent',
-  inactiveBg: '--color-transparent',
-  activeText: '--color-text-primary',
-  inactiveText: '--color-text-secondary2',
-  activeBorder: '--color-text-primary',
-  inactiveBorder: '--color-text-secondary2',
-  fontSize: '--font-size-default',
+  activeBg: 'var(--color-transparent)',
   activeBgAlt: 'initial',
+  inactiveBg: 'var(--color-transparent)',
+  activeText: 'var(--color-text-primary)',
+  inactiveText: 'var(--color-text-secondary2)',
+  activeBorder: 'var(--color-text-primary)',
+  inactiveBorder: 'none',
+  fontSize: 'var(--font-size-default)',
+  fontWeight: 'var(--font-weight-normal)',
   letterSpacing: 'initial',
-  fontWeight: 'normal',
   borderRadius: false,
 }
 

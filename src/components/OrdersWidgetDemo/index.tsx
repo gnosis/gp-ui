@@ -23,12 +23,13 @@ const tabItems: TabItemInterface[] = [
 
 // Provide a custom theme
 const tabThemeConfig = getTabTheme({
-  activeBg: '--color-primary',
-  activeText: '--color-text-primary',
-  inactiveBg: '--color-transparent',
-  inactiveText: '--color-text-secondary2',
-  fontWeight: '--font-weight-normal',
-  fontSize: '--font-size-default',
+  activeBg: 'var(--color-primary)',
+  activeText: 'var(--color-text-primary)',
+  inactiveBg: 'var(--color-transparent)',
+  inactiveText: 'var(--color-text-secondary2)',
+  activeBorder: 'none',
+  fontWeight: 'var(--font-weight-normal)',
+  fontSize: 'var(--font-size-default)',
   letterSpacing: '0.03rem',
 })
 
