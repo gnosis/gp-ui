@@ -98,8 +98,7 @@ const Wrapper = styled.div<{ $numColumns?: number }>`
   > table > thead > tr,
   > table > tbody > tr {
     align-items: center;
-    ${({ $numColumns }): string | undefined =>
-      $numColumns != undefined ? 'grid-template-columns: repeat(' + $numColumns + ', 1fr)' : undefined}
+    ${({ $numColumns }): string => ($numColumns ? `grid-template-columns: repeat(${$numColumns}, 1fr)` : '')}
   }
 `
 
