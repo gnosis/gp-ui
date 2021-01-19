@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import Tabs, { getTabTheme, TabItemInterface } from 'components/common/Tabs/Tabs'
 import OrderBook from 'components/OrderBook'
@@ -59,12 +59,16 @@ interface OrderBookWidgetsProp {
   readonly orders?: typeof dummyOrders
 }
 
-export const OrderBookTradesWidget: React.FC<OrderBookWidgetsProp> = ({ orders }) => (
-  <Wrapper>
-    <TabsWrapper>
-      <Tabs tabItems={tabItems(orders)} tabTheme={tabThemeConfig} />
-    </TabsWrapper>
-  </Wrapper>
-)
+export const OrderBookTradesWidget: React.FC<OrderBookWidgetsProp> = ({ orders }) => {
+  const tabsList = useMemo(() => tabItems(orders), [orders])
+
+  return (
+    <Wrapper>
+      <TabsWrapper>
+        <Tabs tabItems={tabsList} tabTheme={tabThemeConfig} />
+      </TabsWrapper>
+    </Wrapper>
+  )
+}
 
 export default OrderBookTradesWidget
