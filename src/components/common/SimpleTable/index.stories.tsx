@@ -2,14 +2,14 @@ import React from 'react'
 // also exported from '@storybook/react' if you can deal with breaking changes in 6.1
 import { Story, Meta } from '@storybook/react/types-6-0'
 
-import { ThemeToggler } from 'storybook/decorators'
+import { GlobalStyles, ThemeToggler } from 'storybook/decorators'
 
 import { SimpleTable, Props } from './'
 
 export default {
   title: 'Common/SimpleTable',
   component: SimpleTable,
-  decorators: [ThemeToggler],
+  decorators: [ThemeToggler, GlobalStyles],
 } as Meta
 
 const header = (
