@@ -50,8 +50,8 @@ BasicTable.args = {
   ),
 }
 
-const CustomSimpleTable = styled(SimpleTable)<Props>`
-  > table tr > td {
+const CustomSimpleTable = styled(SimpleTable)`
+  tr > td {
     /* &:first-of-type,
     &:last-of-type {
       padding: 0 0 0 1rem;
@@ -72,8 +72,8 @@ const CustomSimpleTable = styled(SimpleTable)<Props>`
     }
   }
 
-  > table > thead > tr,
-  > table > tbody > tr {
+  > thead > tr,
+  > tbody > tr {
     grid-template-columns: 5rem minmax(14rem, 1fr) repeat(5, 1fr) 7rem;
   }
 `

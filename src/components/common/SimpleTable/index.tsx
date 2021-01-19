@@ -1,40 +1,34 @@
 import React, { PropsWithChildren } from 'react'
 import styled from 'styled-components'
 
-const Wrapper = styled.div<{ $numColumns?: number }>`
-  width: 100%;
-  height: 100%;
-  position: relative;
-  padding: 0;
+const Wrapper = styled.table<{ $numColumns?: number }>`
   font-size: var(--font-size-default);
   background: var(--color-primary);
 
-  > table {
-    margin: 0;
-    height: calc(100% - 8.8rem);
-    padding: 0;
-    box-sizing: border-box;
-    width: 100%;
-    border-spacing: 0;
-    display: inline-grid;
-    grid-template-areas:
-      'head-fixed'
-      'body-scrollable';
-  }
+  margin: 0;
+  height: calc(100% - 8.8rem);
+  padding: 0;
+  box-sizing: border-box;
+  width: 100%;
+  border-spacing: 0;
+  display: inline-grid;
+  grid-template-areas:
+    'head-fixed'
+    'body-scrollable';
 
-  > table tr {
+  tr {
     text-align: left;
     padding: 0;
   }
 
-  > table tr > td {
+  tr > td {
     padding: 0;
     color: var(--color-text-secondary2);
     transition: color 0.1s ease-in-out;
     box-sizing: border-box;
   }
 
-  > table > thead {
+  > thead {
     grid-area: head-fixed;
     position: sticky;
     top: 0;
@@ -43,20 +37,20 @@ const Wrapper = styled.div<{ $numColumns?: number }>`
     align-items: center;
   }
 
-  > table > thead > tr {
+  > thead > tr {
     color: var(--color-text-secondary2);
     display: grid;
     width: calc(100% - 0.6rem);
   }
 
-  > table > thead > tr > th {
+  > thead > tr > th {
     font-weight: var(--font-weight-normal);
     &:not(:first-of-type) {
       text-align: right;
     }
   }
 
-  > table > tbody {
+  > tbody {
     grid-area: body-scrollable;
     overflow-y: auto;
     overflow-x: hidden;
@@ -65,7 +59,7 @@ const Wrapper = styled.div<{ $numColumns?: number }>`
     padding: 0;
   }
 
-  > table > tbody > tr {
+  > tbody > tr {
     display: grid;
     width: 100%;
     transition: background 0.1s ease-in-out;
@@ -82,8 +76,8 @@ const Wrapper = styled.div<{ $numColumns?: number }>`
     }
   }
 
-  > table > thead > tr > th,
-  > table > tbody > tr > td {
+  > thead > tr > th,
+  > tbody > tr > td {
     height: 3rem;
     display: flex;
     align-items: center;
@@ -95,8 +89,8 @@ const Wrapper = styled.div<{ $numColumns?: number }>`
     }
   }
 
-  > table > thead > tr,
-  > table > tbody > tr {
+  > thead > tr,
+  > tbody > tr {
     align-items: center;
     ${({ $numColumns }): string => ($numColumns ? `grid-template-columns: repeat(${$numColumns}, 1fr)` : '')}
   }
@@ -110,9 +104,7 @@ export type Props = PropsWithChildren<{
 
 export const SimpleTable: React.FC<Props> = ({ header, children, className, numColumns }) => (
   <Wrapper $numColumns={numColumns} className={className}>
-    <table>
-      <thead>{header}</thead>
-      <tbody>{children}</tbody>
-    </table>
+    <thead>{header}</thead>
+    <tbody>{children}</tbody>
   </Wrapper>
 )

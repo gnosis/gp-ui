@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { SimpleTable, Props as SimpleTableProps } from 'components/common/SimpleTable'
 
 const Table = styled(SimpleTable)<SimpleTableProps>`
-  > table tr > td {
+  tr > td {
     /* &:first-of-type,
     &:last-of-type {
       padding: 0 0 0 1rem;
@@ -24,8 +24,8 @@ const Table = styled(SimpleTable)<SimpleTableProps>`
     }
   }
 
-  > table > thead > tr,
-  > table > tbody > tr {
+  > thead > tr,
+  > tbody > tr {
     grid-template-columns: 5rem minmax(14rem, 1fr) repeat(5, 1fr) 7rem;
   }
 `
