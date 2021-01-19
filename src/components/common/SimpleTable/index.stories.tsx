@@ -40,7 +40,7 @@ BasicTable.args = {
       </tr>
       <tr>
         <td>Gnosis Protocol v2</td>
-        <td>2020</td>
+        <td>2021</td>
       </tr>
     </>
   ),
