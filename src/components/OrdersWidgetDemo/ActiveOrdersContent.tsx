@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-import { SimpleTable, Props as SimpleTableProps } from 'components/common/SimpleTable'
+import { SimpleTable } from 'components/common/SimpleTable'
 
-const Table = styled(SimpleTable)<SimpleTableProps>`
+const Table = styled(SimpleTable)`
   tr > td {
     /* &:first-of-type,
     &:last-of-type {
