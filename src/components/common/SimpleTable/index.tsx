@@ -50,14 +50,10 @@ const Wrapper = styled.div<{ $numColumns?: number }>`
   }
 
   > table > thead > tr > th {
-    /* border: 1px solid grey; */
     font-weight: var(--font-weight-normal);
     &:not(:first-of-type) {
       text-align: right;
     }
-    /* &:last-of-type {
-      margin-right: 0.7rem;
-    } */
   }
 
   > table > tbody {
@@ -89,11 +85,9 @@ const Wrapper = styled.div<{ $numColumns?: number }>`
   > table > thead > tr > th,
   > table > tbody > tr > td {
     height: 3rem;
-    /* border: 1px solid grey; */
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    /* padding: 1rem 0; */
 
     &:first-of-type {
       padding-left: 1rem;
