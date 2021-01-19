@@ -4,7 +4,7 @@ import { Story, Meta } from '@storybook/react/types-6-0'
 
 import { ThemeToggler } from 'storybook/decorators'
 
-import { SimpleTable, Props as SimpleTableProps } from './'
+import { SimpleTable, Props } from './'
 
 export default {
   title: 'Common/SimpleTable',
@@ -18,24 +18,30 @@ const header = (
     <th>Year</th>
   </tr>
 )
+const Template: Story<Props> = (args) => <SimpleTable {...args} />
 
-export const BasicTable: React.FC = () => (
-  <SimpleTable header={header}>
-    <tr>
-      <td>DutchX</td>
-      <td>2018</td>
-    </tr>
-    <tr>
-      <td>dxDAO</td>
-      <td>2019</td>
-    </tr>
-    <tr>
-      <td>Gnosis Protocol v1</td>
-      <td>2020</td>
-    </tr>
-    <tr>
-      <td>Gnosis Protocol v2</td>
-      <td>2020</td>
-    </tr>
-  </SimpleTable>
-)
+export const BasicTable = Template.bind({})
+BasicTable.args = {
+  numColumns: 2,
+  header,
+  children: (
+    <>
+      <tr>
+        <td>DutchX</td>
+        <td>2018</td>
+      </tr>
+      <tr>
+        <td>dxDAO</td>
+        <td>2019</td>
+      </tr>
+      <tr>
+        <td>Gnosis Protocol v1</td>
+        <td>2020</td>
+      </tr>
+      <tr>
+        <td>Gnosis Protocol v2</td>
+        <td>2020</td>
+      </tr>
+    </>
+  ),
+}
