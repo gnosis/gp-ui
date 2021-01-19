@@ -182,7 +182,13 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: "Deploy to S3: PRaul"
+      - name: Get PR number
+        uses: jwalton/gh-find-current-pr@v1
+        id: findPr
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 'Deploy to S3: PRaul'
         if: success() && steps.findPr.outputs.number
         run: aws s3 sync website s3://${{ secrets.AWS_REVIEW_BUCKET_NAME }}/${{ env.REPO_NAME_SLUG }}/pr${{ steps.findPr.outputs.number }} --delete
     
