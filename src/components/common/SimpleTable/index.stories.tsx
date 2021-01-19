@@ -1,4 +1,5 @@
 import React from 'react'
+import styled from 'styled-components'
 // also exported from '@storybook/react' if you can deal with breaking changes in 6.1
 import { Story, Meta } from '@storybook/react/types-6-0'
 
@@ -47,4 +48,63 @@ BasicTable.args = {
       </tr>
     </>
   ),
+}
+
+const CustomSimpleTable = styled(SimpleTable)<Props>`
+  > table tr > td {
+    /* &:first-of-type,
+    &:last-of-type {
+      padding: 0 0 0 1rem;
+    } */
+
+    &:not(:first-of-type) {
+      text-align: right;
+    }
+
+    &.long {
+      color: var(--color-long);
+      border-left: 2px solid var(--color-long);
+    }
+
+    &.short {
+      color: var(--color-short);
+      border-left: 2px solid var(--color-short);
+    }
+  }
+
+  > table > thead > tr,
+  > table > tbody > tr {
+    grid-template-columns: 5rem minmax(14rem, 1fr) repeat(5, 1fr) 7rem;
+  }
+`
+
+export const CustomTableStyle = Template.bind({})
+CustomTableStyle.args = {
+  Component: CustomSimpleTable,
+  header: (
+    <tr>
+      <th>Side</th>
+      <th>Date</th>
+      <th>Pair</th>
+      <th>Limit price</th>
+      <th>Amount WETH</th>
+      <th>Filled WETH</th>
+      <th>Expires</th>
+      <th>Status</th>
+    </tr>
+  ),
+  children: [...Array(10).keys()].map((i) => (
+    <tr key={i}>
+      <td className={i % 2 === 1 ? 'long' : 'short'}>{i % 2 === 1 ? 'Buy' : 'Sell'}</td>
+      <td>01-10-2020 17:45:{i}2</td>
+      <td>WETH/USDT</td>
+      <td>370.96</td>
+      <td>
+        {i}.0{i}
+      </td>
+      <td>{i}</td>
+      <td>Never</td>
+      <td className="action">Active</td>
+    </tr>
+  )),
 }
