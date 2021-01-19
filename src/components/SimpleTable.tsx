@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ $numColumns?: number }>`
   width: 100%;
   height: 100%;
   position: relative;
@@ -103,8 +103,9 @@ const Wrapper = styled.div`
 
   > table > thead > tr,
   > table > tbody > tr {
-    grid-template-columns: 5rem minmax(14rem, 1fr) repeat(5, 1fr) 7rem;
     align-items: center;
+    ${({ $numColumns }): string | undefined =>
+      $numColumns != undefined ? 'grid-template-columns: repeat(' + $numColumns + ', 1fr)' : undefined}
   }
 `
 
@@ -112,13 +113,14 @@ export interface Props {
   header: JSX.Element
   children: React.ReactNode
   className?: string
+  numColumns?: number
 }
 
 export const SimpleTable: React.FC = (props: Props) => {
-  const { header, children, className } = props
+  const { header, children, className, numColumns } = props
 
   return (
-    <Wrapper className={className}>
+    <Wrapper $numColumns={numColumns} className={className}>
       <table>
         <thead>{header}</thead>
         <tbody>{children}</tbody>
