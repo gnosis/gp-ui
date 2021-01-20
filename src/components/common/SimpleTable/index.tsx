@@ -16,18 +16,6 @@ const Wrapper = styled.table<{ $numColumns?: number }>`
     'head-fixed'
     'body-scrollable';
 
-  tr {
-    text-align: left;
-    padding: 0;
-  }
-
-  tr > td {
-    padding: 0;
-    color: var(--color-text-secondary2);
-    transition: color 0.1s ease-in-out;
-    box-sizing: border-box;
-  }
-
   > thead {
     grid-area: head-fixed;
     position: sticky;
@@ -35,18 +23,18 @@ const Wrapper = styled.table<{ $numColumns?: number }>`
     height: auto;
     display: flex;
     align-items: center;
-  }
 
-  > thead > tr {
-    color: var(--color-text-secondary2);
-    display: grid;
-    width: calc(100% - 0.6rem);
-  }
+    > tr {
+      color: var(--color-text-secondary2);
+      display: grid;
+      width: calc(100% - 0.6rem);
 
-  > thead > tr > th {
-    font-weight: var(--font-weight-normal);
-    &:not(:first-of-type) {
-      text-align: right;
+      > th {
+        font-weight: var(--font-weight-normal);
+        &:not(:first-of-type) {
+          text-align: right;
+        }
+      }
     }
   }
 
@@ -57,42 +45,51 @@ const Wrapper = styled.table<{ $numColumns?: number }>`
     height: 100%;
     box-sizing: border-box;
     padding: 0;
-  }
 
-  > tbody > tr {
-    display: grid;
-    width: 100%;
-    transition: background 0.1s ease-in-out;
-    border-bottom: 0.1rem solid var(--color-border);
-    &:hover {
-      background: var(--color-text-hover);
-      > td {
-        color: var(--color-text-primary);
+    > tr {
+      display: grid;
+      width: 100%;
+      transition: background 0.1s ease-in-out;
+      border-bottom: 0.1rem solid var(--color-border);
+      &:hover {
+        background: var(--color-text-hover);
+        > td {
+          color: var(--color-text-primary);
+        }
+      }
+
+      &:last-of-type {
+        margin: 0 0 5rem;
       }
     }
-
-    &:last-of-type {
-      margin: 0 0 5rem;
-    }
   }
 
-  > thead > tr > th,
-  > tbody > tr > td {
-    height: 3rem;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
+  tr {
+    text-align: left;
+    padding: 0;
 
-    &:first-of-type {
-      padding-left: 1rem;
-      justify-content: flex-start;
+    > td {
+      padding: 0;
+      color: var(--color-text-secondary2);
+      transition: color 0.1s ease-in-out;
+      box-sizing: border-box;
     }
-  }
 
-  > thead > tr,
-  > tbody > tr {
     align-items: center;
     ${({ $numColumns }): string => ($numColumns ? `grid-template-columns: repeat(${$numColumns}, 1fr);` : '')}
+
+    > th, 
+    > td {
+      height: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+
+      &:first-of-type {
+        padding-left: 1rem;
+        justify-content: flex-start;
+      }
+    }
   }
 `
 
