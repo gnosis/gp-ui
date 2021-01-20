@@ -92,7 +92,7 @@ const Wrapper = styled.table<{ $numColumns?: number }>`
   > thead > tr,
   > tbody > tr {
     align-items: center;
-    ${({ $numColumns }): string | false => $numColumns && `grid-template-columns: repeat(${$numColumns}, 1fr);`}
+    ${({ $numColumns }): string => ($numColumns ? `grid-template-columns: repeat(${$numColumns}, 1fr);` : '')}
   }
 `
 
