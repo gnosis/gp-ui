@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { BATCH_TIME } from '@gnosis.pm/dex-js'
 
 import { Trade } from 'api/exchange/ExchangeApi'
-import { web3 } from 'api'
+import { web3 } from 'api/gpV1'
 
 import { getTradesAndTradeReversions } from 'services'
 

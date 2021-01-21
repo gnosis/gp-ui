@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import BN from 'bn.js'
 import { DEFAULT_PRECISION } from '@gnosis.pm/dex-js'
 
-import { walletApi } from 'api'
+import { walletApi } from 'api/gpV1'
 
 import useSafeState from './useSafeState'
 import { useWalletConnection } from './useWalletConnection'

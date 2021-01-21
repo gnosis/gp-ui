@@ -1,4 +1,4 @@
-import { walletApi } from 'api'
+import { walletApi } from 'api/gpV1'
 import { toast } from 'toastify'
 import { WalletInfo } from 'api/wallet/WalletApi'
 

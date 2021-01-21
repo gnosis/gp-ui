@@ -180,18 +180,3 @@ export function createTcrApi(web3: Web3): TcrApi | undefined {
   window['tcrApi'] = tcrApi
   return tcrApi
 }
-
-// Build APIs
-export const web3: Web3 = createWeb3Api()
-export const walletApi: WalletApi = createWalletApi(web3)
-
-const injectedDependencies = { web3 }
-
-export const erc20Api: Erc20Api = createErc20Api(injectedDependencies)
-export const wethApi: WethApi = createWethApi(injectedDependencies)
-export const depositApi: DepositApi = createDepositApi(erc20Api, injectedDependencies)
-export const exchangeApi: ExchangeApi = createExchangeApi(erc20Api, injectedDependencies)
-export const tokenListApi: TokenList = createTokenListApi()
-export const theGraphApi: TheGraphApi = createTheGraphApi()
-export const dexPriceEstimatorApi: DexPriceEstimatorApi = createDexPriceEstimatorApi()
-export const tcrApi: TcrApi | undefined = createTcrApi(web3)

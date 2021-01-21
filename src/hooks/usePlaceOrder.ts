@@ -5,7 +5,7 @@ import { toast } from 'toastify'
 import { MAX_BATCH_ID, toPlaceValidFromOrdersParams } from '@gnosis.pm/dex-js'
 
 import { TokenDetails, Receipt, TxOptionalParams } from 'types'
-import { exchangeApi } from 'api'
+import { exchangeApi } from 'api/gpV1'
 import { PlaceOrderParams as ExchangeApiPlaceOrderParams } from 'api/exchange/ExchangeApi'
 import { logDebug, formatDistanceStrict, formatDateLocaleShortTime, batchIdToDate } from 'utils'
 import { txOptionalParams as defaultTxOptionalParams } from 'utils/transaction'

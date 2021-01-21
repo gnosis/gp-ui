@@ -12,7 +12,7 @@ const useIsWalletConnected = (): {
   useEffect(() => {
     import(
       /* webpackChunkName: "API_chunk"*/
-      'api'
+      'api/gpV1'
     )
       .then(({ walletApi }) => walletApi.isConnected())
       .then((isConnected) => {

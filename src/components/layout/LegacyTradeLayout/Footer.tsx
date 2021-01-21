@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
 import { MEDIA } from 'const'
-import { depositApi } from 'api'
+import { depositApi } from 'api/gpV1'
 
 // Assets
 import verified from 'assets/img/verified.svg'

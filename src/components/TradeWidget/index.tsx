@@ -28,7 +28,7 @@ import {
 
 // api
 import { PendingTxObj } from 'api/exchange/ExchangeApi'
-import { tokenListApi } from 'api'
+import { tokenListApi } from 'api/gpV1'
 
 // components
 import OrdersWidget from 'components/OrdersWidget'

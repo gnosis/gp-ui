@@ -10,7 +10,7 @@ import { formatSmart, formatAmountFull, logDebug, getToken, safeFilledToken } fr
 import { composeOptionalParams } from 'utils/transaction'
 
 // Api
-import { depositApi, erc20Api } from 'api'
+import { depositApi, erc20Api } from 'api/gpV1'
 
 // Hooks and reducers
 import { useWalletConnection } from 'hooks/useWalletConnection'
