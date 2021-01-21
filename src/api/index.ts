@@ -180,3 +180,6 @@ export function createTcrApi(web3: Web3): TcrApi | undefined {
   window['tcrApi'] = tcrApi
   return tcrApi
 }
+
+export const web3 = createWeb3Api()
+export const walletApi = createWalletApi(web3)
