@@ -6,22 +6,34 @@ import {
   createTcrApi,
   createTheGraphApi,
   createTokenListApi,
-  createWalletApi,
-  createWeb3Api,
   createWethApi,
+  walletApi,
+  web3,
 } from 'api'
 
 // Build APIs
-export const web3 = createWeb3Api()
-export const walletApi = createWalletApi(web3)
 
 const injectedDependencies = { web3 }
 
-export const erc20Api = createErc20Api(injectedDependencies)
-export const wethApi = createWethApi(injectedDependencies)
-export const depositApi = createDepositApi(erc20Api, injectedDependencies)
-export const exchangeApi = createExchangeApi(erc20Api, injectedDependencies)
-export const tokenListApi = createTokenListApi()
-export const theGraphApi = createTheGraphApi()
-export const dexPriceEstimatorApi = createDexPriceEstimatorApi()
-export const tcrApi = createTcrApi(web3)
+const erc20Api = createErc20Api(injectedDependencies)
+const wethApi = createWethApi(injectedDependencies)
+const depositApi = createDepositApi(erc20Api, injectedDependencies)
+const exchangeApi = createExchangeApi(erc20Api, injectedDependencies)
+const tokenListApi = createTokenListApi()
+const theGraphApi = createTheGraphApi()
+const dexPriceEstimatorApi = createDexPriceEstimatorApi()
+const tcrApi = createTcrApi(web3)
+
+export {
+  erc20Api,
+  wethApi,
+  depositApi,
+  exchangeApi,
+  tokenListApi,
+  theGraphApi,
+  dexPriceEstimatorApi,
+  tcrApi,
+  // re-exporting to have all api instances of the app accessible from a single module
+  web3,
+  walletApi,
+}
