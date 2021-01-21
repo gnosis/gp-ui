@@ -28,7 +28,7 @@ BasicTable.args = {
       <th>Year</th>
     </tr>
   ),
-  children: (
+  body: (
     <>
       <tr>
         <td>DutchX</td>
@@ -88,18 +88,22 @@ CustomTableStyle.args = {
       <th>Status</th>
     </tr>
   ),
-  children: [...Array(10).keys()].map((i) => (
-    <tr key={i}>
-      <td className={i % 2 === 1 ? 'long' : 'short'}>{i % 2 === 1 ? 'Buy' : 'Sell'}</td>
-      <td>01-10-2020 17:45:{i}2</td>
-      <td>WETH/USDT</td>
-      <td>370.96</td>
-      <td>
-        {i}.0{i}
-      </td>
-      <td>{i}</td>
-      <td>Never</td>
-      <td className="action">Active</td>
-    </tr>
-  )),
+  body: (
+    <>
+      {[...Array(10).keys()].map((i) => (
+        <tr key={i}>
+          <td className={i % 2 === 1 ? 'long' : 'short'}>{i % 2 === 1 ? 'Buy' : 'Sell'}</td>
+          <td>01-10-2020 17:45:{i}2</td>
+          <td>WETH/USDT</td>
+          <td>370.96</td>
+          <td>
+            {i}.0{i}
+          </td>
+          <td>{i}</td>
+          <td>Never</td>
+          <td className="action">Active</td>
+        </tr>
+      ))}
+    </>
+  ),
 }

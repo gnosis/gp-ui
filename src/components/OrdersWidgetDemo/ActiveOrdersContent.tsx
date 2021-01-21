@@ -46,25 +46,27 @@ const HEADER = (
   </tr>
 )
 
+const BODY = (
+  <>
+    {[...Array(30).keys()].map((i) => (
+      <tr key={i}>
+        <td className={i % 2 === 1 ? 'long' : 'short'}>{i % 2 === 1 ? 'Buy' : 'Sell'}</td>
+        <td>01-10-2020 17:45:{i}2</td>
+        <td>WETH/USDT</td>
+        <td>370.96</td>
+        <td>
+          {i}.0{i}
+        </td>
+        <td>{i}</td>
+        <td>Never</td>
+        <td className="action">
+          Active <CancelledOrderButton>✕</CancelledOrderButton>
+        </td>
+      </tr>
+    ))}
+  </>
+)
+
 export const ActiveOrdersContent: React.FC = () => {
-  return (
-    <Table header={HEADER}>
-      {[...Array(30).keys()].map((i) => (
-        <tr key={i}>
-          <td className={i % 2 === 1 ? 'long' : 'short'}>{i % 2 === 1 ? 'Buy' : 'Sell'}</td>
-          <td>01-10-2020 17:45:{i}2</td>
-          <td>WETH/USDT</td>
-          <td>370.96</td>
-          <td>
-            {i}.0{i}
-          </td>
-          <td>{i}</td>
-          <td>Never</td>
-          <td className="action">
-            Active <CancelledOrderButton>✕</CancelledOrderButton>
-          </td>
-        </tr>
-      ))}
-    </Table>
-  )
+  return <Table header={HEADER} body={BODY} />
 }

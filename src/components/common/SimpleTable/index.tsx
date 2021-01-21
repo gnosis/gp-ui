@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
 const Wrapper = styled.table<{ $numColumns?: number }>`
@@ -94,15 +94,16 @@ const Wrapper = styled.table<{ $numColumns?: number }>`
   }
 `
 
-export type Props = PropsWithChildren<{
+export type Props = {
   header: JSX.Element
+  body: JSX.Element
   className?: string
   numColumns?: number
-}>
+}
 
-export const SimpleTable: React.FC<Props> = ({ header, children, className, numColumns }) => (
+export const SimpleTable = ({ header, body, className, numColumns }: Props): JSX.Element => (
   <Wrapper $numColumns={numColumns} className={className}>
     <thead>{header}</thead>
-    <tbody>{children}</tbody>
+    <tbody>{body}</tbody>
   </Wrapper>
 )
