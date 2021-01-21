@@ -5,11 +5,12 @@ const Wrapper = styled.table<{ $numColumns?: number }>`
   font-size: var(--font-size-default);
   background: var(--color-primary);
 
+  height: 100%;
+  width: 100%;
+
   margin: 0;
-  height: calc(100% - 8.8rem);
   padding: 0;
   box-sizing: border-box;
-  width: 100%;
   border-spacing: 0;
   display: inline-grid;
   grid-template-areas:
