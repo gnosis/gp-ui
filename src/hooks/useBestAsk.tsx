@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import BigNumber from 'bignumber.js'
 import useSafeState from './useSafeState'
-import { dexPriceEstimatorApi } from 'api/gpV1'
+import { dexPriceEstimatorApi } from 'apps/gp-v1/api'
 
 export interface BestAskParams {
   networkId: number

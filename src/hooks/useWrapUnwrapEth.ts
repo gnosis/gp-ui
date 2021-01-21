@@ -1,6 +1,6 @@
 import { Receipt, TxOptionalParams } from 'types'
 import { assert } from '@gnosis.pm/dex-js'
-import { wethApi } from 'api/gpV1'
+import { wethApi } from 'apps/gp-v1/api'
 import { useWalletConnection } from './useWalletConnection'
 import useSafeState from './useSafeState'
 import { WrapUnwrapParams } from 'api/weth/WethApi'

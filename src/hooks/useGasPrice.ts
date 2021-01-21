@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import useSafeState from './useSafeState'
-import { walletApi } from 'api/gpV1'
+import { walletApi } from 'apps/gp-v1/api'
 import { GasPriceLevel } from 'api/gasStation'
 
 interface GasPriceParams {

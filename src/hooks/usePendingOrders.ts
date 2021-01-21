@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react'
 // API
-import { web3 } from 'api/gpV1'
+import { web3 } from 'apps/gp-v1/api'
 // Hooks
 import useGlobalState from './useGlobalState'
 import useSafeState from './useSafeState'
