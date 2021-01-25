@@ -33,6 +33,41 @@ export interface FeeInformation {
   feeRatio: number
 }
 
+export type OrderKind = 'sell' | 'buy'
+
+// Raw API response
+export type RawOrder = {
+  creationDate: string
+  owner: string
+  uid: string
+  executedBuyAmount: string
+  executedSellAmount: string
+  executedFeeAmount: string
+  invalidated: boolean
+  sellToken: string
+  buyToken: string
+  sellAmount: string
+  buyAmount: string
+  validTo: number
+  appData: number
+  feeAmount: string
+  kind: OrderKind
+  partiallyFillable: boolean
+  signature: string
+}
+
+type WithNetworkId = { networkId: Network }
+
+export type GetOrderParams = WithNetworkId & {
+  orderId: string
+}
+
+export type GetOrdersParams = WithNetworkId & {
+  owner?: string
+  sellToken?: string
+  buyToken?: string
+}
+
 function _getApiBaseUrl(networkId: Network): string {
   const baseUrl = API_BASE_URL[networkId]
 
@@ -41,6 +76,22 @@ function _getApiBaseUrl(networkId: Network): string {
   } else {
     return baseUrl
   }
+}
+
+/**
+ * Given a list of (key,value), return a URL query string prepended by `?`
+ * Filters out values that are undefined. Empty string is accepted
+ *
+ * @param params List of key value pairs
+ */
+function buildQueryString(params: [key: string, value?: string][]): string {
+  return (
+    '?' +
+    params
+      .filter(([, value]) => value !== undefined)
+      .map(([key, value]) => `${key}=${value}`)
+      .join('&')
+  )
 }
 
 export function getOrderLink(networkId: Network, orderId: OrderID): string {
@@ -161,4 +212,58 @@ export async function getFeeQuote(networkId: Network, tokenAddress: string): Pro
   } else {
     return response.json()
   }
+}
+
+/**
+ * Gets a single order by id
+ */
+export async function getOrder(params: GetOrderParams): Promise<RawOrder> {
+  const { networkId, orderId } = params
+
+  console.log(`[getOrder] Fetching order id '${orderId}' on network ${networkId}`)
+
+  const queryString = `/orders/${orderId}`
+
+  const response = await _get(networkId, queryString)
+
+  if (!response.ok) {
+    throw new Error(`Request failed: [${response.status}] ${await response.text()}`)
+  }
+
+  const order: RawOrder = await response.json()
+
+  return order
+}
+
+/**
+ * Gets a list of orders
+ * Optional filters:
+ *  - owner: address
+ *  - sellToken: address
+ *  - buyToken: address
+ */
+export async function getOrders(params: GetOrdersParams): Promise<RawOrder[]> {
+  const { networkId, owner, sellToken, buyToken } = params
+
+  console.log(
+    `[getOrders] Fetching orders on network ${networkId} with filters: owner=${owner} sellToken=${sellToken} buyToken=${buyToken}`,
+  )
+
+  const queryString =
+    '/orders/' +
+    buildQueryString([
+      ['owner', owner],
+      ['sellToken', sellToken],
+      ['buyToken', buyToken],
+    ])
+
+  const response = await _get(networkId, queryString)
+
+  if (!response.ok) {
+    throw new Error(`Request failed: [${response.status}] ${response.body}`)
+  }
+
+  const orders: RawOrder[] = await response.json()
+
+  return orders
 }
