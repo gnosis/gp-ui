@@ -1,5 +1,7 @@
 import { Network } from 'types'
+
 import { OrderCreation } from './signatures'
+import { FeeInformation, GetOrderParams, GetOrdersParams, OrderID, OrderPostError, RawOrder } from './types'
 
 /**
  * See Swagger documentation:
@@ -20,53 +22,6 @@ const DEFAULT_HEADERS: Headers = new Headers({
  * Unique identifier for the order, calculated by keccak256(orderDigest, ownerAddress, validTo),
    where orderDigest = keccak256(orderStruct). bytes32.
  */
-export type OrderID = string
-
-export interface OrderPostError {
-  errorType: 'MissingOrderData' | 'InvalidSignature' | 'DuplicateOrder' | 'InsufficientFunds'
-  description: string
-}
-
-export interface FeeInformation {
-  expirationDate: string
-  minimalFee: string
-  feeRatio: number
-}
-
-export type OrderKind = 'sell' | 'buy'
-
-// Raw API response
-export type RawOrder = {
-  creationDate: string
-  owner: string
-  uid: string
-  executedBuyAmount: string
-  executedSellAmount: string
-  executedFeeAmount: string
-  invalidated: boolean
-  sellToken: string
-  buyToken: string
-  sellAmount: string
-  buyAmount: string
-  validTo: number
-  appData: number
-  feeAmount: string
-  kind: OrderKind
-  partiallyFillable: boolean
-  signature: string
-}
-
-type WithNetworkId = { networkId: Network }
-
-export type GetOrderParams = WithNetworkId & {
-  orderId: string
-}
-
-export type GetOrdersParams = WithNetworkId & {
-  owner?: string
-  sellToken?: string
-  buyToken?: string
-}
 
 function _getApiBaseUrl(networkId: Network): string {
   const baseUrl = API_BASE_URL[networkId]

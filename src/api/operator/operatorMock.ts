@@ -1,4 +1,4 @@
-import { GetOrderParams, GetOrdersParams, RawOrder } from './operatorApi'
+import { GetOrderParams, GetOrdersParams, RawOrder } from './types'
 
 export async function getTrades(): Promise<string[]> {
   return ['trade1', 'trade2', 'trade3']
