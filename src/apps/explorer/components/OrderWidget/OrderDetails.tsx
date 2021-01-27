@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
@@ -55,6 +55,9 @@ const Table = styled(SimpleTable)`
   }
 `
 
+// TODO: use tooltip component once we have tooltips
+const questionMark = <FontAwesomeIcon icon={faQuestionCircle} />
+
 // TODO: either use a RichOrder object or transform it here
 // TODO: for that we'll need token info (decimals, symbol)
 export type Props = { order: RawOrder }
@@ -62,8 +65,6 @@ export type Props = { order: RawOrder }
 export function OrderDetails(props: Props): JSX.Element {
   const { order } = props
   const { uid } = order
-
-  const questionMark = useMemo(() => <FontAwesomeIcon icon={faQuestionCircle} />, [])
 
   return (
     <Table
