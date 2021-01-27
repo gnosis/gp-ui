@@ -7,6 +7,7 @@ import { RawOrder } from 'api/operator'
 
 import { SimpleTable } from 'components/common/SimpleTable'
 
+// TODO: move to theme AAAAND pick color for white variant
 const COLUMN_COLOR = '#252535'
 
 const Table = styled(SimpleTable)`
