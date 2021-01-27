@@ -1,9 +1,5 @@
 import { GetOrderParams, GetOrdersParams, RawOrder } from './types'
 
-export async function getTrades(): Promise<string[]> {
-  return ['trade1', 'trade2', 'trade3']
-}
-
 export async function getOrder(params: GetOrderParams): Promise<RawOrder> {
   const { orderId } = params
 
