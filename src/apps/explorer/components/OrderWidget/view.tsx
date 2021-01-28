@@ -27,9 +27,11 @@ export const OrderWidgetView: React.FC<Props> = (props) => {
     <Wrapper>
       <h2>Order details</h2>
       {/* TODO: create common loading indicator */}
-      {isLoading && <FontAwesomeIcon icon={faSpinner} />}
-      {order && !isLoading ? <OrderDetails order={order} /> : <p>Order not found</p>}
+      {isLoading && <FontAwesomeIcon icon={faSpinner} spin size="5x" />}
+      {order && !isLoading && <OrderDetails order={order} />}
+      {!order && !isLoading && <p>Order not found</p>}
       <h2>Order fills</h2>
+      {/* TODO: implement fills component */}
       <p>No fills</p>
       {/* TODO: do a better error display. Toast notification maybe? */}
       {error && <p>{error}</p>}
