@@ -2,7 +2,7 @@ import * as realApi from './operatorApi'
 import * as mockApi from './operatorMock'
 export * from './types'
 
-const useMock = process.env.MOCK_OPERATOR
+const useMock = process.env.MOCK_OPERATOR === 'true'
 
 // Re-exporting the result, mocked or not.
 // Unfortunately, did not find a way to export
