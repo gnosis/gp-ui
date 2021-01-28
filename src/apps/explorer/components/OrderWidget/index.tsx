@@ -10,6 +10,7 @@ export const OrderWidget: React.FC = () => {
   const [order, setOrder] = useState<RawOrder | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
+  // TODO: load fills from a hook
 
   const { orderId } = useParams<{ orderId: string }>()
 
