@@ -156,7 +156,7 @@ export async function getFeeQuote(networkId: Network, tokenAddress: string): Pro
 /**
  * Gets a single order by id
  */
-export async function getOrder(params: GetOrderParams): Promise<RawOrder> {
+export async function getOrder(params: GetOrderParams): Promise<RawOrder | null> {
   const { networkId, orderId } = params
 
   console.log(`[getOrder] Fetching order id '${orderId}' on network ${networkId}`)
@@ -174,6 +174,10 @@ export async function getOrder(params: GetOrderParams): Promise<RawOrder> {
   }
 
   if (!response.ok) {
+    // 404 is not a hard error, return null instead
+    if (response.status === 404) {
+      return null
+    }
     throw new Error(`Request failed: [${response.status}] ${await response.text()}`)
   }
 
