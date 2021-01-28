@@ -163,15 +163,26 @@ export async function getOrder(params: GetOrderParams): Promise<RawOrder> {
 
   const queryString = `/orders/${orderId}`
 
-  const response = await _get(networkId, queryString)
+  let response
+
+  try {
+    response = await _get(networkId, queryString)
+  } catch (e) {
+    const msg = `Failed to fetch ${queryString}`
+    console.error(msg, e.message)
+    throw new Error(msg)
+  }
 
   if (!response.ok) {
     throw new Error(`Request failed: [${response.status}] ${await response.text()}`)
   }
 
-  const order: RawOrder = await response.json()
-
-  return order
+  try {
+    return response.json()
+  } catch (e) {
+    console.error(`Response does not have valid JSON`, e.message)
+    throw new Error(`Failed to parse API response`)
+  }
 }
 
 /**
@@ -201,13 +212,24 @@ export async function getOrders(params: GetOrdersParams): Promise<RawOrder[]> {
 
   const queryString = '/orders/?' + searchString
 
-  const response = await _get(networkId, queryString)
+  let response
+
+  try {
+    response = await _get(networkId, queryString)
+  } catch (e) {
+    const msg = `Failed to fetch ${queryString}`
+    console.error(msg, e.message)
+    throw new Error(msg)
+  }
 
   if (!response.ok) {
     throw new Error(`Request failed: [${response.status}] ${response.body}`)
   }
 
-  const orders: RawOrder[] = await response.json()
-
-  return orders
+  try {
+    return response.json()
+  } catch (e) {
+    console.error(`Response does not have valid JSON`, e.message)
+    throw new Error(`Failed to parse API response`)
+  }
 }
