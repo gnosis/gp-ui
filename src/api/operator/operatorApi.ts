@@ -33,22 +33,6 @@ function _getApiBaseUrl(networkId: Network): string {
   }
 }
 
-/**
- * Given a list of (key,value), return a URL query string prepended by `?`
- * Filters out values that are undefined. Empty string is accepted
- *
- * @param params List of key value pairs
- */
-function buildQueryString(params: [key: string, value?: string][]): string {
-  return (
-    '?' +
-    params
-      .filter(([, value]) => value !== undefined)
-      .map(([key, value]) => `${key}=${value}`)
-      .join('&')
-  )
-}
-
 export function getOrderLink(networkId: Network, orderId: OrderID): string {
   const baseUrl = _getApiBaseUrl(networkId)
 
@@ -135,7 +119,7 @@ export async function postSignedOrder(params: { networkId: Network; order: Order
   // Call API
   const response = await _post(networkId, `/orders`, order)
 
-  // Handle respose
+  // Handle response
   if (!response.ok) {
     // Raise an exception
     const errorMessage = await _getErrorForUnsuccessfulPostOrder(response)
@@ -198,19 +182,24 @@ export async function getOrder(params: GetOrderParams): Promise<RawOrder> {
  *  - buyToken: address
  */
 export async function getOrders(params: GetOrdersParams): Promise<RawOrder[]> {
-  const { networkId, owner, sellToken, buyToken } = params
+  const { networkId, ...searchParams } = params
+  const { owner, sellToken, buyToken } = searchParams
 
   console.log(
     `[getOrders] Fetching orders on network ${networkId} with filters: owner=${owner} sellToken=${sellToken} buyToken=${buyToken}`,
   )
 
-  const queryString =
-    '/orders/' +
-    buildQueryString([
-      ['owner', owner],
-      ['sellToken', sellToken],
-      ['buyToken', buyToken],
-    ])
+  const searchString = new URLSearchParams(
+    Object.keys(searchParams).reduce((acc, key) => {
+      // Pick keys that have values non-falsy
+      if (searchParams[key]) {
+        acc[key] = encodeURIComponent(searchParams[key])
+      }
+      return acc
+    }, {}),
+  ).toString()
+
+  const queryString = '/orders/?' + searchString
 
   const response = await _get(networkId, queryString)
 
