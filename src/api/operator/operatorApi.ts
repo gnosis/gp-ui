@@ -1,5 +1,7 @@
 import { Network } from 'types'
 
+import { buildSearchString } from 'utils/url'
+
 import { OrderCreation } from './signatures'
 import { FeeInformation, GetOrderParams, GetOrdersParams, OrderID, OrderPostError, RawOrder } from './types'
 
@@ -187,20 +189,6 @@ export async function getOrder(params: GetOrderParams): Promise<RawOrder | null>
     console.error(`Response does not have valid JSON`, e.message)
     throw new Error(`Failed to parse API response`)
   }
-}
-
-function buildSearchString(params: Record<string, string | undefined>): string {
-  const filteredParams = Object.keys(params).reduce((acc, key) => {
-    // Pick keys that have values non-falsy
-    if (params[key]) {
-      acc[key] = encodeURIComponent(params[key] as string)
-    }
-    return acc
-  }, {})
-
-  const searchObj = new URLSearchParams(filteredParams)
-
-  return '?' + searchObj.toString()
 }
 
 /**
