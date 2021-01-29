@@ -189,6 +189,20 @@ export async function getOrder(params: GetOrderParams): Promise<RawOrder | null>
   }
 }
 
+function buildSearchString(params: Record<string, string | undefined>): string {
+  const filteredParams = Object.keys(params).reduce((acc, key) => {
+    // Pick keys that have values non-falsy
+    if (params[key]) {
+      acc[key] = encodeURIComponent(params[key] as string)
+    }
+    return acc
+  }, {})
+
+  const searchObj = new URLSearchParams(filteredParams)
+
+  return '?' + searchObj.toString()
+}
+
 /**
  * Gets a list of orders
  * Optional filters:
@@ -204,17 +218,9 @@ export async function getOrders(params: GetOrdersParams): Promise<RawOrder[]> {
     `[getOrders] Fetching orders on network ${networkId} with filters: owner=${owner} sellToken=${sellToken} buyToken=${buyToken}`,
   )
 
-  const searchString = new URLSearchParams(
-    Object.keys(searchParams).reduce((acc, key) => {
-      // Pick keys that have values non-falsy
-      if (searchParams[key]) {
-        acc[key] = encodeURIComponent(searchParams[key])
-      }
-      return acc
-    }, {}),
-  ).toString()
+  const searchString = buildSearchString({ ...searchParams })
 
-  const queryString = '/orders/?' + searchString
+  const queryString = '/orders/' + searchString
 
   let response
 
