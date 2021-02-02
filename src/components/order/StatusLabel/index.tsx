@@ -22,26 +22,21 @@ const Wrapper = styled.div<Props>`
   }
 
   ${({ theme, status }): string => {
-    // TODO: move all colors to theme
     let background, color
 
     switch (status) {
       case 'expired':
-        color = '#DB843A'
-        background = 'rgba(219, 132, 58, 0.1)'
+        color = theme.labelTextExpired
+        background = theme.labelBgExpired
         break
       case 'filled':
       case 'partially filled':
-        color = '#41C29B'
-        background = 'rgba(0, 216, 151, 0.1)'
+        color = theme.labelTextFilled
+        background = theme.labelBgFilled
         break
       case 'open':
-        // light theme
-        // color = '#77838F'
-        // background = 'rgba(119, 131, 143, 0.1)'
-        // dark theme
-        color = '#FFFFFF'
-        background = 'rgba(151, 151, 184, 0.3)'
+        color = theme.labelTextOpen
+        background = theme.labelBgOpen
         break
     }
     return `
