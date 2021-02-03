@@ -3,10 +3,9 @@ import BigNumber from 'bignumber.js'
 
 import { calculatePrice, invertPrice } from '@gnosis.pm/dex-js'
 
-import { RawOrder } from './types'
 import { FILLED_ORDER_EPSILON, ONE_BIG_NUMBER } from 'const'
 
-export type OrderStatus = 'open' | 'filled' | 'expired' | 'partially filled'
+import { OrderStatus, RawOrder } from './types'
 
 function isOrderFilled(order: RawOrder): boolean {
   let amount, executedAmount
