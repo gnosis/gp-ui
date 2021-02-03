@@ -49,3 +49,24 @@ export function getOrderStatus(order: RawOrder): OrderStatus {
     return 'open'
   }
 }
+
+/**
+ * Get order filled amount, both as raw amount (in atoms) and as percentage (from 0 to 1)
+ *
+ * @param order The order
+ */
+export function getOrderFilledAmount(order: RawOrder): { amount: BigNumber; percentage: BigNumber } {
+  let executedAmount, totalAmount
+
+  if (order.kind === 'buy') {
+    executedAmount = new BigNumber(order.executedBuyAmount)
+    totalAmount = new BigNumber(order.buyAmount)
+  } else {
+    executedAmount = new BigNumber(order.executedSellAmount).minus(order.executedFeeAmount)
+    totalAmount = new BigNumber(order.sellAmount)
+  }
+
+  const percentage = executedAmount.isZero() ? executedAmount : executedAmount.div(totalAmount)
+
+  return { amount: executedAmount, percentage }
+}
