@@ -1,10 +1,10 @@
 // Util functions that only pertain to/deal with operator API related stuff
-
 import BigNumber from 'bignumber.js'
 
-import { FILLED_ORDER_EPSILON, ONE_BIG_NUMBER } from 'const'
+import { calculatePrice, invertPrice } from '@gnosis.pm/dex-js'
 
 import { RawOrder } from './types'
+import { FILLED_ORDER_EPSILON, ONE_BIG_NUMBER } from 'const'
 
 export type OrderStatus = 'open' | 'filled' | 'expired' | 'partially filled'
 
@@ -84,4 +84,33 @@ export function getOrderExecutedAmounts(
     executedBuyAmount: new BigNumber(order.executedBuyAmount),
     executedSellAmount: new BigNumber(order.executedSellAmount).minus(order.executedFeeAmount),
   }
+}
+
+type GetOrderLimitPriceParams = {
+  order: RawOrder
+  buyTokenDecimals: number
+  sellTokenDecimals: number
+  inverted?: boolean
+}
+
+/**
+ * Calculates order limit price base on order and buy/sell token decimals
+ * Result is given in sell token units
+ *
+ * @param order The order
+ * @param buyTokenDecimals The buy token decimals
+ * @param sellTokenDecimals The sell token decimals
+ */
+export function getOrderLimitPrice({
+  order,
+  buyTokenDecimals,
+  sellTokenDecimals,
+  inverted,
+}: GetOrderLimitPriceParams): BigNumber {
+  const price = calculatePrice({
+    numerator: { amount: order.buyAmount, decimals: buyTokenDecimals },
+    denominator: { amount: order.sellAmount, decimals: sellTokenDecimals },
+  })
+
+  return inverted ? invertPrice(price) : price
 }
