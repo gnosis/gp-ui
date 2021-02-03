@@ -86,7 +86,7 @@ export function getOrderExecutedAmounts(
   }
 }
 
-type GetOrderLimitPriceParams = {
+export type GetOrderPriceParams = {
   order: RawOrder
   buyTokenDecimals: number
   sellTokenDecimals: number
@@ -100,16 +100,42 @@ type GetOrderLimitPriceParams = {
  * @param order The order
  * @param buyTokenDecimals The buy token decimals
  * @param sellTokenDecimals The sell token decimals
+ * @param inverted Optional. Whether to invert the price (1/price).
  */
 export function getOrderLimitPrice({
   order,
   buyTokenDecimals,
   sellTokenDecimals,
   inverted,
-}: GetOrderLimitPriceParams): BigNumber {
+}: GetOrderPriceParams): BigNumber {
   const price = calculatePrice({
     numerator: { amount: order.buyAmount, decimals: buyTokenDecimals },
     denominator: { amount: order.sellAmount, decimals: sellTokenDecimals },
+  })
+
+  return inverted ? invertPrice(price) : price
+}
+
+/**
+ * Calculates order executed price base on order and buy/sell token decimals
+ * Result is given in sell token units
+ *
+ * @param order The order
+ * @param buyTokenDecimals The buy token decimals
+ * @param sellTokenDecimals The sell token decimals
+ * @param inverted Optional. Whether to invert the price (1/price).
+ */
+export function getOrderExecutedPrice({
+  order,
+  buyTokenDecimals,
+  sellTokenDecimals,
+  inverted,
+}: GetOrderPriceParams): BigNumber {
+  const { executedBuyAmount, executedSellAmount } = getOrderExecutedAmounts(order)
+
+  const price = calculatePrice({
+    numerator: { amount: executedBuyAmount, decimals: buyTokenDecimals },
+    denominator: { amount: executedSellAmount, decimals: sellTokenDecimals },
   })
 
   return inverted ? invertPrice(price) : price
