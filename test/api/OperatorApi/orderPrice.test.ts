@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 
-import { ONE_BIG_NUMBER, ONE_HUNDRED_BIG_NUMBER, TEN_BIG_NUMBER } from 'const'
+import { ONE_BIG_NUMBER, ONE_HUNDRED_BIG_NUMBER, TEN_BIG_NUMBER, ZERO_BIG_NUMBER } from 'const'
 
 import { RawOrder } from 'api/operator'
 import { getOrderExecutedPrice, getOrderLimitPrice, GetOrderPriceParams } from 'api/operator/utils'
@@ -21,6 +21,23 @@ function _assertOrderPrice(order: RawOrder, getPriceFn: (params: GetOrderPricePa
   })
   test('Inverted price', () => {
     expect(getPriceFn({ order, buyTokenDecimals: 2, sellTokenDecimals: 2, inverted: true })).toEqual(ZERO_DOT_ONE)
+  })
+}
+
+function _assertOrderPriceWithoutFills(_order: RawOrder): void {
+  const order = {
+    ..._order,
+    executedBuyAmount: '0',
+    executedSellAmount: '0',
+    executedFeeAmount: '0',
+  }
+  test('Regular', () => {
+    expect(getOrderExecutedPrice({ order, buyTokenDecimals: 2, sellTokenDecimals: 2 })).toEqual(ZERO_BIG_NUMBER)
+  })
+  test('Inverted price', () => {
+    expect(getOrderExecutedPrice({ order, buyTokenDecimals: 2, sellTokenDecimals: 2, inverted: true })).toEqual(
+      ZERO_BIG_NUMBER,
+    )
   })
 }
 
@@ -48,7 +65,12 @@ describe('Executed price', () => {
       executedFeeAmount: '10',
     }
 
-    _assertOrderPrice(order, getOrderExecutedPrice)
+    describe('With fills', () => {
+      _assertOrderPrice(order, getOrderExecutedPrice)
+    })
+    describe('Without fills', () => {
+      _assertOrderPriceWithoutFills(order)
+    })
   })
 
   describe('Sell order', () => {
@@ -60,6 +82,11 @@ describe('Executed price', () => {
       executedFeeAmount: '10',
     }
 
-    _assertOrderPrice(order, getOrderExecutedPrice)
+    describe('With fills', () => {
+      _assertOrderPrice(order, getOrderExecutedPrice)
+    })
+    describe('Without fills', () => {
+      _assertOrderPriceWithoutFills(order)
+    })
   })
 })
