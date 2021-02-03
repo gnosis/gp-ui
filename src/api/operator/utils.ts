@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js'
 
 import { calculatePrice, invertPrice } from '@gnosis.pm/dex-js'
 
-import { FILLED_ORDER_EPSILON, ONE_BIG_NUMBER } from 'const'
+import { FILLED_ORDER_EPSILON, ONE_BIG_NUMBER, ZERO_BIG_NUMBER } from 'const'
 
 import { OrderStatus, RawOrder } from './types'
 
@@ -131,6 +131,12 @@ export function getOrderExecutedPrice({
   inverted,
 }: GetOrderPriceParams): BigNumber {
   const { executedBuyAmount, executedSellAmount } = getOrderExecutedAmounts(order)
+
+  // Only calculate the price when both values are set
+  // Having only one value > 0 is anyway an invalid state
+  if (executedBuyAmount.isZero() || executedSellAmount.isZero()) {
+    return ZERO_BIG_NUMBER
+  }
 
   const price = calculatePrice({
     numerator: { amount: executedBuyAmount, decimals: buyTokenDecimals },
