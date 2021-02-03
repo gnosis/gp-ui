@@ -9,9 +9,7 @@ import { ORDER } from '../../data'
 
 const ZERO_DOT_ONE = new BigNumber('0.1')
 
-describe('Buy order', () => {
-  const order: RawOrder = { ...ORDER, kind: 'buy', buyAmount: '1000', sellAmount: '100' }
-
+function _assertOrderPrice(order: RawOrder): void {
   test('Buy token decimals == sell token decimals', () => {
     expect(getOrderLimitPrice({ order, buyTokenDecimals: 2, sellTokenDecimals: 2 })).toEqual(TEN_BIG_NUMBER)
   })
@@ -26,23 +24,16 @@ describe('Buy order', () => {
       ZERO_DOT_ONE,
     )
   })
+}
+
+describe('Buy order', () => {
+  const order: RawOrder = { ...ORDER, kind: 'buy', buyAmount: '1000', sellAmount: '100' }
+
+  _assertOrderPrice(order)
 })
 
 describe('Sell order', () => {
   const order: RawOrder = { ...ORDER, kind: 'sell', buyAmount: '1000', sellAmount: '100' }
 
-  test('Buy token decimals == sell token decimals', () => {
-    expect(getOrderLimitPrice({ order, buyTokenDecimals: 2, sellTokenDecimals: 2 })).toEqual(TEN_BIG_NUMBER)
-  })
-  test('Buy token decimals > sell token decimals', () => {
-    expect(getOrderLimitPrice({ order, buyTokenDecimals: 2, sellTokenDecimals: 1 })).toEqual(ONE_BIG_NUMBER)
-  })
-  test('Buy token decimals < sell token decimals', () => {
-    expect(getOrderLimitPrice({ order, buyTokenDecimals: 1, sellTokenDecimals: 2 })).toEqual(ONE_HUNDRED_BIG_NUMBER)
-  })
-  test('Inverted price', () => {
-    expect(getOrderLimitPrice({ order, buyTokenDecimals: 2, sellTokenDecimals: 2, inverted: true })).toEqual(
-      ZERO_DOT_ONE,
-    )
-  })
+  _assertOrderPrice(order)
 })
