@@ -70,3 +70,18 @@ export function getOrderFilledAmount(order: RawOrder): { amount: BigNumber; perc
 
   return { amount: executedAmount, percentage }
 }
+
+/**
+ * Syntactic sugar to get the order's executed amounts as a BigNumber (in atoms)
+ * Mostly because `executedSellAmount` is derived from 2 fields (at time or writing)
+ *
+ * @param order The order
+ */
+export function getOrderExecutedAmounts(
+  order: RawOrder,
+): { executedBuyAmount: BigNumber; executedSellAmount: BigNumber } {
+  return {
+    executedBuyAmount: new BigNumber(order.executedBuyAmount),
+    executedSellAmount: new BigNumber(order.executedSellAmount).minus(order.executedFeeAmount),
+  }
+}
