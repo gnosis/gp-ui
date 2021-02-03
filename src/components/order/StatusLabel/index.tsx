@@ -12,7 +12,7 @@ const Wrapper = styled.div<Props>`
   font-weight: ${({ theme }): string => theme.fontWeightBold};
   text-transform: capitalize;
 
-  border-radius: 4px;
+  border-radius: 0.4rem;
 
   padding: 0.75em;
   display: inline-block;
