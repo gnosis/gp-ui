@@ -65,9 +65,7 @@ export function getOrderFilledAmount(order: RawOrder): { amount: BigNumber; perc
     totalAmount = new BigNumber(order.sellAmount)
   }
 
-  const percentage = executedAmount.isZero() ? executedAmount : executedAmount.div(totalAmount)
-
-  return { amount: executedAmount, percentage }
+  return { amount: executedAmount, percentage: executedAmount.div(totalAmount) }
 }
 
 /**
