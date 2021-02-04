@@ -13,7 +13,7 @@ import { ToastContainer } from 'setupToastify'
 import Console from 'Console'
 import { GlobalModalInstance } from 'components/OuterModal'
 import { LegacyTradeLayout } from 'components/layout'
-import { rootReducer, INITIAL_STATE } from 'reducers-actions'
+import { rootReducer, INITIAL_STATE } from 'apps/gp-v1/state'
 
 // Pages
 const About = React.lazy(
