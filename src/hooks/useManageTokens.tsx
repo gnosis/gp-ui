@@ -9,6 +9,7 @@ import { useDebounce } from './useDebounce'
 import searchIcon from 'assets/img/search.svg'
 import { useBetterAddTokenModal, UseAddTokenModalResult } from './useBetterAddTokenModal'
 import useGlobalState from 'hooks/useGlobalState'
+import { GlobalState } from 'reducers-actions'
 import { updateLocalTokens } from 'reducers-actions/localTokens'
 import { Toggle } from 'components/Toggle'
 
@@ -194,7 +195,7 @@ const ManageTokensContainer: React.FC = () => {
     [tokensShown, setDebouncedSearch],
   )
 
-  const [{ localTokens }, dispatch] = useGlobalState()
+  const [{ localTokens }, dispatch] = useGlobalState<GlobalState>()
 
   const [tokensDisabledState, setDisabledTokens] = useState(localTokens.disabled)
   const disabledTokensRef = useRef<typeof localTokens.disabled>(localTokens.disabled)
