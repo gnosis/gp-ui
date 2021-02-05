@@ -23,7 +23,7 @@ export const saveSingleErc20 = (erc20: TokenErc20, networkId: Network): SaveMult
 // TODO: load initial state from local storage
 export const INITIAL_ERC20_STATE: Erc20State = new Map<string, TokenErc20>()
 
-function buildKey(networkId: Network, address: string): string {
+export function buildErc20Key(networkId: Network, address: string): string {
   return `${networkId}|${address}`
 }
 
@@ -37,7 +37,7 @@ export function reducer(state: Erc20State, action: ReducerActionType): Erc20Stat
 
       erc20s.forEach((erc20) => {
         // add/overwrite details for given key
-        map.set(buildKey(networkId, erc20.address), erc20)
+        map.set(buildErc20Key(networkId, erc20.address), erc20)
       })
 
       return map
