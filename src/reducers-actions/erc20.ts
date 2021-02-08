@@ -36,8 +36,10 @@ export function reducer(state: Erc20State, action: ReducerActionType): Erc20Stat
       const { erc20s, networkId } = action.payload
 
       erc20s.forEach((erc20) => {
-        // add/overwrite details for given key
-        map.set(buildErc20Key(networkId, erc20.address), erc20)
+        const key = buildErc20Key(networkId, erc20.address)
+        const existing = map.get(key) || {}
+        // merge existing erc20 info, if any
+        map.set(key, { ...existing, ...erc20 })
       })
 
       return map
