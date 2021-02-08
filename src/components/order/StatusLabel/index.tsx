@@ -42,7 +42,7 @@ const Wrapper = styled.div<Props>`
   padding: 0.75em;
   display: inline-block;
 
-  ${(...params): string => setStatusColors(...params)}
+  ${({ theme, status }): string => setStatusColors({ theme, status })}
 `
 
 const StyledFAIcon = styled(FontAwesomeIcon)`
