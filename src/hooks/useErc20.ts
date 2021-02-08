@@ -14,10 +14,16 @@ import { web3, erc20Api } from 'apps/explorer/api'
 
 import { ExplorerAppState } from 'apps/explorer/state'
 
-export function useErc20(
-  address?: string,
-  networkId?: Network,
-): { isLoading: boolean; error?: string; value?: TokenErc20 } {
+type Params = {
+  address?: string
+  networkId?: Network
+}
+
+type Return = { isLoading: boolean; error?: string; value?: TokenErc20 }
+
+export function useErc20(params: Params): Return {
+  const { address, networkId } = params
+
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 

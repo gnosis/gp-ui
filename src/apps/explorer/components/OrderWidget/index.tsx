@@ -29,8 +29,8 @@ export const OrderWidget: React.FC = () => {
   }, [orderId])
 
   // TODO: this is just for testing. The hooks will not be here
-  const { value: buyToken } = useErc20(order?.buyToken, 4)
-  const { value: sellToken } = useErc20(order?.sellToken, 4)
+  const { value: buyToken } = useErc20({ address: order?.buyToken, networkId: 4 })
+  const { value: sellToken } = useErc20({ address: order?.sellToken, networkId: 4 })
 
   console.log(`buy token`, buyToken)
   console.log(`sell token`, sellToken)
