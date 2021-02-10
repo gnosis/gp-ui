@@ -132,14 +132,7 @@ export function useMultipleErc20(
     const fetched = await Promise.all(promises)
 
     // Save to global state newly fetched tokens that are not null
-    saveErc20s(
-      fetched.reduce<TokenErc20[]>((acc, erc20) => {
-        if (erc20) {
-          acc.push(erc20 as TokenErc20)
-        }
-        return acc
-      }, []),
-    )
+    saveErc20s(fetched.filter(Boolean) as TokenErc20[])
 
     setIsLoading(false)
     running.current = false
