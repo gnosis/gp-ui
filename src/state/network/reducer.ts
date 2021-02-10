@@ -7,6 +7,7 @@ export function reducer(state: Network | null, action: ReducerActionType): Netwo
   switch (action.type) {
     case 'SET_NETWORK': {
       const { networkId } = action.payload
+      console.log('Set network', networkId)
       return networkId
     }
     default: {
