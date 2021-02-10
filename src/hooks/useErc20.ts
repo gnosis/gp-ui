@@ -116,49 +116,46 @@ export function useMultipleErc20(
   // flow control
   const running = useRef(false)
 
-  const updateErc20s = useCallback(
-    async (toFetch: string[]): Promise<void> => {
-      if (!networkId || toFetch.length === 0) {
-        return
-      }
+  const updateErc20s = useCallback(async (): Promise<void> => {
+    if (!networkId || toFetch.length === 0) {
+      return
+    }
 
-      running.current = true
+    running.current = true
 
-      setIsLoading(true)
-      setErrors({})
+    setIsLoading(true)
+    setErrors({})
 
-      const promises = toFetch.map(async (address) =>
-        _fetchErc20FromNetwork({
-          address,
-          networkId,
-          setError: (msg) => setErrors((curr) => ({ ...curr, [address]: msg })),
-        }),
-      )
+    const promises = toFetch.map(async (address) =>
+      _fetchErc20FromNetwork({
+        address,
+        networkId,
+        setError: (msg) => setErrors((curr) => ({ ...curr, [address]: msg })),
+      }),
+    )
 
-      const fetched = await Promise.all(promises)
+    const fetched = await Promise.all(promises)
 
-      // Save to global state newly fetched tokens that are not null
-      saveErc20s(
-        fetched.reduce<TokenErc20[]>((acc, erc20) => {
-          if (erc20) {
-            acc.push(erc20 as TokenErc20)
-          }
-          return acc
-        }, []),
-      )
+    // Save to global state newly fetched tokens that are not null
+    saveErc20s(
+      fetched.reduce<TokenErc20[]>((acc, erc20) => {
+        if (erc20) {
+          acc.push(erc20 as TokenErc20)
+        }
+        return acc
+      }, []),
+    )
 
-      setIsLoading(false)
-      running.current = false
-    },
-    [networkId, saveErc20s],
-  )
+    setIsLoading(false)
+    running.current = false
+  }, [networkId, saveErc20s, toFetch])
 
   useEffect(() => {
-    // only trigger network query if not yet running and there's anything not found yet
-    if (!running.current && toFetch.length > 0) {
-      updateErc20s(toFetch)
+    // only trigger network query if not yet running
+    if (!running.current) {
+      updateErc20s()
     }
-  }, [updateErc20s, toFetch, saveErc20s])
+  }, [updateErc20s, saveErc20s])
 
   return { isLoading, error: errors, value: erc20s }
 }
