@@ -11,7 +11,7 @@ import { rootReducer, INITIAL_STATE } from 'apps/explorer/state'
 import { GenericLayout } from 'components/layout'
 import { Navigation } from 'components/layout/GenericLayout/Navigation'
 import { Header } from 'components/layout/GenericLayout/Header'
-import { UpdateNetwork } from 'state/network'
+import { NetworkUpdater } from 'state/network'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const Router: typeof BrowserRouter & typeof HashRouter = (window as any).IS_IPFS ? HashRouter : BrowserRouter
@@ -59,7 +59,7 @@ const HEADER = (
 export const Updaters: React.FC = () => {
   return (
     <>
-      <UpdateNetwork />
+      <NetworkUpdater />
     </>
   )
 }
