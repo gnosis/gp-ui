@@ -5,8 +5,8 @@ import { TokenErc20 } from '@gnosis.pm/dex-js'
 import { Network } from 'types'
 
 import {
-  useErc20 as useErc20FromGlobalState,
-  useMultipleErc20s as useMultipleErc20sFromGlobalState,
+  useErc20 as useErc20State,
+  useMultipleErc20s as useMultipleErc20sState,
   useSaveErc20s,
   SingleErc20State,
 } from 'state/erc20'
@@ -53,7 +53,7 @@ export function useErc20(params: UseErc20Params): Return<string, SingleErc20Stat
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 
-  const erc20 = useErc20FromGlobalState({ networkId, address })
+  const erc20 = useErc20State({ networkId, address })
   const saveErc20s = useSaveErc20s(networkId)
 
   const fetchAndUpdateState = useCallback(async (): Promise<void> => {
@@ -103,7 +103,7 @@ export function useMultipleErc20(
   const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
 
-  const erc20s = useMultipleErc20sFromGlobalState({ networkId, addresses })
+  const erc20s = useMultipleErc20sState({ networkId, addresses })
   const saveErc20s = useSaveErc20s(networkId)
 
   // check what on globalState has not been fetched yet
