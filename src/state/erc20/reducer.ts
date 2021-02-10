@@ -1,5 +1,5 @@
-import { buildErc20Key } from '.'
-import { Erc20State, ReducerActionType } from './types'
+import { buildErc20Key, Erc20State } from '.'
+import { ReducerActionType } from './actions'
 
 export function reducer(state: Erc20State, action: ReducerActionType): Erc20State {
   switch (action.type) {
