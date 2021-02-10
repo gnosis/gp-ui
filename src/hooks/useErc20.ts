@@ -35,7 +35,7 @@ async function _fetchErc20FromNetwork(params: {
 
 type UseErc20Params = { address?: string; networkId?: Network }
 
-type Return<V> = { isLoading: boolean; error?: string; value: V }
+type Return<E, V> = { isLoading: boolean; error: E; value: V }
 
 /**
  * Fetches single erc20 token details for given network and address
@@ -47,7 +47,7 @@ type Return<V> = { isLoading: boolean; error?: string; value: V }
  * Returns `isLoading` to indicate whether fetching the value
  * Returns `error` with the error message, if any.
  */
-export function useErc20(params: UseErc20Params): Return<SingleErc20State> {
+export function useErc20(params: UseErc20Params): Return<string, SingleErc20State> {
   const { address, networkId } = params
 
   const [isLoading, setIsLoading] = useState(false)
@@ -98,11 +98,13 @@ export type UseMultipleErc20Params = { addresses: string[]; networkId?: Network 
  * Returns `isLoading` to indicate whether fetching the value
  * Returns `error` with the error messages, if any.
  */
-export function useMultipleErc20(params: UseMultipleErc20Params): Return<Record<string, SingleErc20State>> {
+export function useMultipleErc20(
+  params: UseMultipleErc20Params,
+): Return<Record<string, string>, Record<string, SingleErc20State>> {
   const { addresses, networkId } = params
 
   const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState('')
+  const [errors, setErrors] = useState<Record<string, string>>({})
 
   const getMultipleErc20 = useGetMultipleErc20sFromGlobalState(networkId)
   const saveErc20s = useSaveErc20sToGlobalState(networkId)
@@ -114,7 +116,7 @@ export function useMultipleErc20(params: UseMultipleErc20Params): Return<Record<
   // flow control
   const running = useRef(false)
 
-  const loadFromNetwork = useCallback(
+  const updateErc20s = useCallback(
     async (toFetch: string[]): Promise<void> => {
       if (!networkId || toFetch.length === 0) {
         return
@@ -123,9 +125,15 @@ export function useMultipleErc20(params: UseMultipleErc20Params): Return<Record<
       running.current = true
 
       setIsLoading(true)
-      setError('')
+      setErrors({})
 
-      const promises = toFetch.map(async (address) => _fetchErc20FromNetwork({ address, networkId, setError }))
+      const promises = toFetch.map(async (address) =>
+        _fetchErc20FromNetwork({
+          address,
+          networkId,
+          setError: (msg) => setErrors((curr) => ({ ...curr, [address]: msg })),
+        }),
+      )
 
       const fetched = await Promise.all(promises)
 
@@ -148,10 +156,10 @@ export function useMultipleErc20(params: UseMultipleErc20Params): Return<Record<
   useEffect(() => {
     // only trigger network query if not yet running and there's anything not found yet
     if (!running.current && toFetch.length > 0) {
-      loadFromNetwork(toFetch)
+      updateErc20s(toFetch)
     }
-  }, [loadFromNetwork, toFetch, saveErc20s])
+  }, [updateErc20s, toFetch, saveErc20s])
 
   // Not sure this `useMemo` is necessary
-  return useMemo(() => ({ isLoading, error, value: erc20s }), [erc20s, error, isLoading])
+  return useMemo(() => ({ isLoading, error: errors, value: erc20s }), [erc20s, errors, isLoading])
 }
