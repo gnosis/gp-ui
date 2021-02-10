@@ -80,6 +80,7 @@ export const ExplorerApp: React.FC = () => {
               <Route path="/orders/:orderId" exact component={Order} />
               {/* TODO: Routes will be nicer, this is just a test  */}
               <Route path="/xdai/orders/:orderId" exact component={Order} />
+              <Route path="/rinkeby/orders/:orderId" exact component={Order} />
               <Route component={NotFound} />
             </Switch>
           </React.Suspense>
