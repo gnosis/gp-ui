@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { TokenErc20 } from '@gnosis.pm/dex-js'
 
@@ -11,55 +11,52 @@ import { saveMultipleErc20 } from './actions'
 
 export type SingleErc20State = TokenErc20 | null
 
-/**
- * Syntactic sugar to get erc20 from global state.
- * Returns a function that fetches the TokenErc20 or null for the given address
- *
- * @param networkId The network id
- */
-export const useGetErc20FromGlobalState = <State extends { erc20s: Erc20State }>(
-  networkId?: Network,
-): ((address?: string) => SingleErc20State) => {
-  const [{ erc20s }] = useGlobalState<State>()
-
-  return useCallback(
-    (address?: string): SingleErc20State => {
-      if (!address || !networkId) {
-        return null
-      }
-
-      return erc20s.get(buildErc20Key(networkId, address)) || null
-    },
-    [erc20s, networkId],
-  )
+type UseErc20Params = {
+  address?: string
+  networkId?: Network
 }
 
 /**
- * Syntactic sugar to get erc20s from global state.
- * Returns a function that fetches the a map of address to TokenErc20 or null
- * It'll always include the input token address in the output, even if not found
- *
- * @param networkId The network id
+ * Syntactic sugar to get erc20 from global state
  */
-export const useGetMultipleErc20sFromGlobalState = <State extends { erc20s: Erc20State }>(
-  networkId?: Network,
-): ((addresses: string[]) => Record<string, SingleErc20State>) => {
+export const useErc20 = <State extends { erc20s: Erc20State }>(params: UseErc20Params): SingleErc20State => {
+  const { address, networkId } = params
+
   const [{ erc20s }] = useGlobalState<State>()
 
-  return useCallback(
-    (addresses: string[]): Record<string, SingleErc20State> => {
-      if (!networkId) {
-        // Return map of address => null
-        return addresses.reduce((acc, address) => ({ ...acc, [address]: null }), {})
-      }
+  return useMemo(() => {
+    if (!address || !networkId) {
+      return null
+    }
+    return erc20s.get(buildErc20Key(networkId, address)) || null
+  }, [address, erc20s, networkId])
+}
 
-      return addresses.reduce(
-        (acc, address) => ({ ...acc, [address]: erc20s.get(buildErc20Key(networkId, address)) || null }),
-        {},
-      )
-    },
-    [erc20s, networkId],
-  )
+type UseMultipleErc20Params = {
+  addresses: string[]
+  networkId?: Network
+}
+
+/**
+ * Syntactic sugar to get erc20s from global state
+ */
+export const useMultipleErc20s = <State extends { erc20s: Erc20State }>(
+  params: UseMultipleErc20Params,
+): Record<string, SingleErc20State> => {
+  const { addresses, networkId } = params
+  const [{ erc20s }] = useGlobalState<State>()
+
+  return useMemo(() => {
+    if (!networkId) {
+      // Return map of address => null
+      return addresses.reduce((acc, address) => ({ ...acc, [address]: null }), {})
+    }
+
+    return addresses.reduce(
+      (acc, address) => ({ ...acc, [address]: erc20s.get(buildErc20Key(networkId, address)) || null }),
+      {},
+    )
+  }, [addresses, erc20s, networkId])
 }
 
 /**

@@ -5,8 +5,8 @@ import { TokenErc20 } from '@gnosis.pm/dex-js'
 import { Network } from 'types'
 
 import {
-  useGetErc20FromGlobalState,
-  useGetMultipleErc20sFromGlobalState,
+  useErc20 as useErc20FromGlobalState,
+  useMultipleErc20s as useMultipleErc20sFromGlobalState,
   useSaveErc20sToGlobalState,
   SingleErc20State,
 } from 'state/erc20'
@@ -53,11 +53,8 @@ export function useErc20(params: UseErc20Params): Return<string, SingleErc20Stat
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 
-  const getErc20 = useGetErc20FromGlobalState(networkId)
+  const erc20 = useErc20FromGlobalState({ networkId, address })
   const saveErc20s = useSaveErc20sToGlobalState(networkId)
-
-  // Local copy of globalState
-  const erc20 = useMemo(() => getErc20(address), [address, getErc20])
 
   const fetchAndUpdateState = useCallback(async (): Promise<void> => {
     if (!address || !networkId) {
@@ -106,11 +103,9 @@ export function useMultipleErc20(
   const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
 
-  const getMultipleErc20 = useGetMultipleErc20sFromGlobalState(networkId)
+  const erc20s = useMultipleErc20sFromGlobalState({ networkId, addresses })
   const saveErc20s = useSaveErc20sToGlobalState(networkId)
 
-  // local copy of globalState
-  const erc20s = useMemo(() => getMultipleErc20(addresses), [addresses, getMultipleErc20])
   // check what on globalState has not been fetched yet
   const toFetch = useMemo(() => addresses.filter((address) => !erc20s[address]), [addresses, erc20s])
   // flow control
