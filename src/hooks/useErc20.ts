@@ -15,6 +15,24 @@ import { getErc20Info } from 'services/helpers'
 
 import { web3, erc20Api } from 'apps/explorer/api'
 
+async function _fetchErc20FromNetwork(params: {
+  address: string
+  networkId: number
+  setError: (error: string) => void
+}): Promise<SingleErc20State> {
+  const { address, networkId, setError } = params
+
+  try {
+    return getErc20Info({ tokenAddress: address, networkId, web3, erc20Api })
+  } catch (e) {
+    const msg = `Failed to fetch erc20 details for ${address} on network ${networkId}`
+    console.error(msg, e)
+    setError(msg)
+    // When failed, return null for given token
+    return null
+  }
+}
+
 type UseErc20Params = { address?: string; networkId?: Network }
 
 type Return<V> = { isLoading: boolean; error?: string; value: V }
@@ -49,18 +67,11 @@ export function useErc20(params: UseErc20Params): Return<SingleErc20State> {
     setIsLoading(true)
     setError('')
 
-    try {
-      const fetched = await getErc20Info({ tokenAddress: address, networkId, web3, erc20Api })
-      if (fetched) {
-        saveErc20s([fetched])
-      }
-    } catch (e) {
-      // Set error only when the call fails
-      // Not finding the token is not an error
-      const msg = `Failed to fetch erc20 details for ${address} on network ${networkId}`
-      console.error(msg, e)
-      setError(msg)
+    const fetched = await _fetchErc20FromNetwork({ address, networkId, setError })
+    if (fetched) {
+      saveErc20s([fetched])
     }
+
     setIsLoading(false)
   }, [address, networkId, saveErc20s])
 
@@ -114,21 +125,7 @@ export function useMultipleErc20(params: UseMultipleErc20Params): Return<Record<
       setIsLoading(true)
       setError('')
 
-      const promises = toFetch.map(
-        async (address): Promise<SingleErc20State> => {
-          try {
-            const erc20 = await getErc20Info({ tokenAddress: address, networkId, web3, erc20Api })
-
-            return erc20
-          } catch (e) {
-            const msg = `Failed to fetch erc20 details for ${address} on network ${networkId}`
-            console.error(msg, e)
-            setError((errors) => [errors, msg].filter(Boolean).join('\n'))
-            // When failed, return null for given token
-            return null
-          }
-        },
-      )
+      const promises = toFetch.map(async (address) => _fetchErc20FromNetwork({ address, networkId, setError }))
 
       const fetched = await Promise.all(promises)
 
