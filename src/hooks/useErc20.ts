@@ -41,31 +41,35 @@ export function useErc20(params: UseErc20Params): Return<SingleErc20State> {
   // Local copy of globalState
   const erc20 = useMemo(() => getErc20(address), [address, getErc20])
 
+  const fetchAndUpdateState = useCallback(async (): Promise<void> => {
+    if (!address || !networkId) {
+      return
+    }
+
+    setIsLoading(true)
+    setError('')
+
+    try {
+      const fetched = await getErc20Info({ tokenAddress: address, networkId, web3, erc20Api })
+      if (fetched) {
+        saveErc20s([fetched])
+      }
+    } catch (e) {
+      // Set error only when the call fails
+      // Not finding the token is not an error
+      const msg = `Failed to fetch erc20 details for ${address} on network ${networkId}`
+      console.error(msg, e)
+      setError(msg)
+    }
+    setIsLoading(false)
+  }, [address, networkId, saveErc20s])
+
   useEffect(() => {
     // Only try to fetch it if not on global state
-    if (!erc20 && address && networkId) {
-      setIsLoading(true)
-      setError('')
-
-      getErc20Info({ tokenAddress: address, networkId, web3, erc20Api })
-        .then((fetchedErc20) => {
-          // When not found, it returns null
-          if (fetchedErc20) {
-            saveErc20s([fetchedErc20])
-          }
-        })
-        .catch((e) => {
-          // Set error only when the call fails
-          // Not finding the token is not an error
-          const msg = `Failed to fetch erc20 details for ${address} on network ${networkId}`
-          console.error(msg, e)
-          setError(msg)
-        })
-        .finally(() => {
-          setIsLoading(false)
-        })
+    if (!erc20) {
+      fetchAndUpdateState()
     }
-  }, [address, erc20, networkId, saveErc20s])
+  }, [erc20, fetchAndUpdateState])
 
   return { isLoading, error, value: erc20 }
 }
