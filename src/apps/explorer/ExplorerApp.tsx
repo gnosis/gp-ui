@@ -11,6 +11,7 @@ import { rootReducer, INITIAL_STATE } from 'apps/explorer/state'
 import { GenericLayout } from 'components/layout'
 import { Navigation } from 'components/layout/GenericLayout/Navigation'
 import { Header } from 'components/layout/GenericLayout/Header'
+import { UpdateNetwork } from 'state/network'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const Router: typeof BrowserRouter & typeof HashRouter = (window as any).IS_IPFS ? HashRouter : BrowserRouter
@@ -55,6 +56,14 @@ const HEADER = (
   </Header>
 )
 
+export const Updaters: React.FC = () => {
+  return (
+    <>
+      <UpdateNetwork />
+    </>
+  )
+}
+
 export const ExplorerApp: React.FC = () => {
   // Deal with incorrect network
   useNetworkCheck()
@@ -62,10 +71,12 @@ export const ExplorerApp: React.FC = () => {
   return (
     <>
       <Router basename={process.env.BASE_URL}>
+        <Updaters />
         <GenericLayout header={HEADER}>
           <React.Suspense fallback={null}>
             <Switch>
               <Route path="/" exact component={Home} />
+              <Route path="/network/:orderId" exact component={Order} />
               <Route path="/orders/:orderId" exact component={Order} />
               <Route component={NotFound} />
             </Switch>
