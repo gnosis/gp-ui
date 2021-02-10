@@ -7,3 +7,9 @@ export function useNetworkId(): Network | null {
 
   return networkId
 }
+
+export function useNetworkOrDefault(): Network {
+  const [{ networkId }] = useGlobalState<ExplorerAppState>()
+
+  return networkId || Network.Mainnet
+}
