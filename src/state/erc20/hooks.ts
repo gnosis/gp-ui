@@ -65,7 +65,7 @@ export const useMultipleErc20s = <State extends { erc20s: Erc20State }>(
  *
  * @param networkId The network id
  */
-export const useSaveErc20sToGlobalState = <State extends { erc20s: Erc20State }>(
+export const useSaveErc20s = <State extends { erc20s: Erc20State }>(
   networkId?: Network,
 ): ((erc20s: TokenErc20[]) => void) => {
   const [, dispatch] = useGlobalState<State>()

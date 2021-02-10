@@ -7,7 +7,7 @@ import { Network } from 'types'
 import {
   useErc20 as useErc20FromGlobalState,
   useMultipleErc20s as useMultipleErc20sFromGlobalState,
-  useSaveErc20sToGlobalState,
+  useSaveErc20s,
   SingleErc20State,
 } from 'state/erc20'
 
@@ -54,7 +54,7 @@ export function useErc20(params: UseErc20Params): Return<string, SingleErc20Stat
   const [error, setError] = useState('')
 
   const erc20 = useErc20FromGlobalState({ networkId, address })
-  const saveErc20s = useSaveErc20sToGlobalState(networkId)
+  const saveErc20s = useSaveErc20s(networkId)
 
   const fetchAndUpdateState = useCallback(async (): Promise<void> => {
     if (!address || !networkId) {
@@ -104,7 +104,7 @@ export function useMultipleErc20(
   const [errors, setErrors] = useState<Record<string, string>>({})
 
   const erc20s = useMultipleErc20sFromGlobalState({ networkId, addresses })
-  const saveErc20s = useSaveErc20sToGlobalState(networkId)
+  const saveErc20s = useSaveErc20s(networkId)
 
   // check what on globalState has not been fetched yet
   const toFetch = useMemo(() => addresses.filter((address) => !erc20s[address]), [addresses, erc20s])
