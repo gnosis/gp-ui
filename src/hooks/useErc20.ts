@@ -160,6 +160,5 @@ export function useMultipleErc20(
     }
   }, [updateErc20s, toFetch, saveErc20s])
 
-  // Not sure this `useMemo` is necessary
-  return useMemo(() => ({ isLoading, error: errors, value: erc20s }), [erc20s, errors, isLoading])
+  return { isLoading, error: errors, value: erc20s }
 }
