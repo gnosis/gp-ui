@@ -4,7 +4,7 @@ import { useParams } from 'react-router'
 import { getOrder, RawOrder } from 'api/operator'
 
 import { OrderWidgetView } from './view'
-import { useErc20 } from 'hooks/useErc20'
+import { useMultipleErc20 } from 'hooks/useErc20'
 
 export const OrderWidget: React.FC = () => {
   // TODO: move order loading to a hook
@@ -29,11 +29,16 @@ export const OrderWidget: React.FC = () => {
   }, [orderId])
 
   // TODO: this is just for testing. The hooks will not be here
-  const { value: buyToken } = useErc20({ address: order?.buyToken, networkId: 4 })
-  const { value: sellToken } = useErc20({ address: order?.sellToken, networkId: 4 })
+  // const { value: buyToken } = useErc20({ address: order?.buyToken, networkId: 4 })
+  // const { value: sellToken } = useErc20({ address: order?.sellToken, networkId: 4 })
+  // console.log(`buy token`, buyToken)
+  // console.log(`sell token`, sellToken)
 
-  console.log(`buy token`, buyToken)
-  console.log(`sell token`, sellToken)
+  const multiple = useMultipleErc20({
+    addresses: [order?.buyToken || '', order?.sellToken || ''].filter(Boolean),
+    networkId: 4,
+  })
+  console.log(`multiple`, multiple)
 
   return <OrderWidgetView order={order} isLoading={isLoading} error={error} />
 }
