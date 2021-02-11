@@ -21,7 +21,7 @@ function getNetworkId(network: string | undefined): Network {
 export const NetworkUpdater: React.FC = () => {
   // TODO: why not using useDispatch from https://react-redux.js.org/introduction/quick-start
   // const dispatch = useDispatch()
-  const dispatch = useGlobalState()[1]
+  const [, dispatch] = useGlobalState()
   const currentNetworkId = useNetworkId()
   const location = useLocation()
 
