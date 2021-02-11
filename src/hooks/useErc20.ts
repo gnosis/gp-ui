@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import Web3 from 'web3'
 
 import { TokenErc20 } from '@gnosis.pm/dex-js'
 
@@ -13,14 +14,17 @@ import {
 
 import { getErc20Info } from 'services/helpers'
 
-import { web3, erc20Api } from 'apps/explorer/api'
+import { useWeb3 } from 'api/web3/hooks'
+
+import { erc20Api } from 'apps/explorer/api'
 
 async function _fetchErc20FromNetwork(params: {
   address: string
   networkId: number
   setError: (error: string) => void
+  web3: Web3
 }): Promise<SingleErc20State> {
-  const { address, networkId, setError } = params
+  const { address, networkId, setError, web3 } = params
 
   try {
     return getErc20Info({ tokenAddress: address, networkId, web3, erc20Api })
@@ -55,6 +59,7 @@ export function useErc20(params: UseErc20Params): Return<string, SingleErc20Stat
 
   const erc20 = useErc20State({ networkId, address })
   const saveErc20s = useSaveErc20s(networkId)
+  const web3 = useWeb3()
 
   const fetchAndUpdateState = useCallback(async (): Promise<void> => {
     if (!address || !networkId) {
@@ -64,13 +69,13 @@ export function useErc20(params: UseErc20Params): Return<string, SingleErc20Stat
     setIsLoading(true)
     setError('')
 
-    const fetched = await _fetchErc20FromNetwork({ address, networkId, setError })
+    const fetched = await _fetchErc20FromNetwork({ address, networkId, setError, web3 })
     if (fetched) {
       saveErc20s([fetched])
     }
 
     setIsLoading(false)
-  }, [address, networkId, saveErc20s])
+  }, [address, networkId, saveErc20s, web3])
 
   useEffect(() => {
     // Only try to fetch it if not on global state
@@ -105,6 +110,7 @@ export function useMultipleErc20(
 
   const erc20s = useMultipleErc20sState({ networkId, addresses })
   const saveErc20s = useSaveErc20s(networkId)
+  const web3 = useWeb3()
 
   // check what on globalState has not been fetched yet
   const toFetch = useMemo(() => addresses.filter((address) => !erc20s[address]), [addresses, erc20s])
@@ -126,6 +132,7 @@ export function useMultipleErc20(
         address,
         networkId,
         setError: (msg) => setErrors((curr) => ({ ...curr, [address]: msg })),
+        web3,
       }),
     )
 
@@ -136,7 +143,7 @@ export function useMultipleErc20(
 
     setIsLoading(false)
     running.current = false
-  }, [networkId, saveErc20s, toFetch])
+  }, [networkId, saveErc20s, toFetch, web3])
 
   useEffect(() => {
     // only trigger network query if not yet running
