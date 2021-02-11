@@ -96,7 +96,7 @@ export const ExplorerApp: React.FC = () => {
         <StateUpdaters />
         <Switch>
           <Route path="/xdai" component={AppContent} />
-          <Route path="/xdai" component={AppContent} />
+          <Route path="/rinkeby" component={AppContent} />
           <Route path="/" component={AppContent} />
         </Switch>
       </Router>
