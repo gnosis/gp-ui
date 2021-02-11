@@ -56,8 +56,16 @@ const HEADER = (
   </Header>
 )
 
-export const Updaters: React.FC = () => <NetworkUpdater />
+/**
+ * Update the global state
+ */
+export function StateUpdaters(): JSX.Element {
+  return <NetworkUpdater />
+}
 
+/**
+ * Render Explorer App
+ */
 export const ExplorerApp: React.FC = () => {
   // Deal with incorrect network
   useNetworkCheck()
@@ -65,7 +73,7 @@ export const ExplorerApp: React.FC = () => {
   return (
     <>
       <Router basename={process.env.BASE_URL}>
-        <Updaters />
+        <StateUpdaters />
         <GenericLayout header={HEADER}>
           <React.Suspense fallback={null}>
             <Switch>
