@@ -95,9 +95,7 @@ export const ExplorerApp: React.FC = () => {
       <Router basename={process.env.BASE_URL}>
         <StateUpdaters />
         <Switch>
-          <Route path="/xdai" component={AppContent} />
-          <Route path="/rinkeby" component={AppContent} />
-          <Route path="/" component={AppContent} />
+          <Route path={['/xdai', '/rinkeby', '/']} component={AppContent} />
         </Switch>
       </Router>
       {process.env.NODE_ENV === 'development' && <Console />}
