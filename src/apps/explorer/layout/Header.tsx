@@ -8,16 +8,16 @@ import styled from 'styled-components'
 
 const Logo = styled.span`
   display: block;
-  margin: 0.5rem 0;
+  margin: 0 0.5rem;
   font-size: 2rem;
 `
 
 const NetworkLabel = styled.span`
   display: block;
-  margin: 0.3rem 0;
+  margin: 0 0.5rem;
   font-size: 1.1rem;
   text-align: center;
-  padding: 0.3em;
+  padding: 0.3rem 0.8rem;
   text-transform: uppercase;
   font-weight: 600;
   letter-spacing: 0.1rem;
