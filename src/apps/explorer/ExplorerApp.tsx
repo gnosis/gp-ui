@@ -1,11 +1,10 @@
 import React from 'react'
-import { BrowserRouter, HashRouter, Route, Switch, Link } from 'react-router-dom'
+import { BrowserRouter, HashRouter, Route, Switch, Link, useRouteMatch } from 'react-router-dom'
 import { hot } from 'react-hot-loader/root'
 
 import { withGlobalContext } from 'hooks/useGlobalState'
 import useNetworkCheck from 'hooks/useNetworkCheck'
 import Console from 'Console'
-import { GlobalModalInstance } from 'components/OuterModal'
 import { rootReducer, INITIAL_STATE } from 'apps/explorer/state'
 
 import { GenericLayout } from 'components/layout'
@@ -63,6 +62,27 @@ export function StateUpdaters(): JSX.Element {
   return <NetworkUpdater />
 }
 
+/** App content */
+const AppContent = (): JSX.Element => {
+  const { path, url } = useRouteMatch()
+
+  console.log({ path, url })
+
+  const pathPrefix = path == '/' ? '' : path
+
+  return (
+    <GenericLayout header={HEADER}>
+      <React.Suspense fallback={null}>
+        <Switch>
+          <Route path={pathPrefix + '/'} exact component={Home} />
+          <Route path={pathPrefix + '/orders/:orderId'} exact component={Order} />
+          <Route component={NotFound} />
+        </Switch>
+      </React.Suspense>
+    </GenericLayout>
+  )
+}
+
 /**
  * Render Explorer App
  */
@@ -74,20 +94,11 @@ export const ExplorerApp: React.FC = () => {
     <>
       <Router basename={process.env.BASE_URL}>
         <StateUpdaters />
-        <GenericLayout header={HEADER}>
-          <React.Suspense fallback={null}>
-            <Switch>
-              <Route path="/" exact component={Home} />
-              <Route path="/network/:orderId" exact component={Order} />
-              <Route path="/orders/:orderId" exact component={Order} />
-              {/* TODO: Routes will be nicer, this is just a test  */}
-              <Route path="/xdai/orders/:orderId" exact component={Order} />
-              <Route path="/rinkeby/orders/:orderId" exact component={Order} />
-              <Route component={NotFound} />
-            </Switch>
-          </React.Suspense>
-        </GenericLayout>
-        {GlobalModalInstance}
+        <Switch>
+          <Route path="/xdai" component={AppContent} />
+          <Route path="/xdai" component={AppContent} />
+          <Route path="/" component={AppContent} />
+        </Switch>
       </Router>
       {process.env.NODE_ENV === 'development' && <Console />}
     </>
