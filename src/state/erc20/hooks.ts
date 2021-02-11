@@ -42,20 +42,25 @@ type UseMultipleErc20Params = {
  */
 export const useMultipleErc20s = <State extends { erc20s: Erc20State }>(
   params: UseMultipleErc20Params,
-): Record<string, SingleErc20State> => {
+): Record<string, TokenErc20> => {
   const { addresses, networkId } = params
   const [{ erc20s }] = useGlobalState<State>()
 
   return useMemo(() => {
     if (!networkId) {
-      // Return map of address => null
-      return addresses.reduce((acc, address) => ({ ...acc, [address]: null }), {})
+      return {}
     }
 
-    return addresses.reduce(
-      (acc, address) => ({ ...acc, [address]: erc20s.get(buildErc20Key(networkId, address)) || null }),
-      {},
-    )
+    return addresses.reduce((acc, address) => {
+      const key = buildErc20Key(networkId, address)
+      const erc20 = erc20s.get(key)
+
+      if (erc20) {
+        acc[address] = erc20
+      }
+
+      return acc
+    }, {})
   }, [addresses, erc20s, networkId])
 }
 
