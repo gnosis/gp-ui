@@ -56,13 +56,7 @@ const HEADER = (
   </Header>
 )
 
-export const Updaters: React.FC = () => {
-  return (
-    <>
-      <NetworkUpdater />
-    </>
-  )
-}
+export const Updaters: React.FC = () => <NetworkUpdater />
 
 export const ExplorerApp: React.FC = () => {
   // Deal with incorrect network
