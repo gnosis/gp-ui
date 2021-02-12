@@ -25,7 +25,7 @@ import { DetailedAuctionElement, DetailedPendingOrder, Trade } from 'api/exchang
 // Components
 import { ConnectWalletBanner } from 'components/ConnectWalletBanner'
 import { CardTable, CardWidgetWrapper } from 'components/layout/LegacyTradeLayout/Card'
-import { InnerTradesWidget } from 'components/TradesWidget'
+import { InnerTradesWidget } from 'apps/gp-v1/components/TradesWidget'
 import FilterTools from 'components/FilterTools'
 
 // OrderWidget

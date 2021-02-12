@@ -11,7 +11,7 @@ import { CardTable } from 'components/layout/LegacyTradeLayout/Card'
 import { ConnectWalletBanner } from 'components/ConnectWalletBanner'
 import { FileDownloaderLink } from 'components/FileDownloaderLink'
 import { StandaloneCardWrapper } from 'components/layout'
-import { TradeRow } from 'components/TradesWidget/TradeRow'
+import { TradeRow } from 'apps/gp-v1/components/TradesWidget/TradeRow'
 import { BalancesWidget } from 'apps/gp-v1/components/DepositWidget'
 
 import { useWalletConnection } from 'hooks/useWalletConnection'
