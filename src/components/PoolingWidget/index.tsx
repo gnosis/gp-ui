@@ -13,7 +13,7 @@ import { TokenDex, ZERO } from '@gnosis.pm/dex-js'
 import { maxAmountsForSpread, resolverFactory, VALIDATOR_ERROR_KEYS } from 'utils'
 
 // components
-import OrdersWidget from 'components/OrdersWidget'
+import OrdersWidget from 'apps/gp-v1/components/OrdersWidget'
 import { ExpandableOrdersPanel, OrdersToggler } from 'apps/gp-v1/components/TradeWidget/TradeWidget.styled'
 
 // PoolingWidget: subcomponents

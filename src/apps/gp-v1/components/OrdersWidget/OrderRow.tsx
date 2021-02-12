@@ -31,7 +31,7 @@ import {
 
 import { DetailedAuctionElement } from 'api/exchange/ExchangeApi'
 
-import { OrderRowWrapper } from 'components/OrdersWidget/OrderRow.styled'
+import { OrderRowWrapper } from 'apps/gp-v1/components/OrdersWidget/OrderRow.styled'
 import { displayTokenSymbolOrLink } from 'utils/display'
 import { SmartPrice } from 'components/common/SmartPrice'
 import { DEFAULT_DECIMALS } from 'const'

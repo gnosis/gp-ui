@@ -31,7 +31,7 @@ import { PendingTxObj } from 'api/exchange/ExchangeApi'
 import { tokenListApi } from 'apps/gp-v1/api'
 
 // components
-import OrdersWidget from 'components/OrdersWidget'
+import OrdersWidget from 'apps/gp-v1/components/OrdersWidget'
 import { TxNotification } from 'components/TxNotification'
 import { Spinner } from 'components/common/Spinner'
 import Modal from 'components/common/Modal'

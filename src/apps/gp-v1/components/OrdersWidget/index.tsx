@@ -29,9 +29,9 @@ import { InnerTradesWidget } from 'apps/gp-v1/components/TradesWidget'
 import FilterTools from 'components/FilterTools'
 
 // OrderWidget
-import { useDeleteOrders } from 'components/OrdersWidget/useDeleteOrders'
-import OrderRow from 'components/OrdersWidget/OrderRow'
-import { OrdersWrapper, ButtonWithIcon, OrdersForm } from 'components/OrdersWidget/OrdersWidget.styled'
+import { useDeleteOrders } from 'apps/gp-v1/components/OrdersWidget/useDeleteOrders'
+import OrderRow from 'apps/gp-v1/components/OrdersWidget/OrderRow'
+import { OrdersWrapper, ButtonWithIcon, OrdersForm } from 'apps/gp-v1/components/OrdersWidget/OrdersWidget.styled'
 
 type OrderTabs = 'active' | 'closed' | 'trades'
 type FilteredOrdersStateKeys = Exclude<OrderTabs, 'trades'>
