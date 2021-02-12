@@ -7,7 +7,7 @@ import { GlobalStyles, ThemeToggler } from 'storybook/decorators'
 import { StatusLabel, Props } from '.'
 
 export default {
-  title: 'Order/StatusLabel',
+  title: 'Orders/StatusLabel',
   component: StatusLabel,
   decorators: [GlobalStyles, ThemeToggler],
 } as Meta
