@@ -16,9 +16,9 @@ import { CardTable, CardWidgetWrapper } from 'components/layout/LegacyTradeLayou
 import { StandaloneCardWrapper } from 'components/layout'
 
 // DepositWidget: subcomponents
-import { Row } from 'components/DepositWidget/Row'
-import { useRowActions } from 'components/DepositWidget/useRowActions'
-import { useDepositModals } from 'components/DepositWidget/useDepositModals'
+import { Row } from 'apps/gp-v1/components/DepositWidget/Row'
+import { useRowActions } from 'apps/gp-v1/components/DepositWidget/useRowActions'
+import { useDepositModals } from 'apps/gp-v1/components/DepositWidget/useDepositModals'
 
 // Hooks and reducers
 import { useTokenBalances } from 'hooks/useTokenBalances'

@@ -17,8 +17,8 @@ import { WrapEtherBtn, UnwrapEtherBtn } from 'components/WrapEtherBtn'
 import { Spinner } from 'components/common/Spinner'
 
 // DepositWidget: subcomponents
-import Form from 'components/DepositWidget/Form'
-import { TokenRow, RowClaimButton, RowClaimSpan } from 'components/DepositWidget/Styled'
+import Form from 'apps/gp-v1/components/DepositWidget/Form'
+import { TokenRow, RowClaimButton, RowClaimSpan } from 'apps/gp-v1/components/DepositWidget/Styled'
 
 // Hooks and reducers
 import useNoScroll from 'hooks/useNoScroll'

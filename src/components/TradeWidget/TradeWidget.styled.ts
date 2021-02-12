@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import Widget from 'components/layout/LegacyTradeLayout/Widget'
 import { Wrapper } from 'components/ConnectWalletBanner'
 import { OrdersWrapper } from 'components/OrdersWidget/OrdersWidget.styled'
-import { WalletDrawerInnerWrapper } from 'components/DepositWidget/Form.styled'
+import { WalletDrawerInnerWrapper } from 'apps/gp-v1/components/DepositWidget/Form.styled'
 
 import { MEDIA } from 'const'
 import arrow from 'assets/img/arrow.svg'

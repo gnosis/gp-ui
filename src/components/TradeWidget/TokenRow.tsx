@@ -18,7 +18,7 @@ import {
 
 // components
 import TokenSelector from 'components/TokenSelector'
-import Form from 'components/DepositWidget/Form'
+import Form from 'apps/gp-v1/components/DepositWidget/Form'
 import { TooltipWrapper, HelpTooltipContainer, HelpTooltip } from 'components/Tooltip'
 import { InputBox } from 'components/InputBox'
 import { Input } from 'components/Input'
@@ -34,7 +34,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons'
 // Hooks
 import useNoScroll from 'hooks/useNoScroll'
 import { useNumberInput } from 'components/TradeWidget/useNumberInput'
-import { useRowActions } from 'components/DepositWidget/useRowActions'
+import { useRowActions } from 'apps/gp-v1/components/DepositWidget/useRowActions'
 import { useWalletConnection } from 'hooks/useWalletConnection'
 
 const Wrapper = styled.div`

@@ -12,7 +12,7 @@ import { CardDrawer } from 'components/layout/LegacyTradeLayout/Card'
 import { Spinner } from 'components/common/Spinner'
 
 // DepositWidget: subcomponents
-import { WalletDrawerInnerWrapper } from 'components/DepositWidget/Form.styled'
+import { WalletDrawerInnerWrapper } from 'apps/gp-v1/components/DepositWidget/Form.styled'
 
 // Hooks
 import useSafeState from 'hooks/useSafeState'
