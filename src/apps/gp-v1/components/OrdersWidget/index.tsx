@@ -23,7 +23,7 @@ import { useTabs, Tabs, TabData } from 'hooks/useTabs'
 import { DetailedAuctionElement, DetailedPendingOrder, Trade } from 'api/exchange/ExchangeApi'
 
 // Components
-import { ConnectWalletBanner } from 'components/ConnectWalletBanner'
+import { ConnectWalletBanner } from 'apps/gp-v1/components/ConnectWalletBanner'
 import { CardTable, CardWidgetWrapper } from 'components/layout/LegacyTradeLayout/Card'
 import { InnerTradesWidget } from 'apps/gp-v1/components/TradesWidget'
 import FilterTools from 'components/FilterTools'

@@ -8,7 +8,7 @@ import { formatPrice, formatAmount, invertPrice, formatAmountFull, getNetworkFro
 
 import FilterTools from 'components/FilterTools'
 import { CardTable } from 'components/layout/LegacyTradeLayout/Card'
-import { ConnectWalletBanner } from 'components/ConnectWalletBanner'
+import { ConnectWalletBanner } from 'apps/gp-v1/components/ConnectWalletBanner'
 import { FileDownloaderLink } from 'components/FileDownloaderLink'
 import { StandaloneCardWrapper } from 'components/layout'
 import { TradeRow } from 'apps/gp-v1/components/TradesWidget/TradeRow'
