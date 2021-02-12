@@ -5,7 +5,7 @@ import OrderForm from 'components/OrderForm'
 import MarketNavBar from 'components/MarketNavBar'
 import OrderBookTradesWidget from 'components/OrderBookTradesWidget'
 import PriceDepthChartWidget from 'components/PriceDepthChartWidget'
-import OrdersWidgetDemo from 'components/OrdersWidgetDemo'
+import OrdersWidgetDemo from 'apps/trade/components/OrdersWidgetDemo'
 
 // Dummy data
 import { dummyOrders } from 'components/OrderBook/dummyTradingData'
