@@ -15,7 +15,7 @@ import { FoldableRowWrapper } from 'components/layout/LegacyTradeLayout/Card'
 import { isTradeSettled, divideBN, formatPercentage, getMarket } from 'utils'
 import { displayTokenSymbolOrLink } from 'utils/display'
 import { DEFAULT_DECIMALS, MEDIA, ONE_BIG_NUMBER, ONE_HUNDRED_BIG_NUMBER } from 'const'
-import { SwapIcon } from 'components/TradeWidget/SwapIcon'
+import { SwapIcon } from 'apps/gp-v1/components/TradeWidget/SwapIcon'
 
 // minimum floor amount surplus must be greater than for it to display on frontend
 const SURPLUS_THRESHOLD = 0.01

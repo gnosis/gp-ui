@@ -26,14 +26,14 @@ import { Spinner } from 'components/common/Spinner'
 import { WrapEtherBtn } from 'components/WrapEtherBtn'
 
 // TradeWidget: subcomponents
-import { TradeFormTokenId, TradeFormData } from 'components/TradeWidget'
+import { TradeFormTokenId, TradeFormData } from 'apps/gp-v1/components/TradeWidget'
 import { FormInputError } from 'components/common/FormInputError'
 import { FormMessage } from 'components/common/FormMessage'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 
 // Hooks
 import useNoScroll from 'hooks/useNoScroll'
-import { useNumberInput } from 'components/TradeWidget/useNumberInput'
+import { useNumberInput } from 'apps/gp-v1/components/TradeWidget/useNumberInput'
 import { useRowActions } from 'apps/gp-v1/components/DepositWidget/useRowActions'
 import { useWalletConnection } from 'hooks/useWalletConnection'
 

@@ -24,7 +24,7 @@ import {
   calculateReceiveAmount,
   buildUrl,
   preprocessTokenAddressesToAdd,
-} from 'components/TradeWidget/utils'
+} from 'apps/gp-v1/components/TradeWidget/utils'
 
 // api
 import { PendingTxObj } from 'api/exchange/ExchangeApi'
@@ -48,8 +48,8 @@ import {
   OrdersToggler,
 } from './TradeWidget.styled'
 import TokensAdder from './TokenAdder'
-import TokenRow from 'components/TradeWidget/TokenRow'
-import OrderValidity from 'components/TradeWidget/OrderValidity'
+import TokenRow from 'apps/gp-v1/components/TradeWidget/TokenRow'
+import OrderValidity from 'apps/gp-v1/components/TradeWidget/OrderValidity'
 import { PriceSuggestionWidget as PriceSuggestions } from 'components/trade/PriceSuggestions'
 import Price, { invertPriceFromString } from 'components/trade/Price'
 
@@ -70,8 +70,8 @@ import { savePendingOrdersAction } from 'state/pendingOrders'
 import { updateTradeState, TradeState } from 'state/trade'
 
 // Validation
-import validationSchema from 'components/TradeWidget/validationSchema'
-import { TxMessage } from 'components/TradeWidget/TxMessage'
+import validationSchema from 'apps/gp-v1/components/TradeWidget/validationSchema'
+import { TxMessage } from 'apps/gp-v1/components/TradeWidget/TxMessage'
 import { getMarket } from 'utils/markets'
 import { AnyAction } from 'combine-reducers'
 

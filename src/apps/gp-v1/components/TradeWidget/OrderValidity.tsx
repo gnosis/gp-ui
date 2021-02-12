@@ -27,7 +27,7 @@ import InputBox from 'components/InputBox'
 import { StrongSubHeader } from 'components/SectionHeaders'
 
 // TradeWidget: subcomponents
-import { TradeFormTokenId, TradeFormData, DEFAULT_FORM_STATE } from 'components/TradeWidget'
+import { TradeFormTokenId, TradeFormData, DEFAULT_FORM_STATE } from 'apps/gp-v1/components/TradeWidget'
 import { FormInputError } from 'components/common/FormInputError'
 import { FormMessage } from 'components/common/FormMessage'
 

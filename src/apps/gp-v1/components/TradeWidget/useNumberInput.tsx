@@ -2,7 +2,7 @@ import { useCallback, useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { adjustPrecision, formatPartialNumber, preventInvalidChars } from 'utils'
 
-import { TradeFormData } from 'components/TradeWidget'
+import { TradeFormData } from 'apps/gp-v1/components/TradeWidget'
 
 interface Params {
   inputId: string
