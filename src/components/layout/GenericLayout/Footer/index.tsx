@@ -24,8 +24,12 @@ const FooterStyled = styled.footer`
   flex: 1 1 auto;
   background: ${({ theme }): string => theme.gradient1};
   width: 100%;
-  color: var(--color-text-secondary2);
   justify-content: space-between;
+
+  &,
+  a {
+    color: var(--color-text-secondary2);
+  }
 `
 
 const VerifiedButton = styled(BlockExplorerLink)`
