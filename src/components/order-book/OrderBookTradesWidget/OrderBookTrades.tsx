@@ -4,7 +4,7 @@ import React from 'react'
 import { Meta, Story } from '@storybook/react/types-6-0'
 
 import { GlobalStyles, Router } from 'storybook/decorators'
-import { OrderBookTradesWidget } from 'components/OrderBookTradesWidget'
+import { OrderBookTradesWidget } from 'components/order-book/OrderBookTradesWidget'
 
 export default {
   title: 'component/OrderBookTrades',

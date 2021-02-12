@@ -9,7 +9,7 @@ import { parseBigNumber } from 'utils'
 import { DEFAULT_PRECISION, MEDIA } from 'const'
 
 // Components
-import { OrderBookBtn } from 'components/OrderBookBtn'
+import { OrderBookBtn } from 'components/order-book/OrderBookBtn'
 
 // Common
 import { FormInputError } from 'components/common/FormInputError'

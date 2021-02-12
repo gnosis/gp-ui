@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import Tabs, { getTabTheme, TabItemInterface } from 'components/common/Tabs/Tabs'
-import OrderBook from 'components/OrderBook'
+import OrderBook from 'components/order-book/OrderBook'
 import PairTradeHistory from 'components/PairTradeHistory'
 import { OrderBookTradesStyled as Wrapper } from './OrderBookTrades.styled'
-import { dummyOrders } from 'components/OrderBook/dummyTradingData'
+import { dummyOrders } from 'components/order-book/OrderBook/dummyTradingData'
 
 const tabItems = (orders: OrderBookWidgetsProp['orders']): TabItemInterface[] => [
   {

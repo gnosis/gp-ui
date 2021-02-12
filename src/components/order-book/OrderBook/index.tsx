@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { OrderBookStyled as Wrapper, Header, Book, Orders, Order, Spread } from './OrderBook.styled'
-import { dummyOrders, dummyPrice } from 'components/OrderBook/dummyTradingData'
+import { dummyOrders, dummyPrice } from 'components/order-book/OrderBook/dummyTradingData'
 interface OrdersType {
   readonly orders?: typeof dummyOrders
 }
