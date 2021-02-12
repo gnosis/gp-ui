@@ -6,8 +6,8 @@ import { TooltipWrapper } from 'components/Tooltip'
 import { Spinner } from 'components/common/Spinner'
 
 // PoolingWidget
-import { SubComponentProps } from 'components/PoolingWidget/SubComponents'
-import { StepButtonsWrapper } from 'components/PoolingWidget/PoolingWidget.styled'
+import { SubComponentProps } from 'apps/gp-v1/components/PoolingWidget/SubComponents'
+import { StepButtonsWrapper } from 'apps/gp-v1/components/PoolingWidget/PoolingWidget.styled'
 
 interface LiquidityButtonsProps extends Pick<SubComponentProps, 'step' | 'txReceipt' | 'nextStep' | 'isSubmitting'> {
   disableBack: boolean

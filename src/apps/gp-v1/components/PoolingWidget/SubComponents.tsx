@@ -5,9 +5,9 @@ import { Receipt } from 'types'
 import { TokenDex } from '@gnosis.pm/dex-js'
 
 // PoolingWidget: subcomponents
-import TokenSelector from 'components/PoolingWidget/TokenSelector'
-import { TokenSelectorProps } from 'components/PoolingWidget/TokenSelector'
-import { CreateStrategy } from 'components/PoolingWidget/CreateStrategy'
+import TokenSelector from 'apps/gp-v1/components/PoolingWidget/TokenSelector'
+import { TokenSelectorProps } from 'apps/gp-v1/components/PoolingWidget/TokenSelector'
+import { CreateStrategy } from 'apps/gp-v1/components/PoolingWidget/CreateStrategy'
 
 export interface SubComponentProps extends TokenSelectorProps {
   isSubmitting: boolean

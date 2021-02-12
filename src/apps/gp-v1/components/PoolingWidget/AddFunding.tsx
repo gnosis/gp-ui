@@ -11,8 +11,8 @@ import { faSpinner, faCheckCircle } from '@fortawesome/free-solid-svg-icons'
 import { BlockExplorerLink } from 'components/common/BlockExplorerLink'
 
 // PoolingWidget: subcomponent
-import { HighlightDiv } from 'components/PoolingWidget/PoolingWidget.styled'
-import { AddFundingWrapper } from 'components/PoolingWidget/AddFunding.styled'
+import { HighlightDiv } from 'apps/gp-v1/components/PoolingWidget/PoolingWidget.styled'
+import { AddFundingWrapper } from 'apps/gp-v1/components/PoolingWidget/AddFunding.styled'
 
 interface AddFundingProps {
   txIdentifier: string

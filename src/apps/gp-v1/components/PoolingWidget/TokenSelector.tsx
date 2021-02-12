@@ -8,8 +8,12 @@ import checkIcon from 'assets/img/li-check.svg'
 import { TokenDex } from '@gnosis.pm/dex-js'
 
 // PoolingWidget: subcomponent
-import { ProgressStepText } from 'components/PoolingWidget/PoolingWidget.styled'
-import { TokenSelectorWrapper, TokenBox, CheckboxWrapper } from 'components/PoolingWidget/TokenSelector.styled'
+import { ProgressStepText } from 'apps/gp-v1/components/PoolingWidget/PoolingWidget.styled'
+import {
+  TokenSelectorWrapper,
+  TokenBox,
+  CheckboxWrapper,
+} from 'apps/gp-v1/components/PoolingWidget/TokenSelector.styled'
 
 export interface TokenSelectorProps {
   handleTokenSelect: (tokenData: TokenDex) => void

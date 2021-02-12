@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { DefineSpreadWrapper } from 'components/PoolingWidget/DefineSpread.styled'
+import { DefineSpreadWrapper } from 'apps/gp-v1/components/PoolingWidget/DefineSpread.styled'
 
 // components
 import { HelpTooltipContainer, HelpTooltip } from 'components/Tooltip'

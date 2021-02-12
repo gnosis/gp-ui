@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { HighlightDiv } from 'components/PoolingWidget/PoolingWidget.styled'
+import { HighlightDiv } from 'apps/gp-v1/components/PoolingWidget/PoolingWidget.styled'
 
 export const AddFundingWrapper = styled.div`
   display: flex;

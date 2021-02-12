@@ -7,10 +7,10 @@ import { formatPartialNumber } from 'utils'
 import { INPUT_PRECISION_SIZE } from 'const'
 
 // PoolingWidget: subcomponents
-import { BlueBoldText, SpreadInformationWrapper } from 'components/PoolingWidget/DefineSpread.styled'
-import DefineSpread from 'components/PoolingWidget/DefineSpread'
-import { CreateStrategyWrapper } from 'components/PoolingWidget/CreateStrategy.styled'
-import AddFunding from 'components/PoolingWidget/AddFunding'
+import { BlueBoldText, SpreadInformationWrapper } from 'apps/gp-v1/components/PoolingWidget/DefineSpread.styled'
+import DefineSpread from 'apps/gp-v1/components/PoolingWidget/DefineSpread'
+import { CreateStrategyWrapper } from 'apps/gp-v1/components/PoolingWidget/CreateStrategy.styled'
+import AddFunding from 'apps/gp-v1/components/PoolingWidget/AddFunding'
 
 export interface CreateStrategyProps {
   isSubmitting: boolean

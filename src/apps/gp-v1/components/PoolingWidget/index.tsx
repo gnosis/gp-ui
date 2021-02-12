@@ -17,11 +17,11 @@ import OrdersWidget from 'apps/gp-v1/components/OrdersWidget'
 import { ExpandableOrdersPanel, OrdersToggler } from 'apps/gp-v1/components/TradeWidget/TradeWidget.styled'
 
 // PoolingWidget: subcomponents
-import ProgressBar from 'components/PoolingWidget/ProgressBar'
-import { StepDescription } from 'components/PoolingWidget/StepDescriptors'
-import SubComponents from 'components/PoolingWidget/SubComponents'
-import LiquidityButtons from 'components/PoolingWidget/LiquidityButtons'
-import { PoolingInterfaceWrapper } from 'components/PoolingWidget/PoolingWidget.styled'
+import ProgressBar from 'apps/gp-v1/components/PoolingWidget/ProgressBar'
+import { StepDescription } from 'apps/gp-v1/components/PoolingWidget/StepDescriptors'
+import SubComponents from 'apps/gp-v1/components/PoolingWidget/SubComponents'
+import LiquidityButtons from 'apps/gp-v1/components/PoolingWidget/LiquidityButtons'
+import { PoolingInterfaceWrapper } from 'apps/gp-v1/components/PoolingWidget/PoolingWidget.styled'
 
 // Hooks and actions
 import useSafeState from 'hooks/useSafeState'

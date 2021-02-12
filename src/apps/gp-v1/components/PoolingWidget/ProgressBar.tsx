@@ -4,7 +4,7 @@ import {
   ProgressStep,
   ProgressStepText,
   StepSeparator,
-} from 'components/PoolingWidget/PoolingWidget.styled'
+} from 'apps/gp-v1/components/PoolingWidget/PoolingWidget.styled'
 import { LAST_STEP } from '.'
 
 export interface ProgressBarProps {
