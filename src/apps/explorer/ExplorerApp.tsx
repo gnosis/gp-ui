@@ -48,9 +48,7 @@ export function StateUpdaters(): JSX.Element {
 
 /** App content */
 const AppContent = (): JSX.Element => {
-  const { path, url } = useRouteMatch()
-
-  console.log({ path, url })
+  const { path } = useRouteMatch()
 
   const pathPrefix = path == '/' ? '' : path
 
