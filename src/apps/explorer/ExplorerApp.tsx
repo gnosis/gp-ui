@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, HashRouter, Route, Switch, useRouteMatch } from 'react-router-dom'
+import { BrowserRouter, HashRouter, Redirect, Route, Switch, useLocation, useRouteMatch } from 'react-router-dom'
 import { hot } from 'react-hot-loader/root'
 
 import { withGlobalContext } from 'hooks/useGlobalState'
@@ -65,6 +65,18 @@ const AppContent = (): JSX.Element => {
   )
 }
 
+/** Redirects to the canonnical URL for mainnet */
+const RedirectMainnet = (): JSX.Element => {
+  const { path, url, params } = useRouteMatch()
+  const { hash, pathname, search, state, key } = useLocation()
+
+  console.log('path', path, url, params, { hash, pathname, search, state, key })
+  const pathMatchArray = pathname.match('/mainnet(.*)')
+  const newPath = pathMatchArray && pathMatchArray.length > 0 ? pathMatchArray[1] : '/'
+
+  return <Redirect push={false} to={newPath} />
+}
+
 /**
  * Render Explorer App
  */
@@ -77,6 +89,7 @@ export const ExplorerApp: React.FC = () => {
       <Router basename={process.env.BASE_URL}>
         <StateUpdaters />
         <Switch>
+          <Route path="/mainnet" component={RedirectMainnet} />
           <Route path={['/xdai', '/rinkeby', '/']} component={AppContent} />
         </Switch>
       </Router>
