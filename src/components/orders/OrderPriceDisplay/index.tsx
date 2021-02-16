@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -34,26 +34,20 @@ export function OrderPriceDisplay(props: Props): JSX.Element {
   const { type = 'limit', order, buyToken, sellToken, invertedPrice: initialInvertedPrice = false } = props
 
   const [invertedPrice, setInvertedPrice] = useState(initialInvertedPrice)
-  const invertPrice = useCallback(() => setInvertedPrice((curr) => !curr), [])
+  const invertPrice = (): void => setInvertedPrice((curr) => !curr)
 
-  const getPrice = useMemo(() => (type === 'limit' ? getOrderLimitPrice : getOrderExecutedPrice), [type])
+  const getPrice = type === 'limit' ? getOrderLimitPrice : getOrderExecutedPrice
 
-  const displayPrice = useMemo(() => {
-    const price = getPrice({
-      order,
-      buyTokenDecimals: buyToken.decimals,
-      sellTokenDecimals: sellToken.decimals,
-      inverted: invertedPrice,
-    })
-    return formatSmart({ amount: price.toString(), precision: 0, smallLimit: '0.000001', decimals: 7 })
-  }, [buyToken.decimals, getPrice, invertedPrice, order, sellToken.decimals])
+  const price = getPrice({
+    order,
+    buyTokenDecimals: buyToken.decimals,
+    sellTokenDecimals: sellToken.decimals,
+    inverted: invertedPrice,
+  })
+  const displayPrice = formatSmart({ amount: price.toString(), precision: 0, smallLimit: '0.000001', decimals: 7 })
 
-  const [baseSymbol, quoteSymbol] = useMemo(() => {
-    const buy = safeTokenName(buyToken)
-    const sell = safeTokenName(sellToken)
-
-    return invertedPrice ? [sell, buy] : [buy, sell]
-  }, [buyToken, invertedPrice, sellToken])
+  const baseSymbol = safeTokenName(buyToken)
+  const quoteSymbol = safeTokenName(sellToken)
 
   return (
     <Wrapper>
