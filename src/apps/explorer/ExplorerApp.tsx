@@ -67,10 +67,8 @@ const AppContent = (): JSX.Element => {
 
 /** Redirects to the canonnical URL for mainnet */
 const RedirectMainnet = (): JSX.Element => {
-  const { path, url, params } = useRouteMatch()
-  const { hash, pathname, search, state, key } = useLocation()
+  const { pathname } = useLocation()
 
-  console.log('path', path, url, params, { hash, pathname, search, state, key })
   const pathMatchArray = pathname.match('/mainnet(.*)')
   const newPath = pathMatchArray && pathMatchArray.length > 0 ? pathMatchArray[1] : '/'
 
