@@ -31,9 +31,9 @@ export type Props = {
 }
 
 export function OrderPriceDisplay(props: Props): JSX.Element {
-  const { type = 'limit', order, buyToken, sellToken, invertedPrice: initialInvertedPrice } = props
+  const { type = 'limit', order, buyToken, sellToken, invertedPrice: initialInvertedPrice = false } = props
 
-  const [invertedPrice, setInvertedPrice] = useState(initialInvertedPrice || false)
+  const [invertedPrice, setInvertedPrice] = useState(initialInvertedPrice)
   const invertPrice = useCallback(() => setInvertedPrice((curr) => !curr), [])
 
   const getPrice = useMemo(() => (type === 'limit' ? getOrderLimitPrice : getOrderExecutedPrice), [type])
