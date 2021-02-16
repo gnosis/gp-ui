@@ -100,7 +100,12 @@ export function OrderDetails(props: Props): JSX.Element {
           <tr>
             <td>Limit Price</td>
             <td>
-              <OrderPriceDisplay order={order} buyToken={buyToken} sellToken={sellToken} />
+              <OrderPriceDisplay
+                buyAmount={buyAmount}
+                buyToken={buyToken}
+                sellAmount={sellAmount}
+                sellToken={sellToken}
+              />
             </td>
           </tr>
           {!partiallyFillable && (

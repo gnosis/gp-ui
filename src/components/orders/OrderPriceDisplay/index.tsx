@@ -2,10 +2,9 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import BigNumber from 'bignumber.js'
 
-import { formatSmart, safeTokenName, TokenErc20 } from '@gnosis.pm/dex-js'
-
-import { getOrderExecutedPrice, getOrderLimitPrice, RawOrder } from 'api/operator'
+import { calculatePrice, formatSmart, invertPrice, safeTokenName, TokenErc20 } from '@gnosis.pm/dex-js'
 
 const Wrapper = styled.span`
   display: flex;
@@ -23,35 +22,48 @@ const Icon = styled(FontAwesomeIcon)`
 `
 
 export type Props = {
-  type?: 'limit' | 'executed'
-  order: RawOrder
+  buyAmount: string | BigNumber
   buyToken: TokenErc20
+  sellAmount: string | BigNumber
   sellToken: TokenErc20
-  invertedPrice?: boolean
+  isPriceInverted?: boolean
+  withoutInvertButton?: boolean
 }
 
 export function OrderPriceDisplay(props: Props): JSX.Element {
-  const { type = 'limit', order, buyToken, sellToken, invertedPrice: initialInvertedPrice = false } = props
+  const {
+    buyAmount,
+    buyToken,
+    sellAmount,
+    sellToken,
+    isPriceInverted: initialInvertedPrice = false,
+    withoutInvertButton = false,
+  } = props
 
-  const [invertedPrice, setInvertedPrice] = useState(initialInvertedPrice)
-  const invertPrice = (): void => setInvertedPrice((curr) => !curr)
+  const [isPriceInverted, setIsPriceInverted] = useState(initialInvertedPrice)
+  const invert = (): void => setIsPriceInverted((curr) => !curr)
 
-  const getPrice = type === 'limit' ? getOrderLimitPrice : getOrderExecutedPrice
-
-  const price = getPrice({
-    order,
-    buyTokenDecimals: buyToken.decimals,
-    sellTokenDecimals: sellToken.decimals,
-    inverted: invertedPrice,
+  const calculatedPrice = calculatePrice({
+    denominator: { amount: buyAmount, decimals: buyToken.decimals },
+    numerator: { amount: sellAmount, decimals: sellToken.decimals },
   })
-  const displayPrice = formatSmart({ amount: price.toString(), precision: 0, smallLimit: '0.000001', decimals: 7 })
+  const displayPrice = (isPriceInverted ? invertPrice(calculatedPrice) : calculatedPrice).toString()
+  const formattedPrice = formatSmart({
+    amount: displayPrice,
+    precision: 0,
+    smallLimit: '0.000001',
+    decimals: 7,
+  })
 
-  const baseSymbol = safeTokenName(buyToken)
-  const quoteSymbol = safeTokenName(sellToken)
+  const buySymbol = safeTokenName(buyToken)
+  const sellSymbol = safeTokenName(sellToken)
+
+  const [baseSymbol, quoteSymbol] = isPriceInverted ? [sellSymbol, buySymbol] : [buySymbol, sellSymbol]
 
   return (
     <Wrapper>
-      {displayPrice} {baseSymbol} for {quoteSymbol} <Icon icon={faExchangeAlt} onClick={invertPrice} />
+      {formattedPrice} {baseSymbol} for {quoteSymbol}
+      {!withoutInvertButton && <Icon icon={faExchangeAlt} onClick={invert} />}
     </Wrapper>
   )
 }

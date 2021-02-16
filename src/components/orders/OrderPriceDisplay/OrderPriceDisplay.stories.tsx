@@ -4,7 +4,7 @@ import { Story, Meta } from '@storybook/react/types-6-0'
 
 import { GlobalStyles, ThemeToggler } from 'storybook/decorators'
 
-import { ORDER, WETH, USDT } from '../../../../test/data'
+import { WETH, USDT } from '../../../../test/data'
 
 import { OrderPriceDisplay, Props } from './'
 
@@ -18,17 +18,9 @@ export default {
 const Template: Story<Props> = (args) => <OrderPriceDisplay {...args} />
 
 const defaultArgs: Props = {
-  order: {
-    ...ORDER,
-    buyToken: WETH.address,
-    sellToken: USDT.address,
-    buyAmount: '1000000000000000000',
-    sellAmount: '2000000000',
-    executedBuyAmount: '700000000000000000',
-    executedSellAmount: '1000000000',
-    kind: 'sell',
-  },
+  buyAmount: '1000000000000000000',
   buyToken: WETH,
+  sellAmount: '2000000000',
   sellToken: USDT,
 }
 
@@ -36,10 +28,7 @@ export const Default = Template.bind({})
 Default.args = { ...defaultArgs }
 
 export const PriceInverted = Template.bind({})
-PriceInverted.args = { ...defaultArgs, invertedPrice: true }
+PriceInverted.args = { ...defaultArgs, isPriceInverted: true }
 
-export const LimitPrice = Template.bind({})
-LimitPrice.args = { ...defaultArgs, type: 'limit' }
-
-export const ExecutedPrice = Template.bind({})
-ExecutedPrice.args = { ...defaultArgs, type: 'executed' }
+export const WithoutInvertButton = Template.bind({})
+WithoutInvertButton.args = { ...defaultArgs, withoutInvertButton: true }
