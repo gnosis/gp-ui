@@ -2,12 +2,15 @@ import React from 'react'
 import { useParams } from 'react-router'
 
 import { useOrderAndErc20s } from 'hooks/useOperatorOrder'
+
+import { ORDER_QUERY_INTERVAL } from 'apps/explorer/const'
+
 import { OrderWidgetView } from './view'
 
 export const OrderWidget: React.FC = () => {
   const { orderId } = useParams<{ orderId: string }>()
 
-  const { order, buyToken, sellToken, isLoading, error } = useOrderAndErc20s(orderId)
+  const { order, buyToken, sellToken, isLoading, error } = useOrderAndErc20s(orderId, ORDER_QUERY_INTERVAL)
 
   return (
     <OrderWidgetView
