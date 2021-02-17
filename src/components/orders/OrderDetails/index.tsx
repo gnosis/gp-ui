@@ -1,9 +1,9 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
 import { formatSmart, TokenErc20 } from '@gnosis.pm/dex-js'
 
-import { getOrderExecutedAmounts, getOrderFilledAmount, getOrderStatus, RawOrder } from 'api/operator'
+import { Order } from 'api/operator'
 
 import { SimpleTable } from 'components/common/SimpleTable'
 import { StatusLabel } from 'components/orders/StatusLabel'
@@ -41,18 +41,30 @@ const Table = styled(SimpleTable)`
   }
 `
 
-// TODO: either use a RichOrder object or transform it here
-// TODO: for that we'll need token info (decimals, symbol)
-export type Props = { order: RawOrder; buyToken: TokenErc20; sellToken: TokenErc20 }
+export type Props = { order: Order; buyToken: TokenErc20; sellToken: TokenErc20 }
 
 export function OrderDetails(props: Props): JSX.Element {
   const { order, buyToken, sellToken } = props
-  const { uid, owner, kind, partiallyFillable, creationDate, validTo, buyAmount, sellAmount, executedFeeAmount } = order
+  const {
+    uid,
+    owner,
+    kind,
+    partiallyFillable,
+    creationDate,
+    expirationDate,
+    buyAmount,
+    sellAmount,
+    executedBuyAmount,
+    executedSellAmount,
+    executedFeeAmount,
+    filledAmount,
+    filledPercentage,
+  } = order
 
-  const status = useMemo(() => getOrderStatus(order), [order])
-
-  const { amount: filledAmount, percentage: filledPercentage } = useMemo(() => getOrderFilledAmount(order), [order])
-  const { executedBuyAmount, executedSellAmount } = useMemo(() => getOrderExecutedAmounts(order), [order])
+  // TODO: refactor getOrderStatus (there are new states)
+  // TODO: update order every x seconds until it expires. Setup an interval?
+  // const status = useMemo(() => getOrderStatus(order), [order])
+  const status = 'open'
 
   return (
     <Table
@@ -74,11 +86,11 @@ export function OrderDetails(props: Props): JSX.Element {
           </tr>
           <tr>
             <td>Submission Time</td>
-            <td>{creationDate}</td>
+            <td>{creationDate.toISOString()}</td>
           </tr>
           <tr>
             <td>Expiration Time</td>
-            <td>{new Date(validTo * 1000).toISOString()}</td>
+            <td>{expirationDate.toISOString()}</td>
           </tr>
           <tr>
             <td>Type</td>
@@ -91,11 +103,11 @@ export function OrderDetails(props: Props): JSX.Element {
           </tr>
           <tr>
             <td>Sell amount</td>
-            <td>{`${formatSmart(sellAmount, sellToken.decimals)} ${sellToken.symbol}`}</td>
+            <td>{`${formatSmart(sellAmount.toString(), sellToken.decimals)} ${sellToken.symbol}`}</td>
           </tr>
           <tr>
             <td>Buy amount</td>
-            <td>{`${formatSmart(buyAmount, buyToken.decimals)} ${buyToken.symbol}`}</td>
+            <td>{`${formatSmart(buyAmount.toString(), buyToken.decimals)} ${buyToken.symbol}`}</td>
           </tr>
           <tr>
             <td>Limit Price</td>
@@ -127,7 +139,7 @@ export function OrderDetails(props: Props): JSX.Element {
               </tr>
               <tr>
                 <td>Gas Fees paid</td>
-                <td>{formatSmart(executedFeeAmount, sellToken.decimals)}</td>
+                <td>{formatSmart(executedFeeAmount.toString(), sellToken.decimals)}</td>
               </tr>
             </>
           )}
