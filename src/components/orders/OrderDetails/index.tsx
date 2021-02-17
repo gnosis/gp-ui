@@ -105,6 +105,7 @@ export function OrderDetails(props: Props): JSX.Element {
                 buyToken={buyToken}
                 sellAmount={sellAmount}
                 sellToken={sellToken}
+                showInvertButton
               />
             </td>
           </tr>

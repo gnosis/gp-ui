@@ -12,7 +12,7 @@ export default {
   title: 'Orders/OrderPriceDisplay',
   component: OrderPriceDisplay,
   decorators: [GlobalStyles, ThemeToggler],
-  argTypes: { order: { control: null }, buyToken: { control: null }, sellToken: { control: null } },
+  argTypes: { buyToken: { control: null }, sellToken: { control: null } },
 } as Meta
 
 const Template: Story<Props> = (args) => <OrderPriceDisplay {...args} />
@@ -30,5 +30,5 @@ Default.args = { ...defaultArgs }
 export const PriceInverted = Template.bind({})
 PriceInverted.args = { ...defaultArgs, isPriceInverted: true }
 
-export const WithoutInvertButton = Template.bind({})
-WithoutInvertButton.args = { ...defaultArgs, withoutInvertButton: true }
+export const WithInvertButton = Template.bind({})
+WithInvertButton.args = { ...defaultArgs, showInvertButton: true }
