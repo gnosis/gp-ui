@@ -57,14 +57,10 @@ export function OrderDetails(props: Props): JSX.Element {
     executedBuyAmount,
     executedSellAmount,
     executedFeeAmount,
+    status,
     filledAmount,
     filledPercentage,
   } = order
-
-  // TODO: refactor getOrderStatus (there are new states)
-  // TODO: update order every x seconds until it expires. Setup an interval?
-  // const status = useMemo(() => getOrderStatus(order), [order])
-  const status = 'open'
 
   return (
     <Table

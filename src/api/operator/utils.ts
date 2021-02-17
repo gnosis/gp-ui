@@ -163,6 +163,7 @@ export function transformOrder(rawOrder: RawOrder): Order {
     ...rest
   } = rawOrder
   const { executedBuyAmount, executedSellAmount } = getOrderExecutedAmounts(rawOrder)
+  const status = getOrderStatus(rawOrder)
   const { amount: filledAmount, percentage: filledPercentage } = getOrderFilledAmount(rawOrder)
 
   return {
@@ -178,6 +179,7 @@ export function transformOrder(rawOrder: RawOrder): Order {
     feeAmount: new BigNumber(feeAmount),
     executedFeeAmount: new BigNumber(executedFeeAmount),
     cancelled: invalidated,
+    status,
     filledAmount,
     filledPercentage,
   }

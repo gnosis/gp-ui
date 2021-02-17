@@ -57,7 +57,7 @@ export type Order = Pick<RawOrder, 'owner' | 'uid' | 'appData' | 'kind' | 'parti
   feeAmount: BigNumber
   executedFeeAmount: BigNumber
   cancelled: boolean
-  // status: OrderStatus // better not have the status because it depends on `expirationDate`
+  status: OrderStatus
   filledAmount: BigNumber
   filledPercentage: BigNumber
   // limitPrice: BigNumber  // cant have prices because they depend on token decimals
