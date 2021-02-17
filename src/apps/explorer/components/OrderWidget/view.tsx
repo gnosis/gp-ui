@@ -28,13 +28,12 @@ export const OrderWidgetView: React.FC<Props> = (props) => {
     <Wrapper>
       <h2>Order details</h2>
       {/* TODO: create common loading indicator */}
-      {isLoading && <FontAwesomeIcon icon={faSpinner} spin size="5x" />}
-      {order && !isLoading && buyToken && sellToken && (
-        <OrderDetails order={order} buyToken={buyToken} sellToken={sellToken} />
-      )}
+      {order && buyToken && sellToken && <OrderDetails order={order} buyToken={buyToken} sellToken={sellToken} />}
       {!order && !isLoading && <p>Order not found</p>}
+      {!isLoading && (!buyToken || !sellToken) && <p>Not able to load tokens</p>}
       {/* TODO: do a better error display. Toast notification maybe? */}
       {error && <p>{error}</p>}
+      {isLoading && <FontAwesomeIcon icon={faSpinner} spin size="3x" />}
     </Wrapper>
   )
 }
