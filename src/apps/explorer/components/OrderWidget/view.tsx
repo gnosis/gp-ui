@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { TokenErc20 } from '@gnosis.pm/dex-js'
 
-import { RawOrder } from 'api/operator'
+import { Order } from 'api/operator'
 
 import { OrderDetails } from 'components/orders/OrderDetails'
 
@@ -14,7 +14,7 @@ const Wrapper = styled.div`
 `
 
 export type Props = {
-  order: RawOrder | null
+  order: Order | null
   isLoading: boolean
   error?: string
   buyToken?: TokenErc20
