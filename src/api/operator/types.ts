@@ -60,8 +60,6 @@ export type Order = Pick<RawOrder, 'owner' | 'uid' | 'appData' | 'kind' | 'parti
   status: OrderStatus
   filledAmount: BigNumber
   filledPercentage: BigNumber
-  // limitPrice: BigNumber  // cant have prices because they depend on token decimals
-  // executedPrice: BigNumber
 }
 
 type WithNetworkId = { networkId: Network }
