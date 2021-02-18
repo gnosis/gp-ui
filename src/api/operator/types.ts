@@ -1,5 +1,7 @@
 import BigNumber from 'bignumber.js'
 
+import { TokenErc20 } from '@gnosis.pm/dex-js'
+
 import { Network } from 'types'
 
 export type OrderID = string
@@ -49,7 +51,9 @@ export type Order = Pick<RawOrder, 'owner' | 'uid' | 'appData' | 'kind' | 'parti
   creationDate: Date
   expirationDate: Date
   buyTokenAddress: string
+  buyToken?: TokenErc20 | null // undefined when not set, null when not found
   sellTokenAddress: string
+  sellToken?: TokenErc20 | null
   buyAmount: BigNumber
   sellAmount: BigNumber
   executedBuyAmount: BigNumber

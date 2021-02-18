@@ -10,15 +10,7 @@ import { OrderWidgetView } from './view'
 export const OrderWidget: React.FC = () => {
   const { orderId } = useParams<{ orderId: string }>()
 
-  const { order, buyToken, sellToken, isLoading, error } = useOrderAndErc20s(orderId, ORDER_QUERY_INTERVAL)
+  const { order, isLoading, error } = useOrderAndErc20s(orderId, ORDER_QUERY_INTERVAL)
 
-  return (
-    <OrderWidgetView
-      order={order}
-      isLoading={isLoading}
-      error={error}
-      buyToken={buyToken || undefined}
-      sellToken={sellToken || undefined}
-    />
-  )
+  return <OrderWidgetView order={order} isLoading={isLoading} error={error} />
 }

@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react'
 
-import { TokenErc20 } from '@gnosis.pm/dex-js'
-
 import { Order, transformOrder } from 'api/operator'
 import { getOrder } from 'api/operator/operatorApi'
 
@@ -54,8 +52,6 @@ export function useOrder(orderId: string): UseOrderResult {
 
 type UseOrderAndErc20sResult = {
   order: Order | null
-  buyToken: TokenErc20 | null
-  sellToken: TokenErc20 | null
   isLoading: boolean
   error?: string
 }
@@ -76,8 +72,10 @@ export function useOrderAndErc20s(orderId: string, updateInterval = 0): UseOrder
   // TODO: consume errors obj
   const { value, isLoading: areErc20Loading /*, error: erc20Errors*/ } = useMultipleErc20({ networkId, addresses })
 
-  const buyToken = value && value[order?.buyTokenAddress || '']
-  const sellToken = value && value[order?.sellTokenAddress || '']
+  if (order && value) {
+    order.buyToken = value[order?.buyTokenAddress || '']
+    order.sellToken = value[order?.sellTokenAddress || '']
+  }
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout | null = null
@@ -95,5 +93,5 @@ export function useOrderAndErc20s(orderId: string, updateInterval = 0): UseOrder
     }
   }, [forceUpdate, order, updateInterval])
 
-  return { order, buyToken, sellToken, isLoading: isOrderLoading || areErc20Loading, error: orderError }
+  return { order, isLoading: isOrderLoading || areErc20Loading, error: orderError }
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { formatSmart, TokenErc20 } from '@gnosis.pm/dex-js'
+import { formatSmart } from '@gnosis.pm/dex-js'
 
 import { Order } from 'api/operator'
 
@@ -41,10 +41,10 @@ const Table = styled(SimpleTable)`
   }
 `
 
-export type Props = { order: Order; buyToken: TokenErc20; sellToken: TokenErc20 }
+export type Props = { order: Order }
 
 export function OrderDetails(props: Props): JSX.Element {
-  const { order, buyToken, sellToken } = props
+  const { order } = props
   const {
     uid,
     owner,
@@ -60,7 +60,13 @@ export function OrderDetails(props: Props): JSX.Element {
     status,
     filledAmount,
     filledPercentage,
+    buyToken,
+    sellToken,
   } = order
+
+  if (!buyToken || !sellToken) {
+    return <div>Not sell or buy tokens loaded</div>
+  }
 
   return (
     <Table
