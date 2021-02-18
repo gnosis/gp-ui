@@ -1,4 +1,8 @@
-import { Order, RawOrder, transformOrder } from 'api/operator'
+import BigNumber from 'bignumber.js'
+
+import { Order, RawOrder } from 'api/operator'
+
+import { ZERO_BIG_NUMBER } from 'const'
 
 import { USDT, WETH } from './erc20s'
 
@@ -23,4 +27,22 @@ export const RAW_ORDER: RawOrder = {
     '0x04dca25f59e9ac744c4093530a38f1719c4e0b1ce8e4b68c8018b6b05fd4a6944e1dcf2a009df2d5932f7c034b4a24da0999f9309dd5108d51d54236b605ed991c',
 }
 
-export const RICH_ORDER: Order = { ...transformOrder(RAW_ORDER), buyToken: WETH, sellToken: USDT }
+export const RICH_ORDER: Order = {
+  ...RAW_ORDER,
+  creationDate: new Date(RAW_ORDER.creationDate),
+  expirationDate: new Date(RAW_ORDER.validTo * 1000),
+  buyTokenAddress: RAW_ORDER.buyToken,
+  sellTokenAddress: RAW_ORDER.sellToken,
+  buyAmount: new BigNumber(RAW_ORDER.buyAmount),
+  sellAmount: new BigNumber(RAW_ORDER.sellAmount),
+  executedBuyAmount: ZERO_BIG_NUMBER,
+  executedSellAmount: ZERO_BIG_NUMBER,
+  feeAmount: new BigNumber(RAW_ORDER.feeAmount),
+  executedFeeAmount: new BigNumber(RAW_ORDER.executedFeeAmount),
+  cancelled: RAW_ORDER.invalidated,
+  status: 'open',
+  filledAmount: ZERO_BIG_NUMBER,
+  filledPercentage: ZERO_BIG_NUMBER,
+  buyToken: WETH,
+  sellToken: USDT,
+}

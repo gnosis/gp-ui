@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { Order, transformOrder } from 'api/operator'
 import { getOrder } from 'api/operator/operatorApi'
@@ -13,13 +13,13 @@ type UseOrderResult = {
   forceUpdate: () => void
 }
 
-export function useOrder(orderId: string): UseOrderResult {
+export function useOrder(orderId: string, updateInterval = 0): UseOrderResult {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const [order, setOrder] = useState<Order | null>(null)
   // Hack to force component to update itself on demand
   const [forcedUpdate, setForcedUpdate] = useState({})
-  const forceUpdate = (): void => setForcedUpdate({})
+  const forceUpdate = useCallback((): void => setForcedUpdate({}), [])
 
   const networkId = useNetworkId()
 
@@ -47,6 +47,22 @@ export function useOrder(orderId: string): UseOrderResult {
     fetchOrder()
   }, [networkId, orderId, forcedUpdate])
 
+  useEffect(() => {
+    let intervalId: NodeJS.Timeout | null = null
+
+    // Only start the interval when:
+    // 1. Hook is configured to do so (`updateInterval` > 0)
+    // 2. Order exists
+    // 3. Order is not expired
+    if (updateInterval && order && order.expirationDate.getTime() > Date.now()) {
+      intervalId = setInterval(forceUpdate, updateInterval)
+    }
+
+    return (): void => {
+      intervalId && clearInterval(intervalId)
+    }
+  }, [forceUpdate, order, updateInterval])
+
   return { order, isLoading, error, forceUpdate }
 }
 
@@ -66,10 +82,10 @@ type UseOrderAndErc20sResult = {
 export function useOrderAndErc20s(orderId: string, updateInterval = 0): UseOrderAndErc20sResult {
   const networkId = useNetworkId() || undefined
 
-  const { order, isLoading: isOrderLoading, error: orderError, forceUpdate } = useOrder(orderId)
+  const { order, isLoading: isOrderLoading, error: orderError } = useOrder(orderId, updateInterval)
+
   const addresses = order ? [order.buyTokenAddress, order.sellTokenAddress] : []
 
-  // TODO: consume errors obj
   const { value, isLoading: areErc20Loading, error: erc20Errors } = useMultipleErc20({ networkId, addresses })
 
   const errors = { ...erc20Errors }
@@ -81,22 +97,6 @@ export function useOrderAndErc20s(orderId: string, updateInterval = 0): UseOrder
     order.buyToken = value[order?.buyTokenAddress || '']
     order.sellToken = value[order?.sellTokenAddress || '']
   }
-
-  useEffect(() => {
-    let intervalId: NodeJS.Timeout | null = null
-
-    // Only start the interval when:
-    // 1. Hook is configured to do so (`updateInterval` > 0)
-    // 2. Order exists
-    // 3. Order is not expired
-    if (updateInterval && order && order.expirationDate.getTime() > Date.now()) {
-      intervalId = setInterval(forceUpdate, updateInterval)
-    }
-
-    return (): void => {
-      intervalId && clearInterval(intervalId)
-    }
-  }, [forceUpdate, order, updateInterval])
 
   return { order, isLoading: isOrderLoading || areErc20Loading, errors }
 }
