@@ -10,7 +10,7 @@ import { OrderWidgetView } from './view'
 export const OrderWidget: React.FC = () => {
   const { orderId } = useParams<{ orderId: string }>()
 
-  const { order, isLoading, error } = useOrderAndErc20s(orderId, ORDER_QUERY_INTERVAL)
+  const { order, isLoading, errors } = useOrderAndErc20s(orderId, ORDER_QUERY_INTERVAL)
 
-  return <OrderWidgetView order={order} isLoading={isLoading} error={error} />
+  return <OrderWidgetView order={order} isLoading={isLoading} errors={errors} />
 }

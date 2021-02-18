@@ -14,11 +14,11 @@ const Wrapper = styled.div`
 export type Props = {
   order: Order | null
   isLoading: boolean
-  error?: string
+  errors: Record<string, string>
 }
 
 export const OrderWidgetView: React.FC<Props> = (props) => {
-  const { order, isLoading, error } = props
+  const { order, isLoading, errors } = props
 
   return (
     <Wrapper>
@@ -26,9 +26,11 @@ export const OrderWidgetView: React.FC<Props> = (props) => {
       {/* TODO: create common loading indicator */}
       {order?.buyToken && order?.sellToken && <OrderDetails order={order} />}
       {!order && !isLoading && <p>Order not found</p>}
-      {!isLoading && (!order?.buyToken || !order?.sellToken) && <p>Not able to load tokens</p>}
+      {!isLoading && order && (!order?.buyToken || !order?.sellToken) && <p>Not able to load tokens</p>}
       {/* TODO: do a better error display. Toast notification maybe? */}
-      {error && <p>{error}</p>}
+      {Object.keys(errors).map((key) => (
+        <p key={key}>{errors[key]}</p>
+      ))}
       {isLoading && <FontAwesomeIcon icon={faSpinner} spin size="3x" />}
     </Wrapper>
   )

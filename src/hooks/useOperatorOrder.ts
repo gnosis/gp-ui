@@ -53,7 +53,7 @@ export function useOrder(orderId: string): UseOrderResult {
 type UseOrderAndErc20sResult = {
   order: Order | null
   isLoading: boolean
-  error?: string
+  errors: Record<string, string>
 }
 
 /**
@@ -70,7 +70,12 @@ export function useOrderAndErc20s(orderId: string, updateInterval = 0): UseOrder
   const addresses = order ? [order.buyTokenAddress, order.sellTokenAddress] : []
 
   // TODO: consume errors obj
-  const { value, isLoading: areErc20Loading /*, error: erc20Errors*/ } = useMultipleErc20({ networkId, addresses })
+  const { value, isLoading: areErc20Loading, error: erc20Errors } = useMultipleErc20({ networkId, addresses })
+
+  const errors = { ...erc20Errors }
+  if (orderError) {
+    errors[orderId] = orderError
+  }
 
   if (order && value) {
     order.buyToken = value[order?.buyTokenAddress || '']
@@ -93,5 +98,5 @@ export function useOrderAndErc20s(orderId: string, updateInterval = 0): UseOrder
     }
   }, [forceUpdate, order, updateInterval])
 
-  return { order, isLoading: isOrderLoading || areErc20Loading, error: orderError }
+  return { order, isLoading: isOrderLoading || areErc20Loading, errors }
 }
