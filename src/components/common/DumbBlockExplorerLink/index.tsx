@@ -1,7 +1,8 @@
 import React, { ReactElement } from 'react'
-import { useWalletConnection } from 'hooks/useWalletConnection'
-import { abbreviateString } from 'utils'
+
 import { Network } from 'types'
+
+import { abbreviateString } from 'utils'
 
 type BlockExplorerLinkType = 'tx' | 'address' | 'contract' | 'token' | 'event'
 
