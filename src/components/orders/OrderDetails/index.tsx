@@ -23,14 +23,16 @@ export const OrderDetails: React.FC<Props> = (props) => {
   return (
     <Wrapper>
       <h2>Order details</h2>
-      {/* TODO: create common loading indicator */}
+      {/* TODO: add tabs (overview/fills) */}
       {order?.buyToken && order?.sellToken && <DetailsTable order={order} />}
+      {/* TODO: add fills tab for partiallyFillable orders */}
       {!order && !isLoading && <p>Order not found</p>}
       {!isLoading && order && (!order?.buyToken || !order?.sellToken) && <p>Not able to load tokens</p>}
       {/* TODO: do a better error display. Toast notification maybe? */}
       {Object.keys(errors).map((key) => (
         <p key={key}>{errors[key]}</p>
       ))}
+      {/* TODO: create common loading indicator */}
       {isLoading && <FontAwesomeIcon icon={faSpinner} spin size="3x" />}
     </Wrapper>
   )
