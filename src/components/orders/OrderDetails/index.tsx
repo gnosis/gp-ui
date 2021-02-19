@@ -49,7 +49,7 @@ export type Props = { order: Order }
 export function OrderDetails(props: Props): JSX.Element {
   const { order } = props
   const {
-    uid,
+    shortId,
     owner,
     kind,
     partiallyFillable,
@@ -77,7 +77,7 @@ export function OrderDetails(props: Props): JSX.Element {
         <>
           <tr>
             <td>Order Id</td>
-            <td>{uid}</td>
+            <td>{shortId}</td>
           </tr>
           <tr>
             <td>From</td>
