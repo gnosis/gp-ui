@@ -130,6 +130,22 @@ export function OrderDetails(props: Props): JSX.Element {
           {!partiallyFillable && (
             <>
               <tr>
+                <td>Execution price</td>
+                <td>
+                  {!filledAmount.isZero() ? (
+                    <OrderPriceDisplay
+                      buyAmount={executedBuyAmount}
+                      buyToken={buyToken}
+                      sellAmount={executedSellAmount}
+                      sellToken={sellToken}
+                      showInvertButton
+                    />
+                  ) : (
+                    '-'
+                  )}
+                </td>
+              </tr>
+              <tr>
                 <td>Filled</td>
                 <td>
                   {kind === 'sell'
