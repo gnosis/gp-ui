@@ -2,7 +2,7 @@ import React from 'react'
 // also exported from '@storybook/react' if you can deal with breaking changes in 6.1
 import { Story, Meta } from '@storybook/react/types-6-0'
 
-import { BlockExplorerLink, Props } from '.'
+import { DumbBlockExplorerLink, Props } from '.'
 import { Network } from 'types'
 import {
   ADDRESS_ACCOUNT_XDAI,
@@ -18,15 +18,15 @@ import {
 const networkIds = Object.values(Network).filter(Number.isInteger)
 
 export default {
-  title: 'Common/BlockExplorerLink',
-  component: BlockExplorerLink,
+  title: 'Common/DumbBlockExplorerLink',
+  component: DumbBlockExplorerLink,
   argTypes: {
     label: { control: 'text' },
     networkId: { control: { type: 'inline-radio', options: networkIds } },
   },
 } as Meta
 
-const Template: Story<Props> = (args) => <BlockExplorerLink {...args} />
+const Template: Story<Props> = (args) => <DumbBlockExplorerLink {...args} />
 
 const defaultParams: Props = {
   type: 'tx',
