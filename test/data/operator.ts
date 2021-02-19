@@ -29,6 +29,7 @@ export const RAW_ORDER: RawOrder = {
 
 export const RICH_ORDER: Order = {
   ...RAW_ORDER,
+  shortId: 'adef89ade',
   creationDate: new Date(RAW_ORDER.creationDate),
   expirationDate: new Date(RAW_ORDER.validTo * 1000),
   buyTokenAddress: RAW_ORDER.buyToken,
