@@ -46,7 +46,7 @@ const Table = styled(SimpleTable)`
 
 export type Props = { order: Order }
 
-export function OrderDetails(props: Props): JSX.Element {
+export function DetailsTable(props: Props): JSX.Element {
   const { order } = props
   const {
     shortId,

@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { Order } from 'api/operator'
 
-import { OrderDetails } from 'components/orders/OrderDetails'
+import { DetailsTable } from 'components/orders/DetailsTable'
 
 const Wrapper = styled.div`
   padding: 1.6rem 0;
@@ -24,7 +24,7 @@ export const OrderWidgetView: React.FC<Props> = (props) => {
     <Wrapper>
       <h2>Order details</h2>
       {/* TODO: create common loading indicator */}
-      {order?.buyToken && order?.sellToken && <OrderDetails order={order} />}
+      {order?.buyToken && order?.sellToken && <DetailsTable order={order} />}
       {!order && !isLoading && <p>Order not found</p>}
       {!isLoading && order && (!order?.buyToken || !order?.sellToken) && <p>Not able to load tokens</p>}
       {/* TODO: do a better error display. Toast notification maybe? */}
