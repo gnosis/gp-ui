@@ -17,7 +17,7 @@ export type Props = {
   errors: Record<string, string>
 }
 
-export const OrderWidgetView: React.FC<Props> = (props) => {
+export const OrderDetails: React.FC<Props> = (props) => {
   const { order, isLoading, errors } = props
 
   return (

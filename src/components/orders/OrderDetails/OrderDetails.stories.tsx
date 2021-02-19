@@ -4,18 +4,18 @@ import { Story, Meta } from '@storybook/react/types-6-0'
 
 import { GlobalStyles, ThemeToggler } from 'storybook/decorators'
 
-import { OrderWidgetView, Props } from './view'
+import { OrderDetails, Props } from '.'
 
-import { RICH_ORDER } from '../../../../../test/data'
+import { RICH_ORDER } from '../../../../test/data'
 
 export default {
-  title: 'Explorer/OrderWidget',
-  component: OrderWidgetView,
+  title: 'orders/OrderDetails',
+  component: OrderDetails,
   decorators: [GlobalStyles, ThemeToggler],
   //   argTypes: { header: { control: null }, children: { control: null } },
 } as Meta
 
-const Template: Story<Props> = (args) => <OrderWidgetView {...args} />
+const Template: Story<Props> = (args) => <OrderDetails {...args} />
 
 const defaultProps: Props = { order: null, isLoading: false, errors: {} }
 
