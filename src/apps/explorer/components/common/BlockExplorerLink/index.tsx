@@ -1,15 +1,6 @@
-import React from 'react'
-
-import { BlockExplorerLink, Props } from 'components/common/BlockExplorerLink'
-import { useNetworkId } from 'state/network'
+import { BlockExplorerLinkNetworkState } from 'components/common/BlockExplorerLink'
 
 /**
  * Explorer app version of BlockExplorerLink
- *
- * Relies on app state to fetch networkId
  */
-export function BlockExplorerLink(props: Props): JSX.Element {
-  const networkId = useNetworkId() || undefined
-
-  return <BlockExplorerLink {...props} networkId={networkId} />
-}
+export const BlockExplorerLink = BlockExplorerLinkNetworkState
