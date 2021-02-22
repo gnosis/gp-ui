@@ -98,7 +98,7 @@ function getExplorerUrl(networkId: number, type: BlockExplorerLinkType, identifi
  * Does not make any assumptions regarding the network.
  * Expects all data as input. Does not use any hooks internally.
  */
-export const DumbBlockExplorerLink: React.FC<Props> = (props: Props) => {
+export const BlockExplorerLink: React.FC<Props> = (props: Props) => {
   const { type, identifier, label: labelProp, useUrlAsLabel = false, className, networkId } = props
 
   if (!networkId || !identifier) {

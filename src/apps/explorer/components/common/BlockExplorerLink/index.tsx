@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { DumbBlockExplorerLink, Props } from 'components/common/DumbBlockExplorerLink'
+import { BlockExplorerLink, Props } from 'components/common/BlockExplorerLink'
 import { useNetworkId } from 'state/network'
 
 /**
@@ -11,5 +11,5 @@ import { useNetworkId } from 'state/network'
 export function BlockExplorerLink(props: Props): JSX.Element {
   const networkId = useNetworkId() || undefined
 
-  return <DumbBlockExplorerLink {...props} networkId={networkId} />
+  return <BlockExplorerLink {...props} networkId={networkId} />
 }
