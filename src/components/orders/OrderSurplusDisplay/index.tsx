@@ -4,6 +4,13 @@ import styled from 'styled-components'
 import { Order } from 'api/operator'
 
 import { formatSmart, safeTokenName } from 'utils'
+import {
+  HIGH_PRECISION_DECIMALS,
+  HIGH_PRECISION_SMALL_LIMIT,
+  LOW_PRECISION_DECIMALS,
+  NO_ADJUSTMENT_NEEDED_PRECISION,
+  PERCENTAGE_PRECISION,
+} from 'apps/explorer/const'
 
 const Wrapper = styled.div`
   display: flex;
@@ -51,18 +58,30 @@ export function OrderSurplusDisplay(props: Props): JSX.Element | null {
   return (
     <Wrapper>
       <Surplus>
-        {formatSmart({ amount: surplusPercentage.multipliedBy('100').toString(10), precision: 0, decimals: 2 })}
+        {formatSmart({
+          amount: surplusPercentage.toString(10),
+          precision: PERCENTAGE_PRECISION,
+          decimals: LOW_PRECISION_DECIMALS,
+        })}
       </Surplus>
       <span>
         {formatSmart({
           amount: surplusAmount.toString(10),
           precision: surplusToken.decimals,
-          decimals: 8,
-          smallLimit: '0.00000001',
+          decimals: HIGH_PRECISION_DECIMALS,
+          smallLimit: HIGH_PRECISION_SMALL_LIMIT,
         })}{' '}
         {safeTokenName(surplusToken)}
       </span>
-      <UsdAmount>(~${formatSmart({ amount: usdAmount, precision: 0, decimals: 8 })})</UsdAmount>
+      <UsdAmount>
+        (~$
+        {formatSmart({
+          amount: usdAmount,
+          precision: NO_ADJUSTMENT_NEEDED_PRECISION,
+          decimals: LOW_PRECISION_DECIMALS,
+        })}
+        )
+      </UsdAmount>
     </Wrapper>
   )
 }
