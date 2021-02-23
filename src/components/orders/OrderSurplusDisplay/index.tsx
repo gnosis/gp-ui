@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { getOrderSurplus, Order } from 'api/operator'
+import { Order } from 'api/operator'
 
 import { formatSmart, safeTokenName } from 'utils'
 
