@@ -14,8 +14,7 @@ export default {
 
 const Template: Story<Props> = (args) => (
   <div style={{ fontSize: '15px' }}>
-    Click the button to copy
-    <CopyButton {...args} />
+    Click the button to copy <CopyButton {...args} />
   </div>
 )
 
