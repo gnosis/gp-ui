@@ -42,7 +42,9 @@ export function CopyButton(props: Props): JSX.Element {
 
   return (
     <CopyToClipboard text={text} onCopy={onCopy}>
-      <Icon icon={copied ? faCheck : faCopy} copied={copied} />
+      <span>
+        <Icon icon={copied ? faCheck : faCopy} copied={copied} /> {copied && 'Copied'}
+      </span>
     </CopyToClipboard>
   )
 }
