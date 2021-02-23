@@ -70,9 +70,14 @@ export function getOrderFilledAmount(order: RawOrder): { amount: BigNumber; perc
 
 export function getSurplus(
   inputAmount: BigNumber | string,
-  executedAmount: BigNumber,
+  executedAmount: BigNumber | string,
 ): { amount: BigNumber; percentage: BigNumber } {
-  const amount = executedAmount.gt(inputAmount) ? executedAmount.minus(inputAmount) : ZERO_BIG_NUMBER
+  // Just as a nicety, allow both input as strings
+  // inputAmount has ne need for conversion since BigNumber takes care of it when used as a parameter
+  // executedAmount needs to be converted though
+  const _executedAmount = typeof executedAmount === 'string' ? new BigNumber(executedAmount) : executedAmount
+
+  const amount = _executedAmount.gt(inputAmount) ? _executedAmount.minus(inputAmount) : ZERO_BIG_NUMBER
   const percentage = amount.dividedBy(inputAmount)
 
   return { amount, percentage }
