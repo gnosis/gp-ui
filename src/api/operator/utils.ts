@@ -192,6 +192,7 @@ export function transformOrder(rawOrder: RawOrder): Order {
   const { executedBuyAmount, executedSellAmount } = getOrderExecutedAmounts(rawOrder)
   const status = getOrderStatus(rawOrder)
   const { amount: filledAmount, percentage: filledPercentage } = getOrderFilledAmount(rawOrder)
+  const { amount: surplusAmount, percentage: surplusPercentage } = getOrderSurplus(rawOrder)
 
   return {
     ...rest,
@@ -210,5 +211,7 @@ export function transformOrder(rawOrder: RawOrder): Order {
     status,
     filledAmount,
     filledPercentage,
+    surplusAmount,
+    surplusPercentage,
   }
 }
