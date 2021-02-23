@@ -13,8 +13,6 @@ import {
 } from 'apps/explorer/const'
 
 const Wrapper = styled.div`
-  display: flex;
-
   & > * {
     margin-right: 0.25rem;
   }
