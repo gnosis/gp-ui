@@ -55,33 +55,31 @@ export function OrderSurplusDisplay(props: Props): JSX.Element | null {
     return null
   }
 
+  const formattedSurplusPercentage = formatSmart({
+    amount: surplusPercentage.toString(10),
+    precision: PERCENTAGE_PRECISION,
+    decimals: LOW_PRECISION_DECIMALS,
+  })
+  const formattedSurplusAmount = formatSmart({
+    amount: surplusAmount.toString(10),
+    precision: surplusToken.decimals,
+    decimals: HIGH_PRECISION_DECIMALS,
+    smallLimit: HIGH_PRECISION_SMALL_LIMIT,
+  })
+  const tokenSymbol = safeTokenName(surplusToken)
+  const formattedUsdAmount = formatSmart({
+    amount: usdAmount,
+    precision: NO_ADJUSTMENT_NEEDED_PRECISION,
+    decimals: LOW_PRECISION_DECIMALS,
+  })
+
   return (
     <Wrapper>
-      <Surplus>
-        {formatSmart({
-          amount: surplusPercentage.toString(10),
-          precision: PERCENTAGE_PRECISION,
-          decimals: LOW_PRECISION_DECIMALS,
-        })}
-      </Surplus>
+      <Surplus>{formattedSurplusPercentage}</Surplus>
       <span>
-        {formatSmart({
-          amount: surplusAmount.toString(10),
-          precision: surplusToken.decimals,
-          decimals: HIGH_PRECISION_DECIMALS,
-          smallLimit: HIGH_PRECISION_SMALL_LIMIT,
-        })}{' '}
-        {safeTokenName(surplusToken)}
+        {formattedSurplusAmount} {tokenSymbol}
       </span>
-      <UsdAmount>
-        (~$
-        {formatSmart({
-          amount: usdAmount,
-          precision: NO_ADJUSTMENT_NEEDED_PRECISION,
-          decimals: LOW_PRECISION_DECIMALS,
-        })}
-        )
-      </UsdAmount>
+      <UsdAmount>(~${formattedUsdAmount})</UsdAmount>
     </Wrapper>
   )
 }
