@@ -68,6 +68,28 @@ export function getOrderFilledAmount(order: RawOrder): { amount: BigNumber; perc
   return { amount: executedAmount, percentage: executedAmount.div(totalAmount) }
 }
 
+export function getSurplus(
+  inputAmount: BigNumber | string,
+  executedAmount: BigNumber,
+): { amount: BigNumber; percentage: BigNumber } {
+  const amount = executedAmount.gt(inputAmount) ? executedAmount.minus(inputAmount) : ZERO_BIG_NUMBER
+  const percentage = amount.dividedBy(inputAmount)
+
+  return { amount, percentage }
+}
+
+export function getOrderSurplus(order: RawOrder): { amount: BigNumber; percentage: BigNumber } {
+  const { kind, buyAmount, sellAmount } = order
+
+  const { executedBuyAmount, executedSellAmount } = getOrderExecutedAmounts(order)
+
+  if (kind === 'buy') {
+    return getSurplus(sellAmount, executedSellAmount)
+  } else {
+    return getSurplus(buyAmount, executedBuyAmount)
+  }
+}
+
 /**
  * Syntactic sugar to get the order's executed amounts as a BigNumber (in atoms)
  * Mostly because `executedSellAmount` is derived from 2 fields (at time or writing)
