@@ -5,7 +5,7 @@ import { calculatePrice, invertPrice } from '@gnosis.pm/dex-js'
 
 import { FILLED_ORDER_EPSILON, ONE_BIG_NUMBER, ZERO_BIG_NUMBER } from 'const'
 
-import { Order, OrderStatus, RawOrder } from './types'
+import { Order, OrderStatus, RawOrder } from 'api/operator/types'
 
 function isOrderFilled(order: RawOrder): boolean {
   let amount, executedAmount
