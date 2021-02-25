@@ -29,7 +29,7 @@ export const RowContents = styled.span`
     margin: 0 0.5rem 0 0;
   }
 
-  & > * {
+  & > :not(:first-child) {
     margin-left: 0.5rem;
   }
 `
