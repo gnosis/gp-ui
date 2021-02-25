@@ -73,7 +73,7 @@ export const LIGHT_COLOURS = {
   green: '#1E9B75',
   greenOpacity: 'rgb(30 155 117 / 10%)',
   orange: '#DB843A',
-  orangeOpacity: 'rgba(219, 132, 58, 0.2)',
+  orangeOpacity: 'rgb(219 132 58 / 20%)',
 
   // text
   textPrimary1: '#2B3658',
@@ -98,16 +98,16 @@ export const LIGHT_COLOURS = {
   labelBgOpen: '#77838F1A',
 
   // table & borders
-  borderPrimary: 'rgba(151, 151, 184, 0.3)',
-  tableRowBorder: 'rgba(151, 151, 184, 0.1)',
+  borderPrimary: 'rgb(151 151 184 / 30%)',
+  tableRowBorder: 'rgb(151 151 184 / 10%)',
 }
 
 export const DARK_COLOURS = {
   // base
   green: '#00D897',
-  greenOpacity: 'rgba(0, 216, 151, 0.1)',
+  greenOpacity: 'rgb(0 216 151 / 10%)',
   orange: '#DB843A',
-  orangeOpacity: 'rgba(219, 132, 58, 0.1)',
+  orangeOpacity: 'rgb(219 132 58 / 10%)',
 
   // text
   textPrimary1: '#FFF',
@@ -132,8 +132,8 @@ export const DARK_COLOURS = {
   labelBgOpen: '#9797B84D',
 
   // table & borders
-  borderPrimary: 'rgba(151, 151, 184, 0.3)',
-  tableRowBorder: 'rgba(151, 151, 184, 0.1)',
+  borderPrimary: 'rgb(151 151 184 / 30%)',
+  tableRowBorder: 'rgb(151 151 184 / 10%)',
 
   // TODO: add to theme, not colour palette
   // gradientForm1: 'linear-gradient(270deg, #8958FF 0%, #3F77FF 100%)',
