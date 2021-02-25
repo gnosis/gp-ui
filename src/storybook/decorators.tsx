@@ -47,7 +47,7 @@ const ThemeTogglerUnwrapped: React.FC = ({ children }) => {
       </ThemeToggle>
       <br />
       <br />
-      <code>Current theme: {themeMode.toUpperCase()}</code>
+      <code style={{ fontSize: '12px' }}>Current theme: {themeMode.toUpperCase()}</code>
     </>
   )
 }
