@@ -4,7 +4,6 @@ import { web3ModalOverride } from './overrides'
 
 // TODO: remove for constants from colour palette later
 import variables from 'components/layout/GenericLayout/variablesCss'
-// import { fontVariables } from './fonts'
 
 const selection = css`
   /* CSS for selecting text */
