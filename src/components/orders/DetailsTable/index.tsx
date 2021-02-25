@@ -28,7 +28,7 @@ const Table = styled(SimpleTable)`
       justify-content: flex-start;
 
       &:first-of-type {
-        font-weight: var(--font-weight-bold);
+        font-weight: ${({ theme }): string => theme.fontLighter};
         text-transform: capitalize;
 
         /* Question mark */

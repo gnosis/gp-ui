@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { applyMediaStyles } from 'theme'
 
 const Wrapper = styled.table<{ $numColumns?: number }>`
-  font-size: var(--font-size-default);
+  font-size: ${({ theme }): string => theme.fontSizeDefault};
   background-color: transparent;
   color: ${({ theme }): string => theme.textPrimary1};
   height: 100%;
@@ -89,7 +89,6 @@ const Wrapper = styled.table<{ $numColumns?: number }>`
 
     > th, 
     > td {
-      height: 3rem;
       display: flex;
       align-items: center;
       justify-content: flex-start;

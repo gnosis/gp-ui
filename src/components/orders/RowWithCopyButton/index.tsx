@@ -5,10 +5,10 @@ import { CopyButton } from 'components/common/CopyButton'
 
 const Wrapper = styled.span`
   display: flex;
-  flex-wrap: no;
+  flex-wrap: nowrap;
 
   & > :first-child {
-    margin-right: 0.5rem;
+    margin-right: 0.75rem;
   }
 `
 

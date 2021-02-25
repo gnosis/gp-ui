@@ -15,7 +15,6 @@ import {
 const Wrapper = styled.span`
   display: flex;
   align-items: center;
-  font-size: ${({ theme }): string => theme.fontSizeNormal};
 `
 
 const Icon = styled(FontAwesomeIcon)`
@@ -25,6 +24,7 @@ const Icon = styled(FontAwesomeIcon)`
   height: 2rem;
   padding: 0.4rem;
   margin-left: 0.5rem;
+  cursor: pointer;
 `
 
 export type Props = {

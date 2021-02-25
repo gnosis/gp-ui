@@ -11,7 +11,6 @@ export interface Colors {
   textDisabled: Color
 
   icon: Color
-  surplusPercentage: Color
 
   // backgrounds / greys
   bg1: Color
@@ -40,6 +39,7 @@ export interface Colors {
   red1: Color
   red2: Color
   red3?: Color
+  green: Color
   green1: Color
   green2: Color
   green3?: Color
@@ -67,27 +67,29 @@ export const BASE_COLOURS = {
   blue1: '#2172E5',
   blue2: '#3F77FF',
   orange1: '#D96D49',
-
-  // labels
-  labelTextExpired: '#DB843A',
-  labelTextFilled: '#41C29B',
-  labelBgExpired: '#DB843A1A',
-  labelBgFilled: '#00D8971A',
 }
 
 export const LIGHT_COLOURS = {
+  //base
+  green: '#1E9B75',
+
+  // labels
+  labelTextExpired: '#DB843A',
+  labelTextFilled: '#1E9B75',
+  labelBgExpired: 'rgba(219, 132, 58, 0.2)',
+  labelBgFilled: 'rgb(30 155 117 / 10%)',
+
   // text
-  textPrimary1: '#FFF',
+  textPrimary1: '#2B3658',
   textSecondary1: '#EDEDED',
   textSecondary2: '#9797B8',
   textActive1: '#D96D49',
   textDisabled: '#31323E',
 
   icon: '#657795B3',
-  surplusPercentage: '#1E9B75',
 
   // backgrounds / greys
-  bg1: '#ffc1ff',
+  bg1: '#F7F8FA',
   bg2: '#F7F8FA',
   bgDisabled: '#ffffff80',
 
@@ -105,6 +107,15 @@ export const LIGHT_COLOURS = {
 }
 
 export const DARK_COLOURS = {
+  // base
+  green: '#00D897',
+
+  // labels
+  labelTextExpired: '#DB843A',
+  labelTextFilled: '#00D897',
+  labelBgExpired: 'rgba(219, 132, 58, 0.1)',
+  labelBgFilled: 'rgba(0, 216, 151, 0.1)',
+
   // text
   textPrimary1: '#FFF',
   textSecondary1: '#EDEDED',
@@ -113,7 +124,6 @@ export const DARK_COLOURS = {
   textDisabled: '#31323E',
 
   icon: '#8D8DA980',
-  surplusPercentage: '#00D897',
 
   // backgrounds / greys
   bg1: '#16171F',
