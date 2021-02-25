@@ -23,11 +23,7 @@ export interface Colors {
 
   // labels
   labelTextOpen: Color
-  labelTextExpired: Color
-  labelTextFilled: Color
   labelBgOpen: Color
-  labelBgExpired: Color
-  labelBgFilled: Color
 
   // table & borders
   borderPrimary: Color
@@ -40,6 +36,7 @@ export interface Colors {
   red2: Color
   red3?: Color
   green: Color
+  greenOpacity: Color
   green1: Color
   green2: Color
   green3?: Color
@@ -49,6 +46,8 @@ export interface Colors {
   blue1: Color
   blue2: Color
   blue3?: Color
+  orange: Color
+  orangeOpacity: Color
   orange1: Color
 }
 
@@ -72,12 +71,9 @@ export const BASE_COLOURS = {
 export const LIGHT_COLOURS = {
   //base
   green: '#1E9B75',
-
-  // labels
-  labelTextExpired: '#DB843A',
-  labelTextFilled: '#1E9B75',
-  labelBgExpired: 'rgba(219, 132, 58, 0.2)',
-  labelBgFilled: 'rgb(30 155 117 / 10%)',
+  greenOpacity: 'rgb(30 155 117 / 10%)',
+  orange: '#DB843A',
+  orangeOpacity: 'rgba(219, 132, 58, 0.2)',
 
   // text
   textPrimary1: '#2B3658',
@@ -109,12 +105,9 @@ export const LIGHT_COLOURS = {
 export const DARK_COLOURS = {
   // base
   green: '#00D897',
-
-  // labels
-  labelTextExpired: '#DB843A',
-  labelTextFilled: '#00D897',
-  labelBgExpired: 'rgba(219, 132, 58, 0.1)',
-  labelBgFilled: 'rgba(0, 216, 151, 0.1)',
+  greenOpacity: 'rgba(0, 216, 151, 0.1)',
+  orange: '#DB843A',
+  orangeOpacity: 'rgba(219, 132, 58, 0.1)',
 
   // text
   textPrimary1: '#FFF',

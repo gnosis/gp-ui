@@ -12,13 +12,13 @@ function setStatusColors({ theme, status }: { theme: DefaultTheme; status: Order
 
   switch (status) {
     case 'expired':
-      text = theme.labelTextExpired
-      background = theme.labelBgExpired
+      text = theme.orange
+      background = theme.orangeOpacity
       break
     case 'filled':
     case 'partially filled':
-      text = theme.labelTextFilled
-      background = theme.labelBgFilled
+      text = theme.green
+      background = theme.greenOpacity
       break
     case 'open':
       text = theme.labelTextOpen
