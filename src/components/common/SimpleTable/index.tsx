@@ -50,7 +50,7 @@ const Wrapper = styled.table<{ $numColumns?: number }>`
       display: grid;
       width: 100%;
       transition: background-color 0.1s ease-in-out;
-      height: 4.8rem;
+      min-height: 4.8rem;
       box-sizing: border-box;
 
       &:not(:last-of-type) {

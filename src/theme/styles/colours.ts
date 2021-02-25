@@ -15,7 +15,6 @@ export interface Colors {
   // backgrounds / greys
   bg1: Color
   bg2: Color
-  bgDisabled: Color
 
   // gradients
   gradient1: Color
@@ -87,7 +86,6 @@ export const LIGHT_COLOURS = {
   // backgrounds / greys
   bg1: '#F7F8FA',
   bg2: '#F7F8FA',
-  bgDisabled: '#ffffff80',
 
   // gradients
   gradient1: '#8958FF',
@@ -121,7 +119,6 @@ export const DARK_COLOURS = {
   // backgrounds / greys
   bg1: '#16171F',
   bg2: '#2C2D3F',
-  bgDisabled: '#ffffff80',
 
   // gradients
   gradient1: '#21222E',
