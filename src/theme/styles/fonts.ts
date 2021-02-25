@@ -17,7 +17,7 @@ export interface Fonts {
 const fontsVariables = {
   fontDefault: 'Inter',
   fontVariable: 'Inter var',
-  fontThin: '200',
+  fontThin: '100',
   fontLight: '200',
   fontLighter: '300',
   fontNormal: '400',
