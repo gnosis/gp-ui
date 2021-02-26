@@ -5,7 +5,7 @@ import { faCheckCircle, faClock, faDotCircle, faTimesCircle, IconDefinition } fr
 
 import { OrderStatus } from 'api/operator'
 
-export type Props = { status: OrderStatus }
+type DisplayProps = { status: OrderStatus }
 
 function setStatusColors({ theme, status }: { theme: DefaultTheme; status: OrderStatus }): string {
   let background, text
@@ -32,8 +32,13 @@ function setStatusColors({ theme, status }: { theme: DefaultTheme; status: Order
     `
 }
 
-const Wrapper = styled.div<Props>`
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
   font-size: ${({ theme }): string => theme.fontSizeDefault};
+`
+
+const Label = styled.div<DisplayProps>`
   font-weight: ${({ theme }): string => theme.fontBold};
   text-transform: capitalize;
   border-radius: 0.4rem;
@@ -46,6 +51,12 @@ const Wrapper = styled.div<Props>`
 
 const StyledFAIcon = styled(FontAwesomeIcon)`
   margin: 0 0.75rem 0 0;
+`
+
+const PartialFill = styled.div`
+  margin-left: 1rem;
+  font-size: 0.85em; /* Intentional use of "em" to be relative to parent's font size */
+  color: ${({ theme }): string => theme.textPrimary1};
 `
 
 function getStatusIcon(status: OrderStatus): IconDefinition {
@@ -61,19 +72,24 @@ function getStatusIcon(status: OrderStatus): IconDefinition {
   }
 }
 
-function StatusIcon({ status }: Props): JSX.Element {
+function StatusIcon({ status }: DisplayProps): JSX.Element {
   const icon = getStatusIcon(status)
 
   return <StyledFAIcon icon={icon} />
 }
 
+export type Props = DisplayProps & { partiallyFilled: boolean }
+
 export function StatusLabel(props: Props): JSX.Element {
-  const { status } = props
+  const { status, partiallyFilled } = props
 
   return (
-    <Wrapper status={status}>
-      <StatusIcon status={status} />
-      {status}
+    <Wrapper>
+      <Label status={status}>
+        <StatusIcon status={status} />
+        {status}
+      </Label>
+      {partiallyFilled && <PartialFill>(partial fill)</PartialFill>}
     </Wrapper>
   )
 }
