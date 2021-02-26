@@ -8,7 +8,9 @@ import { Order } from 'api/operator'
 import { DetailsTable } from 'components/orders/DetailsTable'
 
 const Wrapper = styled.div`
-  padding: 1.6rem 0;
+  padding: 1.6rem;
+  margin: 0 auto;
+  max-width: 140rem;
 `
 
 export type Props = {

@@ -10,7 +10,6 @@ import { DISPLAY_TEXT_COPIED_CHECK } from 'apps/explorer/const'
 const Icon = styled(FontAwesomeIcon)<{ copied: boolean }>`
   color: ${({ theme, copied }): string => (copied ? theme.green : theme.icon)};
   cursor: ${({ copied }): string => (copied ? 'reset' : 'pointer')};
-  transition: color 0.2s ease-in-out, opacity 0.2s ease-in-out;
 
   + span {
     color: ${({ theme }): string => theme.green};

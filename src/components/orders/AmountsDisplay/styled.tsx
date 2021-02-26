@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
   row-gap: 1rem;
   justify-items: start;
   align-items: center;
-  grid-template-columns: 10rem auto;
+  grid-template-columns: 11rem auto;
   padding: 1.3rem 0;
 `
 
@@ -41,5 +41,5 @@ export const UsdAmount = styled.span`
 export const StyledImg = styled(TokenImg)`
   width: 1.6rem;
   height: 1.6rem;
-  margin: 0 0 0 0.5rem;
+  margin: 0 0.5rem;
 `
