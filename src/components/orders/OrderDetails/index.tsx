@@ -6,11 +6,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Order } from 'api/operator'
 
 import { DetailsTable } from 'components/orders/DetailsTable'
+import { RowWithCopyButton } from 'components/orders/RowWithCopyButton'
 
 const Wrapper = styled.div`
   padding: 1.6rem;
   margin: 0 auto;
   max-width: 140rem;
+`
+
+const TitleUid = styled(RowWithCopyButton)`
+  font-size: ${({ theme }): string => theme.fontSizeDefault};
+  font-weight: ${({ theme }): string => theme.fontNormal};
+  background: red;
 `
 
 export type Props = {
@@ -24,7 +31,10 @@ export const OrderDetails: React.FC<Props> = (props) => {
 
   return (
     <Wrapper>
-      <h2>Order details</h2>
+      <h2>
+        Order details
+        {order?.uid && order?.shortId && <TitleUid textToCopy={order.uid} contentsToDisplay={order.shortId} />}
+      </h2>
       {/* TODO: add tabs (overview/fills) */}
       {order?.buyToken && order?.sellToken && <DetailsTable order={order} />}
       {/* TODO: add fills tab for partiallyFillable orders */}
