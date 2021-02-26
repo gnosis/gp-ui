@@ -1,7 +1,7 @@
 import React from 'react'
 import styled, { DefaultTheme } from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheckCircle, faClock, faDotCircle, IconDefinition } from '@fortawesome/free-solid-svg-icons'
+import { faCheckCircle, faClock, faDotCircle, faTimesCircle, IconDefinition } from '@fortawesome/free-solid-svg-icons'
 
 import { OrderStatus } from 'api/operator'
 
@@ -12,11 +12,11 @@ function setStatusColors({ theme, status }: { theme: DefaultTheme; status: Order
 
   switch (status) {
     case 'expired':
+    case 'canceled':
       text = theme.orange
       background = theme.orangeOpacity
       break
     case 'filled':
-    case 'partially filled':
       text = theme.green
       background = theme.greenOpacity
       break
@@ -53,8 +53,9 @@ function getStatusIcon(status: OrderStatus): IconDefinition {
     case 'expired':
       return faClock
     case 'filled':
-    case 'partially filled':
       return faCheckCircle
+    case 'canceled':
+      return faTimesCircle
     case 'open':
       return faDotCircle
   }
