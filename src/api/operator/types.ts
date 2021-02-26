@@ -19,7 +19,7 @@ export interface FeeInformation {
 
 export type OrderKind = 'sell' | 'buy'
 
-export type OrderStatus = 'open' | 'filled' | 'expired' | 'partially filled'
+export type OrderStatus = 'open' | 'filled' | 'canceled' | 'expired'
 
 // Raw API response
 export type RawOrder = {

@@ -38,12 +38,10 @@ function isOrderPartiallyFilled(order: RawOrder): boolean {
 export function getOrderStatus(order: RawOrder): OrderStatus {
   if (isOrderFilled(order)) {
     return 'filled'
+  } else if (order.invalidated) {
+    return 'canceled'
   } else if (isOrderExpired(order)) {
-    if (isOrderPartiallyFilled(order)) {
-      return 'partially filled'
-    } else {
-      return 'expired'
-    }
+    return 'expired'
   } else {
     return 'open'
   }
