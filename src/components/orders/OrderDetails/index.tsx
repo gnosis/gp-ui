@@ -43,7 +43,7 @@ export const OrderDetails: React.FC<Props> = (props) => {
     <Wrapper>
       <h1>
         Order details
-        {order?.uid && order?.shortId && <TitleUid textToCopy={order.uid} contentsToDisplay={order.shortId} />}
+        {order && <TitleUid textToCopy={order.uid} contentsToDisplay={order.shortId} />}
       </h1>
       {/* TODO: add tabs (overview/fills) */}
       {order?.buyToken && order?.sellToken && <DetailsTable order={order} />}
