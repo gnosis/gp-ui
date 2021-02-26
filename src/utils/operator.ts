@@ -28,6 +28,9 @@ function isOrderExpired(order: RawOrder): boolean {
 }
 
 function isOrderPartiallyFilled(order: RawOrder): boolean {
+  if (isOrderFilled(order)) {
+    return false
+  }
   if (order.kind === 'buy') {
     return order.executedBuyAmount !== '0'
   } else {
