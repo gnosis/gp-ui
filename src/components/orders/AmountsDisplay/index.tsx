@@ -63,10 +63,12 @@ export function AmountsDisplay(props: Props): JSX.Element | null {
     return null
   }
 
+  const isBuyOrder = kind === 'buy'
+
   return (
     <Wrapper>
-      <Row title="From" titleSuffix={kind === 'buy' ? 'at most' : ''} amount={buyAmount} erc20={buyToken} />
-      <Row title="To" titleSuffix={kind === 'sell' ? 'at least' : ''} amount={sellAmount} erc20={sellToken} />
+      <Row title="From" titleSuffix={isBuyOrder ? 'at most' : ''} amount={sellAmount} erc20={sellToken} />
+      <Row title="To" titleSuffix={!isBuyOrder ? 'at least' : ''} amount={buyAmount} erc20={buyToken} />
     </Wrapper>
   )
 }
