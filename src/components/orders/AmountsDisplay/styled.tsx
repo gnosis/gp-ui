@@ -19,7 +19,7 @@ export const RowTitle = styled.span`
   &::before {
     content: '▶';
     margin-right: 0.5rem;
-    color: ${({ theme }): string => theme.icon};
+    color: ${({ theme }): string => theme.grey};
     font-size: 0.75rem;
   }
 `

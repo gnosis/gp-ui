@@ -10,8 +10,6 @@ export interface Colors {
   textActive1: Color
   textDisabled: Color
 
-  icon: Color
-
   // backgrounds / greys
   bg1: Color
   bg2: Color
@@ -34,6 +32,7 @@ export interface Colors {
   red1: Color
   red2: Color
   red3?: Color
+  grey: Color
   green: Color
   greenOpacity: Color
   green1: Color
@@ -69,6 +68,7 @@ export const BASE_COLOURS = {
 
 export const LIGHT_COLOURS = {
   //base
+  grey: '#657795',
   green: '#1E9B75',
   greenOpacity: 'rgb(30 155 117 / 10%)',
   orange: '#DB843A',
@@ -80,8 +80,6 @@ export const LIGHT_COLOURS = {
   textSecondary2: '#9797B8',
   textActive1: '#D96D49',
   textDisabled: '#31323E',
-
-  icon: '#657795B3',
 
   // backgrounds / greys
   bg1: '#F7F8FA',
@@ -102,6 +100,7 @@ export const LIGHT_COLOURS = {
 
 export const DARK_COLOURS = {
   // base
+  grey: '#8D8DA9',
   green: '#00D897',
   greenOpacity: 'rgb(0 216 151 / 10%)',
   orange: '#DB843A',
@@ -113,8 +112,6 @@ export const DARK_COLOURS = {
   textSecondary2: '#9797B8',
   textActive1: '#D96D49',
   textDisabled: '#31323E',
-
-  icon: '#8D8DA980',
 
   // backgrounds / greys
   bg1: '#16171F',
