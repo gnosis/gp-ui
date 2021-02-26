@@ -31,6 +31,10 @@ export const RowContents = styled.span`
   & > span:first-child {
     margin: 0 0.5rem 0 0;
   }
+
+  & > :not(:first-child) {
+    margin-left: 0.5rem;
+  }
 `
 
 export const UsdAmount = styled.span`
