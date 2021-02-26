@@ -8,6 +8,7 @@ export interface Fonts {
   fontNormal: string
   fontMedium: string
   fontBold: string
+  fontSizeDefault: string
 }
 
 const fontsVariables = {
@@ -16,6 +17,7 @@ const fontsVariables = {
   fontNormal: '400',
   fontMedium: '500',
   fontBold: '700',
+  fontSizeDefault: '1.3rem',
 }
 
 export function getFonts(mode: Theme): Fonts {
