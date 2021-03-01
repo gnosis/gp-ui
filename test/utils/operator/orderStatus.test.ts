@@ -113,6 +113,25 @@ describe('Filled status', () => {
   })
 })
 
+describe('Canceled status', () => {
+  test('Buy order', () => {
+    const order: RawOrder = {
+      ...RAW_ORDER,
+      kind: 'buy',
+      invalidated: true,
+    }
+    expect(getOrderStatus(order)).toEqual('canceled')
+  })
+  test('Sell order', () => {
+    const order: RawOrder = {
+      ...RAW_ORDER,
+      kind: 'sell',
+      invalidated: true,
+    }
+    expect(getOrderStatus(order)).toEqual('canceled')
+  })
+})
+
 describe('Expired status', () => {
   describe('Buy order', () => {
     test('Expired', () => {
