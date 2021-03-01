@@ -118,6 +118,7 @@ describe('Canceled status', () => {
     const order: RawOrder = {
       ...RAW_ORDER,
       kind: 'buy',
+      buyAmount: '10000',
       invalidated: true,
     }
     expect(getOrderStatus(order)).toEqual('canceled')
@@ -126,6 +127,7 @@ describe('Canceled status', () => {
     const order: RawOrder = {
       ...RAW_ORDER,
       kind: 'sell',
+      sellAmount: '10000',
       invalidated: true,
     }
     expect(getOrderStatus(order)).toEqual('canceled')
