@@ -19,6 +19,7 @@ import { OrderSurplusDisplay } from 'components/orders/OrderSurplusDisplay'
 import { RowWithCopyButton } from 'components/orders/RowWithCopyButton'
 import { StatusLabel } from 'components/orders/StatusLabel'
 import { GasFeeDisplay } from 'components/orders/GasFeeDisplay'
+import { triggerEvent } from 'api/analytics'
 
 const Table = styled(SimpleTable)`
   border: 0.1rem solid ${({ theme }): string => theme.borderPrimary};
@@ -79,7 +80,14 @@ const tooltip = {
   fees: 'The amount of fees paid for this order. This will show a progressive number for orders with partial fills.',
 }
 
-export type Props = { order: Order }
+export type Props = {
+  order: Order
+}
+
+export interface OnCopyParams {
+  type: 'tx' | 'orderId' | 'tradeId'
+  value: string
+}
 
 export function DetailsTable(props: Props): JSX.Element | null {
   const { order } = props
@@ -107,6 +115,13 @@ export function DetailsTable(props: Props): JSX.Element | null {
     return null
   }
 
+  const onCopy = (label: string): void =>
+    triggerEvent({
+      category: 'Order details',
+      action: 'Copy',
+      label: label,
+    })
+
   return (
     <Table
       body={
@@ -116,7 +131,7 @@ export function DetailsTable(props: Props): JSX.Element | null {
               <HelpTooltip tooltip={tooltip.orderID} /> Order Id
             </td>
             <td>
-              <RowWithCopyButton textToCopy={uid} contentsToDisplay={shortId} />
+              <RowWithCopyButton textToCopy={uid} contentsToDisplay={shortId} onCopy={(): void => onCopy('orderId')} />
             </td>
           </tr>
           <tr>
@@ -126,6 +141,7 @@ export function DetailsTable(props: Props): JSX.Element | null {
             <td>
               <RowWithCopyButton
                 textToCopy={owner}
+                onCopy={(): void => onCopy('address')}
                 contentsToDisplay={<BlockExplorerLink identifier={owner} type="address" label={owner} />}
               />
             </td>
@@ -139,6 +155,7 @@ export function DetailsTable(props: Props): JSX.Element | null {
                 {txHash ? (
                   <RowWithCopyButton
                     textToCopy={txHash}
+                    onCopy={(): void => onCopy('tx')}
                     contentsToDisplay={<BlockExplorerLink identifier={txHash} type="tx" label={txHash} />}
                   />
                 ) : (
