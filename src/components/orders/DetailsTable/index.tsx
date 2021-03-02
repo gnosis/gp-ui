@@ -114,7 +114,7 @@ export function DetailsTable(props: Props): JSX.Element | null {
     triggerEvent({
       category: 'Order details',
       action: 'Copy',
-      label: label,
+      label,
     })
 
   return (
