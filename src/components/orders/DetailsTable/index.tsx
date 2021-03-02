@@ -2,8 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import { media } from 'theme/styles/media'
 
-import { formatSmart } from '@gnosis.pm/dex-js'
-
 import { Order } from 'api/operator'
 
 import { capitalize } from 'utils'
@@ -20,6 +18,7 @@ import { FilledProgress } from 'components/orders/FilledProgress'
 import { OrderSurplusDisplay } from 'components/orders/OrderSurplusDisplay'
 import { RowWithCopyButton } from 'components/orders/RowWithCopyButton'
 import { StatusLabel } from 'components/orders/StatusLabel'
+import { GasFeeDisplay } from 'components/orders/GasFeeDisplay'
 
 const Table = styled(SimpleTable)`
   border: 0.1rem solid ${({ theme }): string => theme.borderPrimary};
@@ -97,7 +96,6 @@ export function DetailsTable(props: Props): JSX.Element | null {
     sellAmount,
     executedBuyAmount,
     executedSellAmount,
-    executedFeeAmount,
     status,
     filledAmount,
     surplusAmount,
@@ -244,7 +242,9 @@ export function DetailsTable(props: Props): JSX.Element | null {
             <td>
               <HelpTooltip tooltip={tooltip.fees} /> Gas Fees paid
             </td>
-            <td>{formatSmart(executedFeeAmount.toString(), sellToken.decimals)}</td>
+            <td>
+              <GasFeeDisplay order={order} />
+            </td>
           </tr>
         </>
       }
