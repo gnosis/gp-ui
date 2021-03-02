@@ -29,7 +29,7 @@ const Icon = styled(FontAwesomeIcon)<{ copied?: string }>`
   }
 `
 
-export type Props = { text: string }
+export type Props = { text: string; onCopy?: (value: string) => void }
 
 /**
  * Simple CopyButton component.
@@ -40,10 +40,13 @@ export type Props = { text: string }
  * then is back to original copy icon
  */
 export function CopyButton(props: Props): JSX.Element {
-  const { text } = props
+  const { text, onCopy: onCopyProp } = props
 
   const [copied, setCopied] = useState(false)
-  const onCopy = (): void => setCopied(true)
+  const onCopy = (): void => {
+    setCopied(true)
+    onCopyProp && onCopyProp(text)
+  }
 
   useEffect(() => {
     let timeout: NodeJS.Timeout | null = null
