@@ -4,6 +4,7 @@ import styled from 'styled-components'
 export type Props = {
   percentage?: string | null
   activeColor?: string
+  showLabel?: boolean
 }
 
 const Wrapper = styled.div<Props>`
@@ -28,14 +29,22 @@ const Wrapper = styled.div<Props>`
     background-color: ${({ activeColor, theme }): string => (activeColor ? activeColor : theme.green)};
     border-radius: 16rem;
   }
+
+  > b {
+    color: ${({ activeColor, theme }): string => (activeColor ? activeColor : theme.green)};
+    margin: 0 0 0 0.7rem;
+  }
 `
 
 export function ProgressBar(props: Props): JSX.Element {
+  const { percentage, showLabel = true } = props
+
   return (
     <Wrapper {...props}>
       <div>
         <span></span>
       </div>
+      {showLabel && <b>{percentage}%</b>}
     </Wrapper>
   )
 }
