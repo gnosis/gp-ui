@@ -84,11 +84,6 @@ export type Props = {
   order: Order
 }
 
-export interface OnCopyParams {
-  type: 'tx' | 'orderId' | 'tradeId'
-  value: string
-}
-
 export function DetailsTable(props: Props): JSX.Element | null {
   const { order } = props
   const {
