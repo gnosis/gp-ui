@@ -2,9 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 
 export type Props = {
-  percentage?: string | null
-  activeColor?: string
-  showLabel?: boolean
+  readonly percentage?: string
+  readonly activeColor?: string
+  readonly showLabel?: boolean
 }
 
 const Wrapper = styled.div<Props>`
@@ -37,7 +37,7 @@ const Wrapper = styled.div<Props>`
 `
 
 export function ProgressBar(props: Props): JSX.Element {
-  const { percentage, showLabel = true } = props
+  const { percentage = '0', showLabel = true } = props
 
   return (
     <Wrapper {...props}>

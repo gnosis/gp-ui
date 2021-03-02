@@ -4,7 +4,7 @@ import { media } from 'theme/styles/media'
 import { ProgressBar } from 'components/common/ProgressBar'
 
 export type Props = {
-  percentage?: string | null
+  readonly percentage?: string
 }
 
 const Wrapper = styled.div`
@@ -26,7 +26,7 @@ const Wrapper = styled.div`
 `
 
 export function FilledProgress(props: Props): JSX.Element {
-  const { percentage } = props
+  const { percentage = '0' } = props
 
   return (
     <Wrapper>
