@@ -10,6 +10,7 @@ export type Props = {
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
+  color: ${({ theme }): string => theme.textPrimary1};
 
   > span {
     margin: 0 0 0 2rem;
