@@ -12,7 +12,8 @@ import { Header } from './layout/Header'
 
 import { NetworkUpdater } from 'state/network'
 import { initAnalytics } from 'api/analytics'
-import RouteAnalytics from 'components/common/RouteAnalytics'
+import RouteAnalytics from 'components/analytics/RouteAnalytics'
+import NetworkAnalytics from 'components/analytics/NetworkAnalytics'
 
 // Init analytics
 const GOOGLE_ANALYTICS_ID: string | undefined = process.env.GOOGLE_ANALYTICS_ID
@@ -52,6 +53,13 @@ export function StateUpdaters(): JSX.Element {
   return <NetworkUpdater />
 }
 
+const Analytics = (): JSX.Element => (
+  <>
+    <Route component={RouteAnalytics} />
+    <Route component={NetworkAnalytics} />
+  </>
+)
+
 /** App content */
 const AppContent = (): JSX.Element => {
   const { path } = useRouteMatch()
@@ -61,7 +69,8 @@ const AppContent = (): JSX.Element => {
   return (
     <GenericLayout header={<Header />}>
       <React.Suspense fallback={null}>
-        <Route component={RouteAnalytics} />
+        <Analytics />
+
         <Switch>
           <Route path={pathPrefix + '/'} exact component={Home} />
           <Route path={pathPrefix + '/orders/:orderId'} exact component={Order} />
