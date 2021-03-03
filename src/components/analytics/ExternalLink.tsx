@@ -1,23 +1,24 @@
-export { OutboundLink as default } from 'react-ga'
+import React, { PropsWithChildren, ReactNode } from 'react'
+import { OutboundLink, OutboundLinkProps } from 'react-ga'
 
-// import React, { PropsWithChildren, useCallback } from 'react'
-// import { OutboundLink, OutboundLinkProps } from 'react-ga'
+type PropsOriginal = PropsWithChildren<OutboundLinkProps & React.HTMLProps<HTMLAnchorElement>>
+type Props = Omit<PropsOriginal, 'ref' | 'to' | 'eventLabel'> & {
+  eventLabel?: string
+  onClick?: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void
+  children?: ReactNode
+  href: string
+}
 
-// type OutboundLinkPropsWithOptionalLabel = Exclude<OutboundLinkProps, 'eventLabel'> & {
-//   eventLabel?: string
-// }
-
-// type Props = PropsWithChildren<OutboundLinkPropsWithOptionalLabel>
-
-// export const ExternalLink: React.FC<Props> = (props: Props) => {
-//   const { eventLabel, children, to, onClick } = props
-
-//   const outboundProps = {
-//     ...props,
-//     // eslint-disable-next-line @typescript-eslint/ban-types
-//     onClick: onClick as Function,
-//     eventLabel: eventLabel || to,
-//   } as OutboundLinkProps
-
-//   return <OutboundLink {...outboundProps}>{children}</OutboundLink>
-// }
+export const ExternalLink: React.FC<Props> = (props: Props) => {
+  const { eventLabel, children, href, onClick } = props
+  const outboundProps = {
+    ...props,
+    onClick,
+    eventLabel: eventLabel || href,
+  }
+  return (
+    <OutboundLink to={href} {...outboundProps}>
+      {children}
+    </OutboundLink>
+  )
+}
