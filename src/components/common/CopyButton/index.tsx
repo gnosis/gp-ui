@@ -40,12 +40,12 @@ export type Props = { text: string; onCopy?: (value: string) => void }
  * then is back to original copy icon
  */
 export function CopyButton(props: Props): JSX.Element {
-  const { text, onCopy: onCopyProp } = props
+  const { text, onCopy } = props
 
   const [copied, setCopied] = useState(false)
-  const onCopy = (): void => {
+  const handleOnCopy = (): void => {
     setCopied(true)
-    onCopyProp && onCopyProp(text)
+    onCopy && onCopy(text)
   }
 
   useEffect(() => {
@@ -61,7 +61,7 @@ export function CopyButton(props: Props): JSX.Element {
   }, [copied])
 
   return (
-    <CopyToClipboard text={text} onCopy={onCopy}>
+    <CopyToClipboard text={text} onCopy={handleOnCopy}>
       <span>
         <Icon icon={copied ? faCheck : faCopy} copied={copied ? 'true' : undefined} /> {copied && <span>Copied</span>}
       </span>
