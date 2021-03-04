@@ -150,7 +150,7 @@ export function DetailsTable(props: Props): JSX.Element | null {
                 {txHash ? (
                   <RowWithCopyButton
                     textToCopy={txHash}
-                    onCopy={(): void => onCopy('tx')}
+                    onCopy={(): void => onCopy('settlementTx')}
                     contentsToDisplay={<BlockExplorerLink identifier={txHash} type="tx" label={txHash} />}
                   />
                 ) : (
