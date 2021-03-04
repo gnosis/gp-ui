@@ -136,7 +136,7 @@ export function DetailsTable(props: Props): JSX.Element | null {
             <td>
               <RowWithCopyButton
                 textToCopy={owner}
-                onCopy={(): void => onCopy('address')}
+                onCopy={(): void => onCopy('ownerAddress')}
                 contentsToDisplay={<BlockExplorerLink identifier={owner} type="address" label={owner} />}
               />
             </td>
