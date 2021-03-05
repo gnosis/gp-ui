@@ -14,10 +14,14 @@ import { NetworkUpdater } from 'state/network'
 import { initAnalytics } from 'api/analytics'
 import RouteAnalytics from 'components/analytics/RouteAnalytics'
 import NetworkAnalytics from 'components/analytics/NetworkAnalytics'
+import { DIMENSION_NAMES } from './const'
 
 // Init analytics
 const GOOGLE_ANALYTICS_ID: string | undefined = process.env.GOOGLE_ANALYTICS_ID
-initAnalytics({ trackingCode: GOOGLE_ANALYTICS_ID || 'UA-190948266-2' })
+initAnalytics({
+  trackingCode: GOOGLE_ANALYTICS_ID,
+  dimensionNames: DIMENSION_NAMES,
+})
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const Router: typeof BrowserRouter & typeof HashRouter = (window as any).IS_IPFS ? HashRouter : BrowserRouter
