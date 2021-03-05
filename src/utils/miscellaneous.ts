@@ -83,8 +83,12 @@ export const delay = <T = void>(ms = 100, result?: T): Promise<T> =>
  */
 export function getImageUrl(tokenAddress?: string): string | undefined {
   if (!tokenAddress) return undefined
-  const checksummedAddress = toChecksumAddress(tokenAddress)
-  return `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${checksummedAddress}/logo.png`
+  try {
+    const checksummedAddress = toChecksumAddress(tokenAddress)
+    return `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${checksummedAddress}/logo.png`
+  } catch (e) {
+    return undefined
+  }
 }
 
 export function isTokenEnabled(allowance: BN, { decimals = 18 }: TokenDetails): boolean {
