@@ -1,5 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
+import { media } from 'theme/styles/media'
+
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -11,7 +13,16 @@ import { RowWithCopyButton } from 'components/orders/RowWithCopyButton'
 const Wrapper = styled.div`
   padding: 1.6rem;
   margin: 0 auto;
+  width: 100%;
   max-width: 140rem;
+
+  ${media.mediumDown} {
+    max-width: 94rem;
+  }
+
+  ${media.mobile} {
+    max-width: 100%;
+  }
 
   > h1 {
     display: flex;

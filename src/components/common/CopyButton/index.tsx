@@ -7,7 +7,13 @@ import CopyToClipboard from 'react-copy-to-clipboard'
 
 import { DISPLAY_TEXT_COPIED_CHECK } from 'apps/explorer/const'
 
-const Icon = styled(FontAwesomeIcon)<{ copied: boolean }>`
+// Why is `copied` not a boolean?
+//   Because it's passed down to parent component (`FontAwesomeIcon`) and
+// since it's not consumed in the component, it's passed down to the HTML.
+//   Which does not like to receive boolean values, with an error like:
+// "Warning: Received `false` for a non-boolean attribute `copied`"
+//   Effectively though, it's treated as a boolean, thus the value doesn't matter
+const Icon = styled(FontAwesomeIcon)<{ copied?: string }>`
   color: ${({ theme, copied }): string => (copied ? theme.green : theme.grey)};
   transition: color 0.2s ease-in;
   cursor: ${({ copied }): string => (copied ? 'reset' : 'pointer')};
@@ -23,7 +29,7 @@ const Icon = styled(FontAwesomeIcon)<{ copied: boolean }>`
   }
 `
 
-export type Props = { text: string }
+export type Props = { text: string; onCopy?: (value: string) => void }
 
 /**
  * Simple CopyButton component.
@@ -34,10 +40,13 @@ export type Props = { text: string }
  * then is back to original copy icon
  */
 export function CopyButton(props: Props): JSX.Element {
-  const { text } = props
+  const { text, onCopy } = props
 
   const [copied, setCopied] = useState(false)
-  const onCopy = (): void => setCopied(true)
+  const handleOnCopy = (): void => {
+    setCopied(true)
+    onCopy && onCopy(text)
+  }
 
   useEffect(() => {
     let timeout: NodeJS.Timeout | null = null
@@ -52,9 +61,9 @@ export function CopyButton(props: Props): JSX.Element {
   }, [copied])
 
   return (
-    <CopyToClipboard text={text} onCopy={onCopy}>
+    <CopyToClipboard text={text} onCopy={handleOnCopy}>
       <span>
-        <Icon icon={copied ? faCheck : faCopy} copied={copied} /> {copied && <span>Copied</span>}
+        <Icon icon={copied ? faCheck : faCopy} copied={copied ? 'true' : undefined} /> {copied && <span>Copied</span>}
       </span>
     </CopyToClipboard>
   )
