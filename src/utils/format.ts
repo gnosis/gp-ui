@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { ONE_HUNDRED_BIG_NUMBER, BATCH_TIME_IN_MS, DEFAULT_DECIMALS } from 'const'
+import { ONE_HUNDRED_BIG_NUMBER, BATCH_TIME_IN_MS, DEFAULT_DECIMALS, ONE_BIG_NUMBER, TEN_BIG_NUMBER } from 'const'
 import { batchIdToDate } from './time'
 
 export {
@@ -206,4 +206,10 @@ export function capitalize(sentence: string): string {
     .split(' ')
     .map((word) => word[0].toUpperCase() + word.slice(1).toLowerCase())
     .join(' ')
+}
+
+export function getSmallLimit(decimals?: number): string {
+  // Small limit === 1 token atom in relation to token units.
+  // E.g.: Token decimals: 5; 1 unit => 100000; 1 atom => 0.00001 === small limit
+  return decimals ? ONE_BIG_NUMBER.div(TEN_BIG_NUMBER.exponentiatedBy(decimals)).toString(10) : '1'
 }
