@@ -13,10 +13,10 @@ export function getContractAddressFromNetworkInfo(
   network: OptionalNetwork,
   networkInfo: ContractNetworkInfo,
 ): string | null {
-  if (!network) {
+  if (!network || networkInfo[network]?.address) {
     return null
   }
-  return networkInfo[network]?.address || null
+  return networkInfo[network].address
 }
 
 type V2ContractNames = keyof typeof v2Networks
