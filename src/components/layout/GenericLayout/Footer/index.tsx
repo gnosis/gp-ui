@@ -119,7 +119,7 @@ export const Footer: React.FC<FooterType> = (props) => {
             type="contract"
             identifier={settlementContractAddress}
             networkId={networkId}
-            label={'Settlement contract'}
+            label="Settlement contract"
           />
         )}
         {allowanceManagerContractAddress && (
@@ -127,7 +127,7 @@ export const Footer: React.FC<FooterType> = (props) => {
             type="contract"
             identifier={allowanceManagerContractAddress}
             networkId={networkId}
-            label={'Allowance manager contract'}
+            label="Allowance manager contract"
           />
         )}
       </ContractsWrapper>
