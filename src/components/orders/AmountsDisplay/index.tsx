@@ -5,7 +5,7 @@ import { formatSmart, TokenErc20 } from '@gnosis.pm/dex-js'
 
 import { Order } from 'api/operator'
 
-import { HIGH_PRECISION_DECIMALS, HIGH_PRECISION_SMALL_LIMIT } from 'apps/explorer/const'
+import { getSmallLimit } from 'utils'
 
 import { BlockExplorerLink } from 'apps/explorer/components/common/BlockExplorerLink'
 
@@ -29,8 +29,8 @@ function Row(props: RowProps): JSX.Element {
     ? formatSmart({
         amount: amount.toString(10),
         precision: erc20.decimals,
-        decimals: HIGH_PRECISION_DECIMALS,
-        smallLimit: HIGH_PRECISION_SMALL_LIMIT,
+        decimals: erc20.decimals,
+        smallLimit: getSmallLimit(erc20.decimals),
       })
     : amount.toString(10)
   // Name and symbol are optional on ERC20 spec. Fallback to address when no name,

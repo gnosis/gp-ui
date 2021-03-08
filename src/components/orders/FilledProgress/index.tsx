@@ -8,6 +8,7 @@ import { media } from 'theme/styles/media'
 import { Order } from 'api/operator'
 
 import { ProgressBar } from 'components/common/ProgressBar'
+import { getSmallLimit } from 'utils'
 
 export type Props = {
   order: Order
@@ -77,9 +78,24 @@ export function FilledProgress(props: Props): JSX.Element {
   const mainSymbol = mainToken ? safeTokenName(mainToken) : mainAddress
   const swappedSymbol = swappedToken ? safeTokenName(swappedToken) : swappedAddress
   // In case the token object is empty, display the raw amount (`decimals || 0` part)
-  const formattedFilledAmount = formatSmart(filledAmount.toString(10), mainToken?.decimals || 0)
-  const formattedMainAmount = formatSmart(mainAmount.toString(10), mainToken?.decimals || 0)
-  const formattedSwappedAmount = formatSmart(swappedAmount.toString(10), swappedToken?.decimals || 0)
+  const formattedFilledAmount = formatSmart({
+    amount: filledAmount.toString(10),
+    precision: mainToken?.decimals || 0,
+    decimals: mainToken?.decimals || 0,
+    smallLimit: getSmallLimit(mainToken?.decimals),
+  })
+  const formattedMainAmount = formatSmart({
+    amount: mainAmount.toString(10),
+    precision: mainToken?.decimals || 0,
+    decimals: mainToken?.decimals || 0,
+    smallLimit: getSmallLimit(mainToken?.decimals),
+  })
+  const formattedSwappedAmount = formatSmart({
+    amount: swappedAmount.toString(10),
+    precision: swappedToken?.decimals || 0,
+    decimals: swappedToken?.decimals || 0,
+    smallLimit: getSmallLimit(swappedToken?.decimals),
+  })
 
   const formattedPercentage = filledPercentage.times('100').toString(10)
 
