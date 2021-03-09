@@ -25,6 +25,6 @@ export function getGpV2ContractAddress(network: OptionalNetwork, contractName: V
   return getContractAddressFromNetworkInfo(network, v2Networks[contractName])
 }
 
-export function getGpV1ContractAddress(network: OptionalNetwork): string | null {
-  return getContractAddressFromNetworkInfo(network, v1Networks.BatchExchange)
+export function getGpV1ContractAddress(network: OptionalNetwork): string {
+  return getContractAddressFromNetworkInfo(network, v1Networks.BatchExchange) || ''
 }
