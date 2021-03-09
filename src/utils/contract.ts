@@ -13,7 +13,7 @@ export function getContractAddressFromNetworkInfo(
   network: OptionalNetwork,
   networkInfo: ContractNetworkInfo,
 ): string | null {
-  if (!network || networkInfo[network]?.address) {
+  if (!network || !networkInfo[network]?.address) {
     return null
   }
   return networkInfo[network].address
