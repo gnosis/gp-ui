@@ -8,7 +8,7 @@ import { media } from 'theme/styles/media'
 import { Order } from 'api/operator'
 
 import { ProgressBar } from 'components/common/ProgressBar'
-import { getSmallLimit } from 'utils'
+import { getMinimumRepresentableValue } from 'utils'
 
 export type Props = {
   order: Order
@@ -82,19 +82,19 @@ export function FilledProgress(props: Props): JSX.Element {
     amount: filledAmount.toString(10),
     precision: mainToken?.decimals || 0,
     decimals: mainToken?.decimals || 0,
-    smallLimit: getSmallLimit(mainToken?.decimals),
+    smallLimit: getMinimumRepresentableValue(mainToken?.decimals),
   })
   const formattedMainAmount = formatSmart({
     amount: mainAmount.toString(10),
     precision: mainToken?.decimals || 0,
     decimals: mainToken?.decimals || 0,
-    smallLimit: getSmallLimit(mainToken?.decimals),
+    smallLimit: getMinimumRepresentableValue(mainToken?.decimals),
   })
   const formattedSwappedAmount = formatSmart({
     amount: swappedAmount.toString(10),
     precision: swappedToken?.decimals || 0,
     decimals: swappedToken?.decimals || 0,
-    smallLimit: getSmallLimit(swappedToken?.decimals),
+    smallLimit: getMinimumRepresentableValue(swappedToken?.decimals),
   })
 
   const formattedPercentage = filledPercentage.times('100').toString(10)

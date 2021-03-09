@@ -208,7 +208,7 @@ export function capitalize(sentence: string): string {
     .join(' ')
 }
 
-export function getSmallLimit(decimals?: number): string {
+export function getMinimumRepresentableValue(decimals?: number): string {
   // Small limit === 1 token atom in relation to token units.
   // E.g.: Token decimals: 5; 1 unit => 100000; 1 atom => 0.00001 === small limit
   return decimals ? ONE_BIG_NUMBER.div(TEN_BIG_NUMBER.exponentiatedBy(decimals)).toString(10) : '1'

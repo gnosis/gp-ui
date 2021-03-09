@@ -5,7 +5,7 @@ import { formatSmart, safeTokenName } from '@gnosis.pm/dex-js'
 
 import { Order } from 'api/operator'
 
-import { getSmallLimit } from 'utils'
+import { getMinimumRepresentableValue } from 'utils'
 
 const Wrapper = styled.div`
   & > span {
@@ -36,7 +36,7 @@ export function GasFeeDisplay(props: Props): JSX.Element | null {
   let quoteSymbol: string = sellTokenAddress
 
   if (sellToken) {
-    smallLimit = getSmallLimit(sellToken.decimals)
+    smallLimit = getMinimumRepresentableValue(sellToken.decimals)
 
     formattedExecutedFee = formatSmart({
       amount: executedFeeAmount.toString(10),
