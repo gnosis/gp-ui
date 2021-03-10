@@ -8,7 +8,6 @@ export function useSearchSubmit(): (query: string) => void {
 
   return useCallback(
     (query: string) => {
-      console.log('query = ', query)
       const pathPrefix = path == '/' ? '' : path
       const cleanQuery = sanitizeInput(query)
 
