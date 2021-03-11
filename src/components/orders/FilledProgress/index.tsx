@@ -1,14 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { formatSmart, safeTokenName } from '@gnosis.pm/dex-js'
-
 import { media } from 'theme/styles/media'
 
 import { Order } from 'api/operator'
 
+import { formatSmartMaxPrecision, safeTokenName } from 'utils'
+
 import { ProgressBar } from 'components/common/ProgressBar'
-import { getMinimumRepresentableValue } from 'utils'
 
 export type Props = {
   order: Order
@@ -78,24 +77,9 @@ export function FilledProgress(props: Props): JSX.Element {
   const mainSymbol = mainToken ? safeTokenName(mainToken) : mainAddress
   const swappedSymbol = swappedToken ? safeTokenName(swappedToken) : swappedAddress
   // In case the token object is empty, display the raw amount (`decimals || 0` part)
-  const formattedFilledAmount = formatSmart({
-    amount: filledAmount.toString(10),
-    precision: mainToken?.decimals || 0,
-    decimals: mainToken?.decimals || 0,
-    smallLimit: getMinimumRepresentableValue(mainToken?.decimals),
-  })
-  const formattedMainAmount = formatSmart({
-    amount: mainAmount.toString(10),
-    precision: mainToken?.decimals || 0,
-    decimals: mainToken?.decimals || 0,
-    smallLimit: getMinimumRepresentableValue(mainToken?.decimals),
-  })
-  const formattedSwappedAmount = formatSmart({
-    amount: swappedAmount.toString(10),
-    precision: swappedToken?.decimals || 0,
-    decimals: swappedToken?.decimals || 0,
-    smallLimit: getMinimumRepresentableValue(swappedToken?.decimals),
-  })
+  const formattedFilledAmount = formatSmartMaxPrecision(filledAmount, mainToken)
+  const formattedMainAmount = formatSmartMaxPrecision(mainAmount, mainToken)
+  const formattedSwappedAmount = formatSmartMaxPrecision(swappedAmount, swappedToken)
 
   const formattedPercentage = filledPercentage.times('100').toString(10)
 

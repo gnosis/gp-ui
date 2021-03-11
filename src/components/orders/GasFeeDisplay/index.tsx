@@ -1,11 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { formatSmart, safeTokenName } from '@gnosis.pm/dex-js'
-
 import { Order } from 'api/operator'
 
-import { getMinimumRepresentableValue } from 'utils'
+import { formatSmartMaxPrecision, safeTokenName } from 'utils'
 
 const Wrapper = styled.div`
   & > span {
@@ -28,7 +26,6 @@ export function GasFeeDisplay(props: Props): JSX.Element | null {
   // const executedFeeUSD = '0.99'
   // const totalFeeUSD = '0.35'
 
-  let smallLimit: string | undefined
   // When `sellToken` is not set, default to raw amounts
   let formattedExecutedFee: string = executedFeeAmount.toString(10)
   let formattedTotalFee: string = feeAmount.toString(10)
@@ -36,20 +33,8 @@ export function GasFeeDisplay(props: Props): JSX.Element | null {
   let quoteSymbol: string = sellTokenAddress
 
   if (sellToken) {
-    smallLimit = getMinimumRepresentableValue(sellToken.decimals)
-
-    formattedExecutedFee = formatSmart({
-      amount: executedFeeAmount.toString(10),
-      precision: sellToken.decimals,
-      decimals: sellToken.decimals,
-      smallLimit,
-    })
-    formattedTotalFee = formatSmart({
-      amount: feeAmount.toString(10),
-      precision: sellToken.decimals,
-      decimals: sellToken.decimals,
-      smallLimit,
-    })
+    formattedExecutedFee = formatSmartMaxPrecision(executedFeeAmount, sellToken)
+    formattedTotalFee = formatSmartMaxPrecision(feeAmount, sellToken)
 
     quoteSymbol = safeTokenName(sellToken)
   }

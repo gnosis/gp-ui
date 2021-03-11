@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { Order } from 'api/operator'
 
-import { formatSmart, getMinimumRepresentableValue, safeTokenName } from 'utils'
+import { formatSmart, formatSmartMaxPrecision, safeTokenName } from 'utils'
 
 import { LOW_PRECISION_DECIMALS, PERCENTAGE_PRECISION } from 'apps/explorer/const'
 
@@ -47,12 +47,7 @@ export function OrderSurplusDisplay(props: Props): JSX.Element | null {
     precision: PERCENTAGE_PRECISION,
     decimals: LOW_PRECISION_DECIMALS,
   })
-  const formattedSurplusAmount = formatSmart({
-    amount: surplusAmount.toString(10),
-    precision: surplusToken.decimals,
-    decimals: surplusToken.decimals,
-    smallLimit: getMinimumRepresentableValue(surplusToken.decimals),
-  })
+  const formattedSurplusAmount = formatSmartMaxPrecision(surplusAmount, surplusToken)
   const tokenSymbol = safeTokenName(surplusToken)
   // const formattedUsdAmount = formatSmart({
   //   amount: usdAmount,
