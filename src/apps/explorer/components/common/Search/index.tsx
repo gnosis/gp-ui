@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Wrapper, SearchIcon } from './Search.styled'
+import { Wrapper, Button, Input, SearchIcon } from './Search.styled'
 import { useSearchSubmit } from 'hooks/useSearchSubmit'
 
 // assets
@@ -16,10 +16,10 @@ export const Search: React.FC = () => {
         handleSubmit(query)
       }}
     >
-      <button type="submit">
+      <Button type="submit">
         <SearchIcon src={searchImg} />
-      </button>
-      <input
+      </Button>
+      <Input
         autoComplete="off"
         type="search"
         name="query"
