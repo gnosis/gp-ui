@@ -34,7 +34,7 @@ async function _getOrder(
   if (order || networkIdSearchListRemaining.length === 0) {
     // We found the order in the right network
     // or we have no more networks where to continue looking, so we return the "order" (can be null if it wasn't found)
-    return { order: order }
+    return { order }
   }
 
   // If we didn't find the order in the current network, we look in different networks
