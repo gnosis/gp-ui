@@ -31,7 +31,7 @@ async function _getOrder(
 ): Promise<GetOrderResult> {
   const order = await getOrder({ networkId, orderId })
 
-  if (order || networkIdSearchListRemaining.length == 0) {
+  if (order || networkIdSearchListRemaining.length === 0) {
     // We found the order in the right network
     // or we have no more networks where to continue looking, so we return the "order" (can be null if it wasn't found)
     return { order: order }
