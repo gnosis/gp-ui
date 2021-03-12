@@ -7,6 +7,7 @@ import { transformOrder } from 'utils'
 import { useNetworkId } from 'state/network'
 
 import { useMultipleErc20 } from './useErc20'
+import { Network } from 'types'
 
 type UseOrderResult = {
   order: Order | null
@@ -15,15 +16,13 @@ type UseOrderResult = {
   forceUpdate: () => void
 }
 
-export function useOrder(orderId: string, updateInterval = 0): UseOrderResult {
+export function useOrderByNetwork(orderId: string, updateInterval = 0, networkId: Network | null): UseOrderResult {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const [order, setOrder] = useState<Order | null>(null)
   // Hack to force component to update itself on demand
   const [forcedUpdate, setForcedUpdate] = useState({})
   const forceUpdate = useCallback((): void => setForcedUpdate({}), [])
-
-  const networkId = useNetworkId()
 
   useEffect(() => {
     async function fetchOrder(): Promise<void> {
@@ -66,6 +65,11 @@ export function useOrder(orderId: string, updateInterval = 0): UseOrderResult {
   }, [forceUpdate, order, updateInterval])
 
   return { order, isLoading, error, forceUpdate }
+}
+
+export function useOrder(orderId: string, updateInterval?: number): UseOrderResult {
+  const networkId = useNetworkId()
+  return useOrderByNetwork(orderId, updateInterval, networkId)
 }
 
 type UseOrderAndErc20sResult = {
