@@ -39,7 +39,6 @@ async function _getOrder(
 
   // If we didn't find the order in the current network, we look in different networks
   const [nextNetworkId, ...remaindingNetworkIds] = networkIdSearchListRemaining
-  console.log('AAA: ', networkId, remaindingNetworkIds)
 
   // Try to get the oder in another network (to see if the ID is OK, but the network not)
   const isOrderInDifferentNetwork = await getOrder({ networkId: nextNetworkId, orderId }).then(
