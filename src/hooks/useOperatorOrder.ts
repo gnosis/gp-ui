@@ -27,18 +27,20 @@ interface GetOrderResult {
 async function _getOrder(
   networkId: Network,
   orderId: string,
-  networkIdSearchListRemaining: Network[],
+  networkIdSearchListRemaining: Network[] = NETWORK_ID_SEARCH_LIST,
 ): Promise<GetOrderResult> {
+  // Get order
   const order = await getOrder({ networkId, orderId })
 
   if (order || networkIdSearchListRemaining.length === 0) {
     // We found the order in the right network
-    // or we have no more networks where to continue looking, so we return the "order" (can be null if it wasn't found)
+    // ...or we have no more networks in which to continue looking
+    // so we return the "order" (can be null if it wasn't found in any network)
     return { order }
   }
 
   // If we didn't find the order in the current network, we look in different networks
-  const [nextNetworkId, ...remaindingNetworkIds] = networkIdSearchListRemaining
+  const [nextNetworkId, ...remainingNetworkIds] = networkIdSearchListRemaining.filter((network) => network != networkId)
 
   // Try to get the oder in another network (to see if the ID is OK, but the network not)
   const isOrderInDifferentNetwork = await getOrder({ networkId: nextNetworkId, orderId }).then(
@@ -54,7 +56,7 @@ async function _getOrder(
     }
   } else {
     // Keep looking in other networks
-    return _getOrder(nextNetworkId, orderId, remaindingNetworkIds)
+    return _getOrder(nextNetworkId, orderId, remainingNetworkIds)
   }
 }
 
@@ -78,7 +80,6 @@ export function useOrderByNetwork(orderId: string, updateInterval = 0, networkId
         const { order: rawOrder, errorOrderPresentInNetworkId: errorOrderPresentInNetworkIdRaw } = await _getOrder(
           networkId,
           orderId,
-          NETWORK_ID_SEARCH_LIST.filter((network) => network != networkId),
         )
         console.log({ rawOrder, errorOrderPresentInNetworkIdRaw })
         if (rawOrder) {

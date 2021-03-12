@@ -42,7 +42,7 @@ export const RedirectToNetwork = (props: { networkId: Network }): JSX.Element | 
   const prefixPath = prefix ? `/${prefix}` : ''
   const newPath = prefixPath + '/' + pathMatchArray[2]
 
-  return <Redirect push={true} to={newPath} />
+  return <Redirect push={false} to={newPath} />
 }
 
 export const NetworkUpdater: React.FC = () => {
