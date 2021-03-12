@@ -50,7 +50,7 @@ function _getPlugins({ apps, config, envVars, stats, defineVars, publicPaths, is
       isProduction,
     }),
   )
-  const plugins = [...htmlPlugins]
+  const plugins = htmlPlugins
 
   // Favicons plugin: Genrates the favicon from a PNG
   plugins.push(
