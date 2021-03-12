@@ -1,7 +1,7 @@
 import React from 'react'
 import SafeProvider from '@gnosis.pm/safe-apps-react-sdk'
-import { hot } from 'react-hot-loader/root'
 import { BrowserRouter, HashRouter, Redirect, Route, Switch, useRouteMatch } from 'react-router-dom'
+import { hot } from 'react-hot-loader/root'
 import { withGlobalContext } from 'hooks/useGlobalState'
 
 import useNetworkCheck from 'hooks/useNetworkCheck'
