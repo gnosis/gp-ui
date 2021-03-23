@@ -30,7 +30,7 @@ async function _getOrder(
   networkIdSearchListRemaining: Network[] = NETWORK_ID_SEARCH_LIST,
 ): Promise<GetOrderResult> {
   // Get order
-  const order = await getOrder({ networkId, orderId })
+  const order = await getOrder({ networkId, orderId: orderId.toLowerCase() })
 
   if (order || networkIdSearchListRemaining.length === 0) {
     // We found the order in the right network
