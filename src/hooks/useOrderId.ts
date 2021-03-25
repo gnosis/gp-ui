@@ -1,5 +1,11 @@
 import { useHistory, useParams, useRouteMatch } from 'react-router'
 
+function useOrderIdParam(): string {
+  const { orderId } = useParams<{ orderId: string }>()
+
+  return orderId
+}
+
 /**
  * Fetches order id from url parameters
  * Sanitizes it and updates the URL, if any
@@ -7,7 +13,7 @@ import { useHistory, useParams, useRouteMatch } from 'react-router'
  * @returns Sanitized order id
  */
 export function useOrderId(): string {
-  const { orderId } = useParams<{ orderId: string }>()
+  const orderId = useOrderIdParam()
   const { url } = useRouteMatch()
   const history = useHistory()
 
