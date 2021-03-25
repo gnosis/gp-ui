@@ -12,13 +12,14 @@ function useOrderIdParam(): string {
  *
  * @returns Sanitized order id
  */
-export function useOrderId(): string {
+export function useSanitizeOrderIdAndUpdateUrl(): string {
   const orderId = useOrderIdParam()
   const { url } = useRouteMatch()
   const history = useHistory()
 
   // Allows any kind of crap in the orderId, as long as there is a valid and continuous order id in it
   // Ignores case
+  // 0x prefix is optional
   const regexMatch = orderId.match(/(:?0x)?([0-9a-f]{112})/i)
 
   // Get extracted order id from the match, if any
