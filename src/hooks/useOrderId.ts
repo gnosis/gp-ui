@@ -13,7 +13,7 @@ export function useOrderId(): string {
 
   // Allows any kind of crap in the orderId, as long as there is a valid and continuous order id in it
   // Ignores case
-  const regexMatch = orderId.match(/(0x[0-9a-f]{112})/i)
+  const regexMatch = orderId.match(/(:?0x)?([0-9a-f]{112})/i)
 
   // Get extracted order id from the match, if any
   const sanitizedOrderId = (regexMatch && regexMatch[0]?.toLowerCase()) || orderId.toLowerCase()
