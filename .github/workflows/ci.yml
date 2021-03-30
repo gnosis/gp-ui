@@ -103,7 +103,7 @@ jobs:
       - name: Build Web Apps
         run: yarn build
         env:
-          GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}          
+          GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
 
       - name: Upload websites artifact
         uses: actions/upload-artifact@v2
@@ -193,3 +193,15 @@ jobs:
       - name: 'Deploy to S3: Staging'
         if: github.ref == 'refs/heads/master'
         run: aws s3 sync website s3://${{ secrets.AWS_STAGING_BUCKET_NAME }}/current --delete
+
+      - name: 'Production deployment: Upload release build files to be deployed'
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: aws s3 sync website s3://${{ secrets.AWS_STAGING_BUCKET_NAME }}/releases/${{ github.event.release.tag_name }} --delete
+
+      - name: 'Production deployment: Enable production deployment'
+        if: success() && startsWith(github.ref, 'refs/tags/v')
+        run: bash ./.github/scripts/prepare_production_deployment.sh
+        env:
+          PROD_DEPLOYMENT_HOOK_TOKEN: ${{ secrets.PROD_DEPLOYMENT_HOOK_TOKEN }}
+          PROD_DEPLOYMENT_HOOK_URL: ${{ secrets.PROD_DEPLOYMENT_HOOK_URL }}
+          VERSION_TAG: ${{ github.event.release.tag_name }}
