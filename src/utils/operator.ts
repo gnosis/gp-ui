@@ -90,9 +90,19 @@ export function getOrderSurplus(order: RawOrder): { amount: BigNumber; percentag
   const { executedBuyAmount, executedSellAmount } = getOrderExecutedAmounts(order)
 
   if (kind === 'buy') {
-    return getSurplus(sellAmount, executedSellAmount)
+    const esa = new BigNumber(executedSellAmount)
+    const sa = new BigNumber(sellAmount)
+    const amount = esa.gt(ZERO_BIG_NUMBER) ? sa.minus(esa) : ZERO_BIG_NUMBER
+    const percentage = amount.dividedBy(sellAmount)
+
+    return { amount, percentage }
   } else {
-    return getSurplus(buyAmount, executedBuyAmount)
+    const eba = new BigNumber(executedBuyAmount)
+    const ba = new BigNumber(buyAmount)
+    const amount = eba.gt(buyAmount) ? eba.minus(ba) : ZERO_BIG_NUMBER
+    const percentage = amount.dividedBy(ba)
+
+    return { amount, percentage }
   }
 }
 
