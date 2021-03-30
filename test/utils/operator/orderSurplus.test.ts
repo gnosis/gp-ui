@@ -9,6 +9,7 @@ import { getOrderSurplus, getSurplus } from 'utils'
 import { RAW_ORDER } from '../../data'
 
 const ZERO_DOT_ZERO_ONE = new BigNumber('0.01')
+// const TWENTY_PERCENT = new BigNumber('0.2')
 
 describe('getSurplus', () => {
   const inputAmount = ONE_HUNDRED_BIG_NUMBER
@@ -25,13 +26,89 @@ describe('getSurplus', () => {
 })
 
 describe('getOrderSurplus', () => {
-  test('Buy order', () => {
-    const order: RawOrder = { ...RAW_ORDER, kind: 'buy', sellAmount: '100', executedSellAmount: '99' }
-    expect(getOrderSurplus(order)).toEqual({ amount: ONE_BIG_NUMBER, percentage: ZERO_DOT_ZERO_ONE })
+  describe('Buy order', () => {
+    describe('fillOrKill', () => {
+      test('With fees = 0', () => {
+        const order: RawOrder = {
+          ...RAW_ORDER,
+          kind: 'buy',
+          sellAmount: '100',
+          executedSellAmount: '99',
+          feeAmount: '0',
+          executedFeeAmount: '0',
+          partiallyFillable: false,
+        }
+        expect(getOrderSurplus(order)).toEqual({ amount: ONE_BIG_NUMBER, percentage: ZERO_DOT_ZERO_ONE })
+      })
+      test('With fees > 0', () => {
+        const order: RawOrder = {
+          ...RAW_ORDER,
+          kind: 'buy',
+          sellAmount: '110',
+          executedSellAmount: '109',
+          feeAmount: '10',
+          executedFeeAmount: '10',
+          partiallyFillable: false,
+        }
+        expect(getOrderSurplus(order)).toEqual({ amount: ONE_BIG_NUMBER, percentage: ZERO_DOT_ZERO_ONE })
+      })
+    })
+    test('partiallyFillable', () => {
+      const order: RawOrder = {
+        ...RAW_ORDER,
+        kind: 'buy',
+        sellAmount: '100',
+        executedSellAmount: '50',
+        buyAmount: '100',
+        executedBuyAmount: '40',
+        partiallyFillable: true,
+      }
+      // TODO: uncomment when implemented
+      // expect(getOrderSurplus(order)).toEqual({ amount: TEN_BIG_NUMBER, percentage: TWENTY_PERCENT })
+      expect(() => getOrderSurplus(order)).toThrow('Not implemented')
+    })
   })
 
-  test('Sell order', () => {
-    const order: RawOrder = { ...RAW_ORDER, kind: 'sell', buyAmount: '100', executedBuyAmount: '101' }
-    expect(getOrderSurplus(order)).toEqual({ amount: ONE_BIG_NUMBER, percentage: ZERO_DOT_ZERO_ONE })
+  describe('Sell order', () => {
+    describe('fillOrKill', () => {
+      test('With fees = 0', () => {
+        const order: RawOrder = {
+          ...RAW_ORDER,
+          kind: 'sell',
+          buyAmount: '100',
+          executedBuyAmount: '101',
+          feeAmount: '0',
+          executedFeeAmount: '0',
+          partiallyFillable: false,
+        }
+        expect(getOrderSurplus(order)).toEqual({ amount: ONE_BIG_NUMBER, percentage: ZERO_DOT_ZERO_ONE })
+      })
+      test('With fees > 0', () => {
+        const order: RawOrder = {
+          ...RAW_ORDER,
+          kind: 'sell',
+          buyAmount: '100',
+          executedBuyAmount: '101',
+          feeAmount: '10',
+          executedFeeAmount: '10',
+          partiallyFillable: false,
+        }
+        expect(getOrderSurplus(order)).toEqual({ amount: ONE_BIG_NUMBER, percentage: ZERO_DOT_ZERO_ONE })
+      })
+    })
+    test('partiallyFillable', () => {
+      const order: RawOrder = {
+        ...RAW_ORDER,
+        kind: 'sell',
+        buyAmount: '100',
+        executedBuyAmount: '50',
+        sellAmount: '100',
+        executedSellAmount: '40',
+        partiallyFillable: true,
+      }
+      // TODO: uncomment when implemented
+      // expect(getOrderSurplus(order)).toEqual({ amount: TEN_BIG_NUMBER, percentage: TWENTY_PERCENT })
+      expect(() => getOrderSurplus(order)).toThrow('Not implemented')
+    })
   })
 })

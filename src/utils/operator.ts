@@ -85,12 +85,17 @@ export function getSurplus(
 }
 
 export function getOrderSurplus(order: RawOrder): { amount: BigNumber; percentage: BigNumber } {
-  const { kind, buyAmount, sellAmount } = order
+  const { kind, buyAmount, sellAmount, executedFeeAmount, partiallyFillable } = order
 
   const { executedBuyAmount, executedSellAmount } = getOrderExecutedAmounts(order)
 
+  if (partiallyFillable) {
+    // TODO: calculate how much was matched based on the type and check whether there was any surplus
+    throw Error('Not implemented')
+  }
+
   if (kind === 'buy') {
-    const _sellAmount = new BigNumber(sellAmount)
+    const _sellAmount = new BigNumber(sellAmount).minus(executedFeeAmount)
     // BUY order has the buy amount fixed, so it'll sell AT MOST `sellAmount`
     // Surplus will come in the form of a "discount", selling less than `sellAmount`
     // Since this is a `fillOrKill`, whenever `executedSellAmount` > 0 the order was fully executed.
