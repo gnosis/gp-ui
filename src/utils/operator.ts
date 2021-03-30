@@ -90,17 +90,25 @@ export function getOrderSurplus(order: RawOrder): { amount: BigNumber; percentag
   const { executedBuyAmount, executedSellAmount } = getOrderExecutedAmounts(order)
 
   if (kind === 'buy') {
-    const esa = new BigNumber(executedSellAmount)
-    const sa = new BigNumber(sellAmount)
-    const amount = esa.gt(ZERO_BIG_NUMBER) ? sa.minus(esa) : ZERO_BIG_NUMBER
-    const percentage = amount.dividedBy(sellAmount)
+    const _sellAmount = new BigNumber(sellAmount)
+    // BUY order has the buy amount fixed, so it'll sell AT MOST `sellAmount`
+    // Surplus will come in the form of a "discount", selling less than `sellAmount`
+    // Since this is a `fillOrKill`, whenever `executedSellAmount` > 0 the order was fully executed.
+    // The difference between `sellAmount` - `executedSellAmount` is the surplus.
+    // When there's no difference, there's no surplus
+    const amount = executedSellAmount.gt(ZERO_BIG_NUMBER) ? _sellAmount.minus(executedSellAmount) : ZERO_BIG_NUMBER
+    const percentage = amount.dividedBy(_sellAmount)
 
     return { amount, percentage }
   } else {
-    const eba = new BigNumber(executedBuyAmount)
-    const ba = new BigNumber(buyAmount)
-    const amount = eba.gt(buyAmount) ? eba.minus(ba) : ZERO_BIG_NUMBER
-    const percentage = amount.dividedBy(ba)
+    const _buyAmount = new BigNumber(buyAmount)
+    // SELL order has the sell amount fixed (disregard the fees, it's already accounted for),
+    // so it'll buy AT LEAST `buyAmount`
+    // Surplus is in the form of additional buy amount, buying more than `buyAmount`
+    // Since this is a `fillOrKill`, whenever `executedBuyAmount >= buyAmount` the order was fully executed.
+    // The difference between `executedBuyAmount - buyAmount` is the surplus.
+    const amount = executedBuyAmount.gt(_buyAmount) ? executedBuyAmount.minus(_buyAmount) : ZERO_BIG_NUMBER
+    const percentage = amount.dividedBy(_buyAmount)
 
     return { amount, percentage }
   }
