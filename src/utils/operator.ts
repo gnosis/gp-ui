@@ -69,24 +69,60 @@ export function getOrderFilledAmount(order: RawOrder): { amount: BigNumber; perc
   return { amount: executedAmount, percentage: executedAmount.div(totalAmount) }
 }
 
-export function getSurplus(
-  inputAmount: BigNumber | string,
-  executedAmount: BigNumber | string,
-): { amount: BigNumber; percentage: BigNumber } {
-  // Just as a nicety, allow both input as strings
-  // inputAmount has ne need for conversion since BigNumber takes care of it when used as a parameter
-  // executedAmount needs to be converted though
-  const _executedAmount = typeof executedAmount === 'string' ? new BigNumber(executedAmount) : executedAmount
+type Surplus = {
+  amount: BigNumber
+  percentage: BigNumber
+}
 
-  const amount = _executedAmount.gt(inputAmount) ? _executedAmount.minus(inputAmount) : ZERO_BIG_NUMBER
-  const percentage = amount.dividedBy(inputAmount)
+type BigNumberIsh = string | BigNumber
+
+/**
+ * Calculates SELL surplus based on buy amounts
+ *
+ * @param buyAmount buyAmount
+ * @param executedBuyAmount executedBuyAmount
+ * @returns Sell surplus
+ */
+export function getSellSurplus(buyAmount: BigNumberIsh, executedBuyAmount: BigNumberIsh): Surplus {
+  const _buyAmount = new BigNumber(buyAmount)
+  const _executedAmount = new BigNumber(executedBuyAmount)
+  // SELL order has the sell amount fixed (minus the fees),
+  // so it'll buy AT LEAST `buyAmount`
+  // Surplus is in the form of additional buy amount, buying more than `buyAmount`
+  // Since this is a `fillOrKill`, whenever `executedBuyAmount >= buyAmount` the order was fully executed.
+  // The difference between `executedBuyAmount - buyAmount` is the surplus.
+  const amount = _executedAmount.gt(_buyAmount) ? _executedAmount.minus(_buyAmount) : ZERO_BIG_NUMBER
+  const percentage = amount.dividedBy(_buyAmount)
 
   return { amount, percentage }
 }
 
-export function getOrderSurplus(order: RawOrder): { amount: BigNumber; percentage: BigNumber } {
-  const { kind, buyAmount, sellAmount, executedFeeAmount, partiallyFillable } = order
+/**
+ * Calculates BUY surplus based on sell amounts
+ * WARNING: Respective fees must be already discounted from both parameters
+ *
+ * @param sellAmount sellAmount minus feeAmount
+ * @param executedSellAmount executedSellAmount minus executedFeeAmount
+ * @returns Buy surplus
+ */
+export function getBuySurplus(sellAmount: BigNumberIsh, executedSellAmount: BigNumberIsh): Surplus {
+  const _sellAmount = new BigNumber(sellAmount)
+  const _executedAmount = new BigNumber(executedSellAmount)
+  // BUY order has the buy amount fixed, so it'll sell AT MOST `sellAmount` (minus the fees)
+  // Surplus will come in the form of a "discount", selling less than `sellAmount`
+  // Since this is a `fillOrKill`, whenever `executedSellAmount` > 0 the order was fully executed.
+  // The difference between `sellAmount` - `executedSellAmount` is the surplus.
+  // When there's no difference, there's no surplus
+  const amount = _executedAmount.gt(ZERO_BIG_NUMBER) ? _sellAmount.minus(_executedAmount) : ZERO_BIG_NUMBER
+  const percentage = amount.dividedBy(_sellAmount)
 
+  return { amount, percentage }
+}
+
+export function getOrderSurplus(order: RawOrder): Surplus {
+  const { kind, buyAmount, sellAmount, feeAmount, partiallyFillable } = order
+
+  // `executedSellAmount` already has `executedFeeAmount` discounted
   const { executedBuyAmount, executedSellAmount } = getOrderExecutedAmounts(order)
 
   if (partiallyFillable) {
@@ -95,27 +131,11 @@ export function getOrderSurplus(order: RawOrder): { amount: BigNumber; percentag
   }
 
   if (kind === 'buy') {
-    const _sellAmount = new BigNumber(sellAmount).minus(executedFeeAmount)
-    // BUY order has the buy amount fixed, so it'll sell AT MOST `sellAmount`
-    // Surplus will come in the form of a "discount", selling less than `sellAmount`
-    // Since this is a `fillOrKill`, whenever `executedSellAmount` > 0 the order was fully executed.
-    // The difference between `sellAmount` - `executedSellAmount` is the surplus.
-    // When there's no difference, there's no surplus
-    const amount = executedSellAmount.gt(ZERO_BIG_NUMBER) ? _sellAmount.minus(executedSellAmount) : ZERO_BIG_NUMBER
-    const percentage = amount.dividedBy(_sellAmount)
-
-    return { amount, percentage }
+    // Need to discount `feeAmount` to have the real `sellAmount`
+    const _sellAmount = new BigNumber(sellAmount).minus(feeAmount)
+    return getBuySurplus(_sellAmount, executedSellAmount)
   } else {
-    const _buyAmount = new BigNumber(buyAmount)
-    // SELL order has the sell amount fixed (disregard the fees, it's already accounted for),
-    // so it'll buy AT LEAST `buyAmount`
-    // Surplus is in the form of additional buy amount, buying more than `buyAmount`
-    // Since this is a `fillOrKill`, whenever `executedBuyAmount >= buyAmount` the order was fully executed.
-    // The difference between `executedBuyAmount - buyAmount` is the surplus.
-    const amount = executedBuyAmount.gt(_buyAmount) ? executedBuyAmount.minus(_buyAmount) : ZERO_BIG_NUMBER
-    const percentage = amount.dividedBy(_buyAmount)
-
-    return { amount, percentage }
+    return getSellSurplus(buyAmount, executedBuyAmount)
   }
 }
 
