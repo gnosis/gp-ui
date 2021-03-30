@@ -26,7 +26,7 @@ describe('getSurplus', () => {
 
 describe('getOrderSurplus', () => {
   test('Buy order', () => {
-    const order: RawOrder = { ...RAW_ORDER, kind: 'buy', sellAmount: '100', executedSellAmount: '101' }
+    const order: RawOrder = { ...RAW_ORDER, kind: 'buy', sellAmount: '100', executedSellAmount: '99' }
     expect(getOrderSurplus(order)).toEqual({ amount: ONE_BIG_NUMBER, percentage: ZERO_DOT_ZERO_ONE })
   })
 
