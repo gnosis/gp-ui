@@ -89,7 +89,7 @@ export function getSellSurplus(buyAmount: BigNumberIsh, executedBuyAmount: BigNu
   // SELL order has the sell amount fixed (minus the fees),
   // so it'll buy AT LEAST `buyAmount`
   // Surplus is in the form of additional buy amount, buying more than `buyAmount`
-  // Since this is a `fillOrKill`, whenever `executedBuyAmount >= buyAmount` the order was fully executed.
+  // For `fillOrKill` orders, whenever `executedBuyAmount >= buyAmount` the order was fully executed.
   // The difference between `executedBuyAmount - buyAmount` is the surplus.
   const amount = executedAmountBigNumber.gt(buyAmountBigNumber)
     ? executedAmountBigNumber.minus(buyAmountBigNumber)
@@ -112,7 +112,7 @@ export function getBuySurplus(sellAmount: BigNumberIsh, executedSellAmount: BigN
   const executedAmountBigNumber = new BigNumber(executedSellAmount)
   // BUY order has the buy amount fixed, so it'll sell AT MOST `sellAmount` (minus the fees)
   // Surplus will come in the form of a "discount", selling less than `sellAmount`
-  // Since this is a `fillOrKill`, whenever `executedSellAmount` > 0 the order was fully executed.
+  // For `fillOrKill` orders, whenever `executedSellAmount` > 0 the order was fully executed.
   // The difference between `sellAmount` - `executedSellAmount` is the surplus.
   // When there's no difference, there's no surplus
   const amount = executedAmountBigNumber.gt(ZERO_BIG_NUMBER)
