@@ -54,8 +54,8 @@ describe('getOrderSurplus', () => {
         const order: RawOrder = {
           ...RAW_ORDER,
           kind: 'buy',
-          sellAmount: '110',
-          executedSellAmount: '109',
+          sellAmount: '100',
+          executedSellAmount: '109', // 10 is the fee, total sold is 99; surplus === 1
           feeAmount: '10',
           executedFeeAmount: '10',
           partiallyFillable: false,
