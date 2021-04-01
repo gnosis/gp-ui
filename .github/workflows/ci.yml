@@ -164,8 +164,8 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: 'Deploy to S3: PRaul'
-        if: success() && PR_NUMBER
-        run: aws s3 sync website s3://${{ secrets.AWS_REVIEW_BUCKET_NAME }}/${{ env.REPO_NAME_SLUG }}/pr${{ PR_NUMBER }} --delete
+        if: success() && env.PR_NUMBER
+        run: aws s3 sync website s3://${{ secrets.AWS_REVIEW_BUCKET_NAME }}/${{ env.REPO_NAME_SLUG }}/pr${{ env.PR_NUMBER }} --delete
 
       - name: 'PRaul: Comment PR with app URLs'
         uses: mshick/add-pr-comment@v1
@@ -177,9 +177,9 @@ jobs:
             * **📚 [Storybook](${{ env.REVIEW_FEATURE_URL }}/storybook/)**: Component stories
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           repo-token-user-login: 'github-actions[bot]'
-        if: success() && PR_NUMBER
+        if: success() && env.PR_NUMBER
         env:
-          REVIEW_FEATURE_URL: https://pr${{ PR_NUMBER }}--${{ env.REPO_NAME_SLUG }}.review.gnosisdev.com
+          REVIEW_FEATURE_URL: https://pr${{ env.PR_NUMBER }}--${{ env.REPO_NAME_SLUG }}.review.gnosisdev.com
 
       - name: 'Deploy to S3: Develop'
         if: github.ref == 'refs/heads/develop'
