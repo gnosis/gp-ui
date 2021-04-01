@@ -84,15 +84,17 @@ type BigNumberIsh = string | BigNumber
  * @returns Sell surplus
  */
 export function getSellSurplus(buyAmount: BigNumberIsh, executedBuyAmount: BigNumberIsh): Surplus {
-  const _buyAmount = new BigNumber(buyAmount)
-  const _executedAmount = new BigNumber(executedBuyAmount)
+  const buyAmountBigNumber = new BigNumber(buyAmount)
+  const executedAmountBigNumber = new BigNumber(executedBuyAmount)
   // SELL order has the sell amount fixed (minus the fees),
   // so it'll buy AT LEAST `buyAmount`
   // Surplus is in the form of additional buy amount, buying more than `buyAmount`
   // Since this is a `fillOrKill`, whenever `executedBuyAmount >= buyAmount` the order was fully executed.
   // The difference between `executedBuyAmount - buyAmount` is the surplus.
-  const amount = _executedAmount.gt(_buyAmount) ? _executedAmount.minus(_buyAmount) : ZERO_BIG_NUMBER
-  const percentage = amount.dividedBy(_buyAmount)
+  const amount = executedAmountBigNumber.gt(buyAmountBigNumber)
+    ? executedAmountBigNumber.minus(buyAmountBigNumber)
+    : ZERO_BIG_NUMBER
+  const percentage = amount.dividedBy(buyAmountBigNumber)
 
   return { amount, percentage }
 }
@@ -106,15 +108,17 @@ export function getSellSurplus(buyAmount: BigNumberIsh, executedBuyAmount: BigNu
  * @returns Buy surplus
  */
 export function getBuySurplus(sellAmount: BigNumberIsh, executedSellAmount: BigNumberIsh): Surplus {
-  const _sellAmount = new BigNumber(sellAmount)
-  const _executedAmount = new BigNumber(executedSellAmount)
+  const sellAmountBigNumber = new BigNumber(sellAmount)
+  const executedAmountBigNumber = new BigNumber(executedSellAmount)
   // BUY order has the buy amount fixed, so it'll sell AT MOST `sellAmount` (minus the fees)
   // Surplus will come in the form of a "discount", selling less than `sellAmount`
   // Since this is a `fillOrKill`, whenever `executedSellAmount` > 0 the order was fully executed.
   // The difference between `sellAmount` - `executedSellAmount` is the surplus.
   // When there's no difference, there's no surplus
-  const amount = _executedAmount.gt(ZERO_BIG_NUMBER) ? _sellAmount.minus(_executedAmount) : ZERO_BIG_NUMBER
-  const percentage = amount.dividedBy(_sellAmount)
+  const amount = executedAmountBigNumber.gt(ZERO_BIG_NUMBER)
+    ? sellAmountBigNumber.minus(executedAmountBigNumber)
+    : ZERO_BIG_NUMBER
+  const percentage = amount.dividedBy(sellAmountBigNumber)
 
   return { amount, percentage }
 }
