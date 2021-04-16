@@ -40,7 +40,6 @@ function Row(props: RowProps): JSX.Element {
       <RowContents>
         <span>{formattedAmount}</span>
         {/* <UsdAmount>(~${usdAmount})</UsdAmount> */}
-        {/* TODO: figure out the deal with images on networks other than Mainnet */}
         <TokenDisplay erc20={erc20} network={network} />
       </RowContents>
     </>
