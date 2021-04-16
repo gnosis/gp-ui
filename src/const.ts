@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import BN from 'bn.js'
-import { UNLIMITED_ORDER_AMOUNT } from '@gnosis.pm/dex-js'
+import { TokenErc20, UNLIMITED_ORDER_AMOUNT } from '@gnosis.pm/dex-js'
 export {
   UNLIMITED_ORDER_AMOUNT,
   FEE_DENOMINATOR,
@@ -225,3 +225,23 @@ export const DISABLED_TOKEN_MAPS = Object.keys(disabledTokens).reduce<DisabledTo
     [Network.xDAI]: {},
   },
 )
+
+export const ETH: TokenErc20 = {
+  name: 'ETH',
+  symbol: 'ETH',
+  decimals: 18,
+  address: NATIVE_TOKEN_ADDRESS,
+}
+
+export const XDAI: TokenErc20 = {
+  name: 'xDai',
+  symbol: 'xDai',
+  decimals: 18,
+  address: NATIVE_TOKEN_ADDRESS,
+}
+
+export const NATIVE_TOKEN_PER_NETWORK: Record<string, TokenErc20> = {
+  '1': ETH,
+  '4': ETH,
+  '100': XDAI,
+}
