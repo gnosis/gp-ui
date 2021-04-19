@@ -26,9 +26,11 @@ async function _fetchErc20FromNetwork(params: {
   const { address, networkId, setError } = params
 
   if (isNativeToken(address)) {
+    // Default to mainnet (ETH) when the network isn't configured
+    const nativeToken = NATIVE_TOKEN_PER_NETWORK[networkId] || NATIVE_TOKEN_PER_NETWORK[Network.Mainnet]
     // Overwrite native address because otherwise it won't match the case
     // Causing the caller to never know we got the token it was looking for
-    return { ...NATIVE_TOKEN_PER_NETWORK[networkId], address } || null
+    return { ...nativeToken, address }
   }
 
   try {
