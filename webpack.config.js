@@ -52,9 +52,6 @@ module.exports = getWebpackConfig({
   baseUrl,
   envVars: {
     BASE_URL: baseUrl,
-    OPERATOR_ENDPOINT_MAINNET: 'https://protocol-mainnet.gnosis.io/api', // defaults to prod endpoints
-    OPERATOR_ENDPOINT_RINKEBY: 'https://protocol-rinkeby.gnosis.io/api',
-    OPERATOR_ENDPOINT_XDAI: 'https://protocol-xdai.gnosis.io/api',
   },
   defineVars: {
     CONFIG: JSON.stringify(config),
