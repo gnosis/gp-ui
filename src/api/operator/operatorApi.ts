@@ -40,7 +40,7 @@ function _getApiBaseUrl(networkId: Network): string {
   if (!baseUrl) {
     throw new Error('Unsupported Network. The operator API is not deployed in the Network ' + networkId)
   } else {
-    return baseUrl
+    return baseUrl + '/v1'
   }
 }
 
