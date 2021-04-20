@@ -9,15 +9,15 @@ import { FeeInformation, GetOrderParams, GetOrdersParams, OrderID, OrderPostErro
 function getOperatorUrl(): Partial<Record<Network, string>> {
   if (isProd || isStaging) {
     return {
-      [Network.Mainnet]: 'https://protocol-mainnet.gnosis.io/api',
-      [Network.Rinkeby]: 'https://protocol-rinkeby.gnosis.io/api',
-      [Network.xDAI]: 'https://protocol-xdai.gnosis.io/api',
+      [Network.Mainnet]: process.env.OPERATOR_URL_PROD_MAINNET,
+      [Network.Rinkeby]: process.env.OPERATOR_URL_PROD_RINKEBY,
+      [Network.xDAI]: process.env.OPERATOR_URL_PROD_XDAI,
     }
   } else {
     return {
-      [Network.Mainnet]: 'https://protocol-mainnet.dev.gnosisdev.com/api',
-      [Network.Rinkeby]: 'https://protocol-rinkeby.dev.gnosisdev.com/api',
-      [Network.xDAI]: 'https://protocol-xdai.dev.gnosisdev.com/api',
+      [Network.Mainnet]: process.env.OPERATOR_URL_STAGING_MAINNET,
+      [Network.Rinkeby]: process.env.OPERATOR_URL_STAGING_RINKEBY,
+      [Network.xDAI]: process.env.OPERATOR_URL_STAGING_XDAI,
     }
   }
 }
