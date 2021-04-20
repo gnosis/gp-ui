@@ -1,19 +1,28 @@
 import { Network } from 'types'
 
 import { buildSearchString } from 'utils/url'
+import { isProd, isStaging } from 'utils/env'
 
 import { OrderCreation } from './signatures'
 import { FeeInformation, GetOrderParams, GetOrdersParams, OrderID, OrderPostError, RawOrder } from './types'
 
-/**
- * See Swagger documentation:
- *    https://protocol-rinkeby.dev.gnosisdev.com/api/
- */
-const API_BASE_URL: Partial<Record<Network, string>> = {
-  [Network.Mainnet]: 'https://protocol-mainnet.dev.gnosisdev.com/api/v1',
-  [Network.Rinkeby]: 'https://protocol-rinkeby.dev.gnosisdev.com/api/v1',
-  [Network.xDAI]: 'https://protocol-xdai.dev.gnosisdev.com/api/v1',
+function getOperatorUrl(): Partial<Record<Network, string>> {
+  if (isProd || isStaging) {
+    return {
+      [Network.Mainnet]: 'https://protocol-mainnet.gnosis.io/api',
+      [Network.Rinkeby]: 'https://protocol-rinkeby.gnosis.io/api',
+      [Network.xDAI]: 'https://protocol-xdai.gnosis.io/api',
+    }
+  } else {
+    return {
+      [Network.Mainnet]: 'https://protocol-mainnet.dev.gnosisdev.com/api',
+      [Network.Rinkeby]: 'https://protocol-rinkeby.dev.gnosisdev.com/api',
+      [Network.xDAI]: 'https://protocol-xdai.dev.gnosisdev.com/api',
+    }
+  }
 }
+
+const API_BASE_URL = getOperatorUrl()
 
 const DEFAULT_HEADERS: Headers = new Headers({
   'Content-Type': 'application/json',
