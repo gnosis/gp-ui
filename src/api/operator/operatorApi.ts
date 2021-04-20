@@ -10,9 +10,9 @@ import { FeeInformation, GetOrderParams, GetOrdersParams, OrderID, OrderPostErro
  *    https://protocol-rinkeby.dev.gnosisdev.com/api/
  */
 const API_BASE_URL: Partial<Record<Network, string>> = {
-  [Network.Mainnet]: 'https://protocol-mainnet.dev.gnosisdev.com/api/v1',
-  [Network.Rinkeby]: 'https://protocol-rinkeby.dev.gnosisdev.com/api/v1',
-  [Network.xDAI]: 'https://protocol-xdai.dev.gnosisdev.com/api/v1',
+  [Network.Mainnet]: process.env.OPERATOR_ENDPOINT_MAINNET,
+  [Network.Rinkeby]: process.env.OPERATOR_ENDPOINT_RINKEBY,
+  [Network.xDAI]: process.env.OPERATOR_ENDPOINT_XDAI,
 }
 
 const DEFAULT_HEADERS: Headers = new Headers({
@@ -31,7 +31,7 @@ function _getApiBaseUrl(networkId: Network): string {
   if (!baseUrl) {
     throw new Error('Unsupported Network. The operator API is not deployed in the Network ' + networkId)
   } else {
-    return baseUrl
+    return baseUrl + '/v1'
   }
 }
 
