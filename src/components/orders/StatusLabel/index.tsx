@@ -1,14 +1,7 @@
 import React from 'react'
 import styled, { DefaultTheme } from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faCheckCircle,
-  faClock,
-  faDotCircle,
-  faSpinner,
-  faTimesCircle,
-  IconDefinition,
-} from '@fortawesome/free-solid-svg-icons'
+import { faCheckCircle, faCircleNotch, faClock, faTimesCircle, IconDefinition } from '@fortawesome/free-solid-svg-icons'
 
 import { OrderStatus } from 'api/operator'
 
@@ -66,10 +59,6 @@ const PartialFill = styled.div`
   color: ${({ theme }): string => theme.textPrimary1};
 `
 
-const Loader = styled(FontAwesomeIcon)`
-  margin-left: 1rem;
-`
-
 function getStatusIcon(status: OrderStatus): IconDefinition {
   switch (status) {
     case 'expired':
@@ -79,21 +68,21 @@ function getStatusIcon(status: OrderStatus): IconDefinition {
     case 'canceled':
       return faTimesCircle
     case 'open':
-      return faDotCircle
+      return faCircleNotch
   }
 }
 
 function StatusIcon({ status }: DisplayProps): JSX.Element {
   const icon = getStatusIcon(status)
+  const isOpen = status === 'open'
 
-  return <StyledFAIcon icon={icon} />
+  return <StyledFAIcon icon={icon} spin={isOpen} />
 }
 
 export type Props = DisplayProps & { partiallyFilled: boolean }
 
 export function StatusLabel(props: Props): JSX.Element {
   const { status, partiallyFilled } = props
-  const isOpen = status === 'open'
 
   return (
     <Wrapper>
@@ -102,7 +91,6 @@ export function StatusLabel(props: Props): JSX.Element {
         {status}
       </Label>
       {partiallyFilled && <PartialFill>(partial fill)</PartialFill>}
-      {isOpen && <Loader icon={faSpinner} spin size="1x" />}
     </Wrapper>
   )
 }
