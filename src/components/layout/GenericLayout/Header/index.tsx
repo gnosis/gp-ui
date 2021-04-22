@@ -45,6 +45,7 @@ const Logo = styled.span`
     animation-duration: 4s;
     animation-iteration-count: infinite;
     animation-delay: 0.3s;
+    text-decoration: none;
   }
 
   > img {
