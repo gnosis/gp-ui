@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
 import styled from 'styled-components'
 import { media } from 'theme/styles/media'
 
@@ -25,7 +25,13 @@ const HeaderStyled = styled.header`
   }
 `
 
-const Logo = styled(Link)`
+const HeaderLink = styled(Link)`
+  display: flex;
+  align-content: center;
+  justify-content: center;
+`
+
+const Logo = styled.span`
   width: 2.8rem;
   height: 2.8rem;
   transform: perspective(20rem) rotateY(0);
@@ -33,9 +39,6 @@ const Logo = styled(Link)`
   transition: transform 1s ease-in-out;
   padding: 0;
   margin: 0 1rem 0 0;
-  display: flex;
-  align-content: center;
-  justify-content: center;
 
   &:hover {
     animation-name: spin;
@@ -66,11 +69,15 @@ const Logo = styled(Link)`
   }
 `
 
-export const Header: React.FC = ({ children }) => (
+type Props = PropsWithChildren<{ linkTo?: string; logoAlt?: string }>
+
+export const Header: React.FC<Props> = ({ children, linkTo, logoAlt }) => (
   <HeaderStyled>
-    <Logo to="/" href="#">
-      <img src={LogoImage} alt="Trading interface homepage" />
-    </Logo>
-    {children}
+    <HeaderLink to={linkTo || '/'}>
+      <Logo>
+        <img src={LogoImage} alt={logoAlt || 'Trading interface homepage'} />
+      </Logo>
+      {children}
+    </HeaderLink>
   </HeaderStyled>
 )
