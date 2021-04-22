@@ -43,13 +43,13 @@ export const Header: React.FC = () => {
     return null
   }
 
-  const network = networkId !== 1 ? getNetworkFromId(networkId) : null
+  const network = networkId !== 1 ? getNetworkFromId(networkId).toLowerCase() : null
 
   return (
-    <GenericHeader>
+    <GenericHeader logoAlt="GP Explorer homepage" linkTo={`/${network || ''}`}>
       <Navigation>
         <Logo>GP Explorer</Logo>
-        {network && <NetworkLabel className={network.toLowerCase()}>{network}</NetworkLabel>}
+        {network && <NetworkLabel className={network}>{network}</NetworkLabel>}
         {/*      
         <li>
           <Link to="/">Batches</Link>
