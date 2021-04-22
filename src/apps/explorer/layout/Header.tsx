@@ -13,6 +13,7 @@ const Logo = styled.span`
   font-size: 1.8rem;
   line-height: 1;
   font-weight: ${({ theme }): string => theme.fontBlack};
+  white-space: nowrap;
 `
 
 const NetworkLabel = styled.span`
@@ -46,9 +47,8 @@ export const Header: React.FC = () => {
   const network = networkId !== 1 ? getNetworkFromId(networkId).toLowerCase() : null
 
   return (
-    <GenericHeader logoAlt="GP Explorer homepage" linkTo={`/${network || ''}`}>
+    <GenericHeader logoAlt="GP Explorer homepage" linkTo={`/${network || ''}`} label={<Logo>GP Explorer</Logo>}>
       <Navigation>
-        <Logo>GP Explorer</Logo>
         {network && <NetworkLabel className={network}>{network}</NetworkLabel>}
         {/*      
         <li>
