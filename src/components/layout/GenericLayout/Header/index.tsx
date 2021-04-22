@@ -25,20 +25,16 @@ const HeaderStyled = styled.header`
   }
 `
 
-const HeaderLink = styled(Link)`
-  display: flex;
-  align-content: center;
-  justify-content: center;
-`
-
-const Logo = styled.span`
-  width: 2.8rem;
+const Logo = styled(Link)`
   height: 2.8rem;
   transform: perspective(20rem) rotateY(0);
   transform-style: preserve-3d;
   transition: transform 1s ease-in-out;
   padding: 0;
   margin: 0 1rem 0 0;
+  display: flex;
+  align-content: center;
+  justify-content: center;
 
   &:hover {
     animation-name: spin;
@@ -57,6 +53,14 @@ const Logo = styled.span`
     margin: auto;
   }
 
+  > span {
+    margin: 0 0 0 1rem;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    color: ${({ theme }): string => theme.textPrimary1};
+  }
+
   @keyframes spin {
     0% {
       transform: perspective(20rem) rotateY(0);
@@ -70,15 +74,18 @@ const Logo = styled.span`
   }
 `
 
-type Props = PropsWithChildren<{ linkTo?: string; logoAlt?: string }>
+type Props = PropsWithChildren<{
+  label?: React.ReactNode
+  linkTo?: string
+  logoAlt?: string
+}>
 
-export const Header: React.FC<Props> = ({ children, linkTo, logoAlt }) => (
+export const Header: React.FC<Props> = ({ children, linkTo, logoAlt, label }) => (
   <HeaderStyled>
-    <HeaderLink to={linkTo || '/'}>
-      <Logo>
-        <img src={LogoImage} alt={logoAlt || 'Trading interface homepage'} />
-      </Logo>
-      {children}
-    </HeaderLink>
+    <Logo to={linkTo || '/'}>
+      <img src={LogoImage} alt={logoAlt || 'Trading interface homepage'} />
+      {label && <span>{label}</span>}
+    </Logo>
+    {children}
   </HeaderStyled>
 )
