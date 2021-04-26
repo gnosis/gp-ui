@@ -27,24 +27,23 @@ const HeaderStyled = styled.header`
 
 const Logo = styled(Link)`
   height: 2.8rem;
-  transform: perspective(20rem) rotateY(0);
-  transform-style: preserve-3d;
-  transition: transform 1s ease-in-out;
   padding: 0;
-  margin: 0 1rem 0 0;
   display: flex;
   align-content: center;
   justify-content: center;
 
-  &:hover {
-    animation-name: spin;
-    animation-duration: 4s;
-    animation-iteration-count: infinite;
-    animation-delay: 0.3s;
-    text-decoration: none;
-  }
-
   > img {
+    transform: perspective(20rem) rotateY(0);
+    transform-style: preserve-3d;
+    transition: transform 1s ease-in-out;
+
+    &:hover {
+      animation-name: spin;
+      animation-duration: 4s;
+      animation-iteration-count: infinite;
+      animation-delay: 0.3s;
+    }
+
     background: url(${LogoImage}) no-repeat center/contain;
     border: 0;
     object-fit: contain;
