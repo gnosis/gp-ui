@@ -47,7 +47,7 @@ export const Header: React.FC = () => {
   const network = networkId !== 1 ? getNetworkFromId(networkId).toLowerCase() : null
 
   return (
-    <GenericHeader logoAlt="GP Explorer homepage" linkTo={`/${network || ''}`} label={<Logo>GP Explorer</Logo>}>
+    <GenericHeader logoAlt="Gnosis Protocol" linkTo={`/${network || ''}`} label={<Logo>Gnosis Protocol</Logo>}>
       <Navigation>
         {network && <NetworkLabel className={network}>{network}</NetworkLabel>}
         {/*      
