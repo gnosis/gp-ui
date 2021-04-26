@@ -32,6 +32,10 @@ const Logo = styled(Link)`
   align-content: center;
   justify-content: center;
 
+  &:hover {
+    text-decoration: none;
+  }
+
   > img {
     transform: perspective(20rem) rotateY(0);
     transform-style: preserve-3d;
