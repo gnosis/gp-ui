@@ -4,7 +4,7 @@ set -e
 # Only:
 # - Tagged commits
 # - Security env variables are available.
-echo "🚀 Preparing deploy for version $VERSION_TAG. Calling hook Url: $PROD_DEPLOYMENT_HOOK_URL"
+echo "🚀 Preparing version $VERSION_TAG for deployment"
 
 if [ -n "$VERSION_TAG" ] && [ -n "$PROD_DEPLOYMENT_HOOK_TOKEN" ] && [ -n "$PROD_DEPLOYMENT_HOOK_URL" ]
 then
