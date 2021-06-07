@@ -1779,9 +1779,9 @@
     bignumber.js "^9.0.0"
 
 "@gnosis.pm/gp-v2-contracts@^0.0.1-alpha.17":
-  version "0.0.1-alpha.17"
-  resolved "https://registry.yarnpkg.com/@gnosis.pm/gp-v2-contracts/-/gp-v2-contracts-0.0.1-alpha.17.tgz#5c3e08b4a761d13383af631cee255cc7645aa50a"
-  integrity sha512-kr/tpeqvlKVXDka/aFHGFJyT9xgYjAvWK9wszlq4pyH3Qs7WIB0mj9YMdzAmVRVdvpXeLGWgTPZ88xIXD/9X6Q==
+  version "0.0.1-alpha.18"
+  resolved "https://registry.yarnpkg.com/@gnosis.pm/gp-v2-contracts/-/gp-v2-contracts-0.0.1-alpha.18.tgz#317ec588724713d067158293748cb1057a9d02a3"
+  integrity sha512-jOh0UHYA6W5q2840CKR6FWNxc0ARGs6ijSjPXbX6ytPU5c7uH5yrXM0Qvkogp4KWrnxtZQ9ptdA+nsVAgyDmRQ==
 
 "@gnosis.pm/safe-apps-react-sdk@^2.1.0":
   version "2.1.0"
@@ -3731,7 +3731,7 @@
     "@types/node" "*"
     form-data "^3.0.0"
 
-"@types/node@*", "@types/node@^14.0.14":
+"@types/node@*", "@types/node@^14.0.10", "@types/node@^14.0.14":
   version "14.17.2"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.17.2.tgz#1e94476db57ec93a372c7f7d29aa5707cfb92339"
   integrity sha512-sld7b/xmFum66AAKuz/rp/CUO8+98fMpyQ3SBfzzBNGMd/1iHBTAg9oyAvcYlAj46bpc74r91jSw2iFdnx29nw==
@@ -3745,11 +3745,6 @@
   version "12.20.4"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.20.4.tgz#73687043dd00fcb6962c60fbf499553a24d6bdf2"
   integrity sha512-xRCgeE0Q4pT5UZ189TJ3SpYuX/QGl6QIAOAIeDSbAVAd2gX1NxSZup4jNVK7cxIeP8KDSbJgcckun495isP1jQ==
-
-"@types/node@^14.0.10":
-  version "14.17.2"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.17.2.tgz#1e94476db57ec93a372c7f7d29aa5707cfb92339"
-  integrity sha512-sld7b/xmFum66AAKuz/rp/CUO8+98fMpyQ3SBfzzBNGMd/1iHBTAg9oyAvcYlAj46bpc74r91jSw2iFdnx29nw==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.0"
