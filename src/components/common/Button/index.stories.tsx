@@ -10,14 +10,14 @@ export default {
   title: 'Common/Button',
   component: ButtonBase,
   decorators: [ThemeToggler],
-  argTypes: {
-    label: { control: 'text' },
-    variant: { control: 'radio' },
-    size: { control: 'inline-radio' },
-    as: { control: null },
-    theme: { control: null },
-    forwardedAs: { control: null },
-  },
+  // argTypes: {
+  //   label: { control: 'text' },
+  //   variant: { control: 'radio' },
+  //   size: { control: 'inline-radio' },
+  //   as: { control: null },
+  //   theme: { control: null },
+  //   forwardedAs: { control: null },
+  // },
 } as Meta
 
 const Template: Story<ButtonBaseProps & { label?: React.ReactNode }> = (args) => (
@@ -74,9 +74,9 @@ BigButton.args = {
   size: 'big',
 }
 
-export const SmolButton = Template.bind({})
-SmolButton.args = {
-  label: 'Smol Button',
+export const SmallButton = Template.bind({})
+SmallButton.args = {
+  label: 'Small Button',
   variant: 'primary',
   size: 'small',
 }
