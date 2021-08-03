@@ -26,7 +26,7 @@ export interface TabTheme {
   readonly fontSize: string
   readonly borderRadius: boolean
 }
-interface Props {
+export interface Props {
   readonly tabItems: TabItemInterface[]
   readonly tabTheme: TabTheme
   readonly defaultTab?: TabId
@@ -45,7 +45,6 @@ const Wrapper = styled.div`
     width: 100%;
   }
 `
-
 export const DEFAULT_TAB_THEME: TabTheme = {
   activeBg: 'var(--color-transparent)',
   activeBgAlt: 'initial',
