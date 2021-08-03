@@ -1,0 +1,59 @@
+import React from 'react'
+import styled from 'styled-components'
+
+import Tabs, { getTabTheme, Props as TabsProps } from 'components/common/Tabs/Tabs'
+import { DARK_COLOURS } from 'theme'
+
+const StyledTabs = styled.div`
+  display: flex;
+  width: 100%;
+  padding: 0;
+  border: 1px solid rgba(151, 151, 184, 0.3);
+  border-radius: 4px;
+
+  > div > div.tablist {
+    justify-content: flex-start;
+    border-bottom: 1px solid rgba(151, 151, 184, 0.3);
+    box-sizing: border-box;
+  }
+
+  > div > div.tablist > button {
+    flex: 0 0 auto;
+    min-width: 96px;
+    padding: 12px 0.8rem;
+    line-height: 2;
+    height: auto;
+    font-family: var(--font-default);
+  }
+
+  > div > div:last-of-type {
+    height: 100%;
+  }
+
+  > div > div.tab-content {
+    padding: 20px 16px;
+  }
+`
+const tabCustomThemeConfig = getTabTheme({
+  activeBg: 'var(--color-transparent)',
+  activeBgAlt: 'initial',
+  inactiveBg: 'var(--color-transparent)',
+  activeText: DARK_COLOURS.textPrimary1,
+  inactiveText: 'var(--color-text-secondary2)',
+  activeBorder: DARK_COLOURS.orange,
+  inactiveBorder: 'none',
+  fontSize: 'var(--font-size-large)',
+  fontWeight: 'var(--font-weight-bold)',
+  letterSpacing: 'initial',
+  borderRadius: false,
+})
+
+const ExplorerTabs: React.FC<Omit<TabsProps, 'tabTheme'>> = (props) => {
+  return (
+    <StyledTabs>
+      <Tabs tabTheme={tabCustomThemeConfig} {...props} />
+    </StyledTabs>
+  )
+}
+
+export default ExplorerTabs

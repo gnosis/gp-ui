@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { Meta, Story } from '@storybook/react'
-import { GlobalStyles, NetworkDecorator, ThemeToggler } from 'storybook/decorators'
+import { Meta, Story } from '@storybook/react/types-6-0'
+import { GlobalStyles, ThemeToggler } from 'storybook/decorators'
 
 import Tabs, { getTabTheme, Props as TabsProps } from './Tabs'
 import { DARK_COLOURS } from 'theme'
@@ -9,7 +9,7 @@ import { DARK_COLOURS } from 'theme'
 export default {
   title: 'Common/Tabs',
   component: Tabs,
-  decorators: [GlobalStyles, NetworkDecorator, ThemeToggler],
+  decorators: [GlobalStyles, ThemeToggler],
 } as Meta
 
 const tabItems = [
