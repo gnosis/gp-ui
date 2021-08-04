@@ -6,6 +6,10 @@ import TabItem from 'components/common/Tabs/TabItem'
 import TabContent from 'components/common/Tabs/TabContent'
 
 type TabId = number
+export enum IndicatorTabSize {
+  small = 0.1,
+  big = 0.2,
+}
 
 export interface TabItemInterface {
   readonly tab: React.ReactNode
@@ -25,6 +29,7 @@ export interface TabTheme {
   readonly fontWeight: string
   readonly fontSize: string
   readonly borderRadius: boolean
+  readonly indicatorTabSize: IndicatorTabSize
 }
 export interface Props {
   readonly tabItems: TabItemInterface[]
@@ -45,6 +50,7 @@ const Wrapper = styled.div`
     width: 100%;
   }
 `
+
 export const DEFAULT_TAB_THEME: TabTheme = {
   activeBg: 'var(--color-transparent)',
   activeBgAlt: 'initial',
@@ -57,6 +63,7 @@ export const DEFAULT_TAB_THEME: TabTheme = {
   fontWeight: 'var(--font-weight-normal)',
   letterSpacing: 'initial',
   borderRadius: false,
+  indicatorTabSize: IndicatorTabSize.small,
 }
 
 const Tabs: React.FC<Props> = (props) => {

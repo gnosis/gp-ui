@@ -17,12 +17,33 @@ const tabItems = [
   {
     id: 1,
     tab: 'Orders',
-    content: <h2>Orders Content</h2>,
+    content: (
+      <div>
+        <h2>Orders Content</h2>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. In libero mauris, dictum a orci ac, congue commodo
+          quam. Fusce ac accumsan diam. Nulla facilisi. Pellentesque ullamcorper ullamcorper metus, at viverra turpis
+          tristique vulputate. Ut dictum ac elit sit amet ultricies. Aliquam ultricies ante arcu, maximus malesuada leo
+          dignissim vitae. Nulla facilisi. Quisque sit amet arcu sed nulla hendrerit euismod. Donec gravida sollicitudin
+          libero, a auctor tortor convallis non. Nullam malesuada enim eu sollicitudin sodales. Nullam accumsan, nunc
+          sed ultrices elementum, lorem diam vulputate turpis, a ultrices tortor mauris id mauris. Pellentesque a
+          commodo libero, et convallis leo. Aenean facilisis arcu id magna scelerisque feugiat. Sed accumsan arcu vel
+          consequat lobortis. Proin gravida lacinia massa eu fringilla. Nulla venenatis sodales tempus. Nam convallis
+          justo vitae sollicitudin iaculis. Ut vehicula enim vel interdum varius. Aliquam erat volutpat. Pellentesque
+          sed tellus in dui pulvinar blandit et et elit. Quisque nec metus fringilla, laoreet orci id, scelerisque
+          velit.
+        </p>
+      </div>
+    ),
   },
   {
     id: 2,
     tab: 'Trades',
-    content: <h2>Trades Content</h2>,
+    content: (
+      <>
+        <h2>Trades Content</h2>
+      </>
+    ),
   },
 ]
 

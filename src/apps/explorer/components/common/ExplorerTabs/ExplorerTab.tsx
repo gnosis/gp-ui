@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import Tabs, { getTabTheme, Props as TabsProps } from 'components/common/Tabs/Tabs'
+import Tabs, { getTabTheme, Props as TabsProps, IndicatorTabSize } from 'components/common/Tabs/Tabs'
 import { DARK_COLOURS } from 'theme'
 
 const StyledTabs = styled.div`
@@ -46,9 +46,12 @@ const tabCustomThemeConfig = getTabTheme({
   fontWeight: 'var(--font-weight-bold)',
   letterSpacing: 'initial',
   borderRadius: false,
+  indicatorTabSize: IndicatorTabSize.big,
 })
 
-const ExplorerTabs: React.FC<Omit<TabsProps, 'tabTheme'>> = (props) => {
+type ExplorerTabsProps = Omit<TabsProps, 'tabTheme'>
+
+const ExplorerTabs: React.FC<ExplorerTabsProps> = (props) => {
   return (
     <StyledTabs>
       <Tabs tabTheme={tabCustomThemeConfig} {...props} />
