@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import { MEDIA } from 'const'
 
 // Components
 import TabItem from 'components/common/Tabs/TabItem'
@@ -55,8 +56,7 @@ const Wrapper = styled.div`
     width: 100%;
 
     @media ${MEDIA.mobile} {
-      font-size: 1.4rem;
-      min-height: 20rem;
+      color: red; /* mobile css here */
     }
   }
 `
