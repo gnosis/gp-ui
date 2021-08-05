@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import Tabs, { getTabTheme, Props as TabsProps, IndicatorTabSize } from 'components/common/Tabs/Tabs'
 import { DARK_COLOURS } from 'theme'
+import { MEDIA } from 'const'
 
 const StyledTabs = styled.div`
   display: flex;
@@ -32,6 +33,14 @@ const StyledTabs = styled.div`
 
   > div > div.tab-content {
     padding: 20px 16px;
+  }
+
+  .tab-extra-content {
+    width: 100%;
+
+    @media ${MEDIA.mobile} {
+      display: none; /* for now we can hide the extra-content on mobiles */
+    }
   }
 `
 const tabCustomThemeConfig = getTabTheme({

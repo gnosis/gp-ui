@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { MEDIA } from 'const'
 
 // Components
 import TabItem from 'components/common/Tabs/TabItem'
@@ -51,13 +50,6 @@ const Wrapper = styled.div`
     padding: 0;
     justify-content: space-between;
     width: 100%;
-  }
-  .tab-extra-content {
-    width: 100%;
-
-    @media ${MEDIA.mobile} {
-      color: red; /* mobile css here */
-    }
   }
 `
 
