@@ -49,17 +49,10 @@ const tabItems = [
 ]
 
 const Wrapper = styled.div`
-  width: 500px;
   padding: 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 1px dashed darkorange;
-
-  .tab-extra-content {
-    width: 100%;
-    display: flex;
-  }
 `
 
 interface SProps {

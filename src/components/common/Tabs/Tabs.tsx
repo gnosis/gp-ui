@@ -51,6 +51,14 @@ const Wrapper = styled.div`
     justify-content: space-between;
     width: 100%;
   }
+  .tab-extra-content {
+    width: 100%;
+
+    @media ${MEDIA.mobile} {
+      font-size: 1.4rem;
+      min-height: 20rem;
+    }
+  }
 `
 
 export const DEFAULT_TAB_THEME: TabTheme = {
