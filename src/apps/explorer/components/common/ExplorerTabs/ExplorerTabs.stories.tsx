@@ -1,4 +1,5 @@
 import React from 'react'
+import styled from 'styled-components'
 
 // also exported from '@storybook/react' if you can deal with breaking changes in 6.1
 import { Meta, Story } from '@storybook/react/types-6-0'
@@ -47,7 +48,35 @@ const tabItems = [
   },
 ]
 
+const Wrapper = styled.div`
+  width: 500px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px dashed darkorange;
+
+  .tab-extra-content {
+    width: 100%;
+    display: flex;
+  }
+`
+
+interface SProps {
+  text: string
+}
+const SimpleComponent: React.FC<SProps> = (props) => {
+  return <h2>{props.text}</h2>
+}
+
+const ExtraComponentNode: React.ReactNode = (
+  <Wrapper>
+    <SimpleComponent text="ExtraComponent_1" />
+    <SimpleComponent text="ExtraComponent_2" />
+  </Wrapper>
+)
+
 const Template: Story<TabsProps> = (args) => <StyledTabs {...args} />
 
 export const DefaultTabs = Template.bind({})
-DefaultTabs.args = { tabItems }
+DefaultTabs.args = { tabItems, extra: ExtraComponentNode }

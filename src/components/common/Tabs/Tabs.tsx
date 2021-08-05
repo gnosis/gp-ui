@@ -10,6 +10,7 @@ export enum IndicatorTabSize {
   small = 0.1,
   big = 0.2,
 }
+export type TabBarExtraContent = React.ReactNode
 
 export interface TabItemInterface {
   readonly tab: React.ReactNode
@@ -35,6 +36,7 @@ export interface Props {
   readonly tabItems: TabItemInterface[]
   readonly tabTheme: TabTheme
   readonly defaultTab?: TabId
+  readonly extra?: TabBarExtraContent
 }
 
 const Wrapper = styled.div`
@@ -66,8 +68,19 @@ export const DEFAULT_TAB_THEME: TabTheme = {
   indicatorTabSize: IndicatorTabSize.small,
 }
 
+interface ExtraContentProps {
+  extra?: TabBarExtraContent
+}
+
+const ExtraContent = ({ extra }: ExtraContentProps): JSX.Element | null => {
+  if (!extra) return null
+
+  console.log('ExtraContent', extra)
+  return <div className="tab-extra-content">{extra}</div>
+}
+
 const Tabs: React.FC<Props> = (props) => {
-  const { tabTheme = DEFAULT_TAB_THEME, tabItems, defaultTab = 1 } = props
+  const { tabTheme = DEFAULT_TAB_THEME, tabItems, defaultTab = 1, extra: tabBarExtraContent } = props
 
   const [activeTab, setActiveTab] = useState(defaultTab)
 
@@ -84,6 +97,7 @@ const Tabs: React.FC<Props> = (props) => {
             tabTheme={tabTheme}
           />
         ))}
+        <ExtraContent extra={tabBarExtraContent} />
       </div>
       <TabContent tabItems={tabItems} activeTab={activeTab} />
     </Wrapper>

@@ -8,12 +8,12 @@ const StyledTabs = styled.div`
   display: flex;
   width: 100%;
   padding: 0;
-  border: 1px solid rgba(151, 151, 184, 0.3);
+  border: ${({ theme }): string => `1px solid ${theme.borderPrimary}`};
   border-radius: 4px;
 
   > div > div.tablist {
     justify-content: flex-start;
-    border-bottom: 1px solid rgba(151, 151, 184, 0.3);
+    border-bottom: ${({ theme }): string => `1px solid ${theme.borderPrimary}`};
     box-sizing: border-box;
   }
 
