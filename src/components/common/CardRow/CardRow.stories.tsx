@@ -30,10 +30,10 @@ const CardBody = styled.div`
     font-size: 12px;
     margin: 2px 1px 2px 0px;
     &.red {
-      color: red !important;
+      color: ${({ theme }): string => theme.red4} !important;
     }
     &.green {
-      color: #06b506 !important;
+      color: ${({ theme }): string => theme.green} !important;
     }
   }
   div {
@@ -48,7 +48,7 @@ const CardBody = styled.div`
 const Template: Story<CardRowProps> = (args) => (
   <CardRow {...args}>
     <>
-      <Card variant={'default'}>
+      <Card>
         <CardBody>
           <p>30 Day Voulme</p>
           <div>
@@ -57,7 +57,7 @@ const Template: Story<CardRowProps> = (args) => (
           </div>
         </CardBody>
       </Card>
-      <Card variant={'default'}>
+      <Card>
         <CardBody>
           <p>24H Voulme</p>
           <div>
@@ -66,7 +66,7 @@ const Template: Story<CardRowProps> = (args) => (
           </div>
         </CardBody>
       </Card>
-      <Card variant={'default'}>
+      <Card>
         <CardBody>
           <p>24H Voulme</p>
           <div>
@@ -75,7 +75,7 @@ const Template: Story<CardRowProps> = (args) => (
           </div>
         </CardBody>
       </Card>
-      <Card variant={'default'}>
+      <Card>
         <CardBody>
           <p>Last Batch</p>
           <div>
@@ -83,7 +83,7 @@ const Template: Story<CardRowProps> = (args) => (
           </div>
         </CardBody>
       </Card>
-      <Card variant={'default'}>
+      <Card>
         <CardBody>
           <p>Total Tokens</p>
           <div>

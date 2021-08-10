@@ -30,41 +30,10 @@ const Template: Story<CardBaseProps> = (args) => (
 )
 
 const defaultProps: CardBaseProps = {
-  variant: 'default',
-  title: 'Card Title',
-  footer: 'Some footer text',
   outline: false,
 }
 
 export const Default = Template.bind({})
 Default.args = {
   ...defaultProps,
-}
-
-export const InfoCard = Template.bind({})
-InfoCard.args = {
-  variant: 'info',
-  title: 'Info Card',
-  children: <p>This is a card with a variant of &#34;info&#34;</p>,
-}
-
-export const SuccessCard = Template.bind({})
-SuccessCard.args = {
-  variant: 'success',
-  title: 'Success Card',
-  children: <p>This is a card with a variant of &#34;success&#34;</p>,
-}
-
-export const WarningCard = Template.bind({})
-WarningCard.args = {
-  variant: 'warning',
-  title: 'Warning Card',
-  children: <p>This is a card with a variant of &#34;warning&#34;</p>,
-}
-
-export const DangerCard = Template.bind({})
-DangerCard.args = {
-  variant: 'danger',
-  title: 'Danger Card',
-  children: <p>This is a card with a variant of &#34;danger&#34;</p>,
 }
