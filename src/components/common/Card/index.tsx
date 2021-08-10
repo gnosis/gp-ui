@@ -51,7 +51,7 @@ const CardComponent = styled(StyledCard)<{ outline?: boolean }>`
 `
 
 // CARD CONTENT STYLES
-const CardContent = styled.div`
+const CardBody = styled.div`
   flex: 1;
   border-top-right-radius: 6px;
   border-top-left-radius: 6px;
@@ -62,7 +62,7 @@ const CardContent = styled.div`
 
 export interface CardBaseProps {
   outline?: boolean
-  children?: React.ReactElement
+  children: React.ReactElement
 }
 
 /**
@@ -77,7 +77,7 @@ export const Card: React.FC<
 > = ({ children, outline, ...rest }) => {
   return (
     <CardComponent {...rest} variant={'default'} outline={outline || false}>
-      <CardContent>{children}</CardContent>
+      <CardBody>{children}</CardBody>
     </CardComponent>
   )
 }
