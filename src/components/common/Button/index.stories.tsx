@@ -10,14 +10,14 @@ export default {
   title: 'Common/Button',
   component: ButtonBase,
   decorators: [ThemeToggler],
-  // argTypes: {
-  //   label: { control: 'text' },
-  //   variant: { control: 'radio' },
-  //   size: { control: 'inline-radio' },
-  //   as: { control: null },
-  //   theme: { control: null },
-  //   forwardedAs: { control: null },
-  // },
+  argTypes: {
+    label: { control: 'text' },
+    variant: { control: 'default' },
+    size: { control: 'default' },
+    as: { control: null },
+    theme: { control: null },
+    forwardedAs: { control: null },
+  },
 } as Meta
 
 const Template: Story<ButtonBaseProps & { label?: React.ReactNode }> = (args) => (
