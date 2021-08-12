@@ -75,7 +75,6 @@ interface ExtraContentProps {
 const ExtraContent = ({ extra }: ExtraContentProps): JSX.Element | null => {
   if (!extra) return null
 
-  console.log('ExtraContent', extra)
   return <div className="tab-extra-content">{extra}</div>
 }
 
