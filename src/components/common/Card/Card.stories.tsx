@@ -20,7 +20,6 @@ const Template: Story<CardBaseProps> = (args) => (
 )
 
 const defaultProps: CardBaseProps = {
-  outline: false,
   children: <CardContent label={'30 Day Voulme'} value={'$103.56M'} hint={'+1.03%'} status={'success'} />,
 }
 

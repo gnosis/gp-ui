@@ -14,10 +14,6 @@ export type CardRowProps = { overflow?: boolean; children?: React.ReactElement }
  *
  * Place cards side-by-side
  */
-export const CardRow: React.FC<
-  CardRowProps & {
-    overflow?: boolean
-  }
-> = ({ children, overflow }) => {
+export const CardRow: React.FC<CardRowProps> = ({ children, overflow }) => {
   return <CardRowWrapper overflow={overflow || false}>{children}</CardRowWrapper>
 }

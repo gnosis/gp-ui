@@ -7,16 +7,16 @@ const CardBody = styled.div`
   align-items: center;
   justify-content: center;
   p {
-    font-size: 15px;
+    font-size: 14px;
     margin-bottom: 0px;
   }
   h3 {
-    font-size: 20px;
-    margin: 2px 3px -1px 3px;
+    font-size: 18px;
+    margin: 5px 0px;
   }
   span {
     font-weight: bold;
-    font-size: 12px;
+    font-size: 11px;
     margin: 2px 1px 2px 0px;
     &.danger {
       color: ${({ theme }): string => theme.red4} !important;
@@ -28,8 +28,8 @@ const CardBody = styled.div`
   div {
     margin-top: 5px;
     display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
   }
 `

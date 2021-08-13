@@ -5,7 +5,7 @@ import { variants } from 'styled-theming'
 import { COLOURS } from 'styles'
 import { Theme } from 'theme'
 
-const { white, whiteDark, bgDark, blackLight } = COLOURS
+const { white, bgDark, blackLight } = COLOURS
 
 const DefaultCard = styled.div`
   height: inherit;
@@ -24,12 +24,13 @@ export const CardTheme = variants('mode', 'variant', {
     [Theme.LIGHT]: css`
       background: ${white};
       color: ${blackLight};
-      border: 1px solid ${white};
     `,
     [Theme.DARK]: css`
       background: ${bgDark};
       color: ${white};
-      border: 1px solid ${whiteDark};
+      p {
+        color: ${({ theme }): string => theme.grey};
+      }
     `,
   },
   get primary() {
@@ -42,12 +43,11 @@ const StyledCard = styled(DefaultCard)`
   ${CardTheme}
 `
 
-const CardComponent = styled(StyledCard)<{ outline?: boolean }>`
+const CardComponent = styled(StyledCard)`
   display: flex;
   flex-direction: column;
   border-top-right-radius: 6px;
   border-top-left-radius: 6px;
-  border-width: ${({ outline }): string => (outline ? '1px' : '0px')};
 `
 
 // CARD CONTENT STYLES
@@ -56,12 +56,11 @@ const CardBody = styled.div`
   border-top-right-radius: 6px;
   border-top-left-radius: 6px;
   font-size: 15px;
-  padding: 5px 10px 5px 10px;
+  padding: 16px;
   line-height: normal;
 `
 
 export interface CardBaseProps {
-  outline?: boolean
   children: React.ReactElement
 }
 
@@ -70,13 +69,9 @@ export interface CardBaseProps {
  *
  * An extensible content container.
  */
-export const Card: React.FC<
-  CardBaseProps & {
-    outline?: boolean
-  }
-> = ({ children, outline, ...rest }) => {
+export const Card: React.FC<CardBaseProps> = ({ children, ...rest }) => {
   return (
-    <CardComponent {...rest} variant={'default'} outline={outline || false}>
+    <CardComponent {...rest} variant={'default'}>
       <CardBody>{children}</CardBody>
     </CardComponent>
   )
