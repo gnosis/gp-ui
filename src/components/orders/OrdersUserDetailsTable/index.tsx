@@ -1,22 +1,27 @@
 import React from 'react'
 import styled from 'styled-components'
+import BigNumber from 'bignumber.js'
 
+import { calculatePrice, TokenErc20, formatSmart } from '@gnosis.pm/dex-js'
 import { Order } from 'api/operator'
 
-import StyledUserDetailsTable, { StyledUserDetailsTableProps } from './styled'
 import { DateDisplay } from 'components/orders/DateDisplay'
 import { RowWithCopyButton } from 'components/orders/RowWithCopyButton'
-import { TokenDisplay } from 'components/common/TokenDisplay'
 import { formatSmartMaxPrecision } from 'utils'
-import { TokenErc20 } from '@gnosis.pm/dex-js'
-import BigNumber from 'bignumber.js'
 import { StatusLabel } from '../StatusLabel'
-import { Network } from 'types'
+import { HelpTooltip } from 'components/Tooltip'
+import {
+  HIGH_PRECISION_DECIMALS,
+  HIGH_PRECISION_SMALL_LIMIT,
+  NO_ADJUSTMENT_NEEDED_PRECISION,
+} from 'apps/explorer/const'
+import TradeOrderType from '../TradeOrderType'
+import StyledUserDetailsTable, { StyledUserDetailsTableProps } from './styled'
 
 const Wrapper = styled(StyledUserDetailsTable)`
   > thead > tr,
   > tbody > tr {
-    grid-template-columns: 12rem 17rem repeat(4, 13rem) 1fr;
+    grid-template-columns: 12rem 23rem repeat(2, 13rem) 16rem 10rem 1fr;
   }
 `
 function isTokenErc20(token: TokenErc20 | null | undefined): token is TokenErc20 {
@@ -32,9 +37,23 @@ const formattedAmount = (erc20: TokenErc20 | null | undefined, amount: BigNumber
 const getLimitPrice = (order: Order): string => {
   if (!order.buyToken || !order.sellToken) return '-'
 
-  return `${formattedAmount(order.sellToken, order.sellAmount)} ${order.sellToken?.symbol} per ${
-    order.sellToken?.symbol
-  }`
+  const calculatedPrice = calculatePrice({
+    denominator: { amount: order.buyAmount, decimals: order.buyToken.decimals },
+    numerator: { amount: order.sellAmount, decimals: order.sellToken.decimals },
+  })
+  const displayPrice = calculatedPrice.toString(10)
+  const formattedPrice = formatSmart({
+    amount: displayPrice,
+    precision: NO_ADJUSTMENT_NEEDED_PRECISION,
+    smallLimit: HIGH_PRECISION_SMALL_LIMIT,
+    decimals: HIGH_PRECISION_DECIMALS,
+  })
+
+  return `${formattedPrice} ${order.sellToken?.symbol} per ${order.buyToken?.symbol}`
+}
+
+const tooltip = {
+  orderID: 'A unique identifier ID for this order.',
 }
 
 export type Props = StyledUserDetailsTableProps & {
@@ -43,51 +62,49 @@ export type Props = StyledUserDetailsTableProps & {
 
 const OrdersUserDetailsTable: React.FC<Props> = (props) => {
   const { orders, showBorderTable = false } = props
-  const network = Network.Mainnet
 
-  const orderItems = (items: Order[]): JSX.Element => {
-    return (
-      <>
-        {items.map((item) => (
-          <tr key={item.shortId}>
+  const orderItems = (items: Order[]): JSX.Element => (
+    <>
+      {items.map((item) => {
+        const { creationDate, buyToken, buyAmount, sellToken, sellAmount, kind, partiallyFilled, shortId, uid } = item
+        const isBuyOrder = kind === 'buy'
+        // This is <base>/<quote> like as base instrument / counter intrument
+        const [baseToken, quoteToken] = isBuyOrder ? [buyToken, sellToken] : [sellToken, buyToken]
+        const [baseAmount, quoteAmount] = isBuyOrder ? [buyAmount, sellAmount] : [sellAmount, buyAmount]
+
+        return (
+          <tr key={shortId}>
+            <td>{<RowWithCopyButton className="span-copybtn-wrap" textToCopy={uid} contentsToDisplay={shortId} />}</td>
             <td>
-              {
-                <RowWithCopyButton
-                  className="span-copybtn-wrap"
-                  textToCopy={item.uid}
-                  contentsToDisplay={item.shortId}
-                />
-              }
-            </td>
-            <td className="cell-kind-operation">
-              {item.kind} {<TokenDisplay erc20={item.sellToken as TokenErc20} network={network} />}
-              for {<TokenDisplay erc20={item.buyToken as TokenErc20} network={network} />}
+              <TradeOrderType buyToken={baseToken} sellToken={quoteToken} kind={kind} />
             </td>
             <td>
-              {formattedAmount(item.sellToken, item.sellAmount)} {item.sellToken?.symbol}
+              {formattedAmount(baseToken, baseAmount)} {baseToken?.symbol}
             </td>
             <td>
-              {formattedAmount(item.buyToken, item.buyAmount)} {item.buyToken?.symbol}
+              {formattedAmount(quoteToken, quoteAmount)} {quoteToken?.symbol}
             </td>
             <td>{getLimitPrice(item)}</td>
             <td>
-              <StatusLabel status={item.status} partiallyFilled={item.partiallyFilled} />
+              <StatusLabel status={item.status} partiallyFilled={partiallyFilled} />
             </td>
             <td>
-              <DateDisplay date={item.creationDate} />
+              <DateDisplay date={creationDate} />
             </td>
           </tr>
-        ))}
-      </>
-    )
-  }
+        )
+      })}
+    </>
+  )
 
   return (
     <Wrapper
       showBorderTable={showBorderTable}
       header={
         <tr>
-          <th>Order ID</th>
+          <th>
+            Order ID <HelpTooltip tooltip={tooltip.orderID} />
+          </th>
           <th>Type</th>
           <th>Buy amount</th>
           <th>Sell amount</th>

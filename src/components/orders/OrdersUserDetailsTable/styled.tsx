@@ -14,7 +14,7 @@ const StyledUserDetailsTable = styled(SimpleTable)<StyledUserDetailsTableProps>`
 
   tr td {
     &:not(:first-of-type) {
-      text-align: right;
+      text-align: left;
     }
 
     &.long {
@@ -35,6 +35,11 @@ const StyledUserDetailsTable = styled(SimpleTable)<StyledUserDetailsTableProps>`
     line-height: 16px;
     height: 50px;
     border-bottom: ${({ theme }): string => `1px solid ${theme.borderPrimary}`};
+    gap: 6px;
+  }
+
+  thead tr {
+    width: 100%;
   }
 
   tbody tr:hover {
