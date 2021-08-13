@@ -1,6 +1,6 @@
 # Summary
 
-<<if there's an issue>>Fixes #issueNumber
+Closes #issueNumber
 
 *High-level description of what your changes are accomplishing*
 
