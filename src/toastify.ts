@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { Toast } from 'react-toastify'
 
 type ToastMethods = Exclude<keyof Toast, 'TYPE' | 'POSITION'>
@@ -42,4 +41,4 @@ const toastFunc = (...args: Parameters<Toast>): Promise<ReturnType<Toast>> =>
     './setupToastify'
   ).then(({ toast }) => toast(...args))
 
-export const toast = Object.defineProperties(toastFunc, properties as any) as ToastPromised
+export const toast = Object.defineProperties(toastFunc, properties as any) as unknown as ToastPromised

@@ -5,7 +5,7 @@ import { variants } from 'styled-theming'
 import { COLOURS } from 'styles'
 import { Theme } from 'theme'
 
-const { white, whiteDark, bgDark, blackLight } = COLOURS
+const { white, whiteDark, fadedGreyishWhite, blackLight } = COLOURS
 
 const DefaultCard = styled.div`
   height: inherit;
@@ -27,7 +27,7 @@ export const CardTheme = variants('mode', 'variant', {
       border: 1px solid ${white};
     `,
     [Theme.DARK]: css`
-      background: ${bgDark};
+      background: ${fadedGreyishWhite};
       color: ${white};
       border: 1px solid ${whiteDark};
     `,
