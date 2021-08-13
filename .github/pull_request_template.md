@@ -9,10 +9,10 @@ Closes #issueNumber
 # To Test
 
 1. <<Step one>> Open the page `about`
-- [ ] <<What to expect?>> Verify it contains about information...
-- [ ] Checkbox Style list of things a QA person could verify, i.e.
-- [ ] Should display Text Input our storybook
-- [ ] Input should not accept Numbers
+* <<What to expect?>> Verify it contains about information...
+* Checkbox Style list of things a QA person could verify, i.e.
+* Should display Text Input our storybook
+* Input should not accept Numbers
 2. <<Step two>> ...
 
 # Background
