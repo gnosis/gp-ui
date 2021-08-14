@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
+import { Link } from 'react-router-dom'
 
 import { calculatePrice, TokenErc20, formatSmart } from '@gnosis.pm/dex-js'
 import { Order } from 'api/operator'
@@ -70,19 +71,26 @@ const OrdersUserDetailsTable: React.FC<Props> = (props) => {
         const isBuyOrder = kind === 'buy'
         // This is <base>/<quote> like as base instrument / counter intrument
         const [baseToken, quoteToken] = isBuyOrder ? [buyToken, sellToken] : [sellToken, buyToken]
-        const [baseAmount, quoteAmount] = isBuyOrder ? [buyAmount, sellAmount] : [sellAmount, buyAmount]
 
         return (
           <tr key={shortId}>
-            <td>{<RowWithCopyButton className="span-copybtn-wrap" textToCopy={uid} contentsToDisplay={shortId} />}</td>
+            <td>
+              {
+                <RowWithCopyButton
+                  className="span-copybtn-wrap"
+                  textToCopy={uid}
+                  contentsToDisplay={<Link to={`/orders/${item.uid}`}>{shortId}</Link>}
+                />
+              }
+            </td>
             <td>
               <TradeOrderType buyToken={baseToken} sellToken={quoteToken} kind={kind} />
             </td>
             <td>
-              {formattedAmount(baseToken, baseAmount)} {baseToken?.symbol}
+              {formattedAmount(buyToken, buyAmount)} {buyToken?.symbol}
             </td>
             <td>
-              {formattedAmount(quoteToken, quoteAmount)} {quoteToken?.symbol}
+              {formattedAmount(sellToken, sellAmount)} {sellToken?.symbol}
             </td>
             <td>{getLimitPrice(item)}</td>
             <td>

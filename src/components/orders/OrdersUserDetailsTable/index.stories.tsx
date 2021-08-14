@@ -4,14 +4,14 @@ import { Story, Meta } from '@storybook/react/types-6-0'
 import OrderUserDetailsTable, { Props as OrdersUserTableProps } from '.'
 import { add, sub } from 'date-fns'
 import BigNumber from 'bignumber.js'
-import { GlobalStyles, ThemeToggler, NetworkDecorator } from 'storybook/decorators'
+import { GlobalStyles, ThemeToggler, Router, NetworkDecorator } from 'storybook/decorators'
 
 import { Order } from 'api/operator'
 import { RICH_ORDER, TUSD, WETH } from '../../../../test/data'
 
 export default {
   title: 'orders/OrdersUserDetailsTable',
-  decorators: [GlobalStyles, NetworkDecorator, ThemeToggler],
+  decorators: [Router, GlobalStyles, NetworkDecorator, ThemeToggler],
   component: OrderUserDetailsTable,
 } as Meta
 
