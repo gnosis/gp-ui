@@ -5,7 +5,7 @@ import { Story, Meta } from '@storybook/react/types-6-0'
 import { GlobalStyles, ThemeToggler } from 'storybook/decorators'
 
 import { Card, CardBaseProps } from '.'
-import { CardContent } from './cardContent'
+import { CardContent } from './CardContent'
 
 export default {
   title: 'Common/Card',

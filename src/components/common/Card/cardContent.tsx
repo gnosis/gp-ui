@@ -8,16 +8,16 @@ const CardBody = styled.div`
   justify-content: center;
   p {
     font-size: 14px;
-    margin-bottom: 0px;
+    margin: 0px;
   }
   h3 {
     font-size: 18px;
-    margin: 5px 0px;
+    margin: 8px 0px;
   }
   span {
     font-weight: bold;
     font-size: 11px;
-    margin: 2px 1px 2px 0px;
+    margin: 0px;
     &.danger {
       color: ${({ theme }): string => theme.red4} !important;
     }
@@ -26,7 +26,6 @@ const CardBody = styled.div`
     }
   }
   div {
-    margin-top: 5px;
     display: flex;
     flex-direction: column;
     justify-content: center;

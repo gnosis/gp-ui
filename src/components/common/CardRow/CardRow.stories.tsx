@@ -6,7 +6,7 @@ import { GlobalStyles, ThemeToggler } from 'storybook/decorators'
 
 import { Card } from '../Card/index'
 import { CardRow, CardRowProps } from '.'
-import { CardContent } from '../Card/cardContent'
+import { CardContent } from '../Card/CardContent'
 
 export default {
   title: 'Common/CardRow',
