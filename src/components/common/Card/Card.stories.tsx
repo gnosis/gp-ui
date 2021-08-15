@@ -29,9 +29,7 @@ const Template: Story<CardBaseProps> = (args) => (
   </div>
 )
 
-const defaultProps: CardBaseProps = {
-  outline: false,
-}
+const defaultProps: CardBaseProps = {}
 
 export const Default = Template.bind({})
 Default.args = {
