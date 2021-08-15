@@ -76,6 +76,7 @@ export const TradesTableHeader = (): JSX.Element => {
 const TradeTypeWrapper = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
   justify-content: space-between;
   span {
     margin: 5px 0px 5px 0px;
@@ -98,12 +99,12 @@ const TradeType = ({ buyToken, sellToken, isLong }: TradeTypeProps): JSX.Element
   return tokens.length > 0 ? (
     <TradeTypeWrapper>
       <span>{isLong ? 'Buy' : 'Sell'}</span>&nbsp;
-      <TokenImg address={tokens[0].address} />
+      <TokenImg width={'16px'} height={'16px'} address={tokens[0].address} />
       &nbsp;
       <span>{tokens[0].symbol}</span>&nbsp;
       <span>for</span>&nbsp;
       <span>{tokens[1].symbol}</span>&nbsp;
-      <TokenImg address={tokens[1].address} />
+      <TokenImg width={'16px'} height={'16px'} address={tokens[1].address} />
     </TradeTypeWrapper>
   ) : (
     <></>

@@ -41,11 +41,11 @@ export function OrderPriceDisplay(props: OrderPriceDisplayType): JSX.Element {
       order: props,
       data: {
         numerator: {
-          amount: new BigNumber(sellAmount),
+          amount: typeof sellAmount == 'string' ? new BigNumber(sellAmount) : sellAmount,
           token: sellToken,
         },
         denominator: {
-          amount: new BigNumber(buyAmount),
+          amount: typeof buyAmount == 'string' ? new BigNumber(buyAmount) : buyAmount,
           token: buyToken,
         },
       },
