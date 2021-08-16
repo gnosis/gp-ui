@@ -5,8 +5,8 @@ import { getImageUrl, RequireContextMock, safeTokenName } from 'utils'
 import unknownTokenImg from 'assets/img/unknown-token.png'
 
 const Wrapper = styled.img<WrapperProps>`
-  width: ${({ width }): string => width ?? '2.8rem'};
-  height: ${({ height }): string => height ?? '2.8rem'};
+  width: ${({ width }): string => `${width ?? '2.8'}`}rem;
+  height: ${({ height }): string => `${height ?? '2.8'}`}rem;
   border-radius: 3.6rem;
   object-fit: contain;
   background-color: white;
@@ -29,8 +29,8 @@ export interface Props {
 
 export interface WrapperProps {
   faded?: boolean
-  width?: string
-  height?: string
+  width?: string | number
+  height?: string | number
 }
 
 const tokensIconsRequire =
