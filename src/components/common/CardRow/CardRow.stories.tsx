@@ -95,7 +95,7 @@ const Template: Story<CardRowProps> = (args) => (
   </CardRow>
 )
 
-const defaultProps: CardRowProps = { overflow: true }
+const defaultProps: CardRowProps = {}
 
 export const Default = Template.bind({})
 Default.args = { ...defaultProps }

@@ -1,23 +1,19 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const CardRowWrapper = styled.div<{ overflow: boolean }>`
+const CardRowWrapper = styled.div`
   display: flex;
   flex-direction: row !important;
-  overflow: ${({ overflow }): string => (overflow ? 'auto' : 'hidden')};
+  overflow: auto;
 `
 
-export type CardRowProps = { overflow?: boolean; children?: React.ReactElement }
+export type CardRowProps = { children?: React.ReactElement }
 
 /**
  * CardRow component.
  *
  * Place cards side-by-side
  */
-export const CardRow: React.FC<
-  CardRowProps & {
-    overflow?: boolean
-  }
-> = ({ children, overflow }) => {
-  return <CardRowWrapper overflow={overflow || false}>{children}</CardRowWrapper>
+export const CardRow: React.FC<CardRowProps> = ({ children }) => {
+  return <CardRowWrapper>{children}</CardRowWrapper>
 }

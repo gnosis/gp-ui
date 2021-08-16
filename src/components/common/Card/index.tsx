@@ -28,10 +28,8 @@ const CardComponent = styled(DefaultCard)`
 // CARD CONTENT STYLES
 const CardContent = styled.div`
   flex: 1;
-  border-top-right-radius: 6px;
-  border-top-left-radius: 6px;
   font-size: 15px;
-  padding: 5px 10px 5px 10px;
+  padding: 16px;
   line-height: normal;
 `
 
