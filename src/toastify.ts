@@ -1,4 +1,4 @@
-import { Toast } from 'react-toastify'
+import { Toast, ToastContainerProps, ToastContent, ToastId, ToastOptions } from 'react-toastify'
 
 type ToastMethods = Exclude<keyof Toast, 'TYPE' | 'POSITION'>
 
@@ -22,8 +22,16 @@ type ToastPromised = {
 const properties = methods.reduce((accum, method) => {
   accum[method] = {
     get:
-      (): any =>
-      (...args: [any, any]): Promise<any> =>
+      (): ToastContent =>
+      (
+        ...args: [
+          (((((ToastContent & ToastId) & (ToastId | undefined)) & ToastId) &
+            ((count?: number | undefined, containerId?: string | number | undefined) => void)) &
+            ToastId) &
+            (ToastContainerProps | undefined),
+          ToastOptions | undefined,
+        ]
+      ): Promise<string | number | boolean | void> =>
         import(
           /* webpackChunkName: "toastify"*/
           './setupToastify'
@@ -40,4 +48,7 @@ const toastFunc = (...args: Parameters<Toast>): Promise<ReturnType<Toast>> =>
     './setupToastify'
   ).then(({ toast }) => toast(...args))
 
-export const toast = Object.defineProperties(toastFunc, properties as any) as unknown as ToastPromised
+export const toast = Object.defineProperties(
+  toastFunc,
+  properties as PropertyDescriptorMap & ThisType<Toast>,
+) as unknown as ToastPromised

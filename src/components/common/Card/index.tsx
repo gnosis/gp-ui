@@ -1,11 +1,10 @@
 import React from 'react'
-import styled, { css } from 'styled-components'
-import { variants } from 'styled-theming'
+import styled from 'styled-components'
 
 import { COLOURS } from 'styles'
 import { Theme } from 'theme'
 
-const { white, bgDark, blackLight } = COLOURS
+const { white, fadedGreyishWhite, blackLight } = COLOURS
 
 const DefaultCard = styled.div`
   height: inherit;
@@ -16,52 +15,26 @@ const DefaultCard = styled.div`
   box-shadow: 0 10px 15px -3px rgb(0 0 0 / 7%), 0 4px 6px -2px rgb(0 0 0 / 5%);
   margin: 10px;
 `
-// Create our variated Card Theme
-// 'variant' refers to a prop on button
-// <CardBase variant="danger" />
-export const CardTheme = variants('mode', 'variant', {
-  default: {
-    [Theme.LIGHT]: css`
-      background: ${white};
-      color: ${blackLight};
-    `,
-    [Theme.DARK]: css`
-      background: ${bgDark};
-      color: ${white};
-      p {
-        color: ${({ theme }): string => theme.grey};
-      }
-    `,
-  },
-  get primary() {
-    return this.default
-  },
-})
 
-const StyledCard = styled(DefaultCard)`
-  /* Fold in theme css above */
-  ${CardTheme}
-`
-
-const CardComponent = styled(StyledCard)`
+const CardComponent = styled(DefaultCard)`
   display: flex;
   flex-direction: column;
   border-top-right-radius: 6px;
   border-top-left-radius: 6px;
+  background: ${({ theme }): string => (theme.mode == Theme.DARK ? fadedGreyishWhite : white)};
+  color: ${({ theme }): string => (theme.mode == Theme.DARK ? white : blackLight)};
 `
 
 // CARD CONTENT STYLES
-const CardBody = styled.div`
+const CardContent = styled.div`
   flex: 1;
-  border-top-right-radius: 6px;
-  border-top-left-radius: 6px;
   font-size: 15px;
   padding: 16px;
   line-height: normal;
 `
 
 export interface CardBaseProps {
-  children: React.ReactElement
+  children?: React.ReactElement
 }
 
 /**
@@ -71,8 +44,8 @@ export interface CardBaseProps {
  */
 export const Card: React.FC<CardBaseProps> = ({ children, ...rest }) => {
   return (
-    <CardComponent {...rest} variant={'default'}>
-      <CardBody>{children}</CardBody>
+    <CardComponent {...rest}>
+      <CardContent>{children}</CardContent>
     </CardComponent>
   )
 }
