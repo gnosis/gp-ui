@@ -33,7 +33,7 @@ const CardBody = styled.div`
       color: ${({ theme }): string => theme.red1} !important;
     }
     &.green {
-      color: ${({ theme }): string => theme.green} !important;
+      color: ${({ theme }): string => theme.green1} !important;
     }
   }
   div {
