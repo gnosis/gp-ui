@@ -34,7 +34,6 @@ export interface Colors {
   red1: Color
   red2: Color
   red3?: Color
-  red4: Color
   grey: Color
   greyShade: Color
   greyOpacity: Color
@@ -61,7 +60,6 @@ export const BASE_COLOURS = {
   red1: '#FF305B',
   red2: '#FF6871',
   red3: '#F82D3A',
-  red4: '#F13E6E',
   green: '#41C29B',
   green1: '#00C46E',
   green2: '#09371d',

@@ -19,7 +19,7 @@ const CardBody = styled.div`
     font-size: 11px;
     margin: 0px;
     &.danger {
-      color: ${({ theme }): string => theme.red4} !important;
+      color: ${({ theme }): string => theme.red1} !important;
     }
     &.success {
       color: ${({ theme }): string => theme.green} !important;
