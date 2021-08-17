@@ -7,7 +7,7 @@ import TradesTableContext from './Context/TradesTableContext'
 import { faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
 import { useTrades } from 'hooks/useOperatorTrades'
 import Spinner from 'components/common/Spinner'
-import { addressToErc20, ConstructedPrice, constructPrice, numberWithCommas } from 'utils'
+import { addressToErc20, ConstructedPrice, constructPrice, formatSmartMaxPrecision, safeTokenName } from 'utils'
 import { BlockExplorerLink } from 'apps/explorer/components/common/BlockExplorerLink'
 import { COLOURS } from 'styles'
 import { Theme } from 'theme'
@@ -247,10 +247,12 @@ export const TradesTable = ({ header, className, numColumns, owner, orderId }: P
                     </td>
                     <td>{/*!trade.surplusAmount.isZero() ? <OrderSurplusDisplay order={trade} /> : */ '-'}</td>
                     <td>
-                      {numberWithCommas(trade.sellAmount)} {trade.sellToken?.symbol}
+                      {formatSmartMaxPrecision(trade.sellAmount, trade.sellToken)}{' '}
+                      {trade.sellToken && safeTokenName(trade.sellToken)}
                     </td>
                     <td>
-                      {numberWithCommas(trade.buyAmount)} {trade.buyToken?.symbol}
+                      {formatSmartMaxPrecision(trade.buyAmount, trade.buyToken)}{' '}
+                      {trade.buyToken && safeTokenName(trade.buyToken)}
                     </td>
                     <td>{trade.limitPrice}</td>
                     <td>{trade.executionPrice}</td>

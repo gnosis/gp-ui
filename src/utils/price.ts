@@ -167,7 +167,3 @@ export const constructPrice = (priceData: PriceContructorData): ConstructedPrice
 
   return { formattedAmount, quoteSymbol, baseSymbol }
 }
-
-export function numberWithCommas(x: BigNumber): string {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-}
