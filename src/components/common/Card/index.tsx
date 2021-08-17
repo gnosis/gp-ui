@@ -28,6 +28,9 @@ const CardComponent = styled(DefaultCard)`
 // CARD CONTENT STYLES
 const CardContent = styled.div`
   flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 15px;
   padding: 16px;
   line-height: normal;
