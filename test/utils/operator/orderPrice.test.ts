@@ -4,13 +4,13 @@ import { ONE_BIG_NUMBER, ONE_HUNDRED_BIG_NUMBER, TEN_BIG_NUMBER, ZERO_BIG_NUMBER
 
 import { RawOrder } from 'api/operator'
 
-import { getOrderExecutedPrice, getOrderLimitPrice, GetOrderPriceParams } from 'utils'
+import { getOrderExecutedPrice, getOrderLimitPrice, GetRawOrderPriceParams } from 'utils'
 
 import { RAW_ORDER } from '../../data'
 
 const ZERO_DOT_ONE = new BigNumber('0.1')
 
-function _assertOrderPrice(order: RawOrder, getPriceFn: (params: GetOrderPriceParams) => BigNumber): void {
+function _assertOrderPrice(order: RawOrder, getPriceFn: (params: GetRawOrderPriceParams) => BigNumber): void {
   test('Buy token decimals == sell token decimals', () => {
     expect(getPriceFn({ order, buyTokenDecimals: 2, sellTokenDecimals: 2 })).toEqual(TEN_BIG_NUMBER)
   })

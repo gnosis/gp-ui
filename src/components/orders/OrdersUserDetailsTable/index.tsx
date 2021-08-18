@@ -1,14 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { Link } from 'react-router-dom'
+import { faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
 
-import { calculatePrice, TokenErc20, formatSmart } from '@gnosis.pm/dex-js'
+import { TokenErc20, formatSmart, safeTokenName } from '@gnosis.pm/dex-js'
 import { Order } from 'api/operator'
 
 import { DateDisplay } from 'components/orders/DateDisplay'
 import { RowWithCopyButton } from 'components/orders/RowWithCopyButton'
-import { formatSmartMaxPrecision } from 'utils'
+import { formatSmartMaxPrecision, getOrderLimitPrice } from 'utils'
 import { StatusLabel } from '../StatusLabel'
 import { HelpTooltip } from 'components/Tooltip'
 import {
@@ -18,11 +19,12 @@ import {
 } from 'apps/explorer/const'
 import TradeOrderType from '../TradeOrderType'
 import StyledUserDetailsTable, { StyledUserDetailsTableProps } from './styled'
+import Icon from 'components/Icon'
 
 const Wrapper = styled(StyledUserDetailsTable)`
   > thead > tr,
   > tbody > tr {
-    grid-template-columns: 12rem 23rem repeat(2, 13rem) 16rem 10rem 1fr;
+    grid-template-columns: 12rem 20rem repeat(2, 13rem) 16rem 13rem 1fr;
   }
 `
 function isTokenErc20(token: TokenErc20 | null | undefined): token is TokenErc20 {
@@ -35,12 +37,14 @@ const formattedAmount = (erc20: TokenErc20 | null | undefined, amount: BigNumber
   return erc20.decimals ? formatSmartMaxPrecision(amount, erc20) : amount.toString(10)
 }
 
-const getLimitPrice = (order: Order): string => {
+const getLimitPrice = (order: Order, isPriceInverted: boolean): string => {
   if (!order.buyToken || !order.sellToken) return '-'
 
-  const calculatedPrice = calculatePrice({
-    denominator: { amount: order.buyAmount, decimals: order.buyToken.decimals },
-    numerator: { amount: order.sellAmount, decimals: order.sellToken.decimals },
+  const calculatedPrice = getOrderLimitPrice({
+    order,
+    buyTokenDecimals: order.buyToken.decimals,
+    sellTokenDecimals: order.sellToken.decimals,
+    inverted: isPriceInverted,
   })
   const displayPrice = calculatedPrice.toString(10)
   const formattedPrice = formatSmart({
@@ -49,8 +53,12 @@ const getLimitPrice = (order: Order): string => {
     smallLimit: HIGH_PRECISION_SMALL_LIMIT,
     decimals: HIGH_PRECISION_DECIMALS,
   })
+  const buySymbol = safeTokenName(order.buyToken)
+  const sellSymbol = safeTokenName(order.sellToken)
 
-  return `${formattedPrice} ${order.sellToken?.symbol} per ${order.buyToken?.symbol}`
+  const [baseSymbol, quoteSymbol] = isPriceInverted ? [sellSymbol, buySymbol] : [buySymbol, sellSymbol]
+
+  return `${formattedPrice} ${quoteSymbol} per ${baseSymbol}`
 }
 
 const tooltip = {
@@ -63,6 +71,11 @@ export type Props = StyledUserDetailsTableProps & {
 
 const OrdersUserDetailsTable: React.FC<Props> = (props) => {
   const { orders, showBorderTable = false } = props
+  const [isPriceInverted, setIsPriceInverted] = useState(false)
+
+  const invertLimitPrice = (): void => {
+    setIsPriceInverted((previousValue) => !previousValue)
+  }
 
   const orderItems = (items: Order[]): JSX.Element => (
     <>
@@ -92,12 +105,12 @@ const OrdersUserDetailsTable: React.FC<Props> = (props) => {
             <td>
               {formattedAmount(sellToken, sellAmount)} {sellToken?.symbol}
             </td>
-            <td>{getLimitPrice(item)}</td>
-            <td>
-              <StatusLabel status={item.status} partiallyFilled={partiallyFilled} />
-            </td>
+            <td>{getLimitPrice(item, isPriceInverted)}</td>
             <td>
               <DateDisplay date={creationDate} />
+            </td>
+            <td>
+              <StatusLabel status={item.status} partiallyFilled={partiallyFilled} />
             </td>
           </tr>
         )
@@ -116,9 +129,11 @@ const OrdersUserDetailsTable: React.FC<Props> = (props) => {
           <th>Type</th>
           <th>Buy amount</th>
           <th>Sell amount</th>
-          <th>Limit price</th>
-          <th>Status</th>
+          <th>
+            Limit price <Icon icon={faExchangeAlt} onClick={invertLimitPrice} />
+          </th>
           <th>Creation time</th>
+          <th>Status</th>
         </tr>
       }
       body={orderItems(orders)}

@@ -153,11 +153,15 @@ export function getOrderExecutedAmounts(order: RawOrder): {
   }
 }
 
-export type GetOrderPriceParams = {
+export type GetRawOrderPriceParams = {
   order: RawOrder
   buyTokenDecimals: number
   sellTokenDecimals: number
   inverted?: boolean
+}
+
+export interface GetOrderPriceParams extends Omit<GetRawOrderPriceParams, 'order'> {
+  order: Order
 }
 
 /**
@@ -174,7 +178,7 @@ export function getOrderLimitPrice({
   buyTokenDecimals,
   sellTokenDecimals,
   inverted,
-}: GetOrderPriceParams): BigNumber {
+}: GetOrderPriceParams | GetRawOrderPriceParams): BigNumber {
   const price = calculatePrice({
     numerator: { amount: order.buyAmount, decimals: buyTokenDecimals },
     denominator: { amount: order.sellAmount, decimals: sellTokenDecimals },
@@ -197,7 +201,7 @@ export function getOrderExecutedPrice({
   buyTokenDecimals,
   sellTokenDecimals,
   inverted,
-}: GetOrderPriceParams): BigNumber {
+}: GetRawOrderPriceParams): BigNumber {
   const { executedBuyAmount, executedSellAmount } = getOrderExecutedAmounts(order)
 
   // Only calculate the price when both values are set
