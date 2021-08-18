@@ -34,13 +34,17 @@ const TradeOrderType = ({ buyToken, sellToken, kind }: TradeTypeProps): JSX.Elem
     return null
   }
 
+  const isBuyOrder = kind === 'buy'
+  // This is <base>/<quote> like as base instrument / counter intrument
+  const [baseToken, quoteToken] = isBuyOrder ? [buyToken, sellToken] : [sellToken, buyToken]
+
   return (
     <TradeTypeWrapper>
-      <span>{capitalize(kind)}</span> <TokenImg address={buyToken.address} />
-      <span>{buyToken.symbol}</span>
+      <span>{capitalize(kind)}</span> <TokenImg address={baseToken.address} />
+      <span>{baseToken.symbol}</span>
       <span>for</span>
-      <TokenImg address={sellToken.address} />
-      <span>{sellToken.symbol}</span>
+      <TokenImg address={quoteToken.address} />
+      <span>{quoteToken.symbol}</span>
     </TradeTypeWrapper>
   )
 }

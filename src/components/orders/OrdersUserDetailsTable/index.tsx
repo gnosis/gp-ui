@@ -4,19 +4,14 @@ import BigNumber from 'bignumber.js'
 import { Link } from 'react-router-dom'
 import { faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
 
-import { TokenErc20, formatSmart, safeTokenName } from '@gnosis.pm/dex-js'
+import { TokenErc20 } from '@gnosis.pm/dex-js'
 import { Order } from 'api/operator'
 
 import { DateDisplay } from 'components/orders/DateDisplay'
 import { RowWithCopyButton } from 'components/orders/RowWithCopyButton'
-import { formatSmartMaxPrecision, getOrderLimitPrice } from 'utils'
+import { formatSmartMaxPrecision, getOrderLimitPrice, formatCalculatedPriceToDisplay } from 'utils'
 import { StatusLabel } from '../StatusLabel'
 import { HelpTooltip } from 'components/Tooltip'
-import {
-  HIGH_PRECISION_DECIMALS,
-  HIGH_PRECISION_SMALL_LIMIT,
-  NO_ADJUSTMENT_NEEDED_PRECISION,
-} from 'apps/explorer/const'
 import TradeOrderType from '../TradeOrderType'
 import StyledUserDetailsTable, { StyledUserDetailsTableProps } from './styled'
 import Icon from 'components/Icon'
@@ -31,13 +26,13 @@ function isTokenErc20(token: TokenErc20 | null | undefined): token is TokenErc20
   return (token as TokenErc20).address !== undefined
 }
 
-const formattedAmount = (erc20: TokenErc20 | null | undefined, amount: BigNumber): string => {
+function formattedAmount(erc20: TokenErc20 | null | undefined, amount: BigNumber): string {
   if (!isTokenErc20(erc20)) return '-'
 
   return erc20.decimals ? formatSmartMaxPrecision(amount, erc20) : amount.toString(10)
 }
 
-const getLimitPrice = (order: Order, isPriceInverted: boolean): string => {
+function getLimitPrice(order: Order, isPriceInverted: boolean): string {
   if (!order.buyToken || !order.sellToken) return '-'
 
   const calculatedPrice = getOrderLimitPrice({
@@ -46,19 +41,8 @@ const getLimitPrice = (order: Order, isPriceInverted: boolean): string => {
     sellTokenDecimals: order.sellToken.decimals,
     inverted: isPriceInverted,
   })
-  const displayPrice = calculatedPrice.toString(10)
-  const formattedPrice = formatSmart({
-    amount: displayPrice,
-    precision: NO_ADJUSTMENT_NEEDED_PRECISION,
-    smallLimit: HIGH_PRECISION_SMALL_LIMIT,
-    decimals: HIGH_PRECISION_DECIMALS,
-  })
-  const buySymbol = safeTokenName(order.buyToken)
-  const sellSymbol = safeTokenName(order.sellToken)
 
-  const [baseSymbol, quoteSymbol] = isPriceInverted ? [sellSymbol, buySymbol] : [buySymbol, sellSymbol]
-
-  return `${formattedPrice} ${quoteSymbol} per ${baseSymbol}`
+  return formatCalculatedPriceToDisplay(calculatedPrice, order.buyToken, order.sellToken, isPriceInverted)
 }
 
 const tooltip = {
@@ -81,9 +65,6 @@ const OrdersUserDetailsTable: React.FC<Props> = (props) => {
     <>
       {items.map((item) => {
         const { creationDate, buyToken, buyAmount, sellToken, sellAmount, kind, partiallyFilled, shortId, uid } = item
-        const isBuyOrder = kind === 'buy'
-        // This is <base>/<quote> like as base instrument / counter intrument
-        const [baseToken, quoteToken] = isBuyOrder ? [buyToken, sellToken] : [sellToken, buyToken]
 
         return (
           <tr key={shortId}>
@@ -97,7 +78,7 @@ const OrdersUserDetailsTable: React.FC<Props> = (props) => {
               }
             </td>
             <td>
-              <TradeOrderType buyToken={baseToken} sellToken={quoteToken} kind={kind} />
+              <TradeOrderType buyToken={buyToken} sellToken={sellToken} kind={kind} />
             </td>
             <td>
               {formattedAmount(buyToken, buyAmount)} {buyToken?.symbol}
