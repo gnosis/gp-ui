@@ -9,17 +9,16 @@ import { Order } from 'api/operator'
 
 import { DateDisplay } from 'components/orders/DateDisplay'
 import { RowWithCopyButton } from 'components/orders/RowWithCopyButton'
-import { formatSmartMaxPrecision, getOrderLimitPrice, formatCalculatedPriceToDisplay } from 'utils'
+import { formatSmartMaxPrecision, getOrderLimitPrice, formatCalculatedPriceToDisplay, capitalize } from 'utils'
 import { StatusLabel } from '../StatusLabel'
 import { HelpTooltip } from 'components/Tooltip'
-import TradeOrderType from '../TradeOrderType'
 import StyledUserDetailsTable, { StyledUserDetailsTableProps } from './styled'
 import Icon from 'components/Icon'
 
 const Wrapper = styled(StyledUserDetailsTable)`
   > thead > tr,
   > tbody > tr {
-    grid-template-columns: 12rem 20rem repeat(2, 13rem) 16rem 13rem 1fr;
+    grid-template-columns: 12rem 7rem repeat(2, 16rem) repeat(2, 18rem) 1fr;
   }
 `
 function isTokenErc20(token: TokenErc20 | null | undefined): token is TokenErc20 {
@@ -36,7 +35,8 @@ function getLimitPrice(order: Order, isPriceInverted: boolean): string {
   if (!order.buyToken || !order.sellToken) return '-'
 
   const calculatedPrice = getOrderLimitPrice({
-    order,
+    buyAmount: order.buyAmount,
+    sellAmount: order.sellAmount,
     buyTokenDecimals: order.buyToken.decimals,
     sellTokenDecimals: order.sellToken.decimals,
     inverted: isPriceInverted,
@@ -77,14 +77,12 @@ const OrdersUserDetailsTable: React.FC<Props> = (props) => {
                 />
               }
             </td>
+            <td>{capitalize(kind)}</td>
             <td>
-              <TradeOrderType buyToken={buyToken} sellToken={sellToken} kind={kind} />
+              {formattedAmount(sellToken, sellAmount)} {sellToken?.symbol}
             </td>
             <td>
               {formattedAmount(buyToken, buyAmount)} {buyToken?.symbol}
-            </td>
-            <td>
-              {formattedAmount(sellToken, sellAmount)} {sellToken?.symbol}
             </td>
             <td>{getLimitPrice(item, isPriceInverted)}</td>
             <td>
@@ -108,12 +106,12 @@ const OrdersUserDetailsTable: React.FC<Props> = (props) => {
             Order ID <HelpTooltip tooltip={tooltip.orderID} />
           </th>
           <th>Type</th>
-          <th>Buy amount</th>
           <th>Sell amount</th>
+          <th>Buy amount</th>
           <th>
             Limit price <Icon icon={faExchangeAlt} onClick={invertLimitPrice} />
           </th>
-          <th>Creation time</th>
+          <th>Created</th>
           <th>Status</th>
         </tr>
       }
