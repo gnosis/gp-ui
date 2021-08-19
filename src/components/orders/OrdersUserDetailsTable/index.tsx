@@ -9,11 +9,12 @@ import { Order } from 'api/operator'
 
 import { DateDisplay } from 'components/orders/DateDisplay'
 import { RowWithCopyButton } from 'components/orders/RowWithCopyButton'
-import { formatSmartMaxPrecision, getOrderLimitPrice, formatCalculatedPriceToDisplay, capitalize } from 'utils'
+import { formatSmartMaxPrecision, getOrderLimitPrice, formatCalculatedPriceToDisplay } from 'utils'
 import { StatusLabel } from '../StatusLabel'
 import { HelpTooltip } from 'components/Tooltip'
 import StyledUserDetailsTable, { StyledUserDetailsTableProps, EmptyItemWrapper } from './styled'
 import Icon from 'components/Icon'
+import TradeOrderType from 'components/common/TradeOrderType'
 
 const Wrapper = styled(StyledUserDetailsTable)`
   > thead > tr,
@@ -72,7 +73,9 @@ const RowOrder: React.FC<RowProps> = ({ order, isPriceInverted }) => {
           />
         }
       </td>
-      <td>{capitalize(kind)}</td>
+      <td>
+        <TradeOrderType kind={kind} />
+      </td>
       <td>
         {formattedAmount(sellToken, sellAmount)} {sellToken?.symbol}
       </td>
@@ -81,7 +84,7 @@ const RowOrder: React.FC<RowProps> = ({ order, isPriceInverted }) => {
       </td>
       <td>{getLimitPrice(order, isPriceInverted)}</td>
       <td>
-        <DateDisplay date={creationDate} />
+        <DateDisplay date={creationDate} showIcon={true} />
       </td>
       <td>
         <StatusLabel status={order.status} partiallyFilled={partiallyFilled} />

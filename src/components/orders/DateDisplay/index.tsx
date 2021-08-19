@@ -1,7 +1,19 @@
 import React from 'react'
 import { formatDistanceToNowStrict, format } from 'date-fns'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faClock } from '@fortawesome/free-regular-svg-icons'
+import styled from 'styled-components'
 
-export function DateDisplay({ date }: { date: Date }): JSX.Element {
+const IconWrapper = styled(FontAwesomeIcon)`
+  margin-right: 0.4rem;
+`
+
+interface DateDisplayProps {
+  date: Date
+  showIcon?: boolean
+}
+
+export function DateDisplay({ date, showIcon }: DateDisplayProps): JSX.Element {
   // '5 days ago', '1h from now' date format
   const distance = formatDistanceToNowStrict(date, { addSuffix: true })
   // Long localized date and time '04/29/1453 12:00:00 AM'
@@ -12,7 +24,7 @@ export function DateDisplay({ date }: { date: Date }): JSX.Element {
 
   return (
     <span>
-      {distance} ({fullLocaleBased})
+      {showIcon && <IconWrapper icon={faClock} />} {distance} ({fullLocaleBased})
     </span>
   )
 }
