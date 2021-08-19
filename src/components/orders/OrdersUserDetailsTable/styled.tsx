@@ -28,7 +28,7 @@ const StyledUserDetailsTable = styled(SimpleTable)<StyledUserDetailsTableProps>`
   }
 
   thead tr th {
-    color: white;
+    color: ${({ theme }): string => theme.textPrimary1};
     font-style: normal;
     font-weight: 800;
     font-size: 13px;
@@ -49,6 +49,15 @@ const StyledUserDetailsTable = styled(SimpleTable)<StyledUserDetailsTableProps>`
   .span-copybtn-wrap {
     display: block;
   }
+`
+
+export const EmptyItemWrapper = styled.div`
+  color: ${({ theme }): string => theme.textPrimary1};
+  height: 100%;
+  min-height: 15rem;
+  align-items: center;
+  justify-content: center;
+  display: flex;
 `
 
 export default StyledUserDetailsTable

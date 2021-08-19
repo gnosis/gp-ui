@@ -41,3 +41,6 @@ const Template: Story<OrdersUserTableProps> = (args) => <OrderUserDetailsTable {
 
 export const Default = Template.bind({})
 Default.args = { orders: [orderBuy, orderSell], showBorderTable: true }
+
+export const EmptyOrders = Template.bind({})
+EmptyOrders.args = { orders: [], showBorderTable: true }

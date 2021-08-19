@@ -12,7 +12,7 @@ import { RowWithCopyButton } from 'components/orders/RowWithCopyButton'
 import { formatSmartMaxPrecision, getOrderLimitPrice, formatCalculatedPriceToDisplay, capitalize } from 'utils'
 import { StatusLabel } from '../StatusLabel'
 import { HelpTooltip } from 'components/Tooltip'
-import StyledUserDetailsTable, { StyledUserDetailsTableProps } from './styled'
+import StyledUserDetailsTable, { StyledUserDetailsTableProps, EmptyItemWrapper } from './styled'
 import Icon from 'components/Icon'
 
 const Wrapper = styled(StyledUserDetailsTable)`
@@ -53,6 +53,43 @@ export type Props = StyledUserDetailsTableProps & {
   orders: Order[]
 }
 
+interface RowProps {
+  order: Order
+  isPriceInverted: boolean
+}
+
+const RowOrder: React.FC<RowProps> = ({ order, isPriceInverted }) => {
+  const { creationDate, buyToken, buyAmount, sellToken, sellAmount, kind, partiallyFilled, shortId, uid } = order
+
+  return (
+    <tr key={shortId}>
+      <td>
+        {
+          <RowWithCopyButton
+            className="span-copybtn-wrap"
+            textToCopy={uid}
+            contentsToDisplay={<Link to={`/orders/${order.uid}`}>{shortId}</Link>}
+          />
+        }
+      </td>
+      <td>{capitalize(kind)}</td>
+      <td>
+        {formattedAmount(sellToken, sellAmount)} {sellToken?.symbol}
+      </td>
+      <td>
+        {formattedAmount(buyToken, buyAmount)} {buyToken?.symbol}
+      </td>
+      <td>{getLimitPrice(order, isPriceInverted)}</td>
+      <td>
+        <DateDisplay date={creationDate} />
+      </td>
+      <td>
+        <StatusLabel status={order.status} partiallyFilled={partiallyFilled} />
+      </td>
+    </tr>
+  )
+}
+
 const OrdersUserDetailsTable: React.FC<Props> = (props) => {
   const { orders, showBorderTable = false } = props
   const [isPriceInverted, setIsPriceInverted] = useState(false)
@@ -61,41 +98,17 @@ const OrdersUserDetailsTable: React.FC<Props> = (props) => {
     setIsPriceInverted((previousValue) => !previousValue)
   }
 
-  const orderItems = (items: Order[]): JSX.Element => (
-    <>
-      {items.map((item) => {
-        const { creationDate, buyToken, buyAmount, sellToken, sellAmount, kind, partiallyFilled, shortId, uid } = item
+  const orderItems = (items: Order[]): JSX.Element => {
+    if (items.length === 0) return <EmptyItemWrapper>No Orders.</EmptyItemWrapper>
 
-        return (
-          <tr key={shortId}>
-            <td>
-              {
-                <RowWithCopyButton
-                  className="span-copybtn-wrap"
-                  textToCopy={uid}
-                  contentsToDisplay={<Link to={`/orders/${item.uid}`}>{shortId}</Link>}
-                />
-              }
-            </td>
-            <td>{capitalize(kind)}</td>
-            <td>
-              {formattedAmount(sellToken, sellAmount)} {sellToken?.symbol}
-            </td>
-            <td>
-              {formattedAmount(buyToken, buyAmount)} {buyToken?.symbol}
-            </td>
-            <td>{getLimitPrice(item, isPriceInverted)}</td>
-            <td>
-              <DateDisplay date={creationDate} />
-            </td>
-            <td>
-              <StatusLabel status={item.status} partiallyFilled={partiallyFilled} />
-            </td>
-          </tr>
-        )
-      })}
-    </>
-  )
+    return (
+      <>
+        {items.map((item) => (
+          <RowOrder key={item.shortId} order={item} isPriceInverted={isPriceInverted} />
+        ))}
+      </>
+    )
+  }
 
   return (
     <Wrapper
