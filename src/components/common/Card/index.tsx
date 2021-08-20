@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import Grid from '@material-ui/core/Grid'
 
 import { COLOURS } from 'styles'
 import { Theme } from 'theme'
@@ -36,8 +37,14 @@ const CardContent = styled.div`
   line-height: normal;
 `
 
+type CardBreakdown = boolean | 1 | 'auto' | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | undefined
+
 export interface CardBaseProps {
-  children?: React.ReactElement
+  children?: React.ReactElement | string
+  xs?: CardBreakdown
+  sm?: CardBreakdown
+  md?: CardBreakdown
+  lg?: CardBreakdown
 }
 
 /**
@@ -45,10 +52,12 @@ export interface CardBaseProps {
  *
  * An extensible content container.
  */
-export const Card: React.FC<CardBaseProps> = ({ children, ...rest }) => {
+export const Card: React.FC<CardBaseProps> = ({ children, xs = 12, sm = 6, md = 4, lg = 3, ...rest }) => {
   return (
-    <CardComponent {...rest}>
-      <CardContent>{children}</CardContent>
-    </CardComponent>
+    <Grid item xs={xs} sm={sm} md={md} lg={lg}>
+      <CardComponent {...rest}>
+        <CardContent>{children}</CardContent>
+      </CardComponent>
+    </Grid>
   )
 }

@@ -28,9 +28,6 @@ const Template: Story<CardRowProps> = (args) => (
       <Card>
         <span>Card4</span>
       </Card>
-      <Card>
-        <span>Card5</span>
-      </Card>
     </>
   </CardRow>
 )
