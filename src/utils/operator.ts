@@ -186,8 +186,8 @@ export function getOrderLimitPrice({
   inverted,
 }: GetOrderLimitPriceParams): BigNumber {
   const price = calculatePrice({
-    numerator: { amount: buyAmount, decimals: buyTokenDecimals },
-    denominator: { amount: sellAmount, decimals: sellTokenDecimals },
+    numerator: { amount: sellAmount, decimals: sellTokenDecimals },
+    denominator: { amount: buyAmount, decimals: buyTokenDecimals },
   })
 
   return inverted ? invertPrice(price) : price
@@ -216,12 +216,13 @@ export function getOrderExecutedPrice({
     return ZERO_BIG_NUMBER
   }
 
-  const price = calculatePrice({
-    numerator: { amount: executedBuyAmount, decimals: buyTokenDecimals },
-    denominator: { amount: executedSellAmount, decimals: sellTokenDecimals },
+  return getOrderLimitPrice({
+    buyAmount: executedBuyAmount,
+    sellAmount: executedSellAmount,
+    buyTokenDecimals,
+    sellTokenDecimals,
+    inverted,
   })
-
-  return inverted ? invertPrice(price) : price
 }
 
 function getShortOrderId(orderId: string, length = 8): string {

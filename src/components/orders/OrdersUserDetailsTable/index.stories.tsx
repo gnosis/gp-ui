@@ -18,11 +18,11 @@ export default {
 const orderBuy: Order = {
   ...RICH_ORDER,
   kind: 'buy',
-  buyToken: TUSD,
-  sellToken: WETH,
+  buyToken: WETH,
+  sellToken: TUSD,
   shortId: 'bdef89ac',
-  buyAmount: new BigNumber('1000000000000000000'), // 1WETH
-  sellAmount: new BigNumber('3000000000'), //3000 USDT
+  buyAmount: new BigNumber('1500000000000000000'), // 1.5WETH
+  sellAmount: new BigNumber('7500000000000000000000'), // 7500 TUSD
   creationDate: sub(new Date(), { hours: 1 }),
   expirationDate: add(new Date(), { hours: 1 }),
   txHash: '0x489d8fd1efd43394c7c2b26216f36f1ab49b8d67623047e0fcb60efa2a2c420b',
@@ -30,11 +30,10 @@ const orderBuy: Order = {
 
 const orderSell: Order = {
   ...RICH_ORDER,
-  buyAmount: new BigNumber('1000000000000000000'), // 1WETH
-  sellAmount: new BigNumber('3000000000'), //3000 USDT
-  creationDate: sub(new Date(), { hours: 1 }),
-  expirationDate: add(new Date(), { hours: 1 }),
-  txHash: '0x489d8fd1efd43394c7c2b26216f36f1ab49b8d67623047e0fcb60efa2a2c420b',
+  buyAmount: new BigNumber('3000000000'), // 3000 USDT
+  sellAmount: new BigNumber('1000000000000000000'), // 1WETH
+  creationDate: sub(new Date(), { hours: 48 }),
+  expirationDate: add(new Date(), { hours: 48 }),
 }
 
 const Template: Story<OrdersUserTableProps> = (args) => <OrderUserDetailsTable {...args} />

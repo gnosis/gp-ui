@@ -77,7 +77,7 @@ const RowOrder: React.FC<RowProps> = ({ order, isPriceInverted }) => {
         <TradeOrderType kind={kind} />
       </td>
       <td>
-        {formattedAmount(sellToken, sellAmount)} {sellToken?.symbol}
+        {formattedAmount(sellToken, sellAmount.plus(order.feeAmount))} {sellToken?.symbol}
       </td>
       <td>
         {formattedAmount(buyToken, buyAmount)} {buyToken?.symbol}
