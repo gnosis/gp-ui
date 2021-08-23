@@ -23,8 +23,8 @@ export function DateDisplay({ date, showIcon }: DateDisplayProps): JSX.Element {
   const fullLocaleBased = format(date, 'P pp')
 
   return (
-    <span>
-      {showIcon && <IconWrapper icon={faClock} />} {distance} ({fullLocaleBased})
+    <span className="wrap-datedisplay">
+      {showIcon && <IconWrapper icon={faClock} />} <span>{distance}</span> <span>({fullLocaleBased})</span>
     </span>
   )
 }

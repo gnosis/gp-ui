@@ -19,7 +19,7 @@ import TradeOrderType from 'components/common/TradeOrderType'
 const Wrapper = styled(StyledUserDetailsTable)`
   > thead > tr,
   > tbody > tr {
-    grid-template-columns: 12rem 7rem repeat(2, 16rem) repeat(2, 18rem) 1fr;
+    grid-template-columns: 12rem 7rem repeat(2, 16rem) repeat(2, minmax(18rem, 24rem)) 1fr;
   }
 `
 function isTokenErc20(token: TokenErc20 | null | undefined): token is TokenErc20 {
@@ -67,7 +67,7 @@ const RowOrder: React.FC<RowProps> = ({ order, isPriceInverted }) => {
       <td>
         {
           <RowWithCopyButton
-            className="span-copybtn-wrap"
+            className="wrap-copybtn"
             textToCopy={uid}
             contentsToDisplay={<Link to={`/orders/${order.uid}`}>{shortId}</Link>}
           />

@@ -49,6 +49,10 @@ const StyledUserDetailsTable = styled(SimpleTable)<StyledUserDetailsTableProps>`
   .span-copybtn-wrap {
     display: block;
   }
+
+  span.wrap-datedisplay > span:last-of-type {
+    display: flex;
+  }
 `
 
 export const EmptyItemWrapper = styled.div`
