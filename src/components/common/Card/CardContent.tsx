@@ -6,7 +6,7 @@ export type statusType = 'success' | 'danger'
 export interface CardContentProps {
   variant: '2row' | '3row' | 'double'
   direction?: string
-  icon1?: any
+  icon1?: React.ReactElement
   label1: string
   value1: string
   valueSize?: number
@@ -15,7 +15,7 @@ export interface CardContentProps {
   captionColor?: string
   hint1?: string
   hintColor?: string
-  icon2?: any
+  icon2?: React.ReactElement
   label2?: string
   value2?: string
   caption2?: string
