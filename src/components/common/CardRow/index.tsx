@@ -1,11 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
-
-const CardRowWrapper = styled.div`
-  display: flex;
-  flex-direction: row !important;
-  overflow: auto;
-`
+import Grid from '@material-ui/core/Grid'
 
 export type CardRowProps = { children?: React.ReactElement }
 
@@ -15,5 +9,5 @@ export type CardRowProps = { children?: React.ReactElement }
  * Place cards side-by-side
  */
 export const CardRow: React.FC<CardRowProps> = ({ children }) => {
-  return <CardRowWrapper>{children}</CardRowWrapper>
+  return <Grid container>{children}</Grid>
 }

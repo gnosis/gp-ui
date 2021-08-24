@@ -5,7 +5,6 @@ import { Story, Meta } from '@storybook/react/types-6-0'
 import { GlobalStyles, ThemeToggler } from 'storybook/decorators'
 
 import { Card, CardBaseProps } from '.'
-import { CardContent } from './CardContent'
 
 export default {
   title: 'Common/Card',
@@ -19,9 +18,7 @@ const Template: Story<CardBaseProps> = (args) => (
   </div>
 )
 
-const defaultProps: CardBaseProps = {
-  children: <CardContent label={'30 Day Voulme'} value={'$103.56M'} hint={'+1.03%'} status={'success'} />,
-}
+const defaultProps: CardBaseProps = {}
 
 export const Default = Template.bind({})
 Default.args = {

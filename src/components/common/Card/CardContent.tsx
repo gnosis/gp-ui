@@ -1,59 +1,143 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const CardBody = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  p {
-    font-size: 14px;
-    margin: 0px;
-  }
-  h3 {
-    font-size: 18px;
-    margin: 8px 0px;
-  }
-  span {
-    font-weight: bold;
-    font-size: 11px;
-    margin: 0px;
-    &.danger {
-      color: ${({ theme }): string => theme.red1} !important;
-    }
-    &.success {
-      color: ${({ theme }): string => theme.green} !important;
-    }
-  }
-  div {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-`
 export type statusType = 'success' | 'danger'
 
 export interface CardContentProps {
-  label: string
-  value: string
-  hint?: string
-  status?: statusType
+  variant: '2row' | '3row' | 'double'
+  direction?: string
+  icon1?: any
+  label1: string
+  value1: string
+  valueSize?: number
+  labelWidth?: number
+  caption1?: string
+  captionColor?: string
+  hint1?: string
+  hintColor?: string
+  icon2?: any
+  label2?: string
+  value2?: string
+  caption2?: string
+  hint2?: string
 }
+
+const CardBody = styled.div<{
+  variant: string
+  valueSize?: number
+  labelWidth?: number
+  direction?: string
+  captionColor?: string
+  hintColor?: string
+}>`
+  display: flex;
+  flex-direction: ${({ direction }): string => (direction === 'row' ? 'column' : 'row')};
+  align-items: center;
+  justify-content: center;
+
+  div {
+    display: ${({ direction }): string => (direction ? 'flex' : 'initial')};
+    flex-direction: ${({ direction }): string => direction || 'column'};
+    > p {
+      font-size: 14px;
+      margin: 0px;
+      margin-right: ${({ variant, direction }): string =>
+        variant === 'double' && direction === 'row' ? '0.5rem' : '0px'};
+      color: ${({ theme }): string => theme.grey};
+      display: flex;
+      align-items: center;
+      justify-content: ${({ variant, direction }): string =>
+        variant === 'double' && direction === 'row' ? 'flex-end' : 'center'};
+      width: ${({ labelWidth }): string => (labelWidth ? `${labelWidth}px` : 'initial')};
+    }
+    > div {
+      display: flex;
+      flex-direction: ${({ variant }): string => (variant === '2row' ? 'row' : 'column')};
+      justify-content: center;
+      align-items: center;
+      margin-top: ${({ direction }): string => (direction === 'row' ? '0' : '8px')};
+
+      > h3 {
+        font-size: ${({ valueSize }): number => valueSize || 18}px;
+        margin: 0px;
+      }
+      > span {
+        font-weight: bold;
+        font-size: 11px;
+        margin-left: ${({ variant }): string => (variant === '2row' ? '0.5rem' : '0')};
+        margin-top: ${({ variant }): string => (variant === '2row' ? '0' : '6px')};
+        color: ${({ theme, captionColor }): string => captionColor && theme[captionColor]};
+        > span {
+          margin-left: 0.25rem;
+          color: ${({ theme, hintColor }): string => hintColor && theme[hintColor]};
+        }
+      }
+    }
+  }
+`
 
 /**
  * Card component.
  *
  * An extensible content container.
  */
-export const CardContent: React.FC<CardContentProps> = ({ label, value, hint, status, ...rest }): JSX.Element => {
+export const CardContent: React.FC<CardContentProps> = ({
+  variant,
+  valueSize,
+  labelWidth,
+  direction,
+  icon1,
+  label1,
+  value1,
+  caption1,
+  captionColor,
+  hint1,
+  hintColor,
+  icon2,
+  label2,
+  value2,
+  caption2,
+  hint2,
+}): JSX.Element => {
   return (
-    <CardBody {...rest}>
-      <p>{label}</p>
+    <CardBody
+      variant={variant}
+      valueSize={valueSize}
+      labelWidth={labelWidth}
+      direction={direction}
+      captionColor={captionColor}
+      hintColor={hintColor}
+    >
       <div>
-        <h3>{value}</h3>
-        {hint && <span className={status ?? 'success'}>{hint}</span>}
+        <p>
+          {icon1} &nbsp;{label1}
+        </p>
+        <div>
+          <h3>{value1}</h3>
+          {caption1 && (
+            <span>
+              {caption1}
+              <span>{hint1}</span>
+            </span>
+          )}
+        </div>
       </div>
+      {label2 && (
+        <div>
+          <p>
+            {icon2} &nbsp;{label2}
+          </p>
+          <div>
+            <h3>{value2}</h3>
+            {caption2 && (
+              <span>
+                {caption2}
+                <span>{hint2}</span>
+              </span>
+            )}
+          </div>
+        </div>
+      )}
     </CardBody>
   )
 }

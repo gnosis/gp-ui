@@ -8,6 +8,8 @@ import { Card } from '../Card/index'
 import { CardRow, CardRowProps } from '.'
 import { CardContent } from '../Card/CardContent'
 
+import QuestionIcon from '../../../assets/img/question1.svg'
+
 export default {
   title: 'Common/CardRow',
   component: CardRow,
@@ -18,19 +20,40 @@ const Template: Story<CardRowProps> = (args) => (
   <CardRow {...args}>
     <>
       <Card>
-        <CardContent label={'30 Day Voulme'} value={'$103.56M'} hint={'+1.03%'} status={'success'} />
+        <CardContent variant="2row" label1="24h Transactions" value1="194" caption1="-3.45%" captionColor="red1" />
       </Card>
       <Card>
-        <CardContent label={'24H Voulme'} value={'$103.56M'} hint={'+1.03%'} status={'success'} />
+        <CardContent
+          icon1={<img src={QuestionIcon} />}
+          variant="3row"
+          label1="24h Transactions"
+          value1="194"
+          caption1="-3.45%"
+          captionColor="red1"
+        />
       </Card>
       <Card>
-        <CardContent label={'24H Trades'} value={'194'} hint={'-3.45%'} status={'danger'} />
+        <CardContent
+          variant="3row"
+          label1="Trades"
+          value1="511.12k"
+          caption1="0.588ETH"
+          hint1="(~$1015.01)"
+          captionColor="white"
+          hintColor="grey"
+        />
       </Card>
-      <Card>
-        <CardContent label={'Last Batch'} value={'3m 42s ago'} />
-      </Card>
-      <Card>
-        <CardContent label={'Total Tokens'} value={'193'} />
+      <Card xs={4} sm={4} md={4} lg={4}>
+        <CardContent
+          variant="double"
+          direction="row"
+          valueSize={14}
+          labelWidth={110}
+          label1="Limit Price"
+          value1="1055.32 DAI per ETH"
+          label2="Avg. Exec. Price"
+          value2="1055.54 DAI per ETH"
+        />
       </Card>
     </>
   </CardRow>
