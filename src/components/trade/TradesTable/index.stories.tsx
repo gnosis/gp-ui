@@ -1,79 +1,48 @@
 import React from 'react'
-import styled from 'styled-components'
 // also exported from '@storybook/react' if you can deal with breaking changes in 6.1
 import { Story, Meta } from '@storybook/react/types-6-0'
+import TradesTable, { Props as TradesUserTableProps } from '.'
+import { sub } from 'date-fns'
+import BigNumber from 'bignumber.js'
+import { GlobalStyles, ThemeToggler, Router, NetworkDecorator } from 'storybook/decorators'
 
-import { GlobalStyles, NetworkDecorator, ThemeToggler } from 'storybook/decorators'
-
-import { Props } from '.'
-import { TradesTable, TradesTableHeader } from '.'
-import TradesTableContext from './Context/TradesTableContext'
+import { Trade } from 'api/operator'
+import { RICH_TRADE, TUSD, WETH } from '../../../../test/data'
 
 export default {
-  title: 'Trade/TradesTable',
+  title: 'Trades/TradesTable',
+  decorators: [Router, GlobalStyles, NetworkDecorator, ThemeToggler],
   component: TradesTable,
-  decorators: [GlobalStyles, NetworkDecorator, ThemeToggler],
-  argTypes: { header: { control: null }, children: { control: null }, Component: { control: null } },
 } as Meta
 
-const Template: Story<Props & { Component?: typeof TradesTable }> = (args): JSX.Element => {
-  const { Component = TradesTable, ...rest } = args
-  const [isPriceInverted, invertPrice] = React.useState(false)
-
-  return (
-    <div style={{ overflowX: 'auto' }}>
-      <TradesTableContext.Provider
-        value={{
-          isPriceInverted: isPriceInverted,
-          invertPrice: (): void => invertPrice(!isPriceInverted),
-        }}
-      >
-        <Component {...rest} />
-      </TradesTableContext.Provider>
-    </div>
-  )
+const tradeBuy: Trade = {
+  ...RICH_TRADE,
+  kind: 'buy',
+  tradeId: 'bdef89ac',
+  buyToken: WETH,
+  sellToken: TUSD,
+  buyAmount: new BigNumber('1500000000000000000'), // 1.5WETH
+  sellAmount: new BigNumber('7500000000000000000000'), // 7500 TUSD
+  executionTime: sub(new Date(), { hours: 1 }),
+  surplusPercentage: new BigNumber(3.34),
+  surplusAmount: new BigNumber(1342.34),
+  txHash: '0x489d8fd1efd43394c7c2b26216f36f1ab49b8d67623047e0fcb60efa2a2c420b',
 }
 
-const BasicTable = styled(TradesTable)`
-  tr > td {
-    &:not(:first-of-type) {
-      text-align: left;
-    }
-    &:nth-child(2) {
-      min-width: 800px !important;
-    }
-  }
-
-  > thead > tr,
-  > tbody > tr {
-    grid-template-columns: 15rem repeat(7, [col-start] minmax(200px, 1fr) [col-end]) 10rem;
-  }
-
-  thead tr th,
-  tbody tr td {
-    padding: 2px 5px 2px 5px !important;
-  }
-
-  thead {
-    border-bottom: 1px solid rgba(141, 141, 169, 0.1);
-    padding-bottom: 10px;
-    &tr th {
-      font-style: normal;
-      font-weight: 800;
-      font-size: 13px;
-      line-height: 18px;
-      display: flex;
-      align-items: center;
-    }
-  }
-
-  tbody tr:hover {
-    backdrop-filter: contrast(0.9);
-  }
-`
-export const BasicTradesTable = Template.bind({})
-BasicTradesTable.args = {
-  Component: BasicTable,
-  header: <TradesTableHeader />,
-  owner: '0x5b0abe214ab7875562adee331deff0fe1912fe42',
+const tradeSell: Trade = {
+  ...RICH_TRADE,
+  tradeId: '4a36dacc',
+  buyAmount: new BigNumber('300000000000000'), // 3000 USDT
+  sellAmount: new BigNumber('1000000000000000000'), // 1WETH
+  executionTime: sub(new Date(), { hours: 48 }),
+  surplusPercentage: new BigNumber(-3.34),
+  surplusAmount: new BigNumber(1342.34),
 }
+
+const Template: Story<TradesUserTableProps> = (args) => <TradesTable {...args} />
+
+export const Default = Template.bind({})
+Default.args = { trades: [tradeBuy, tradeSell], showBorderTable: true }
+
+export const EmptyTrades = Template.bind({})
+EmptyTrades.args = { trades: [], showBorderTable: true }

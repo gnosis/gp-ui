@@ -17,7 +17,7 @@ export interface FeeInformation {
   feeRatio: number
 }
 
-export type OrderKind = 'sell' | 'buy'
+export type OrderTradeKind = 'sell' | 'buy'
 
 export type OrderStatus = 'open' | 'filled' | 'canceled' | 'expired'
 
@@ -38,7 +38,7 @@ export type RawOrder = {
   validTo: number
   appData: number
   feeAmount: string
-  kind: OrderKind
+  kind: OrderTradeKind
   partiallyFillable: boolean
   signature: string
 }
@@ -82,26 +82,33 @@ export type RawTrade = {
   logIndex: number
   owner: string
   txHash: string
-  orderUid: string
+  tradeId: string
   buyAmount: string
   sellAmount: string
   sellAmountBeforeFees: string
   buyToken: string
   sellToken: string
+  executionTime: string
+  kind: OrderTradeKind
 }
 
 /**
  * Enriched Trade type
  */
-export type Trade = Pick<RawTrade, 'blockNumber' | 'logIndex' | 'owner' | 'txHash'> & {
-  orderId: string // rename the field
+export type Trade = Pick<RawTrade, 'blockNumber' | 'logIndex' | 'owner' | 'txHash' | 'kind'> & {
+  tradeId: string
   buyAmount: BigNumber
+  executedBuyAmount: BigNumber
   sellAmount: BigNumber
+  executedSellAmount: BigNumber
   sellAmountBeforeFees: BigNumber
   buyToken?: TokenErc20 | null
   buyTokenAddress: string
   sellToken?: TokenErc20 | null
   sellTokenAddress: string
+  executionTime: Date
+  surplusAmount: BigNumber
+  surplusPercentage: BigNumber
 }
 
 type WithNetworkId = { networkId: Network }

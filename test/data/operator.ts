@@ -57,7 +57,9 @@ export const RICH_ORDER: Order = {
 export const RAW_TRADE: RawTrade = {
   blockNumber: 8453440,
   logIndex: 3,
-  orderUid:
+  executionTime: '2021-01-20T23:15:07.892538607Z',
+  kind: 'sell',
+  tradeId:
     '0x9754ac5510f5057c71e7da67c63edfb2258c608e26f102418e15fef6110c61595b0abe214ab7875562adee331deff0fe1912fe42608087c7',
   buyAmount: '50000000000000000',
   sellAmount: '455756789061273449606',
@@ -70,7 +72,8 @@ export const RAW_TRADE: RawTrade = {
 
 export const RICH_TRADE: Trade = {
   ...RAW_TRADE,
-  orderId: RAW_TRADE.orderUid,
+  tradeId: RAW_TRADE.tradeId,
+  executionTime: new Date(RAW_TRADE.executionTime),
   buyAmount: new BigNumber(RAW_TRADE.buyAmount),
   sellAmount: new BigNumber(RAW_TRADE.sellAmount),
   sellAmountBeforeFees: new BigNumber(RAW_TRADE.sellAmountBeforeFees),

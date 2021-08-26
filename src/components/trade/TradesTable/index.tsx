@@ -1,270 +1,161 @@
-import { Trade } from 'api/operator'
-import styled, { css } from 'styled-components'
-import { RowWithCopyButton } from 'components/orders/RowWithCopyButton'
-import React from 'react'
-import { SimpleTable } from '../../common/SimpleTable'
-import TradesTableContext from './Context/TradesTableContext'
+import React, { useState } from 'react'
+import styled from 'styled-components'
+import BigNumber from 'bignumber.js'
+import { Link } from 'react-router-dom'
 import { faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
-import { useTrades } from 'hooks/useOperatorTrades'
-import Spinner from 'components/common/Spinner'
-import { addressToErc20, ConstructedPrice, constructPrice, formatSmartMaxPrecision, safeTokenName } from 'utils'
-import { BlockExplorerLink } from 'apps/explorer/components/common/BlockExplorerLink'
-import { COLOURS } from 'styles'
-import { Theme } from 'theme'
-import { variants } from 'styled-theming'
-import TokenImg from 'components/common/TokenImg'
+
+import { TokenErc20 } from '@gnosis.pm/dex-js'
+import { Trade } from 'api/operator'
+
+import { DateDisplay } from 'components/common/DateDisplay'
+import { RowWithCopyButton } from 'components/common/RowWithCopyButton'
+import {
+  formatSmartMaxPrecision,
+  getOrderLimitPrice,
+  formatCalculatedPriceToDisplay,
+  formatExecutedPriceToDisplay,
+} from 'utils'
 import { HelpTooltip } from 'components/Tooltip'
+import StyledUserDetailsTable, {
+  StyledUserDetailsTableProps,
+  EmptyItemWrapper,
+} from '../../common/StyledUserDetailsTable'
 import Icon from 'components/Icon'
-import { SingleErc20State } from 'state/erc20'
-import { useNetworkOrDefault } from 'state/network'
+import TradeOrderType from 'components/common/TradeOrderType'
+import { Surplus } from './Surplus'
 
-const { white, blackLight } = COLOURS
-
-export const TableTheme = variants('mode', 'variant', {
-  default: {
-    [Theme.LIGHT]: css`
-      color: ${blackLight} !important;
-    `,
-    [Theme.DARK]: css`
-      color: ${white} !important;
-    `,
-  },
-  get primary() {
-    return this.default
-  },
-})
-
-const TableRow = styled.tr`
-  padding: 6px 2px 6px 2px !important;
-  th {
-    font-weight: 600 !important;
-    span {
-      margin-right: 7px;
-    }
+const Wrapper = styled(StyledUserDetailsTable)`
+  > thead > tr,
+  > tbody > tr {
+    grid-template-columns: 12rem 5rem 10rem repeat(2, 12rem) 16rem 12rem 1fr;
   }
 `
-const StyledTableRow = styled(TableRow)`
-  /* Fold in theme css above */
-  ${TableTheme}
-`
+function isTokenErc20(token: TokenErc20 | null | undefined): token is TokenErc20 {
+  return (token as TokenErc20).address !== undefined
+}
 
-export const TradesTableHeader = (): JSX.Element => {
-  const tableContext = React.useContext(TradesTableContext)
+function formattedAmount(erc20: TokenErc20 | null | undefined, amount: BigNumber): string {
+  if (!isTokenErc20(erc20)) return '-'
+
+  return erc20.decimals ? formatSmartMaxPrecision(amount, erc20) : amount.toString(10)
+}
+
+function getLimitPrice(trade: Trade, isPriceInverted: boolean): string {
+  if (!trade.buyToken || !trade.sellToken) return '-'
+
+  const calculatedPrice = getOrderLimitPrice({
+    buyAmount: trade.buyAmount,
+    sellAmount: trade.sellAmount,
+    buyTokenDecimals: trade.buyToken.decimals,
+    sellTokenDecimals: trade.sellToken.decimals,
+    inverted: isPriceInverted,
+  })
+
+  return formatCalculatedPriceToDisplay(calculatedPrice, trade.buyToken, trade.sellToken, isPriceInverted)
+}
+
+function getExecutedPrice(trade: Trade, isPriceInverted: boolean): string {
+  if (!trade.buyToken || !trade.sellToken) return '-'
+
+  const calculatedPrice = isPriceInverted ? trade.sellAmount : trade.buyAmount
+
+  return formatExecutedPriceToDisplay(calculatedPrice, trade.buyToken, trade.sellToken, isPriceInverted)
+}
+
+const tooltip = {
+  tradeID: 'A unique identifier ID for this trade.',
+}
+
+export type Props = StyledUserDetailsTableProps & {
+  trades: Trade[]
+}
+
+interface RowProps {
+  trade: Trade
+  isPriceInverted: boolean
+}
+
+const RowOrder: React.FC<RowProps> = ({ trade, isPriceInverted }) => {
+  const { executionTime, buyToken, buyAmount, sellToken, sellAmount, kind, tradeId } = trade
 
   return (
-    <StyledTableRow variant={'default'}>
-      <th>
-        <span>Tx Id</span>
-        <HelpTooltip tooltip={'Transaction Hash'} />
-      </th>
-      <th>Type</th>
-      <th>Surplus</th>
-      <th>Sell Amount</th>
-      <th>Buy Amount</th>
-      <th>
-        Limit price
-        <Icon icon={faExchangeAlt} onClick={tableContext.invertPrice} />
-      </th>
-      <th>
-        Execution Price
-        <Icon icon={faExchangeAlt} onClick={tableContext.invertPrice} />
-      </th>
-      <th>Execution Time</th>
-    </StyledTableRow>
+    <tr key={tradeId}>
+      <td>
+        {
+          <RowWithCopyButton
+            className="wrap-copybtn"
+            textToCopy={tradeId}
+            contentsToDisplay={<Link to={`/trades/${trade.tradeId}`}>{tradeId}</Link>}
+          />
+        }
+      </td>
+      <td>
+        <TradeOrderType kind={kind} />
+      </td>
+      <td>
+        {trade.surplusPercentage && trade.surplusAmount && (
+          <Surplus surplusPercentage={trade.surplusPercentage} surplusAmount={trade.surplusAmount} />
+        )}
+      </td>
+      <td>
+        {formattedAmount(buyToken, buyAmount)} {buyToken?.symbol}
+      </td>
+      <td>
+        {formattedAmount(sellToken, sellAmount)} {sellToken?.symbol}
+      </td>
+      <td>{getLimitPrice(trade, isPriceInverted)}</td>
+      <td>{getExecutedPrice(trade, isPriceInverted)}</td>
+      <td>
+        <DateDisplay date={executionTime} showIcon={true} />
+      </td>
+    </tr>
   )
 }
 
-const TradeTypeWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  span {
-    margin: 5px 0px 5px 0px;
+const TradesTable: React.FC<Props> = (props) => {
+  const { trades, showBorderTable = false } = props
+  const [isPriceInverted, setIsPriceInverted] = useState(false)
+
+  const invertLimitPrice = (): void => {
+    setIsPriceInverted((previousValue) => !previousValue)
   }
-`
 
-type TradeTypeProps = {
-  buyTokenAddress: string
-  sellTokenAddress: string
-  isLong: boolean
-}
+  const tradeItems = (items: Trade[]): JSX.Element => {
+    if (items.length === 0) return <EmptyItemWrapper>No Trades.</EmptyItemWrapper>
 
-const TradeType = ({ buyTokenAddress, sellTokenAddress, isLong }: TradeTypeProps): JSX.Element => {
-  const [tokens, setTokens] = React.useState<SingleErc20State[]>([])
-  const networkId = useNetworkOrDefault()
-
-  React.useEffect(() => {
-    // isLong - When True, determines if trade type is a BUY else trade type is a SELL
-    addressToErc20(buyTokenAddress, networkId)
-      .then((buyToken) => {
-        return buyToken
-      })
-      .then((buyToken) => {
-        addressToErc20(sellTokenAddress, networkId)
-          .then((sellToken) => {
-            console.log('BUY =>', buyTokenAddress, buyToken)
-            setTokens(isLong ? [buyToken, sellToken] : [sellToken, buyToken])
-          })
-          .catch((err) => console.log('Err', err))
-      })
-      .catch((err) => console.log('Err', err))
-  }, [isLong, buyTokenAddress, sellTokenAddress, networkId])
-
-  return tokens.length == 2 && tokens[0] && tokens[1] ? (
-    <TradeTypeWrapper>
-      <span>{isLong ? 'Buy' : 'Sell'}</span>&nbsp;
-      <TokenImg width={1} height={1} address={tokens[0].address} />
-      &nbsp;
-      <span>{tokens[0].symbol}</span>&nbsp;
-      <span>for</span>&nbsp;
-      <span>{tokens[1].symbol}</span>&nbsp;
-      <TokenImg width={1} height={1} address={tokens[1].address} />
-    </TradeTypeWrapper>
-  ) : (
-    <></>
-  )
-}
-
-export type Props = {
-  header?: JSX.Element
-  className?: string
-  numColumns?: number
-  owner: string
-  orderId?: string
-}
-
-export const TradesTable = ({ header, className, numColumns, owner, orderId }: Props): JSX.Element => {
-  const tableContext = React.useContext(TradesTableContext)
-  const [rows, setRows] = React.useState([{}])
-  const { isLoading, trades } = useTrades({ owner, orderId })
-
-  React.useEffect((): void => {
-    populateTable()
-  }, [trades, tableContext.isPriceInverted])
-
-  const populateTable = async (): Promise<void> => {
-    // for each entry in the data array invert the values of
-    // the limit price and execution price if toggled
-    const _rows: Array<
-      Trade & {
-        limitPrice: string
-        executionPrice: string
-      }
-    > = []
-    for (const trade of trades) {
-      let limitPrice: ConstructedPrice | null = null,
-        execPrice: ConstructedPrice | null = null
-      if (trade.sellToken && trade.buyToken) {
-        limitPrice = constructPrice({
-          isPriceInverted: tableContext.isPriceInverted,
-          order: trade,
-          data: {
-            numerator: {
-              amount: trade.sellAmount,
-              token: trade.sellToken,
-            },
-            denominator: {
-              amount: trade.buyAmount,
-              token: trade.buyToken,
-            },
-          },
-        })
-        execPrice = constructPrice({
-          isPriceInverted: tableContext.isPriceInverted,
-          order: trade,
-          data: {
-            numerator: {
-              amount: trade.sellAmount,
-              token: trade.sellToken,
-            },
-            denominator: {
-              amount: trade.buyAmount,
-              token: trade.buyToken,
-            },
-          },
-        })
-      }
-      const result = {
-        ...trade,
-        limitPrice:
-          trade.buyToken && trade.sellToken && limitPrice
-            ? `${limitPrice.formattedAmount ?? ''} ${limitPrice.quoteSymbol} for ${limitPrice.baseSymbol}`
-            : '-',
-        executionPrice:
-          trade.buyToken && trade.sellToken && execPrice
-            ? `${execPrice.formattedAmount ?? ''} ${execPrice.quoteSymbol} for ${execPrice.baseSymbol}`
-            : '-',
-      }
-      _rows.push(result)
-    }
-    setRows(_rows)
+    return (
+      <>
+        {items.map((item) => (
+          <RowOrder key={item.tradeId} trade={item} isPriceInverted={isPriceInverted} />
+        ))}
+      </>
+    )
   }
 
   return (
-    <SimpleTable
-      body={
-        <>
-          {isLoading ? (
-            <Spinner />
-          ) : (
-            rows.length > 0 &&
-            rows.map(
-              (trade: Trade & { limitPrice: string; executionPrice: string }, i) =>
-                trade.orderId && (
-                  <StyledTableRow key={i}>
-                    <td>
-                      {trade.txHash ? (
-                        <RowWithCopyButton
-                          textToCopy={trade.txHash}
-                          onCopy={(): void => console.log('settlementTx')}
-                          contentsToDisplay={
-                            <BlockExplorerLink
-                              identifier={trade.txHash}
-                              type="tx"
-                              label={`${
-                                trade.txHash.substr(0, 4) +
-                                '...' +
-                                trade.txHash.substr(trade.txHash.length - 5, trade.txHash.length)
-                              }`}
-                            />
-                          }
-                        />
-                      ) : (
-                        '-'
-                      )}
-                    </td>
-                    <td>
-                      {trade.buyTokenAddress && trade.sellTokenAddress ? (
-                        <TradeType
-                          buyTokenAddress={trade.buyTokenAddress}
-                          sellTokenAddress={trade.sellTokenAddress}
-                          isLong={i % 2 === 1}
-                        />
-                      ) : (
-                        '-'
-                      )}
-                    </td>
-                    <td>{/*!trade.surplusAmount.isZero() ? <OrderSurplusDisplay order={trade} /> : */ '-'}</td>
-                    <td>
-                      {formatSmartMaxPrecision(trade.sellAmount, trade.sellToken)}{' '}
-                      {trade.sellToken && safeTokenName(trade.sellToken)}
-                    </td>
-                    <td>
-                      {formatSmartMaxPrecision(trade.buyAmount, trade.buyToken)}{' '}
-                      {trade.buyToken && safeTokenName(trade.buyToken)}
-                    </td>
-                    <td>{trade.limitPrice}</td>
-                    <td>{trade.executionPrice}</td>
-                  </StyledTableRow>
-                ),
-            )
-          )}
-        </>
+    <Wrapper
+      showBorderTable={showBorderTable}
+      header={
+        <tr>
+          <th>
+            Tx ID <HelpTooltip tooltip={tooltip.tradeID} />
+          </th>
+          <th>Type</th>
+          <th>Surplus</th>
+          <th>Buy Amount</th>
+          <th>Sell Amount</th>
+          <th>
+            Limit price <Icon icon={faExchangeAlt} onClick={invertLimitPrice} />
+          </th>
+          <th>
+            Execution price <Icon icon={faExchangeAlt} onClick={invertLimitPrice} />
+          </th>
+          <th>Execution Time</th>
+        </tr>
       }
-      numColumns={numColumns}
-      header={header}
-      className={className}
+      body={tradeItems(trades)}
     />
   )
 }
+
+export default TradesTable

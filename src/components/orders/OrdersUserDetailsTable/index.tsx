@@ -7,12 +7,15 @@ import { faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
 import { TokenErc20 } from '@gnosis.pm/dex-js'
 import { Order } from 'api/operator'
 
-import { DateDisplay } from 'components/orders/DateDisplay'
-import { RowWithCopyButton } from 'components/orders/RowWithCopyButton'
+import { DateDisplay } from 'components/common/DateDisplay'
+import { RowWithCopyButton } from 'components/common/RowWithCopyButton'
 import { formatSmartMaxPrecision, getOrderLimitPrice, formatCalculatedPriceToDisplay } from 'utils'
 import { StatusLabel } from '../StatusLabel'
 import { HelpTooltip } from 'components/Tooltip'
-import StyledUserDetailsTable, { StyledUserDetailsTableProps, EmptyItemWrapper } from './styled'
+import StyledUserDetailsTable, {
+  StyledUserDetailsTableProps,
+  EmptyItemWrapper,
+} from '../../common/StyledUserDetailsTable'
 import Icon from 'components/Icon'
 import TradeOrderType from 'components/common/TradeOrderType'
 
