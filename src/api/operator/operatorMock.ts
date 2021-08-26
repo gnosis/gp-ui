@@ -22,11 +22,11 @@ export async function getOrders(params: GetOrdersParams): Promise<RawOrder[]> {
 }
 
 export async function getTrades(params: GetTradesParams): Promise<RawTrade[]> {
-  const { owner, orderId } = params
+  const { owner, tradeId } = params
 
   const trade = { ...RAW_TRADE }
   trade.owner = owner || trade.owner
-  trade.orderUid = orderId || trade.orderUid
+  trade.tradeId = tradeId || trade.tradeId
 
   return [trade]
 }

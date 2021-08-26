@@ -297,15 +297,33 @@ export function transformOrder(rawOrder: RawOrder): Order {
  * Transforms a RawTrade into a Trade object
  */
 export function transformTrade(rawTrade: RawTrade): Trade {
-  const { orderUid, buyAmount, sellAmount, sellAmountBeforeFees, buyToken, sellToken, ...rest } = rawTrade
+  const {
+    tradeId,
+    buyAmount,
+    executedBuyAmount,
+    sellAmount,
+    executedSellAmount,
+    surplusAmount,
+    surplusPercentage,
+    sellAmountBeforeFees,
+    buyToken,
+    sellToken,
+    executionTime,
+    ...rest
+  } = rawTrade
 
   return {
     ...rest,
-    orderId: orderUid,
+    tradeId: tradeId,
     buyAmount: new BigNumber(buyAmount),
+    executedBuyAmount: new BigNumber(executedBuyAmount),
     sellAmount: new BigNumber(sellAmount),
+    executedSellAmount: new BigNumber(executedSellAmount),
     sellAmountBeforeFees: new BigNumber(sellAmountBeforeFees),
     buyTokenAddress: buyToken,
     sellTokenAddress: sellToken,
+    surplusAmount: new BigNumber(surplusAmount),
+    surplusPercentage: new BigNumber(surplusPercentage),
+    executionTime: new Date(executionTime),
   }
 }

@@ -84,12 +84,16 @@ export type RawTrade = {
   txHash: string
   tradeId: string
   buyAmount: string
+  executedBuyAmount: string
   sellAmount: string
+  executedSellAmount: string
   sellAmountBeforeFees: string
   buyToken: string
   sellToken: string
   executionTime: string
   kind: OrderTradeKind
+  surplusAmount: string
+  surplusPercentage: string
 }
 
 /**
@@ -125,5 +129,5 @@ export type GetOrdersParams = WithNetworkId & {
 
 export type GetTradesParams = WithNetworkId & {
   owner?: string
-  orderId?: string
+  tradeId?: string
 }

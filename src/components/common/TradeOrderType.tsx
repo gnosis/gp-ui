@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { OrderKind } from 'api/operator'
+import { OrderTradeKind } from 'api/operator'
 import { capitalize } from 'utils'
 
 const TradeTypeWrapper = styled.div`
@@ -15,7 +15,7 @@ const TradeTypeWrapper = styled.div`
   }
 `
 export type TradeTypeProps = {
-  kind: OrderKind
+  kind: OrderTradeKind
 }
 
 const TradeOrderType = ({ kind }: TradeTypeProps): JSX.Element | null => {

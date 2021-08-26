@@ -62,12 +62,16 @@ export const RAW_TRADE: RawTrade = {
   tradeId:
     '0x9754ac5510f5057c71e7da67c63edfb2258c608e26f102418e15fef6110c61595b0abe214ab7875562adee331deff0fe1912fe42608087c7',
   buyAmount: '50000000000000000',
+  executedBuyAmount: '50000000000000000',
   sellAmount: '455756789061273449606',
+  executedSellAmount: '455756789061273449606',
   sellAmountBeforeFees: '454756979170023164166',
   owner: '0x5b0abe214ab7875562adee331deff0fe1912fe42',
   buyToken: '0xc778417e063141139fce010982780140aa0cd5ab',
   sellToken: '0xd9ba894e0097f8cc2bbc9d24d308b98e36dc6d02',
   txHash: '0x2ebf2ba8c2a568af0b11d2498648d6fec01db11e81c6e4bc5dbba9237472dce9',
+  surplusPercentage: '3.34',
+  surplusAmount: '1247.47'
 }
 
 export const RICH_TRADE: Trade = {
@@ -75,10 +79,14 @@ export const RICH_TRADE: Trade = {
   tradeId: RAW_TRADE.tradeId,
   executionTime: new Date(RAW_TRADE.executionTime),
   buyAmount: new BigNumber(RAW_TRADE.buyAmount),
+  executedBuyAmount: new BigNumber(RAW_TRADE.executedBuyAmount),
   sellAmount: new BigNumber(RAW_TRADE.sellAmount),
+  executedSellAmount: new BigNumber(RAW_TRADE.executedSellAmount),
   sellAmountBeforeFees: new BigNumber(RAW_TRADE.sellAmountBeforeFees),
   buyToken: WETH,
   buyTokenAddress: RAW_TRADE.buyToken,
   sellToken: USDT,
   sellTokenAddress: RAW_TRADE.sellToken,
+  surplusPercentage: new BigNumber(RAW_TRADE.surplusPercentage),
+  surplusAmount: new BigNumber(RAW_TRADE.surplusAmount),
 }
