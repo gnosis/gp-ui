@@ -30,12 +30,12 @@ export function useTrades(params: Params): Result {
   // contrary to useOrder hook, where it searches all networks for a given orderId
   const networkId = useNetworkId()
 
-  const fetchTrades = useCallback(async (networkId: Network, owner?: string, orderId?: string): Promise<void> => {
+  const fetchTrades = useCallback(async (networkId: Network, owner?: string, tradeId?: string): Promise<void> => {
     setIsLoading(true)
     setError('')
 
     try {
-      const trades = await getTrades({ networkId, owner, orderId })
+      const trades = await getTrades({ networkId, owner, tradeId })
 
       // TODO: fetch buy/sellToken objects
       setTrades(trades.map((trade) => transformTrade(trade)))
@@ -75,10 +75,10 @@ export function useOrderTrades(order: Order | null): Result {
     setIsLoading(true)
     setError('')
 
-    const { uid: orderId, buyToken, sellToken } = order
+    const { uid: tradeId, buyToken, sellToken } = order
 
     try {
-      const trades = await getTrades({ networkId, orderId })
+      const trades = await getTrades({ networkId, tradeId })
 
       setTrades(trades.map((trade) => ({ ...transformTrade(trade), buyToken, sellToken })))
     } catch (e) {
