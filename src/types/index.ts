@@ -3,8 +3,6 @@ import { TransactionReceipt } from 'web3-core'
 import { PendingFlux } from 'api/deposit/DepositApi'
 import { TokenOverride } from './config'
 import { TokenDex } from '@gnosis.pm/dex-js'
-import BigNumber from 'bignumber.js'
-import { TokenErc20 } from '@gnosis.pm/dex-js'
 
 export type Command = () => void
 export type AnyFunction = (...args: unknown[]) => unknown
@@ -68,14 +66,4 @@ export interface Fraction {
 export enum AnalyticsDimension {
   NETWORK,
   BROWSER_TYPE,
-}
-
-export interface Price {
-  amount: BigNumber
-  token: TokenErc20 | null
-}
-
-export interface PriceData {
-  numerator: Price
-  denominator: Price
 }

@@ -6,7 +6,7 @@ import { GlobalStyles, ThemeToggler } from 'storybook/decorators'
 
 import { WETH, USDT } from '../../../../test/data'
 
-import { OrderPriceDisplay, OrderPriceDisplayType } from './'
+import { OrderPriceDisplay, Props } from './'
 
 export default {
   title: 'Orders/OrderPriceDisplay',
@@ -15,9 +15,9 @@ export default {
   argTypes: { buyToken: { control: null }, sellToken: { control: null } },
 } as Meta
 
-const Template: Story<OrderPriceDisplayType> = (args) => <OrderPriceDisplay {...args} />
+const Template: Story<Props> = (args) => <OrderPriceDisplay {...args} />
 
-const defaultArgs: OrderPriceDisplayType = {
+const defaultArgs: Props = {
   buyAmount: '1000000000000000000',
   buyToken: WETH,
   sellAmount: '2000000000',
