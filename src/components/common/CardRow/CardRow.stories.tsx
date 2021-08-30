@@ -43,7 +43,10 @@ const Template: Story<CardRowProps> = (args) => (
           hintColor="grey"
         />
       </Card>
-      <Card xs={4} sm={4} md={4} lg={4}>
+      <Card>
+        <span>Dummy Card</span>
+      </Card>
+      <Card xs={12} sm={12} md={8} lg={6}>
         <CardContent
           variant="double"
           direction="row"

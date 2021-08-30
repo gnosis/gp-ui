@@ -110,7 +110,8 @@ export const CardContent: React.FC<CardContentProps> = ({
     >
       <div>
         <p>
-          {icon1} &nbsp;{label1}
+          {icon1 && <React.Fragment>{icon1} &nbsp;</React.Fragment>}
+          {label1}
         </p>
         <div>
           <h3>{value1}</h3>
@@ -125,7 +126,8 @@ export const CardContent: React.FC<CardContentProps> = ({
       {label2 && (
         <div>
           <p>
-            {icon2} &nbsp;{label2}
+            {icon2 && <React.Fragment>{icon2} &nbsp;</React.Fragment>}
+            {label2}
           </p>
           <div>
             <h3>{value2}</h3>
