@@ -76,16 +76,16 @@ interface RowProps {
 }
 
 const RowOrder: React.FC<RowProps> = ({ trade, isPriceInverted }) => {
-  const { executionTime, buyToken, buyAmount, sellToken, sellAmount, kind, tradeId } = trade
+  const { executionTime, buyToken, buyAmount, sellToken, sellAmount, kind, orderId } = trade
 
   return (
-    <tr key={tradeId}>
+    <tr key={orderId}>
       <td>
         {
           <RowWithCopyButton
             className="wrap-copybtn"
-            textToCopy={tradeId}
-            contentsToDisplay={<Link to={`/trades/${trade.tradeId}`}>{tradeId}</Link>}
+            textToCopy={orderId}
+            contentsToDisplay={<Link to={`/trades/${trade.orderId}`}>{orderId}</Link>}
           />
         }
       </td>
@@ -126,7 +126,7 @@ const TradesTable: React.FC<Props> = (props) => {
     return (
       <>
         {items.map((item) => (
-          <RowOrder key={item.tradeId} trade={item} isPriceInverted={isPriceInverted} />
+          <RowOrder key={item.orderId} trade={item} isPriceInverted={isPriceInverted} />
         ))}
       </>
     )

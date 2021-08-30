@@ -59,7 +59,7 @@ export const RAW_TRADE: RawTrade = {
   logIndex: 3,
   executionTime: '2021-01-20T23:15:07.892538607Z',
   kind: 'sell',
-  tradeId:
+  orderUid:
     '0x9754ac5510f5057c71e7da67c63edfb2258c608e26f102418e15fef6110c61595b0abe214ab7875562adee331deff0fe1912fe42608087c7',
   buyAmount: '50000000000000000',
   executedBuyAmount: '50000000000000000',
@@ -76,7 +76,7 @@ export const RAW_TRADE: RawTrade = {
 
 export const RICH_TRADE: Trade = {
   ...RAW_TRADE,
-  tradeId: RAW_TRADE.tradeId,
+  orderId: RAW_TRADE.orderUid,
   executionTime: new Date(RAW_TRADE.executionTime),
   buyAmount: new BigNumber(RAW_TRADE.buyAmount),
   executedBuyAmount: new BigNumber(RAW_TRADE.executedBuyAmount),

@@ -18,7 +18,7 @@ export default {
 const tradeBuy: Trade = {
   ...RICH_TRADE,
   kind: 'buy',
-  tradeId: 'bdef89ac',
+  orderId: 'bdef89ac',
   buyToken: WETH,
   sellToken: TUSD,
   buyAmount: new BigNumber('1500000000000000000'), // 1.5WETH
@@ -31,7 +31,7 @@ const tradeBuy: Trade = {
 
 const tradeSell: Trade = {
   ...RICH_TRADE,
-  tradeId: '4a36dacc',
+  orderId: '4a36dacc',
   buyAmount: new BigNumber('300000000000000'), // 3000 USDT
   sellAmount: new BigNumber('1000000000000000000'), // 1WETH
   executionTime: sub(new Date(), { hours: 48 }),

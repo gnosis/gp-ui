@@ -298,7 +298,7 @@ export function transformOrder(rawOrder: RawOrder): Order {
  */
 export function transformTrade(rawTrade: RawTrade): Trade {
   const {
-    tradeId,
+    orderUid,
     buyAmount,
     executedBuyAmount,
     sellAmount,
@@ -314,7 +314,7 @@ export function transformTrade(rawTrade: RawTrade): Trade {
 
   return {
     ...rest,
-    tradeId: tradeId,
+    orderId: orderUid,
     buyAmount: new BigNumber(buyAmount),
     executedBuyAmount: new BigNumber(executedBuyAmount),
     sellAmount: new BigNumber(sellAmount),

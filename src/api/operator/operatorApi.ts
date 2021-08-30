@@ -219,15 +219,15 @@ export async function getOrders(params: GetOrdersParams): Promise<RawOrder[]> {
  * Both filters cannot be used at the same time
  */
 export async function getTrades(params: GetTradesParams): Promise<RawTrade[]> {
-  const { networkId, owner = '', tradeId = '' } = params
+  const { networkId, owner = '', orderId = '' } = params
 
-  if (owner && tradeId) {
-    throw new Error('Cannot use both `owner` and `tradeId` filters at the same time')
+  if (owner && orderId) {
+    throw new Error('Cannot use both `owner` and `orderId` filters at the same time')
   }
 
-  console.log(`[getTrades] Fetching trades on network ${networkId} with filters: owner=${owner} tradeId=${tradeId}`)
+  console.log(`[getTrades] Fetching trades on network ${networkId} with filters: owner=${owner} orderId=${orderId}`)
 
-  const queryString = `/trades/` + buildSearchString({ owner, orderUid: tradeId })
+  const queryString = `/trades/` + buildSearchString({ owner, orderUid: orderId })
 
   return _fetchQuery(networkId, queryString)
 }
