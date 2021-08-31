@@ -5,13 +5,14 @@ import { Link } from 'react-router-dom'
 import { faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
 
 import { TokenErc20 } from '@gnosis.pm/dex-js'
-import { Trade } from 'api/operator'
+import { Trade, RawOrder } from 'api/operator'
 
 import { DateDisplay } from 'components/common/DateDisplay'
 import { RowWithCopyButton } from 'components/common/RowWithCopyButton'
 import {
   formatSmartMaxPrecision,
   getOrderLimitPrice,
+  getOrderExecutedPrice,
   formatCalculatedPriceToDisplay,
   formatExecutedPriceToDisplay,
 } from 'utils'
@@ -23,6 +24,7 @@ import StyledUserDetailsTable, {
 import Icon from 'components/Icon'
 import TradeOrderType from 'components/common/TradeOrderType'
 import { Surplus } from './Surplus'
+import { RAW_ORDER } from '../../../../test/data'
 
 const Wrapper = styled(StyledUserDetailsTable)`
   > thead > tr,
@@ -57,7 +59,19 @@ function getLimitPrice(trade: Trade, isPriceInverted: boolean): string {
 function getExecutedPrice(trade: Trade, isPriceInverted: boolean): string {
   if (!trade.buyToken || !trade.sellToken) return '-'
 
-  const calculatedPrice = isPriceInverted ? trade.sellAmount : trade.buyAmount
+  const order: RawOrder = {
+    ...RAW_ORDER,
+    executedBuyAmount: trade.executedBuyAmount.toString(),
+    executedSellAmount: trade.executedSellAmount.toString(),
+    executedFeeAmount: trade.executedFeeAmount.toString(),
+  }
+
+  const calculatedPrice = getOrderExecutedPrice({
+    order,
+    buyTokenDecimals: trade.buyToken.decimals,
+    sellTokenDecimals: trade.sellToken.decimals,
+    inverted: isPriceInverted,
+  })
 
   return formatExecutedPriceToDisplay(calculatedPrice, trade.buyToken, trade.sellToken, isPriceInverted)
 }
@@ -83,7 +97,7 @@ const RowOrder: React.FC<RowProps> = ({ trade, isPriceInverted }) => {
       <td>
         {
           <RowWithCopyButton
-            className="wrap-copybtn"
+            className="span-copybtn-wrap"
             textToCopy={orderId}
             contentsToDisplay={<Link to={`/trades/${trade.orderId}`}>{orderId}</Link>}
           />

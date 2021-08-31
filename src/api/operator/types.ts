@@ -87,6 +87,7 @@ export type RawTrade = {
   executedBuyAmount: string
   sellAmount: string
   executedSellAmount: string
+  executedFeeAmount: string
   sellAmountBeforeFees: string
   buyToken: string
   sellToken: string
@@ -105,6 +106,7 @@ export type Trade = Pick<RawTrade, 'blockNumber' | 'logIndex' | 'owner' | 'txHas
   executedBuyAmount: BigNumber
   sellAmount: BigNumber
   executedSellAmount: BigNumber
+  executedFeeAmount: BigNumber
   sellAmountBeforeFees: BigNumber
   buyToken?: TokenErc20 | null
   buyTokenAddress: string

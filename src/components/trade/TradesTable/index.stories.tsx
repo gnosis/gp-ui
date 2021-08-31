@@ -10,7 +10,7 @@ import { Trade } from 'api/operator'
 import { RICH_TRADE, TUSD, WETH } from '../../../../test/data'
 
 export default {
-  title: 'Trades/TradesTable',
+  title: 'trade/TradesTable',
   decorators: [Router, GlobalStyles, NetworkDecorator, ThemeToggler],
   component: TradesTable,
 } as Meta
