@@ -96,20 +96,20 @@ export type RawTrade = {
  */
 export type Trade = Pick<RawTrade, 'blockNumber' | 'logIndex' | 'owner' | 'txHash'> & {
   orderId: string
-  kind: OrderKind
+  kind?: OrderKind
   buyAmount: BigNumber
-  executedBuyAmount: BigNumber
+  executedBuyAmount?: BigNumber
   sellAmount: BigNumber
-  executedSellAmount: BigNumber
-  executedFeeAmount: BigNumber
+  executedSellAmount?: BigNumber
+  executedFeeAmount?: BigNumber
   sellAmountBeforeFees: BigNumber
   buyToken?: TokenErc20 | null
   buyTokenAddress: string
   sellToken?: TokenErc20 | null
   sellTokenAddress: string
   executionTime: Date
-  surplusAmount: BigNumber
-  surplusPercentage: BigNumber
+  surplusAmount?: BigNumber
+  surplusPercentage?: BigNumber
 }
 
 type WithNetworkId = { networkId: Network }
