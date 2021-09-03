@@ -1,21 +1,21 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import BigNumber from 'bignumber.js'
 import { Link } from 'react-router-dom'
 import { faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
 
-import { TokenErc20 } from '@gnosis.pm/dex-js'
 import { Trade, RawOrder } from 'api/operator'
 
 import { DateDisplay } from 'components/common/DateDisplay'
 import { RowWithCopyButton } from 'components/common/RowWithCopyButton'
+import { BlockExplorerLink } from 'components/common/BlockExplorerLink'
 import {
-  formatSmartMaxPrecision,
   getOrderLimitPrice,
   getOrderExecutedPrice,
   formatCalculatedPriceToDisplay,
   formatExecutedPriceToDisplay,
+  formattedAmount,
 } from 'utils'
+import { getShortOrderId } from '../../../utils/operator'
 import { HelpTooltip } from 'components/Tooltip'
 import StyledUserDetailsTable, {
   StyledUserDetailsTableProps,
@@ -38,16 +38,6 @@ const TxHash = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
 `
-
-function isTokenErc20(token: TokenErc20 | null | undefined): token is TokenErc20 {
-  return (token as TokenErc20).address !== undefined
-}
-
-function formattedAmount(erc20: TokenErc20 | null | undefined, amount: BigNumber): string {
-  if (!isTokenErc20(erc20)) return '-'
-
-  return erc20.decimals ? formatSmartMaxPrecision(amount, erc20) : amount.toString(10)
-}
 
 function getLimitPrice(trade: Trade, isPriceInverted: boolean): string {
   if (!trade.buyToken || !trade.sellToken) return '-'
@@ -106,7 +96,7 @@ const RowOrder: React.FC<RowProps> = ({ trade, isPriceInverted }) => {
           <RowWithCopyButton
             className="span-copybtn-wrap"
             textToCopy={orderId}
-            contentsToDisplay={<Link to={`/trades/${trade.orderId}`}>{orderId}</Link>}
+            contentsToDisplay={<Link to={`/orders/${trade.orderId}`}>{getShortOrderId(orderId)}</Link>}
           />
         }
       </td>
@@ -122,7 +112,7 @@ const RowOrder: React.FC<RowProps> = ({ trade, isPriceInverted }) => {
       <td>{getLimitPrice(trade, isPriceInverted)}</td>
       <td>{getExecutedPrice(trade, isPriceInverted)}</td>
       <td>
-        <TxHash>{trade.txHash}</TxHash>
+        <BlockExplorerLink identifier={trade.txHash} type="tx" label={<TxHash>{trade.txHash}</TxHash>} networkId={1} />
       </td>
       <td>
         {trade.surplusPercentage && trade.surplusAmount && (

@@ -1,11 +1,13 @@
 // Util functions that only pertain to/deal with operator API related stuff
 import BigNumber from 'bignumber.js'
 
-import { calculatePrice, invertPrice } from '@gnosis.pm/dex-js'
+import { calculatePrice, invertPrice, TokenErc20 } from '@gnosis.pm/dex-js'
 
 import { FILLED_ORDER_EPSILON, ONE_BIG_NUMBER, ZERO_BIG_NUMBER } from 'const'
 
 import { Order, OrderStatus, RawOrder, RawTrade, Trade } from 'api/operator/types'
+
+import { formatSmartMaxPrecision } from './format'
 
 function isOrderFilled(order: RawOrder): boolean {
   let amount, executedAmount
@@ -225,12 +227,22 @@ export function getOrderExecutedPrice({
   })
 }
 
-function getShortOrderId(orderId: string, length = 8): string {
+export function getShortOrderId(orderId: string, length = 8): string {
   return orderId.replace(/^0x/, '').slice(0, length)
 }
 
 function isZeroAddress(address: string): boolean {
   return /^0x0{40}$/.test(address)
+}
+
+export function isTokenErc20(token: TokenErc20 | null | undefined): token is TokenErc20 {
+  return (token as TokenErc20).address !== undefined
+}
+
+export function formattedAmount(erc20: TokenErc20 | null | undefined, amount: BigNumber): string {
+  if (!isTokenErc20(erc20)) return '-'
+
+  return erc20.decimals ? formatSmartMaxPrecision(amount, erc20) : amount.toString(10)
 }
 
 function getReceiverAddress({ owner, receiver }: RawOrder): string {

@@ -1,15 +1,13 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import BigNumber from 'bignumber.js'
 import { Link } from 'react-router-dom'
 import { faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
 
-import { TokenErc20 } from '@gnosis.pm/dex-js'
 import { Order } from 'api/operator'
 
 import { DateDisplay } from 'components/common/DateDisplay'
 import { RowWithCopyButton } from 'components/common/RowWithCopyButton'
-import { formatSmartMaxPrecision, getOrderLimitPrice, formatCalculatedPriceToDisplay } from 'utils'
+import { getOrderLimitPrice, formatCalculatedPriceToDisplay, formattedAmount } from 'utils'
 import { StatusLabel } from '../StatusLabel'
 import { HelpTooltip } from 'components/Tooltip'
 import StyledUserDetailsTable, {
@@ -25,15 +23,6 @@ const Wrapper = styled(StyledUserDetailsTable)`
     grid-template-columns: 12rem 7rem repeat(2, 16rem) repeat(2, minmax(18rem, 24rem)) 1fr;
   }
 `
-function isTokenErc20(token: TokenErc20 | null | undefined): token is TokenErc20 {
-  return (token as TokenErc20).address !== undefined
-}
-
-function formattedAmount(erc20: TokenErc20 | null | undefined, amount: BigNumber): string {
-  if (!isTokenErc20(erc20)) return '-'
-
-  return erc20.decimals ? formatSmartMaxPrecision(amount, erc20) : amount.toString(10)
-}
 
 function getLimitPrice(order: Order, isPriceInverted: boolean): string {
   if (!order.buyToken || !order.sellToken) return '-'
