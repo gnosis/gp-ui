@@ -68,9 +68,9 @@ function getExecutedPrice(trade: Trade, isPriceInverted: boolean): string {
 
   const order: RawOrder = {
     ...RAW_ORDER,
-    executedBuyAmount: trade.executedBuyAmount.toString(),
-    executedSellAmount: trade.executedSellAmount.toString(),
-    executedFeeAmount: trade.executedFeeAmount.toString(),
+    executedBuyAmount: trade.executedBuyAmount?.toString() || '',
+    executedSellAmount: trade.executedSellAmount?.toString() || '',
+    executedFeeAmount: trade.executedFeeAmount?.toString() || '',
   }
 
   const calculatedPrice = getOrderExecutedPrice({
@@ -111,7 +111,7 @@ const RowOrder: React.FC<RowProps> = ({ trade, isPriceInverted }) => {
         }
       </td>
       <td>
-        <TradeOrderType kind={kind} />
+        <TradeOrderType kind={kind || 'sell'} />
       </td>
       <td>
         {formattedAmount(sellToken, sellAmount)} {sellToken?.symbol}
