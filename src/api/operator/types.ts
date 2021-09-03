@@ -84,24 +84,19 @@ export type RawTrade = {
   txHash: string
   orderUid: string
   buyAmount: string
-  executedBuyAmount: string
   sellAmount: string
-  executedSellAmount: string
-  executedFeeAmount: string
   sellAmountBeforeFees: string
   buyToken: string
   sellToken: string
   executionTime: string
-  kind: OrderKind
-  surplusAmount: string
-  surplusPercentage: string
 }
 
 /**
  * Enriched Trade type
  */
-export type Trade = Pick<RawTrade, 'blockNumber' | 'logIndex' | 'owner' | 'txHash' | 'kind'> & {
+export type Trade = Pick<RawTrade, 'blockNumber' | 'logIndex' | 'owner' | 'txHash'> & {
   orderId: string
+  kind: OrderKind
   buyAmount: BigNumber
   executedBuyAmount: BigNumber
   sellAmount: BigNumber

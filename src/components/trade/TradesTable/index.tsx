@@ -29,9 +29,16 @@ import { RAW_ORDER } from '../../../../test/data'
 const Wrapper = styled(StyledUserDetailsTable)`
   > thead > tr,
   > tbody > tr {
-    grid-template-columns: 12rem 5rem 10rem repeat(2, 12rem) 16rem 12rem 1fr;
+    grid-template-columns: 10rem 4rem repeat(2, 10rem) repeat(2, 14rem) 10rem 10rem 1fr;
   }
 `
+
+const TxHash = styled.div`
+  max-width: 10rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`
+
 function isTokenErc20(token: TokenErc20 | null | undefined): token is TokenErc20 {
   return (token as TokenErc20).address !== undefined
 }
@@ -107,18 +114,21 @@ const RowOrder: React.FC<RowProps> = ({ trade, isPriceInverted }) => {
         <TradeOrderType kind={kind} />
       </td>
       <td>
-        {trade.surplusPercentage && trade.surplusAmount && (
-          <Surplus surplusPercentage={trade.surplusPercentage} surplusAmount={trade.surplusAmount} />
-        )}
+        {formattedAmount(sellToken, sellAmount)} {sellToken?.symbol}
       </td>
       <td>
         {formattedAmount(buyToken, buyAmount)} {buyToken?.symbol}
       </td>
-      <td>
-        {formattedAmount(sellToken, sellAmount)} {sellToken?.symbol}
-      </td>
       <td>{getLimitPrice(trade, isPriceInverted)}</td>
       <td>{getExecutedPrice(trade, isPriceInverted)}</td>
+      <td>
+        <TxHash>{trade.txHash}</TxHash>
+      </td>
+      <td>
+        {trade.surplusPercentage && trade.surplusAmount && (
+          <Surplus surplusPercentage={trade.surplusPercentage} surplusAmount={trade.surplusAmount} />
+        )}
+      </td>
       <td>
         <DateDisplay date={executionTime} showIcon={true} />
       </td>
@@ -152,19 +162,20 @@ const TradesTable: React.FC<Props> = (props) => {
       header={
         <tr>
           <th>
-            Tx ID <HelpTooltip tooltip={tooltip.tradeID} />
+            Order ID <HelpTooltip tooltip={tooltip.tradeID} />
           </th>
           <th>Type</th>
-          <th>Surplus</th>
-          <th>Buy Amount</th>
           <th>Sell Amount</th>
+          <th>Buy Amount</th>
           <th>
             Limit price <Icon icon={faExchangeAlt} onClick={invertLimitPrice} />
           </th>
           <th>
             Execution price <Icon icon={faExchangeAlt} onClick={invertLimitPrice} />
           </th>
-          <th>Execution Time</th>
+          <th>TxHash</th>
+          <th>Surplus</th>
+          <th>Trade Time</th>
         </tr>
       }
       body={tradeItems(trades)}
