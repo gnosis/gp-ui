@@ -15,7 +15,7 @@ import {
   formatExecutedPriceToDisplay,
   formattedAmount,
 } from 'utils'
-import { getShortOrderId } from '../../../utils/operator'
+import { getShortOrderId } from 'utils/operator'
 import { HelpTooltip } from 'components/Tooltip'
 import StyledUserDetailsTable, {
   StyledUserDetailsTableProps,
@@ -24,19 +24,19 @@ import StyledUserDetailsTable, {
 import Icon from 'components/Icon'
 import TradeOrderType from 'components/common/TradeOrderType'
 import { Surplus } from './Surplus'
-import { RAW_ORDER } from '../../../../test/data'
 
 const Wrapper = styled(StyledUserDetailsTable)`
   > thead > tr,
   > tbody > tr {
-    grid-template-columns: 10rem 4rem repeat(2, 10rem) repeat(2, 14rem) 10rem 10rem 1fr;
+    grid-template-columns: 10rem 10rem 4rem repeat(2, 10rem) repeat(2, 14rem) 10rem 1fr;
   }
 `
 
 const TxHash = styled.div`
-  max-width: 10rem;
+  max-width: 6rem;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 `
 
 function getLimitPrice(trade: Trade, isPriceInverted: boolean): string {
@@ -56,8 +56,7 @@ function getLimitPrice(trade: Trade, isPriceInverted: boolean): string {
 function getExecutedPrice(trade: Trade, isPriceInverted: boolean): string {
   if (!trade.buyToken || !trade.sellToken) return '-'
 
-  const order: RawOrder = {
-    ...RAW_ORDER,
+  const order: Pick<RawOrder, 'executedBuyAmount' | 'executedSellAmount' | 'executedFeeAmount'> = {
     executedBuyAmount: trade.executedBuyAmount?.toString() || '',
     executedSellAmount: trade.executedSellAmount?.toString() || '',
     executedFeeAmount: trade.executedFeeAmount?.toString() || '',
@@ -92,13 +91,25 @@ const RowOrder: React.FC<RowProps> = ({ trade, isPriceInverted }) => {
   return (
     <tr key={orderId}>
       <td>
-        {
-          <RowWithCopyButton
-            className="span-copybtn-wrap"
-            textToCopy={orderId}
-            contentsToDisplay={<Link to={`/orders/${trade.orderId}`}>{getShortOrderId(orderId)}</Link>}
-          />
-        }
+        <RowWithCopyButton
+          className="span-copybtn-wrap"
+          textToCopy={orderId}
+          contentsToDisplay={<Link to={`/orders/${trade.orderId}`}>{getShortOrderId(orderId)}</Link>}
+        />
+      </td>
+      <td>
+        <RowWithCopyButton
+          className="span-copybtn-wrap"
+          textToCopy={orderId}
+          contentsToDisplay={
+            <BlockExplorerLink
+              identifier={trade.txHash}
+              type="tx"
+              label={<TxHash>{trade.txHash}</TxHash>}
+              networkId={1}
+            />
+          }
+        />
       </td>
       <td>
         <TradeOrderType kind={kind || 'sell'} />
@@ -111,9 +122,6 @@ const RowOrder: React.FC<RowProps> = ({ trade, isPriceInverted }) => {
       </td>
       <td>{getLimitPrice(trade, isPriceInverted)}</td>
       <td>{getExecutedPrice(trade, isPriceInverted)}</td>
-      <td>
-        <BlockExplorerLink identifier={trade.txHash} type="tx" label={<TxHash>{trade.txHash}</TxHash>} networkId={1} />
-      </td>
       <td>
         {trade.surplusPercentage && trade.surplusAmount && (
           <Surplus surplusPercentage={trade.surplusPercentage} surplusAmount={trade.surplusAmount} />
@@ -154,6 +162,7 @@ const TradesTable: React.FC<Props> = (props) => {
           <th>
             Order ID <HelpTooltip tooltip={tooltip.tradeID} />
           </th>
+          <th>TxHash</th>
           <th>Type</th>
           <th>Sell Amount</th>
           <th>Buy Amount</th>
@@ -163,7 +172,6 @@ const TradesTable: React.FC<Props> = (props) => {
           <th>
             Execution price <Icon icon={faExchangeAlt} onClick={invertLimitPrice} />
           </th>
-          <th>TxHash</th>
           <th>Surplus</th>
           <th>Trade Time</th>
         </tr>

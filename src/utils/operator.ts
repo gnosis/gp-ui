@@ -145,7 +145,9 @@ export function getOrderSurplus(order: RawOrder): Surplus {
  *
  * @param order The order
  */
-export function getOrderExecutedAmounts(order: RawOrder): {
+export function getOrderExecutedAmounts(
+  order: Pick<RawOrder, 'executedBuyAmount' | 'executedSellAmount' | 'executedFeeAmount'>,
+): {
   executedBuyAmount: BigNumber
   executedSellAmount: BigNumber
 } {
@@ -162,7 +164,7 @@ interface CommonPriceParams {
 }
 
 export type GetRawOrderPriceParams = CommonPriceParams & {
-  order: RawOrder
+  order: Pick<RawOrder, 'executedBuyAmount' | 'executedSellAmount' | 'executedFeeAmount'>
 }
 
 export type GetOrderLimitPriceParams = CommonPriceParams & {
