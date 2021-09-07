@@ -100,7 +100,7 @@ const RowOrder: React.FC<RowProps> = ({ trade, isPriceInverted }) => {
       <td>
         <RowWithCopyButton
           className="span-copybtn-wrap"
-          textToCopy={orderId}
+          textToCopy={trade.txHash}
           contentsToDisplay={
             <BlockExplorerLink
               identifier={trade.txHash}
