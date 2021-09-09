@@ -1,5 +1,7 @@
 import React from 'react'
 
-const UserDetails: React.FC = () => <h3>Placeholder Page</h3>
+import OrdersTableWidget from '../components/OrdersTableWidget'
+
+const UserDetails: React.FC = () => <OrdersTableWidget />
 
 export default UserDetails
