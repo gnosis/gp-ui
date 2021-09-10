@@ -20,7 +20,7 @@ export function mergeNewOrders(previousOrders: Order[], newOrdersFetched: RawOrd
 
   // find the order up to which it is to be replaced
   const lastOrder = newOrdersFetched[newOrdersFetched.length - 1]
-  const positionLastOrder = previousOrders.map((o) => o.uid).indexOf(lastOrder.uid)
+  const positionLastOrder = previousOrders.findIndex((o) => o.uid === lastOrder.uid)
   if (positionLastOrder === -1) {
     return newOrdersFetched.map((order) => transformOrder(order)).concat(previousOrders)
   }
@@ -73,7 +73,7 @@ export function useGetOrders(ownerAddress: string): Result {
         }, [])
 
         setErc20Addresses(newErc20Addresses)
-        // For the moment it is neccesary to sort by date
+        // TODO -> For the moment it is neccesary to sort by date
         ordersFetched.sort((a, b) => +new Date(b.creationDate) - +new Date(a.creationDate))
 
         setOrders((previousOrders) => mergeNewOrders(previousOrders, ordersFetched))

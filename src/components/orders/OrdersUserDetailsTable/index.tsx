@@ -20,7 +20,7 @@ import TradeOrderType from 'components/common/TradeOrderType'
 const Wrapper = styled(StyledUserDetailsTable)`
   > thead > tr,
   > tbody > tr {
-    grid-template-columns: 12rem 7rem repeat(2, 16rem) repeat(2, minmax(18rem, 24rem)) 1fr;
+    grid-template-columns: 12rem 7rem repeat(2, minmax(16rem, 1.5fr)) repeat(2, minmax(18rem, 2fr)) 1fr;
   }
 `
 function getLimitPrice(order: Order, isPriceInverted: boolean): string {
