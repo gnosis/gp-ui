@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
-import { useParams } from 'react-router'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -11,6 +10,7 @@ import { OrdersTableWithData } from './OrdersTableWithData'
 import { OrdersTableContext, OrdersTableState } from './context/OrdersTableContext'
 import { useGetOrders } from './useGetOrders'
 import { TabItemInterface } from 'components/common/Tabs/Tabs'
+import { RowWithCopyButton } from 'components/common/RowWithCopyButton'
 
 const Wrapper = styled.div`
   padding: 1.6rem;
@@ -24,6 +24,12 @@ const Wrapper = styled.div`
 
   ${media.mobile} {
     max-width: 100%;
+  }
+  > h1 {
+    display: flex;
+    padding: 2.4rem 0 3rem;
+    align-items: center;
+    font-weight: ${({ theme }): string => theme.fontBold};
   }
 `
 
@@ -57,14 +63,20 @@ const tabItems = (ordersTableState: OrdersTableState): TabItemInterface[] => {
   ]
 }
 
-function useAddressParam(): string {
-  const { address } = useParams<{ address: string }>()
+const TitleAddress = styled(RowWithCopyButton)`
+  color: ${({ theme }): string => theme.grey};
+  font-size: ${({ theme }): string => theme.fontSizeDefault};
+  font-weight: ${({ theme }): string => theme.fontNormal};
+  margin: 0 0 0 1rem;
+  display: flex;
+  align-items: center;
+`
 
-  return address
+interface Props {
+  ownerAddress: string
 }
 
-const OrdersTableWidget: React.FC = () => {
-  const ownerAddress = useAddressParam()
+const OrdersTableWidget: React.FC<Props> = ({ ownerAddress }) => {
   const { orders, isLoading, error } = useGetOrders(ownerAddress)
   const ordersTableState = useMemo(() => {
     if (isLoading && orders.length === 0) return OrdersTableState.Loading
@@ -76,6 +88,10 @@ const OrdersTableWidget: React.FC = () => {
   return (
     <OrdersTableContext.Provider value={{ orders, kind: ordersTableState, error }}>
       <Wrapper>
+        <h1>
+          User details
+          {<TitleAddress textToCopy={ownerAddress} contentsToDisplay={ownerAddress} />}
+        </h1>
         <ExplorerTabs tabItems={tabItems(isLoading ? OrdersTableState.Loading : OrdersTableState.Loaded)} />
       </Wrapper>
     </OrdersTableContext.Provider>
