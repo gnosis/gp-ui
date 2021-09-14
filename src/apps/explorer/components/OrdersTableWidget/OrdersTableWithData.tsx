@@ -4,12 +4,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import OrdersTable from 'components/orders/OrdersUserDetailsTable'
 import { EmptyItemWrapper } from 'components/common/StyledUserDetailsTable'
-import { OrdersTableContext, OrdersTableState } from './context/OrdersTableContext'
+import { OrdersTableContext } from './context/OrdersTableContext'
 
 export const OrdersTableWithData: React.FC = () => {
-  const { orders, kind } = useContext(OrdersTableContext)
+  const { orders, isFirstLoading } = useContext(OrdersTableContext)
 
-  return kind === OrdersTableState.Loading ? (
+  return isFirstLoading ? (
     <EmptyItemWrapper>
       <FontAwesomeIcon icon={faSpinner} spin size="3x" />
     </EmptyItemWrapper>
