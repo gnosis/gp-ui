@@ -46,6 +46,10 @@ const StyledUserDetailsTable = styled(SimpleTable)<StyledUserDetailsTableProps>`
     width: 100%;
   }
 
+  tbody {
+    overflow: unset;
+  }
+
   tbody tr:hover {
     backdrop-filter: contrast(0.9);
   }
