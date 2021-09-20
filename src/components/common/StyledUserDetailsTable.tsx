@@ -60,6 +60,14 @@ const StyledUserDetailsTable = styled(SimpleTable)<StyledUserDetailsTableProps>`
 
   tbody tr td.row-td-empty {
     grid-column: 1 / span all;
+
+    :hover {
+      background-color: ${({ theme }): string => theme.bg1};
+    }
+  }
+
+  tbody tr.row-empty {
+    padding: 0;
   }
 `
 

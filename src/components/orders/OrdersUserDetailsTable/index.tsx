@@ -100,7 +100,7 @@ const OrdersUserDetailsTable: React.FC<Props> = (props) => {
   const orderItems = (items: Order[]): JSX.Element => {
     if (items.length === 0)
       return (
-        <tr>
+        <tr className="row-empty">
           <td className="row-td-empty">
             <EmptyItemWrapper>No Orders.</EmptyItemWrapper>
           </td>
