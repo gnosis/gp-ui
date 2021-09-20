@@ -25,7 +25,7 @@ const Wrapper = styled.div`
   }
   > h1 {
     display: flex;
-    padding: 2.4rem 0 3rem;
+    padding: 2.4rem 0 2.35rem;
     align-items: center;
     font-weight: ${({ theme }): string => theme.fontBold};
   }
