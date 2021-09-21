@@ -21,10 +21,14 @@ export function DateDisplay({ date, showIcon }: DateDisplayProps): JSX.Element {
   // pp: Long localized time: 12:00:00 AM
   // For reference: https://date-fns.org/v2.17.0/docs/format
   const fullLocaleBased = format(date, 'P pp')
+  const localTimeZone = format(new Date(), 'zzzz')
 
   return (
     <span className="wrap-datedisplay">
-      {showIcon && <IconWrapper icon={faClock} />} <span>{distance}</span> <span>({fullLocaleBased})</span>
+      {showIcon && <IconWrapper icon={faClock} />} <span>{distance}</span>{' '}
+      <span>
+        ({fullLocaleBased} {localTimeZone})
+      </span>
     </span>
   )
 }
