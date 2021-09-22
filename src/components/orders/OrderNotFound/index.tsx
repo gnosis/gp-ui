@@ -3,56 +3,71 @@ import { useParams } from 'react-router'
 import styled from 'styled-components'
 import { Search } from 'components/orders/Search'
 import SupportIcon from 'assets/img/support.png'
-
-const Wrapper = styled.div`
-  font-size: 14px;
-`
+import { MEDIA } from 'const'
 
 const Title = styled.h1`
-  font-size: 16px;
-  padding: 2.4rem 0 2.35rem;
+  margin: 0.55rem 0 2.5rem;
   font-weight: ${({ theme }): string => theme.fontBold};
 `
 
 const Content = styled.div`
-  font-size: 14px;
+  font-size: 16px;
   border: 0.1rem solid ${({ theme }): string => theme.borderPrimary};
   padding: 20px;
   border-radius: 0.4rem;
 `
-
+/*
 const Errors = styled.div`
   padding: 1rem 1rem 2rem;
-  background: #36080847;
+  background-color: ${({ theme }): string => theme.orangeOpacity};
   margin-top: 3rem;
   width: 600px;
   border-radius: 0.4rem;
+
+  @media ${MEDIA.mobile} {
+    width: 100%;
+  }
 `
 
 const ErrorItem = styled.div`
   margin-left: 1rem;
-`
+`*/
 
 const SearchSection = styled.div`
   margin-top: 6rem;
-  cursor: pointer;
 `
 
 const SearchContent = styled.div`
   display: flex;
+  flex-flow: row;
+  align-items: center;
+  gap: 2.5rem;
+
+  @media ${MEDIA.mobile} {
+    flex-flow: column wrap;
+    gap: 1rem;
+
+    form {
+      width: 100%;
+    }
+  }
 `
 
 const Support = styled.a`
   height: 5rem;
   border: 1px solid ${({ theme }): string => theme.borderPrimary};
-  border-radius: 4px;
-  width: 150px;
+  border-radius: 0.4rem;
+  width: 160px;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 1rem;
+  cursor: pointer;
+  color: ${({ theme }): string => theme.white} !important;
 
   :hover {
-    background-color: ${({ theme }): string => theme.bg1};
+    background-color: ${({ theme }): string => theme.bg2};
+    text-decoration: none;
   }
 `
 
@@ -60,26 +75,28 @@ export const OrderNotFound: React.FC = () => {
   const { orderId } = useParams<{ orderId: string }>()
 
   return (
-    <Wrapper>
+    <>
       <Title>Order not found</Title>
       <Content>
-        <p>Sorry, no matches found for: {orderId}</p>
-        <Errors>
+        <p>
+          Sorry, no matches found for: <strong>&quot;{orderId}&quot;</strong>
+        </p>
+        {/* <Errors>
           <p>Errors:</p>
           <ErrorItem>Failed to fetch order: {orderId}</ErrorItem>
-        </Errors>
+        </Errors> */}
         <SearchSection>
           <Title>Search again by Order ID</Title>
           <SearchContent>
             <Search />
-            <p style={{ margin: 'auto 3rem' }}>or</p>
-            <Support href="#">
+            <p>or</p>
+            <Support href="https://chat.gnosis.io/" target="_blank" rel="noopener noreferrer">
               Get Support
-              <img style={{ marginLeft: '1rem' }} src={SupportIcon} />
+              <img src={SupportIcon} />
             </Support>
           </SearchContent>
         </SearchSection>
       </Content>
-    </Wrapper>
+    </>
   )
 }
