@@ -16,22 +16,6 @@ const Content = styled.div`
   padding: 20px;
   border-radius: 0.4rem;
 `
-/*
-const Errors = styled.div`
-  padding: 1rem 1rem 2rem;
-  background-color: ${({ theme }): string => theme.orangeOpacity};
-  margin-top: 3rem;
-  width: 600px;
-  border-radius: 0.4rem;
-
-  @media ${MEDIA.mobile} {
-    width: 100%;
-  }
-`
-
-const ErrorItem = styled.div`
-  margin-left: 1rem;
-`*/
 
 const SearchSection = styled.div`
   margin-top: 6rem;
@@ -81,10 +65,6 @@ export const OrderNotFound: React.FC = () => {
         <p>
           Sorry, no matches found for: <strong>&quot;{orderId}&quot;</strong>
         </p>
-        {/* <Errors>
-          <p>Errors:</p>
-          <ErrorItem>Failed to fetch order: {orderId}</ErrorItem>
-        </Errors> */}
         <SearchSection>
           <Title>Search again by Order ID</Title>
           <SearchContent>
