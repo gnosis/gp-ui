@@ -18,6 +18,7 @@ const Content = styled.div`
 
   p {
     line-height: ${({ theme }): string => theme.fontLineHeight};
+    overflow-wrap: break-word;
   }
 `
 
