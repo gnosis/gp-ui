@@ -15,6 +15,10 @@ const Content = styled.div`
   border: 0.1rem solid ${({ theme }): string => theme.borderPrimary};
   padding: 20px;
   border-radius: 0.4rem;
+
+  p {
+    line-height: ${({ theme }): string => theme.fontLineHeight};
+  }
 `
 
 const SearchSection = styled.div`
@@ -40,7 +44,7 @@ const SearchContent = styled.div`
 const Support = styled.a`
   height: 5rem;
   border: 1px solid ${({ theme }): string => theme.borderPrimary};
-  border-radius: 0.4rem;
+  border-radius: 0.6rem;
   width: 160px;
   display: flex;
   align-items: center;
