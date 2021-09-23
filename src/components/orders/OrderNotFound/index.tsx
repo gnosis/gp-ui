@@ -20,10 +20,14 @@ const Content = styled.div`
     line-height: ${({ theme }): string => theme.fontLineHeight};
     overflow-wrap: break-word;
   }
+
+  strong {
+    color: ${({ theme }): string => theme.textSecondary2};
+  }
 `
 
 const SearchSection = styled.div`
-  margin-top: 6rem;
+  margin-top: 8rem;
 `
 
 const SearchContent = styled.div`
@@ -34,7 +38,7 @@ const SearchContent = styled.div`
 
   @media ${MEDIA.mobile} {
     flex-flow: column wrap;
-    gap: 1rem;
+    gap: 0;
 
     form {
       width: 100%;
