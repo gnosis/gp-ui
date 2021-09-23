@@ -75,7 +75,7 @@ export const OrderNotFound: React.FC = () => {
           <SearchContent>
             <Search />
             <p>or</p>
-            <Support href="https://chat.gnosis.io/" target="_blank" rel="noopener noreferrer">
+            <Support href="https://chat.cowswap.exchange/" target="_blank" rel="noopener noreferrer">
               Get Support
               <img src={SupportIcon} />
             </Support>
