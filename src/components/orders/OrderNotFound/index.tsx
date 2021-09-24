@@ -27,7 +27,10 @@ const Content = styled.div`
 `
 
 const SearchSection = styled.div`
-  margin-top: 8rem;
+  margin-top: 6rem;
+  padding: 20px;
+  border-radius: 0.4rem;
+  background-color: ${({ theme }): string => theme.bg2};
 `
 
 const SearchContent = styled.div`
@@ -42,6 +45,9 @@ const SearchContent = styled.div`
 
     form {
       width: 100%;
+      input {
+        width: 100%;
+      }
     }
   }
 `
@@ -59,7 +65,7 @@ const Support = styled.a`
   color: ${({ theme }): string => theme.white} !important;
 
   :hover {
-    background-color: ${({ theme }): string => theme.bg2};
+    background-color: ${({ theme }): string => theme.greyOpacity};
     text-decoration: none;
   }
 `
@@ -71,11 +77,11 @@ export const OrderNotFound: React.FC = () => {
     <>
       <Title>Order not found</Title>
       <Content>
+        <p>Sorry, no matches found for:</p>
         <p>
-          Sorry, no matches found for: <strong>&quot;{orderId}&quot;</strong>
+          <strong>&quot;{orderId}&quot;</strong>
         </p>
         <SearchSection>
-          <Title>Search again by Order ID</Title>
           <SearchContent>
             <Search />
             <p>or</p>
