@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import styled, { css } from 'styled-components'
-// import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { Dropdown, DropdownOption } from 'apps/explorer/components/common/Dropdown'
 import { OrdersTableContext } from './context/OrdersTableContext'
@@ -41,6 +41,9 @@ const PaginationDropdownButton = styled.button`
 
 const PaginationText = styled.p`
   margin-right: 0.8rem;
+  &.legend {
+    margin-left: 2rem;
+  }
 `
 
 const PaginationItem = styled(DropdownOption)`
@@ -51,15 +54,50 @@ const PaginationItem = styled(DropdownOption)`
   padding: 0 1rem;
   white-space: nowrap;
 `
-// const Icon = styled(FontAwesomeIcon)`
-//   padding-left: 5rem;
-// `
+const Icon = styled(FontAwesomeIcon)`
+  width: 2rem !important;
+  height: 2rem;
+  color: ${({ theme }): string => theme.textSecondary1};
+  .fill {
+    color: ${({ theme }): string => theme.textActive1};
+  }
+`
+const PaginationButton = styled.button`
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  height: auto;
+  outline: none;
+  padding: 0;
+  user-select: none;
+  width: 3.5rem;
+  white-space: nowrap;
+
+  &:hover {
+    .fill {
+      color: ${({ theme }): string => theme.textActive1};
+    }
+  }
+  &[disabled],
+  &[disabled]:hover {
+    cursor: not-allowed;
+    opacity: 0.5;
+
+    .fill {
+      color: ${({ theme }): string => theme.textSecondary1};
+    }
+  }
+`
 
 const PaginationOrdersTable: React.FC = () => {
   const {
     isFirstLoading,
-    tableState: { pageSize },
+    tableState: { pageSize, pageOffset },
     setPageSize,
+    orders,
   } = useContext(OrdersTableContext)
   const quantityPerPage = [10, 20, 30, 50]
 
@@ -79,6 +117,15 @@ const PaginationOrdersTable: React.FC = () => {
           </PaginationItem>
         ))}
       />
+      <PaginationText className="legend">
+        {pageOffset + 1 === 1 ? 1 : pageOffset * pageSize + 1} - {orders.length && pageOffset + orders.length}
+      </PaginationText>{' '}
+      <PaginationButton disabled={true} onClick={(): void => console.log('Left')}>
+        <Icon icon={faChevronLeft} className="fill" />
+      </PaginationButton>
+      <PaginationButton disabled={!true} onClick={(): void => console.log('Right')}>
+        <Icon icon={faChevronRight} className="fill" />
+      </PaginationButton>
     </PaginationWrapper>
   )
 }

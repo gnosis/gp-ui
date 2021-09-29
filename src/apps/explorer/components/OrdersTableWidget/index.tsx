@@ -47,8 +47,8 @@ interface Props {
 }
 
 const OrdersTableWidget: React.FC<Props> = ({ ownerAddress }) => {
-  const { state: tableState, setPageSize } = useTable({ initialState: { pageIndex: 0, pageSize: 20 } })
-  const { orders, isLoading, error } = useGetOrders(ownerAddress, tableState.pageSize, tableState.pageIndex)
+  const { state: tableState, setPageSize } = useTable({ initialState: { pageOffset: 0, pageSize: 20 } })
+  const { orders, isLoading, error } = useGetOrders(ownerAddress, tableState.pageSize, tableState.pageOffset)
 
   const isFirstLoading = useMemo(() => {
     if (isLoading && orders.length === 0) return true
