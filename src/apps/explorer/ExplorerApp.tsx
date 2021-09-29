@@ -27,9 +27,9 @@ const SENTRY_TRACES_SAMPLE_RATE = process.env.REACT_APP_SENTRY_TRACES_SAMPLE_RAT
 
 if (SENTRY_DSN) {
   Sentry.init({
-    dsn: process.env.REACT_APP_SENTRY_DSN,
+    dsn: SENTRY_DSN,
     integrations: [new Integrations.BrowserTracing()],
-    release: 'gp-explorer@' + version,
+    release: 'gp-explorer@v' + version,
     environment: environmentName,
 
     // Set tracesSampleRate to 1.0 to capture 100%
@@ -118,7 +118,7 @@ const AppContent = (): JSX.Element => {
 }
 
 const Wrapper = styled.div`
-  max-width: 140rem;
+  max-width: 118rem;
   margin: 0 auto;
 
   ${media.mediumDown} {

@@ -118,8 +118,15 @@ export type GetOrderParams = WithNetworkId & {
   orderId: string
 }
 
+export type GetAccountOrdersParams = WithNetworkId & {
+  owner: string
+  offset?: number
+  limit?: number
+}
+
 export type GetOrdersParams = WithNetworkId & {
-  owner?: string
+  owner: string
+  minValidTo: number
   sellToken?: string
   buyToken?: string
 }
