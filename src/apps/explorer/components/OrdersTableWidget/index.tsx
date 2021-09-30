@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -47,18 +47,18 @@ interface Props {
 }
 
 const OrdersTableWidget: React.FC<Props> = ({ ownerAddress }) => {
-  const { state: tableState, setPageSize } = useTable({ initialState: { pageOffset: 0, pageSize: 20 } })
-  const { orders, isLoading, error } = useGetOrders(ownerAddress, tableState.pageSize, tableState.pageOffset)
-
-  const isFirstLoading = useMemo(() => {
-    if (isLoading && orders.length === 0) return true
-
-    return false
-  }, [isLoading, orders.length])
+  const { state: tableState, setPageSize, setPageOffset } = useTable({ initialState: { pageOffset: 0, pageSize: 20 } })
+  const {
+    orders,
+    isLoading: isOrdersLoading,
+    error,
+    isThereNext: isThereNextOrder,
+  } = useGetOrders(ownerAddress, tableState.pageSize, tableState.pageOffset)
+  tableState['canNextPage'] = isThereNextOrder
 
   return (
-    <OrdersTableContext.Provider value={{ orders, error, isFirstLoading, setPageSize, tableState }}>
-      <ExplorerTabs tabItems={tabItems(isLoading)} extra={ExtraComponentNode} />
+    <OrdersTableContext.Provider value={{ orders, error, isOrdersLoading, tableState, setPageSize, setPageOffset }}>
+      <ExplorerTabs tabItems={tabItems(isOrdersLoading)} extra={ExtraComponentNode} />
     </OrdersTableContext.Provider>
   )
 }

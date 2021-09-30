@@ -20,6 +20,7 @@ type Result = {
   orders: Order[]
   error: string
   isLoading: boolean
+  isThereNext: boolean
 }
 
 export function useGetOrders(ownerAddress: string, limit = 1000, offset = 0): Result {
@@ -30,6 +31,7 @@ export function useGetOrders(ownerAddress: string, limit = 1000, offset = 0): Re
   const [erc20Addresses, setErc20Addresses] = useState<string[]>([])
   const { value: valueErc20s, isLoading: areErc20Loading } = useMultipleErc20({ networkId, addresses: erc20Addresses })
   const [mountNewOrders, setMountNewOrders] = useState(false)
+  const [isThereNext, setIsThereNext] = useState(false)
 
   const fetchOrders = useCallback(
     async (network: Network, owner: string): Promise<void> => {
@@ -65,6 +67,17 @@ export function useGetOrders(ownerAddress: string, limit = 1000, offset = 0): Re
     [limit, offset],
   )
 
+  const checkForNext = useCallback(async (network: Network, owner: string, _offset): Promise<void> => {
+    try {
+      const ordersFetched = await getAccountOrders({ networkId: network, owner, offset: _offset, limit: 1 })
+      if (ordersFetched.length) {
+        setIsThereNext(true)
+      }
+    } catch (e) {
+      console.error('Failed to check for a next order', e)
+    }
+  }, [])
+
   useEffect(() => {
     if (!networkId) {
       return
@@ -97,5 +110,14 @@ export function useGetOrders(ownerAddress: string, limit = 1000, offset = 0): Re
     setMountNewOrders(false)
   }, [valueErc20s, networkId, areErc20Loading, mountNewOrders, orders])
 
-  return { orders, error, isLoading }
+  useEffect(() => {
+    if (!networkId) {
+      return
+    }
+    setIsThereNext(false)
+
+    checkForNext(networkId, ownerAddress, offset + limit)
+  }, [checkForNext, limit, networkId, offset, ownerAddress])
+
+  return { orders, error, isLoading, isThereNext }
 }

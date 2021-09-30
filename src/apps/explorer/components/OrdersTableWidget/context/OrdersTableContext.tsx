@@ -6,9 +6,10 @@ import { TableState } from 'apps/explorer/components/OrdersTableWidget/useTable'
 interface CommonState {
   orders: Order[]
   error: string
-  isFirstLoading: boolean
-  setPageSize: (pageSize: number) => void
+  isOrdersLoading: boolean
   tableState: TableState
+  setPageSize: (pageSize: number) => void
+  setPageOffset: (pageOffset: number) => void
 }
 
 export const OrdersTableContext = React.createContext({} as CommonState)
