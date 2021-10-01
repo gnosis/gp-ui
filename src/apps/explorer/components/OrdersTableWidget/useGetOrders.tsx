@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from 'react'
 
 import { Network } from 'types'
 import { useMultipleErc20 } from 'hooks/useErc20'
-import { getAccountOrders, Order } from 'api/operator'
+import { getAccountOrders, Order, RawOrder } from 'api/operator'
 import { useNetworkId } from 'state/network'
 import { transformOrder } from 'utils'
 import { ORDERS_QUERY_INTERVAL } from 'apps/explorer/const'
@@ -37,9 +37,17 @@ export function useGetOrders(ownerAddress: string, limit = 1000, offset = 0): Re
     async (network: Network, owner: string): Promise<void> => {
       setIsLoading(true)
       setError('')
+      const limitPlusOne = limit + 1
+      const checkForNext = (_orders: RawOrder[]): void => {
+        if (_orders.length === limitPlusOne) {
+          setIsThereNext(true)
+          _orders.pop()
+        }
+      }
 
       try {
-        const ordersFetched = await getAccountOrders({ networkId: network, owner, offset, limit })
+        const ordersFetched = await getAccountOrders({ networkId: network, owner, offset, limit: limitPlusOne })
+        checkForNext(ordersFetched)
         const newErc20Addresses = ordersFetched.reduce((accumulator: string[], element) => {
           const updateAccumulator = (tokenAddress: string): void => {
             if (accumulator.indexOf(tokenAddress) === -1) {
@@ -67,22 +75,12 @@ export function useGetOrders(ownerAddress: string, limit = 1000, offset = 0): Re
     [limit, offset],
   )
 
-  const checkForNext = useCallback(async (network: Network, owner: string, _offset): Promise<void> => {
-    try {
-      const ordersFetched = await getAccountOrders({ networkId: network, owner, offset: _offset, limit: 1 })
-      if (ordersFetched.length) {
-        setIsThereNext(true)
-      }
-    } catch (e) {
-      console.error('Failed to check for a next order', e)
-    }
-  }, [])
-
   useEffect(() => {
     if (!networkId) {
       return
     }
 
+    setIsThereNext(false)
     fetchOrders(networkId, ownerAddress)
 
     const intervalId: NodeJS.Timeout = setInterval(() => {
@@ -109,15 +107,6 @@ export function useGetOrders(ownerAddress: string, limit = 1000, offset = 0): Re
     setOrders(newOrders)
     setMountNewOrders(false)
   }, [valueErc20s, networkId, areErc20Loading, mountNewOrders, orders])
-
-  useEffect(() => {
-    if (!networkId) {
-      return
-    }
-    setIsThereNext(false)
-
-    checkForNext(networkId, ownerAddress, offset + limit)
-  }, [checkForNext, limit, networkId, offset, ownerAddress])
 
   return { orders, error, isLoading, isThereNext }
 }

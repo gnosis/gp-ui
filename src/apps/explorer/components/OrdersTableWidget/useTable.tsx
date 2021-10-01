@@ -3,7 +3,7 @@ import { useState } from 'react'
 export interface TableState {
   pageSize: number
   pageOffset: number
-  canNextPage?: boolean
+  hasNextPage?: boolean
 }
 
 export interface TableOptions {
@@ -20,10 +20,15 @@ export function useTable(options: TableOptions): TableStateAndSetters {
   const {
     initialState: { pageSize: initialPageSize, pageOffset: initialOffset },
   } = options
-  const [pageSize, setPageSize] = useState(initialPageSize)
+  const [pageSize, _setPageSize] = useState(initialPageSize)
   const [pageOffset, setPageOffset] = useState(initialOffset)
 
   const state = { pageSize, pageOffset }
+
+  const setPageSize = (newValue: number): void => {
+    _setPageSize(newValue)
+    setPageOffset(0)
+  }
 
   return { state, setPageSize, setPageOffset }
 }

@@ -99,7 +99,7 @@ PaginationButton.defaultProps = { disabled: true }
 const PaginationOrdersTable: React.FC = () => {
   const {
     isOrdersLoading: isLoading,
-    tableState: { pageSize, pageOffset, canNextPage },
+    tableState: { pageSize, pageOffset, hasNextPage },
     setPageSize,
     setPageOffset,
     orders: rows,
@@ -126,7 +126,7 @@ const PaginationOrdersTable: React.FC = () => {
 
     return `${startPageCount} - ${endPageCount}`
   }
-  const canPreviousPage = (): boolean => {
+  const hasPreviousPage = (): boolean => {
     if (isLoading) return false
     return pageOffset > 0 ? true : false
   }
@@ -152,10 +152,10 @@ const PaginationOrdersTable: React.FC = () => {
         ))}
       />
       <PaginationText className="legend">{renderPageLegend()}</PaginationText>{' '}
-      <PaginationButton disabled={!canPreviousPage()} onClick={handlePreviousPage}>
+      <PaginationButton disabled={!hasPreviousPage()} onClick={handlePreviousPage}>
         <Icon icon={faChevronLeft} className="fill" />
       </PaginationButton>
-      <PaginationButton disabled={!canNextPage} onClick={handleNextPage}>
+      <PaginationButton disabled={!hasNextPage} onClick={handleNextPage}>
         <Icon icon={faChevronRight} className="fill" />
       </PaginationButton>
     </PaginationWrapper>

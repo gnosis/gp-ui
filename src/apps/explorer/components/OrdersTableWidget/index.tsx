@@ -54,7 +54,7 @@ const OrdersTableWidget: React.FC<Props> = ({ ownerAddress }) => {
     error,
     isThereNext: isThereNextOrder,
   } = useGetOrders(ownerAddress, tableState.pageSize, tableState.pageOffset)
-  tableState['canNextPage'] = isThereNextOrder
+  tableState['hasNextPage'] = isThereNextOrder
 
   return (
     <OrdersTableContext.Provider value={{ orders, error, isOrdersLoading, tableState, setPageSize, setPageOffset }}>
