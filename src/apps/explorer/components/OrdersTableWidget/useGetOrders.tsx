@@ -23,7 +23,7 @@ type Result = {
   isThereNext: boolean
 }
 
-export function useGetOrders(ownerAddress: string, limit = 1000, offset = 0): Result {
+export function useGetOrders(ownerAddress: string, limit = 1000, offset = 0, pageIndex?: number): Result {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const [orders, setOrders] = useState<Order[]>([])
@@ -83,6 +83,8 @@ export function useGetOrders(ownerAddress: string, limit = 1000, offset = 0): Re
     setIsThereNext(false)
     fetchOrders(networkId, ownerAddress)
 
+    if (pageIndex && pageIndex > 1) return
+
     const intervalId: NodeJS.Timeout = setInterval(() => {
       fetchOrders(networkId, ownerAddress)
     }, ORDERS_QUERY_INTERVAL)
@@ -90,7 +92,7 @@ export function useGetOrders(ownerAddress: string, limit = 1000, offset = 0): Re
     return (): void => {
       clearInterval(intervalId)
     }
-  }, [fetchOrders, networkId, ownerAddress])
+  }, [fetchOrders, networkId, ownerAddress, pageIndex])
 
   useEffect(() => {
     if (areErc20Loading || isObjectEmpty(valueErc20s) || !mountNewOrders) {

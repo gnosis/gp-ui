@@ -3,6 +3,7 @@ import { useState } from 'react'
 export interface TableState {
   pageSize: number
   pageOffset: number
+  pageIndex?: number
   hasNextPage?: boolean
 }
 
@@ -10,25 +11,55 @@ export interface TableOptions {
   initialState: TableState
 }
 
-interface TableStateAndSetters {
-  state: TableState
+export interface TableStateSetters {
   setPageSize: (pageSize: number) => void
-  setPageOffset: (pageOffset: number) => void | number
+  handleNextPage: () => void
+  handlePreviousPage: () => void
 }
 
-export function useTable(options: TableOptions): TableStateAndSetters {
-  const {
-    initialState: { pageSize: initialPageSize, pageOffset: initialOffset },
-  } = options
-  const [pageSize, _setPageSize] = useState(initialPageSize)
-  const [pageOffset, setPageOffset] = useState(initialOffset)
+type TableStateAndSetters = TableStateSetters & {
+  state: TableState
+}
 
-  const state = { pageSize, pageOffset }
+/*
+ * Calculate pageIndex from offsets through pageSize
+ */
+export const getPageIndex = (offset: number, limit: number): number =>
+  offset > limit - 1 ? Math.ceil((offset + 1) / limit) : 1
+
+export function useTable(options: TableOptions): TableStateAndSetters {
+  const { initialState } = options
+  const [state, setState] = useState({
+    pageIndex: getPageIndex(initialState.pageOffset, initialState.pageSize),
+    ...initialState,
+  })
 
   const setPageSize = (newValue: number): void => {
-    _setPageSize(newValue)
-    setPageOffset(0)
+    setState({
+      ...state,
+      pageSize: newValue,
+      pageOffset: 0,
+    })
   }
 
-  return { state, setPageSize, setPageOffset }
+  const setPageOffset = (newOffset: number): void => {
+    setState({
+      ...state,
+      pageOffset: newOffset,
+      pageIndex: getPageIndex(newOffset, state.pageSize),
+    })
+  }
+
+  const handleNextPage = (): void => {
+    const newOffset = state.pageOffset + state.pageSize
+    setPageOffset(newOffset)
+  }
+
+  const handlePreviousPage = (): void => {
+    let newOffset = state.pageOffset - state.pageSize
+    newOffset = newOffset < 0 ? 0 : newOffset
+    setPageOffset(newOffset)
+  }
+
+  return { state, setPageSize, handleNextPage, handlePreviousPage }
 }

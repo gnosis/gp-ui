@@ -47,17 +47,24 @@ interface Props {
 }
 
 const OrdersTableWidget: React.FC<Props> = ({ ownerAddress }) => {
-  const { state: tableState, setPageSize, setPageOffset } = useTable({ initialState: { pageOffset: 0, pageSize: 20 } })
+  const {
+    state: tableState,
+    setPageSize,
+    handleNextPage,
+    handlePreviousPage,
+  } = useTable({ initialState: { pageOffset: 0, pageSize: 20 } })
   const {
     orders,
     isLoading: isOrdersLoading,
     error,
     isThereNext: isThereNextOrder,
-  } = useGetOrders(ownerAddress, tableState.pageSize, tableState.pageOffset)
+  } = useGetOrders(ownerAddress, tableState.pageSize, tableState.pageOffset, tableState.pageIndex)
   tableState['hasNextPage'] = isThereNextOrder
 
   return (
-    <OrdersTableContext.Provider value={{ orders, error, isOrdersLoading, tableState, setPageSize, setPageOffset }}>
+    <OrdersTableContext.Provider
+      value={{ orders, error, isOrdersLoading, tableState, setPageSize, handleNextPage, handlePreviousPage }}
+    >
       <ExplorerTabs tabItems={tabItems(isOrdersLoading)} extra={ExtraComponentNode} />
     </OrdersTableContext.Provider>
   )

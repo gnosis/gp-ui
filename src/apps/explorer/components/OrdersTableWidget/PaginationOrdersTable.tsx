@@ -101,19 +101,12 @@ const PaginationOrdersTable: React.FC = () => {
     isOrdersLoading: isLoading,
     tableState: { pageSize, pageOffset, hasNextPage },
     setPageSize,
-    setPageOffset,
+    handleNextPage,
+    handlePreviousPage,
     orders: rows,
   } = useContext(OrdersTableContext)
   const quantityPerPage = [10, 20, 30, 50]
 
-  const handleNextPage = (): void => {
-    const newOffset = pageOffset + pageSize
-    setPageOffset(newOffset)
-  }
-  const handlePreviousPage = (): void => {
-    const newOffset = pageOffset - pageSize
-    setPageOffset(newOffset < 0 ? 0 : newOffset)
-  }
   const renderPageLegend = (): string => {
     if (isLoading && !rows.length) return '.. - ..'
 
