@@ -35,10 +35,12 @@ export function useTable(options: TableOptions): TableStateAndSetters {
   })
 
   const setPageSize = (newValue: number): void => {
+    const offsetRestarted = 0
     setState({
       ...state,
       pageSize: newValue,
-      pageOffset: 0,
+      pageOffset: offsetRestarted,
+      pageIndex: getPageIndex(offsetRestarted, newValue),
     })
   }
 
