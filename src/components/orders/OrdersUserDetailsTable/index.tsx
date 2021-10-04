@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
+import { MEDIA } from 'const'
 import { faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
 
 import { Order } from 'api/operator'
@@ -21,6 +22,45 @@ const Wrapper = styled(StyledUserDetailsTable)`
   > thead > tr,
   > tbody > tr {
     grid-template-columns: 12rem 7rem repeat(2, minmax(16rem, 1.5fr)) repeat(2, minmax(18rem, 2fr)) 1fr;
+  }
+
+  .header-title {
+    display: none;
+  }
+
+  @media ${MEDIA.mobile} {
+    > thead > tr {
+      display: none;
+    }
+    > tbody > tr {
+      border: 0.1rem solid rgb(151 151 184 / 10%);
+      border-radius: 6px;
+      margin-top: 16px;
+    }
+    tr > td:first-of-type {
+      margin: 0;
+    }
+    tr > td {
+      display: flex;
+      flex: 1;
+      width: 100%;
+      justify-content: space-between;
+      margin: 0;
+      line-height: 2;
+    }
+    .header-title {
+      font-weight: 600;
+      align-items: center;
+      display: flex;
+      svg {
+        margin-left: 5px;
+      }
+    }
+    .span-copybtn-wrap {
+      span {
+        display: inline-flex;
+      }
+    }
   }
   overflow: auto;
 `
@@ -48,41 +88,61 @@ export type Props = StyledUserDetailsTableProps & {
 
 interface RowProps {
   order: Order
-  isPriceInverted: boolean
+  _isPriceInverted: boolean
 }
 
-const RowOrder: React.FC<RowProps> = ({ order, isPriceInverted }) => {
+const RowOrder: React.FC<RowProps> = ({ order, _isPriceInverted }) => {
   const { creationDate, buyToken, buyAmount, sellToken, sellAmount, kind, partiallyFilled, shortId, uid } = order
+  const [isPriceInverted, setIsPriceInverted] = useState(_isPriceInverted)
+
+  useEffect(() => {
+    setIsPriceInverted(_isPriceInverted)
+  }, [_isPriceInverted])
+
+  const invertLimitPrice = (): void => {
+    setIsPriceInverted((previousValue) => !previousValue)
+  }
 
   return (
     <tr key={shortId}>
       <td>
-        {
-          <RowWithCopyButton
-            className="span-copybtn-wrap"
-            textToCopy={uid}
-            contentsToDisplay={
-              <LinkWithPrefixNetwork to={`/orders/${order.uid}`} rel="noopener noreferrer" target="_blank">
-                {shortId}
-              </LinkWithPrefixNetwork>
-            }
-          />
-        }
+        <span className="header-title">
+          Order ID <HelpTooltip tooltip={tooltip.orderID} />
+        </span>
+        <RowWithCopyButton
+          className="span-copybtn-wrap"
+          textToCopy={uid}
+          contentsToDisplay={
+            <LinkWithPrefixNetwork to={`/orders/${order.uid}`} rel="noopener noreferrer" target="_blank">
+              {shortId}
+            </LinkWithPrefixNetwork>
+          }
+        />
       </td>
       <td>
+        <span className="header-title">Type</span>
         <TradeOrderType kind={kind} />
       </td>
       <td>
+        <span className="header-title">Sell Amount</span>
         {formattedAmount(sellToken, sellAmount.plus(order.feeAmount))} {sellToken?.symbol}
       </td>
       <td>
+        <span className="header-title">Buy amount</span>
         {formattedAmount(buyToken, buyAmount)} {buyToken?.symbol}
       </td>
-      <td>{getLimitPrice(order, isPriceInverted)}</td>
       <td>
+        <span className="header-title">
+          Limit price <Icon icon={faExchangeAlt} onClick={invertLimitPrice} />
+        </span>
+        {getLimitPrice(order, isPriceInverted)}
+      </td>
+      <td>
+        <span className="header-title">Created</span>
         <DateDisplay date={creationDate} showIcon={true} />
       </td>
       <td>
+        <span className="header-title">Status</span>
         <StatusLabel status={order.status} partiallyFilled={partiallyFilled} />
       </td>
     </tr>
@@ -110,7 +170,7 @@ const OrdersUserDetailsTable: React.FC<Props> = (props) => {
     return (
       <>
         {items.map((item) => (
-          <RowOrder key={item.shortId} order={item} isPriceInverted={isPriceInverted} />
+          <RowOrder key={item.shortId} order={item} _isPriceInverted={isPriceInverted} />
         ))}
       </>
     )

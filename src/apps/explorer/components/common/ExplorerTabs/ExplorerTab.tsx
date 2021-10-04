@@ -38,10 +38,15 @@ const StyledTabs = styled.div`
 
   .tab-extra-content {
     width: 100%;
-
     @media ${MEDIA.mobile} {
       display: none; /* for now we can hide the extra-content on mobiles */
     }
+  }
+  @media ${MEDIA.mobile} {
+    > div > div.tab-content {
+      padding: 0;
+    }
+    border: none;
   }
 `
 const tabCustomThemeConfig = getTabTheme({
