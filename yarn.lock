@@ -2799,9 +2799,9 @@
     tslib "^1.9.3"
 
 "@sentry/webpack-plugin@^1.17.1":
-  version "1.17.1"
-  resolved "https://registry.yarnpkg.com/@sentry/webpack-plugin/-/webpack-plugin-1.17.1.tgz#1b3ebbe9991e4d77125ace2b24594059a088268a"
-  integrity sha512-L47a0hxano4a+9jbvQSBzHCT1Ph8fYAvGGUvFg8qc69yXS9si5lXRNIH/pavN6mqJjhQjAcEsEp+vxgvT4xZDQ==
+  version "1.17.2"
+  resolved "https://registry.yarnpkg.com/@sentry/webpack-plugin/-/webpack-plugin-1.17.2.tgz#0076c4b6b57959aa7f43a96904756549af069c23"
+  integrity sha512-1XKNP6FAzB+V58WPCX7DTRLu8BaB/ho11Y2VweqZn10m/MZuqKlHI1PzjJsf4hLoMOZBTt9KdkRi4vjgI6TmPA==
   dependencies:
     "@sentry/cli" "^1.68.0"
 
@@ -15527,9 +15527,9 @@ playwright@=1.5.2:
     ws "^7.3.1"
 
 playwright@^1.5.2:
-  version "1.15.0"
-  resolved "https://registry.yarnpkg.com/playwright/-/playwright-1.15.0.tgz#c8c75287541e75317988b973a306d2f61065aefb"
-  integrity sha512-JtagFVjNvccP1rIixHB/4KbR+BzMTJLty6mo71YLatvJR9ZH+PX8DLlhw1KDdIH2YGMSQGf2ihh4KAp9tsklxQ==
+  version "1.15.1"
+  resolved "https://registry.yarnpkg.com/playwright/-/playwright-1.15.1.tgz#f53dae5fbbe9c7b1eca06e2638af8196e0deec96"
+  integrity sha512-MQaKii1mhfoZF0+HXE4h5s2CwZNJmcASlmI097yosoZ9Fo5RW9RkLN5VMCbSw9xTyoqo6vdE6Df0OFpupYjBow==
   dependencies:
     commander "^6.1.0"
     debug "^4.1.1"
