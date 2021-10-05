@@ -53,7 +53,9 @@ const Wrapper = styled.div`
   }
 `
 
-export const TabList = styled.div
+export const TabList = styled.div`
+  /* stylelint-disable no-empty-block */
+`
 
 export const DEFAULT_TAB_THEME: TabTheme = {
   activeBg: 'var(--color-transparent)',
