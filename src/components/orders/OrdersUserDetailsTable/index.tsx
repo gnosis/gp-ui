@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { MEDIA } from 'const'
+import { media } from 'theme/styles/media'
 import { faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
 
 import { Order } from 'api/operator'
@@ -24,18 +24,21 @@ const Wrapper = styled(StyledUserDetailsTable)`
     grid-template-columns: 12rem 7rem repeat(2, minmax(16rem, 1.5fr)) repeat(2, minmax(18rem, 2fr)) 1fr;
   }
 
-  .header-title {
-    display: none;
-  }
-
-  @media ${MEDIA.mobile} {
+  ${media.mediumDown} {
     > thead > tr {
       display: none;
     }
     > tbody > tr {
-      border: 0.1rem solid rgb(151 151 184 / 10%);
+      grid-template-columns: none;
+      border: 0.1rem solid ${({ theme }): string => theme.tableRowBorder};
+      box-shadow: 0px 4px 12px ${({ theme }): string => theme.boxShadow};
       border-radius: 6px;
       margin-top: 16px;
+      padding: 12px;
+      &:hover {
+        background: none;
+        backdrop-filter: none;
+      }
     }
     tr > td:first-of-type {
       margin: 0;
@@ -46,24 +49,46 @@ const Wrapper = styled(StyledUserDetailsTable)`
       width: 100%;
       justify-content: space-between;
       margin: 0;
-      line-height: 2;
+      line-height: 2.75;
     }
-    .header-title {
-      font-weight: 600;
-      align-items: center;
-      display: flex;
-      svg {
-        margin-left: 5px;
-      }
+    .header-value {
+      flex-wrap: wrap;
+      text-align: end;
     }
     .span-copybtn-wrap {
+      display: flex;
+      flex-wrap: nowrap;
       span {
-        display: inline-flex;
+        display: flex;
+        align-items: center;
+      }
+      .copy-text {
+        margin-left: 5px;
       }
     }
   }
   overflow: auto;
 `
+
+const HeaderTitle = styled.span`
+  display: none;
+  ${media.mediumDown} {
+    font-weight: 600;
+    align-items: center;
+    display: flex;
+    margin-right: 5rem;
+    svg {
+      margin-left: 5px;
+    }
+  }
+`
+const HeaderValue = styled.span`
+  ${media.mediumDown} {
+    flex-wrap: wrap;
+    text-align: end;
+  }
+`
+
 function getLimitPrice(order: Order, isPriceInverted: boolean): string {
   if (!order.buyToken || !order.sellToken) return '-'
 
@@ -88,16 +113,16 @@ export type Props = StyledUserDetailsTableProps & {
 
 interface RowProps {
   order: Order
-  _isPriceInverted: boolean
+  isPriceInverted: boolean
 }
 
-const RowOrder: React.FC<RowProps> = ({ order, _isPriceInverted }) => {
+const RowOrder: React.FC<RowProps> = ({ order, isPriceInverted }) => {
   const { creationDate, buyToken, buyAmount, sellToken, sellAmount, kind, partiallyFilled, shortId, uid } = order
-  const [isPriceInverted, setIsPriceInverted] = useState(_isPriceInverted)
+  const [_isPriceInverted, setIsPriceInverted] = useState(isPriceInverted)
 
   useEffect(() => {
-    setIsPriceInverted(_isPriceInverted)
-  }, [_isPriceInverted])
+    setIsPriceInverted(isPriceInverted)
+  }, [isPriceInverted])
 
   const invertLimitPrice = (): void => {
     setIsPriceInverted((previousValue) => !previousValue)
@@ -106,44 +131,56 @@ const RowOrder: React.FC<RowProps> = ({ order, _isPriceInverted }) => {
   return (
     <tr key={shortId}>
       <td>
-        <span className="header-title">
+        <HeaderTitle>
           Order ID <HelpTooltip tooltip={tooltip.orderID} />
+        </HeaderTitle>
+        <HeaderValue>
+          <RowWithCopyButton
+            className="span-copybtn-wrap"
+            textToCopy={uid}
+            contentsToDisplay={
+              <LinkWithPrefixNetwork to={`/orders/${order.uid}`} rel="noopener noreferrer" target="_blank">
+                {shortId}
+              </LinkWithPrefixNetwork>
+            }
+          />
+        </HeaderValue>
+      </td>
+      <td>
+        <HeaderTitle>Type</HeaderTitle>
+        <span className="header-value">
+          <TradeOrderType kind={kind} />
         </span>
-        <RowWithCopyButton
-          className="span-copybtn-wrap"
-          textToCopy={uid}
-          contentsToDisplay={
-            <LinkWithPrefixNetwork to={`/orders/${order.uid}`} rel="noopener noreferrer" target="_blank">
-              {shortId}
-            </LinkWithPrefixNetwork>
-          }
-        />
       </td>
       <td>
-        <span className="header-title">Type</span>
-        <TradeOrderType kind={kind} />
+        <HeaderTitle>Sell Amount</HeaderTitle>
+        <HeaderValue>
+          {formattedAmount(sellToken, sellAmount.plus(order.feeAmount))} {sellToken?.symbol}
+        </HeaderValue>
       </td>
       <td>
-        <span className="header-title">Sell Amount</span>
-        {formattedAmount(sellToken, sellAmount.plus(order.feeAmount))} {sellToken?.symbol}
+        <HeaderTitle>Buy amount</HeaderTitle>
+        <HeaderValue>
+          {formattedAmount(buyToken, buyAmount)} {buyToken?.symbol}
+        </HeaderValue>
       </td>
       <td>
-        <span className="header-title">Buy amount</span>
-        {formattedAmount(buyToken, buyAmount)} {buyToken?.symbol}
-      </td>
-      <td>
-        <span className="header-title">
+        <HeaderTitle>
           Limit price <Icon icon={faExchangeAlt} onClick={invertLimitPrice} />
-        </span>
-        {getLimitPrice(order, isPriceInverted)}
+        </HeaderTitle>
+        <HeaderValue>{getLimitPrice(order, _isPriceInverted)}</HeaderValue>
       </td>
       <td>
-        <span className="header-title">Created</span>
-        <DateDisplay date={creationDate} showIcon={true} />
+        <HeaderTitle>Created</HeaderTitle>
+        <HeaderValue>
+          <DateDisplay date={creationDate} showIcon={true} />
+        </HeaderValue>
       </td>
       <td>
-        <span className="header-title">Status</span>
-        <StatusLabel status={order.status} partiallyFilled={partiallyFilled} />
+        <HeaderTitle>Status</HeaderTitle>
+        <HeaderValue>
+          <StatusLabel status={order.status} partiallyFilled={partiallyFilled} />
+        </HeaderValue>
       </td>
     </tr>
   )
@@ -170,7 +207,7 @@ const OrdersUserDetailsTable: React.FC<Props> = (props) => {
     return (
       <>
         {items.map((item) => (
-          <RowOrder key={item.shortId} order={item} _isPriceInverted={isPriceInverted} />
+          <RowOrder key={item.shortId} order={item} isPriceInverted={isPriceInverted} />
         ))}
       </>
     )
