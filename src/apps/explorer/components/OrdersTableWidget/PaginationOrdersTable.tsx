@@ -119,7 +119,7 @@ const PaginationOrdersTable: React.FC = () => {
 
     return `${startPageCount} - ${endPageCount}`
   }
-  const hasPreviousPage = !isLoading && Boolean(pageOffset > 0)
+  const hasPreviousPage = !isLoading && pageOffset > 0
 
   return (
     <PaginationWrapper>
