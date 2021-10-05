@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from 'react'
 
 import { Network } from 'types'
 import { useMultipleErc20 } from 'hooks/useErc20'
-import { getAccountOrders, Order, RawOrder } from 'api/operator'
+import { getAccountOrders, Order } from 'api/operator'
 import { useNetworkId } from 'state/network'
 import { transformOrder } from 'utils'
 import { ORDERS_QUERY_INTERVAL } from 'apps/explorer/const'
@@ -38,16 +38,13 @@ export function useGetOrders(ownerAddress: string, limit = 1000, offset = 0, pag
       setIsLoading(true)
       setError('')
       const limitPlusOne = limit + 1
-      const checkForNext = (_orders: RawOrder[]): void => {
-        if (_orders.length === limitPlusOne) {
-          setIsThereNext(true)
-          _orders.pop()
-        }
-      }
 
       try {
         const ordersFetched = await getAccountOrders({ networkId: network, owner, offset, limit: limitPlusOne })
-        checkForNext(ordersFetched)
+        if (ordersFetched.length === limitPlusOne) {
+          setIsThereNext(true)
+          ordersFetched.pop()
+        }
         const newErc20Addresses = ordersFetched.reduce((accumulator: string[], element) => {
           const updateAccumulator = (tokenAddress: string): void => {
             if (accumulator.indexOf(tokenAddress) === -1) {

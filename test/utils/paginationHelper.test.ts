@@ -1,6 +1,6 @@
 import { getPageIndex } from 'apps/explorer/components/OrdersTableWidget/useTable'
 
-describe('Is token an ERC20', () => {
+describe('Calculate pageIndex from offsets through pageSize', () => {
   test('should return 1 when offset is smaller than the page size', () => {
     expect(getPageIndex(0, 10)).toEqual(1)
   })
