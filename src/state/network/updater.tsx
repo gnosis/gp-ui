@@ -28,16 +28,21 @@ function getNetworkPrefix(network: Network): string {
   return prefix || MAINNET_PREFIX
 }
 
+export const MatchPrefixNetworkOnPathname = (): RegExpMatchArray | null => {
+  const { pathname } = useLocation()
+
+  return pathname.match('/(rinkeby|xdai|mainnet)?/?(.*)')
+}
+
 /** Redirects to the canonnical URL for mainnet */
 export const RedirectToNetwork = (props: { networkId: Network }): JSX.Element | null => {
-  const { networkId } = props
-  const { pathname } = useLocation()
-  const prefix = getNetworkPrefix(networkId)
-
-  const pathMatchArray = pathname.match('/(rinkeby|xdai|mainnet)?/?(.*)')
+  const pathMatchArray = MatchPrefixNetworkOnPathname()
   if (pathMatchArray == null) {
     return null
   }
+
+  const { networkId } = props
+  const prefix = getNetworkPrefix(networkId)
 
   const prefixPath = prefix ? `/${prefix}` : ''
   const newPath = prefixPath + '/' + pathMatchArray[2]
