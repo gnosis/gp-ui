@@ -40,16 +40,13 @@ const Wrapper = styled(StyledUserDetailsTable)`
         backdrop-filter: none;
       }
     }
-    tr > td:first-of-type {
-      margin: 0;
-    }
     tr > td {
       display: flex;
       flex: 1;
       width: 100%;
       justify-content: space-between;
       margin: 0;
-      line-height: 2.75;
+      margin-bottom: 18px;
     }
     .header-value {
       flex-wrap: wrap;
@@ -76,7 +73,7 @@ const HeaderTitle = styled.span`
     font-weight: 600;
     align-items: center;
     display: flex;
-    margin-right: 5rem;
+    margin-right: 3rem;
     svg {
       margin-left: 5px;
     }
