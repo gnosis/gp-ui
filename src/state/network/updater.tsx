@@ -28,17 +28,25 @@ function getNetworkPrefix(network: Network): string {
   return prefix || MAINNET_PREFIX
 }
 
-export const useGetPathPrefix = (): [string, string] | [] => {
+/**
+ * Decompose URL pathname like /xdai/orders/123
+ *
+ * @returns ['xdai', 'orders/123']
+ */
+export const useDecomposedPath = (): [string, string] | [] => {
   const { pathname } = useLocation()
   const pathMatchArray = pathname.match('/(rinkeby|xdai|mainnet)?/?(.*)')
 
   return pathMatchArray == null ? [] : [pathMatchArray[1], pathMatchArray[2]]
 }
 
+export const usePathPrefix = (): string | undefined => useDecomposedPath()[0]
+export const usePathSuffix = (): string | undefined => useDecomposedPath()[1]
+
 /** Redirects to the canonnical URL for mainnet */
 export const RedirectToNetwork = (props: { networkId: Network }): JSX.Element | null => {
-  const [, pathWithouPrefix] = useGetPathPrefix()
-  if (pathWithouPrefix === undefined) {
+  const pathnameSuffix = usePathSuffix()
+  if (pathnameSuffix === undefined) {
     return null
   }
 
@@ -46,7 +54,7 @@ export const RedirectToNetwork = (props: { networkId: Network }): JSX.Element | 
   const prefix = getNetworkPrefix(networkId)
 
   const prefixPath = prefix ? `/${prefix}` : ''
-  const newPath = prefixPath + '/' + pathWithouPrefix
+  const newPath = prefixPath + '/' + pathnameSuffix
 
   return <Redirect push={false} to={newPath} />
 }
