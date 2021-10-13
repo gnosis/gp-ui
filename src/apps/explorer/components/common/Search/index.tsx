@@ -5,9 +5,10 @@ import { useSearchSubmit } from 'hooks/useSearchSubmit'
 // assets
 import searchImg from 'assets/img/search2.svg'
 
-export const Search: React.FC = () => {
+export const Search: React.FC<React.HTMLAttributes<HTMLDivElement>> = (props) => {
   const [query, setQuery] = useState('')
   const handleSubmit = useSearchSubmit()
+  const { className } = props
 
   return (
     <Wrapper
@@ -15,6 +16,7 @@ export const Search: React.FC = () => {
         e.preventDefault()
         handleSubmit(query)
       }}
+      className={className}
     >
       <Button type="submit">
         <SearchIcon src={searchImg} />

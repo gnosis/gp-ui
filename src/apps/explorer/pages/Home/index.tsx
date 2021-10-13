@@ -28,7 +28,7 @@ export const Home: React.FC = () => {
   return (
     <Wrapper>
       <h1>Search Order ID / Address</h1>
-      <Search />
+      <Search className="home" />
     </Wrapper>
   )
 }
