@@ -19,7 +19,7 @@ function wrapperMemoryRouter(props: Props): JSX.Element {
 }
 
 describe('useSearchSubmit', () => {
-  it('should be /search/... with invalid search', () => {
+  it('should be /orders/... with invalid search', () => {
     const query = 'invalid_search'
     const history = createMemoryHistory()
 
@@ -31,7 +31,7 @@ describe('useSearchSubmit', () => {
       result.current(query)
     })
 
-    expect(history.location.pathname).toBe(`/search/${query}`)
+    expect(history.location.pathname).toBe(`/orders/${query}`)
   })
 
   it('should be /address/0x... when address string is valid', () => {
