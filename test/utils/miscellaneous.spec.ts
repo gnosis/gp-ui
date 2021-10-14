@@ -92,7 +92,7 @@ describe('getToken', () => {
 })
 
 describe('isAnOrderId', () => {
-  it('should be an orderId', () => {
+  test('Is orderId', () => {
     const text =
       '0x405bd0278c11399f84f10e19fb9b45123996e7d0a68a60ddebc3b9581576b484ff714b8b0e2700303ec912bd40496c3997ceea2b614b17d9'
 
@@ -101,7 +101,7 @@ describe('isAnOrderId', () => {
     expect(result).toBe(true)
   })
 
-  it('not be an orderId', () => {
+  test('Is not orderId', () => {
     const text = '0xb6BAd41ae76A11D10f7b0E664C5007b908bC77C9'
 
     const result = isAnOrderId(text)
@@ -111,7 +111,7 @@ describe('isAnOrderId', () => {
 })
 
 describe('isAnAddressAccount', () => {
-  it('should be an address', () => {
+  test('Is an Address account', () => {
     const text = '0xb6BAd41ae76A11D10f7b0E664C5007b908bC77C9'
 
     const result = isAnAddressAccount(text)
@@ -119,7 +119,7 @@ describe('isAnAddressAccount', () => {
     expect(result).toBe(true)
   })
 
-  it('not be an address', () => {
+  test('Is not an Address account', () => {
     const text =
       '0x405bd0278c11399F84f10e19fb9b45123996e7d0a68a60ddebc3b9581576b484ff714b8b0e2700303ec912bd40496c3997ceea2b614b17d9'
 
