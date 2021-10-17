@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { media } from 'theme/styles/media'
+import { safeTokenName } from '@gnosis.pm/dex-js'
 import { faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
 
 import { Order } from 'api/operator'
@@ -152,13 +153,13 @@ const RowOrder: React.FC<RowProps> = ({ order, isPriceInverted }) => {
       <td>
         <HeaderTitle>Sell Amount</HeaderTitle>
         <HeaderValue>
-          {formattedAmount(sellToken, sellAmount.plus(order.feeAmount))} {sellToken?.symbol}
+          {formattedAmount(sellToken, sellAmount.plus(order.feeAmount))} {sellToken && safeTokenName(sellToken)}
         </HeaderValue>
       </td>
       <td>
         <HeaderTitle>Buy amount</HeaderTitle>
         <HeaderValue>
-          {formattedAmount(buyToken, buyAmount)} {buyToken?.symbol}
+          {formattedAmount(buyToken, buyAmount)} {buyToken && safeTokenName(buyToken)}
         </HeaderValue>
       </td>
       <td>
