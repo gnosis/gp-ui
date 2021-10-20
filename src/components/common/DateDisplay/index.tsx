@@ -38,7 +38,7 @@ export function DateDisplay({ date, showIcon, tooltipPlacement = 'top' }: DateDi
             <IconWrapper icon={faClock} />
           </span>
         )}{' '}
-        <span>{previewDate}</span>
+        {!showIcon ? <span {...targetProps}>{previewDate}</span> : <span>{previewDate}</span>}
       </div>
     </span>
   )
