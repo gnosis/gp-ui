@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { media } from 'theme/styles/media'
-import { safeTokenName } from '@gnosis.pm/dex-js'
 import { faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
 
 import { Order } from 'api/operator'
+import { useNetworkId } from 'state/network'
 
 import { DateDisplay } from 'components/common/DateDisplay'
+import { TokenDisplay } from 'components/common/TokenDisplay'
 import { RowWithCopyButton } from 'components/common/RowWithCopyButton'
 import { getOrderLimitPrice, formatCalculatedPriceToDisplay, formattedAmount } from 'utils'
 import { StatusLabel } from '../StatusLabel'
@@ -117,7 +118,7 @@ interface RowProps {
 const RowOrder: React.FC<RowProps> = ({ order, isPriceInverted }) => {
   const { creationDate, buyToken, buyAmount, sellToken, sellAmount, kind, partiallyFilled, shortId, uid } = order
   const [_isPriceInverted, setIsPriceInverted] = useState(isPriceInverted)
-
+  const network = useNetworkId()
   useEffect(() => {
     setIsPriceInverted(isPriceInverted)
   }, [isPriceInverted])
@@ -153,13 +154,15 @@ const RowOrder: React.FC<RowProps> = ({ order, isPriceInverted }) => {
       <td>
         <HeaderTitle>Sell Amount</HeaderTitle>
         <HeaderValue>
-          {formattedAmount(sellToken, sellAmount.plus(order.feeAmount))} {sellToken && safeTokenName(sellToken)}
+          {formattedAmount(sellToken, sellAmount.plus(order.feeAmount))}{' '}
+          {sellToken && network && <TokenDisplay showAbbreviated erc20={sellToken} network={network} />}
         </HeaderValue>
       </td>
       <td>
         <HeaderTitle>Buy amount</HeaderTitle>
         <HeaderValue>
-          {formattedAmount(buyToken, buyAmount)} {buyToken && safeTokenName(buyToken)}
+          {formattedAmount(buyToken, buyAmount)}
+          {buyToken && network && <TokenDisplay showAbbreviated erc20={buyToken} network={network} />}
         </HeaderValue>
       </td>
       <td>
