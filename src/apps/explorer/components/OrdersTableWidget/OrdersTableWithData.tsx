@@ -12,11 +12,12 @@ import { useSearchInAnotherNetwork } from './useSearchInAnotherNetwork'
 export const OrdersTableWithData: React.FC = () => {
   const {
     orders,
+    isOrdersLoading,
     addressAccountParams: { ownerAddress, networkId },
   } = useContext(OrdersTableContext)
   const isFirstRender = useFirstRender()
   const [isFirstLoading, setIsFirstLoading] = useState(true)
-  const messageWhenEmpty = useSearchInAnotherNetwork(networkId, ownerAddress, orders)
+  const messageWhenEmpty = useSearchInAnotherNetwork(networkId, ownerAddress, orders, isOrdersLoading)
 
   useEffect(() => {
     let timeOutMs = 0

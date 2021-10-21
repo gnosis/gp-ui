@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import { BlockchainNetwork } from './context/OrdersTableContext'
 import { Network } from 'types'
 import { Order, getAccountOrders } from 'api/operator'
+import Spinner from 'components/common/Spinner'
 
 const Wrapper = styled.div`
   display: flex;
@@ -12,7 +13,6 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   height: 100%;
-  /* align-content: space-around; */
 
   > section {
     display: flex;
@@ -20,6 +20,9 @@ const Wrapper = styled.div`
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    p {
+      margin-top: 0;
+    }
   }
 
   ul {
@@ -28,10 +31,12 @@ const Wrapper = styled.div`
     > li {
       list-style: none;
       padding-bottom: 1.5rem;
+      :last-child {
+        padding-bottom: 0;
+      }
     }
   }
 `
-
 interface OrdersInNetwork {
   network: string
   count: number
@@ -41,11 +46,14 @@ export const useSearchInAnotherNetwork = (
   networkId: BlockchainNetwork,
   ownerAddress: string,
   orders: Order[] | undefined,
+  isOrdersLoading: boolean,
 ): string | React.ReactNode => {
   const [ordersInNetworks, setOrdersInNetworks] = useState<OrdersInNetwork[]>([])
 
   const renderMessageElement = useCallback(() => {
-    const _renderMessage = (): string => (networkId ? `No orders in ${Network[networkId]} network.` : 'No orders.')
+    if (!networkId) return <Spinner />
+
+    const _renderMessage = (): string | React.ReactNode => `No orders in ${Network[networkId]} network.`
     const areOtherNetworks = ordersInNetworks.length > 0
 
     return (
@@ -99,10 +107,10 @@ export const useSearchInAnotherNetwork = (
   )
 
   useEffect(() => {
-    if (!networkId || !orders) return
+    if (!networkId || !orders || isOrdersLoading) return
 
     fetchAnotherNetworks(networkId)
-  }, [fetchAnotherNetworks, networkId, orders])
+  }, [fetchAnotherNetworks, isOrdersLoading, networkId, orders])
 
   return renderMessageElement()
 }
