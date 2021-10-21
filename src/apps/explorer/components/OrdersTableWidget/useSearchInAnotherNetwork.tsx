@@ -6,8 +6,30 @@ import { BlockchainNetwork } from './context/OrdersTableContext'
 import { Network } from 'types'
 import { Order, getAccountOrders } from 'api/operator'
 
-const Wrapper = styled.span`
+const Wrapper = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  /* align-content: space-around; */
+
+  > section {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  ul {
+    padding: 0 0.8rem 0 0;
+    margin: 0;
+    > li {
+      list-style: none;
+      padding-bottom: 1.5rem;
+    }
+  }
 `
 
 interface OrdersInNetwork {
@@ -27,12 +49,14 @@ export const useSearchInAnotherNetwork = (
     const areOtherNetworks = ordersInNetworks.length > 0
 
     return (
-      <>
-        <p>{_renderMessage()}</p>
+      <Wrapper>
+        <p>
+          <strong>{_renderMessage()}</strong>
+        </p>
         {areOtherNetworks && (
-          <Wrapper>
+          <section>
             {' '}
-            But have been detected in:
+            <p>But have been detected in:</p>
             {
               <ul>
                 {ordersInNetworks.map((e) => (
@@ -42,9 +66,9 @@ export const useSearchInAnotherNetwork = (
                 ))}
               </ul>
             }
-          </Wrapper>
+          </section>
         )}
-      </>
+      </Wrapper>
     )
   }, [networkId, ordersInNetworks, ownerAddress])
 
