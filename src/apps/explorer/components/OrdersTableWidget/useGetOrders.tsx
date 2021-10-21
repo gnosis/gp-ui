@@ -17,7 +17,7 @@ function isObjectEmpty(object: Record<string, unknown>): boolean {
 }
 
 type Result = {
-  orders: Order[]
+  orders: Order[] | undefined
   error: string
   isLoading: boolean
   isThereNext: boolean
@@ -26,7 +26,7 @@ type Result = {
 export function useGetOrders(ownerAddress: string, limit = 1000, offset = 0, pageIndex?: number): Result {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
-  const [orders, setOrders] = useState<Order[]>([])
+  const [orders, setOrders] = useState<Order[]>()
   const networkId = useNetworkId() || undefined
   const [erc20Addresses, setErc20Addresses] = useState<string[]>([])
   const { value: valueErc20s, isLoading: areErc20Loading } = useMultipleErc20({ networkId, addresses: erc20Addresses })
@@ -92,7 +92,7 @@ export function useGetOrders(ownerAddress: string, limit = 1000, offset = 0, pag
   }, [fetchOrders, networkId, ownerAddress, pageIndex])
 
   useEffect(() => {
-    if (areErc20Loading || isObjectEmpty(valueErc20s) || !mountNewOrders) {
+    if (!orders || areErc20Loading || isObjectEmpty(valueErc20s) || !mountNewOrders) {
       return
     }
 
