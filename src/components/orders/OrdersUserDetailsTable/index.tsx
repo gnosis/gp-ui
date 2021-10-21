@@ -9,7 +9,7 @@ import { useNetworkId } from 'state/network'
 import { DateDisplay } from 'components/common/DateDisplay'
 import { TokenDisplay } from 'components/common/TokenDisplay'
 import { RowWithCopyButton } from 'components/common/RowWithCopyButton'
-import { getOrderLimitPrice, formatCalculatedPriceToDisplay, formattedAmount } from 'utils'
+import { getOrderLimitPrice, formatCalculatedPriceToDisplay, formattedAmount, FormatAmountPrecision } from 'utils'
 import { StatusLabel } from '../StatusLabel'
 import { HelpTooltip } from 'components/Tooltip'
 import StyledUserDetailsTable, {
@@ -19,13 +19,22 @@ import StyledUserDetailsTable, {
 import Icon from 'components/Icon'
 import TradeOrderType from 'components/common/TradeOrderType'
 import { LinkWithPrefixNetwork } from 'components/common/LinkWithPrefixNetwork'
+import { TextWithTooltip } from 'apps/explorer/components/common/TextWithTooltip'
 
 const Wrapper = styled(StyledUserDetailsTable)`
   > thead > tr,
   > tbody > tr {
     grid-template-columns: 12rem 7rem repeat(2, minmax(16rem, 1.5fr)) repeat(2, minmax(18rem, 2fr)) 1fr;
   }
-
+  tr > td {
+    p {
+      display: flex;
+      flex-direction: column;
+      img {
+        margin-left: 0;
+      }
+    }
+  }
   ${media.mediumDown} {
     > thead > tr {
       display: none;
@@ -49,6 +58,9 @@ const Wrapper = styled(StyledUserDetailsTable)`
       justify-content: space-between;
       margin: 0;
       margin-bottom: 18px;
+      p {
+        align-items: flex-end;
+      }
     }
     .header-value {
       flex-wrap: wrap;
@@ -154,15 +166,21 @@ const RowOrder: React.FC<RowProps> = ({ order, isPriceInverted }) => {
       <td>
         <HeaderTitle>Sell Amount</HeaderTitle>
         <HeaderValue>
-          {formattedAmount(sellToken, sellAmount.plus(order.feeAmount))}{' '}
-          {sellToken && network && <TokenDisplay showAbbreviated erc20={sellToken} network={network} />}
+          <TextWithTooltip
+            textInTooltip={`${formattedAmount(sellToken, sellAmount.plus(order.feeAmount))} ${sellToken?.symbol}`}
+          >
+            {formattedAmount(sellToken, sellAmount.plus(order.feeAmount), FormatAmountPrecision.highPrecision)}{' '}
+            {sellToken && network && <TokenDisplay showAbbreviated erc20={sellToken} network={network} />}
+          </TextWithTooltip>
         </HeaderValue>
       </td>
       <td>
         <HeaderTitle>Buy amount</HeaderTitle>
         <HeaderValue>
-          {formattedAmount(buyToken, buyAmount)}
-          {buyToken && network && <TokenDisplay showAbbreviated erc20={buyToken} network={network} />}
+          <TextWithTooltip textInTooltip={`${formattedAmount(buyToken, buyAmount)} ${buyToken?.symbol}`}>
+            {formattedAmount(buyToken, buyAmount, FormatAmountPrecision.highPrecision)}{' '}
+            {buyToken && network && <TokenDisplay showAbbreviated erc20={buyToken} network={network} />}
+          </TextWithTooltip>
         </HeaderValue>
       </td>
       <td>
