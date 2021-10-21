@@ -59,7 +59,7 @@ const Wrapper = styled(StyledUserDetailsTable)`
       margin: 0;
       margin-bottom: 18px;
       p {
-        align-items: flex-end;
+        align-items: flex-start;
       }
     }
     .header-value {
