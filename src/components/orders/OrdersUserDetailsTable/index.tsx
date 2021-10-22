@@ -31,6 +31,9 @@ const Wrapper = styled(StyledUserDetailsTable)`
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
+      img {
+        padding: 0;
+      }
     }
   }
   ${media.mediumDown} {
