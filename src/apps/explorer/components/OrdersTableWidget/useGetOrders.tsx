@@ -33,6 +33,11 @@ export function useGetOrders(ownerAddress: string, limit = 1000, offset = 0, pag
   const [mountNewOrders, setMountNewOrders] = useState(false)
   const [isThereNext, setIsThereNext] = useState(false)
 
+  useEffect(() => {
+    setOrders(undefined)
+    setMountNewOrders(false)
+  }, [networkId])
+
   const fetchOrders = useCallback(
     async (network: Network, owner: string): Promise<void> => {
       setIsLoading(true)
@@ -105,6 +110,7 @@ export function useGetOrders(ownerAddress: string, limit = 1000, offset = 0, pag
 
     setOrders(newOrders)
     setMountNewOrders(false)
+    setErc20Addresses([])
   }, [valueErc20s, networkId, areErc20Loading, mountNewOrders, orders])
 
   return { orders, error, isLoading, isThereNext }

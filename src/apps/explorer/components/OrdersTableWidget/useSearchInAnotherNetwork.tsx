@@ -48,10 +48,16 @@ export const useSearchInAnotherNetwork = (
   orders: Order[] | undefined,
 ): string | React.ReactNode => {
   const [ordersInNetworks, setOrdersInNetworks] = useState<OrdersInNetwork[]>([])
+  const [isLoading, setIsLoading] = useState(false)
   const isOrdersUndefined = typeof orders === 'undefined'
+  const isOrdersLengthZero = !orders || orders.length === 0
+
+  useEffect(() => {
+    setIsLoading(false)
+  }, [isOrdersLengthZero])
 
   const renderMessageElement = useCallback(() => {
-    if (!networkId) return <Spinner />
+    if (!networkId || isLoading) return <Spinner size="2x" />
 
     const _renderMessage = (): string | React.ReactNode => `No orders in ${Network[networkId]} network.`
     const areOtherNetworks = ordersInNetworks.length > 0
@@ -69,7 +75,12 @@ export const useSearchInAnotherNetwork = (
               <ul>
                 {ordersInNetworks.map((e) => (
                   <li key={e.network}>
-                    <Link to={`/${e.network.toLowerCase()}/address/${ownerAddress}`}>{e.network}</Link>
+                    <Link
+                      to={`/${e.network.toLowerCase()}/address/${ownerAddress}`}
+                      onClick={(): void => setIsLoading(true)}
+                    >
+                      {e.network}
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -78,7 +89,7 @@ export const useSearchInAnotherNetwork = (
         )}
       </Wrapper>
     )
-  }, [networkId, ordersInNetworks, ownerAddress])
+  }, [isLoading, networkId, ordersInNetworks, ownerAddress])
 
   const fetchAnotherNetworks = useCallback(
     async (_networkId: Network) => {
@@ -107,10 +118,10 @@ export const useSearchInAnotherNetwork = (
   )
 
   useEffect(() => {
-    if (!networkId || isOrdersUndefined) return
+    if (!networkId || isOrdersUndefined || !isOrdersLengthZero) return
 
     fetchAnotherNetworks(networkId)
-  }, [fetchAnotherNetworks, isOrdersUndefined, networkId])
+  }, [fetchAnotherNetworks, isOrdersLengthZero, isOrdersUndefined, networkId])
 
   return renderMessageElement()
 }
