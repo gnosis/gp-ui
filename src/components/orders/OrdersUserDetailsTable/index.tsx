@@ -29,10 +29,8 @@ const Wrapper = styled(StyledUserDetailsTable)`
   tr > td {
     p {
       display: flex;
-      flex-direction: column;
-      img {
-        margin-left: 0;
-      }
+      flex-direction: row;
+      flex-wrap: wrap;
     }
   }
   ${media.mediumDown} {
@@ -59,7 +57,11 @@ const Wrapper = styled(StyledUserDetailsTable)`
       margin: 0;
       margin-bottom: 18px;
       p {
-        align-items: flex-start;
+        align-items: flex-end;
+        flex-direction: column;
+        img {
+          margin-left: 0;
+        }
       }
     }
     .header-value {
