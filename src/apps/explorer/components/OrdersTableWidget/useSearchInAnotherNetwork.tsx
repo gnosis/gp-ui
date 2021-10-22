@@ -46,9 +46,9 @@ export const useSearchInAnotherNetwork = (
   networkId: BlockchainNetwork,
   ownerAddress: string,
   orders: Order[] | undefined,
-  isOrdersLoading: boolean,
 ): string | React.ReactNode => {
   const [ordersInNetworks, setOrdersInNetworks] = useState<OrdersInNetwork[]>([])
+  const isOrdersUndefined = typeof orders === 'undefined'
 
   const renderMessageElement = useCallback(() => {
     if (!networkId) return <Spinner />
@@ -107,10 +107,10 @@ export const useSearchInAnotherNetwork = (
   )
 
   useEffect(() => {
-    if (!networkId || !orders || isOrdersLoading) return
+    if (!networkId || isOrdersUndefined) return
 
     fetchAnotherNetworks(networkId)
-  }, [fetchAnotherNetworks, isOrdersLoading, networkId, orders])
+  }, [fetchAnotherNetworks, isOrdersUndefined, networkId])
 
   return renderMessageElement()
 }
