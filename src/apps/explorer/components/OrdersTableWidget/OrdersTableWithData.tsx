@@ -7,7 +7,7 @@ import { EmptyItemWrapper } from 'components/common/StyledUserDetailsTable'
 import { OrdersTableContext } from './context/OrdersTableContext'
 import useFirstRender from 'hooks/useFirstRender'
 import { DEFAULT_TIMEOUT } from 'const'
-import { useSearchInAnotherNetwork } from './useSearchInAnotherNetwork'
+import { useSearchInAnotherNetwork, EmptyOrdersMessage } from './useSearchInAnotherNetwork'
 
 export const OrdersTableWithData: React.FC = () => {
   const {
@@ -16,7 +16,11 @@ export const OrdersTableWithData: React.FC = () => {
   } = useContext(OrdersTableContext)
   const isFirstRender = useFirstRender()
   const [isFirstLoading, setIsFirstLoading] = useState(true)
-  const messageWhenEmpty = useSearchInAnotherNetwork(networkId, ownerAddress, orders)
+  const {
+    isLoading: searchInAnotherNetworkState,
+    ordersInNetworks,
+    setLoadingState,
+  } = useSearchInAnotherNetwork(networkId, ownerAddress, orders)
 
   useEffect(() => {
     let timeOutMs = 0
@@ -38,6 +42,17 @@ export const OrdersTableWithData: React.FC = () => {
       <FontAwesomeIcon icon={faSpinner} spin size="3x" />
     </EmptyItemWrapper>
   ) : (
-    <OrdersTable orders={orders} messageWhenEmpty={messageWhenEmpty} />
+    <OrdersTable
+      orders={orders}
+      messageWhenEmpty={
+        <EmptyOrdersMessage
+          isLoading={searchInAnotherNetworkState}
+          networkId={networkId}
+          ordersInNetworks={ordersInNetworks}
+          ownerAddress={ownerAddress}
+          setLoadingState={setLoadingState}
+        />
+      }
+    />
   )
 }

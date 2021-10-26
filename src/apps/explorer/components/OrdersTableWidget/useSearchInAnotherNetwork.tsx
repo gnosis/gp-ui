@@ -2,8 +2,9 @@ import React, { useCallback, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
-import { BlockchainNetwork } from './context/OrdersTableContext'
 import { Network } from 'types'
+import { NETWORK_ID_SEARCH_LIST } from 'apps/explorer/const'
+import { BlockchainNetwork } from './context/OrdersTableContext'
 import { Order, getAccountOrders } from 'api/operator'
 import Spinner from 'components/common/Spinner'
 
@@ -13,6 +14,10 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   height: 100%;
+
+  > p {
+    font-weight: 550;
+  }
 
   > section {
     display: flex;
@@ -39,45 +44,51 @@ const Wrapper = styled.div`
 `
 interface OrdersInNetwork {
   network: string
-  count: number
 }
 
-export const useSearchInAnotherNetwork = (
-  networkId: BlockchainNetwork,
-  ownerAddress: string,
-  orders: Order[] | undefined,
-): string | React.ReactNode => {
-  const [ordersInNetworks, setOrdersInNetworks] = useState<OrdersInNetwork[]>([])
-  const [isLoading, setIsLoading] = useState(false)
-  const isOrdersUndefined = typeof orders === 'undefined'
-  const isOrdersLengthZero = !orders || orders.length === 0
+interface ResultSeachInAnotherNetwork {
+  isLoading: boolean
+  ordersInNetworks: OrdersInNetwork[]
+  setLoadingState: (value: boolean) => void
+}
 
-  useEffect(() => {
-    setIsLoading(false)
-  }, [isOrdersLengthZero])
+type EmptyMessageProps = ResultSeachInAnotherNetwork & {
+  networkId: BlockchainNetwork
+  ownerAddress: string
+}
 
-  const renderMessageElement = useCallback(() => {
-    if (!networkId || isLoading) return <Spinner size="2x" />
+export const EmptyOrdersMessage = ({
+  isLoading,
+  networkId,
+  ordersInNetworks,
+  ownerAddress,
+  setLoadingState,
+}: EmptyMessageProps): JSX.Element => {
+  const areOtherNetworks = ordersInNetworks.length > 0
 
-    const _renderMessage = (): string | React.ReactNode => `No orders in ${Network[networkId]} network.`
-    const areOtherNetworks = ordersInNetworks.length > 0
+  if (!networkId || isLoading) {
+    return <Spinner size="2x" />
+  }
 
-    return (
-      <Wrapper>
-        <p>
-          <strong>{_renderMessage()}</strong>
-        </p>
-        {areOtherNetworks && (
+  return (
+    <Wrapper>
+      {!areOtherNetworks ? (
+        <p>No orders found.</p>
+      ) : (
+        <>
+          <p>
+            No orders found on <strong>{Network[networkId]}</strong>.
+          </p>
           <section>
             {' '}
-            <p>But have been detected in:</p>
+            <p>However, found orders on:</p>
             {
               <ul>
                 {ordersInNetworks.map((e) => (
                   <li key={e.network}>
                     <Link
                       to={`/${e.network.toLowerCase()}/address/${ownerAddress}`}
-                      onClick={(): void => setIsLoading(true)}
+                      onClick={(): void => setLoadingState(true)}
                     >
                       {e.network}
                     </Link>
@@ -86,42 +97,53 @@ export const useSearchInAnotherNetwork = (
               </ul>
             }
           </section>
-        )}
-      </Wrapper>
-    )
-  }, [isLoading, networkId, ordersInNetworks, ownerAddress])
+        </>
+      )}
+    </Wrapper>
+  )
+}
+
+export const useSearchInAnotherNetwork = (
+  networkId: BlockchainNetwork,
+  ownerAddress: string,
+  orders: Order[] | undefined,
+): ResultSeachInAnotherNetwork => {
+  const [ordersInNetworks, setOrdersInNetworks] = useState<OrdersInNetwork[]>([])
+  const [isLoading, setIsLoading] = useState(false)
+  const isOrdersLengthZero = !orders || orders.length === 0
+
+  useEffect(() => {
+    setIsLoading(false)
+    setOrdersInNetworks([])
+  }, [isOrdersLengthZero])
 
   const fetchAnotherNetworks = useCallback(
     async (_networkId: Network) => {
-      const NetworkList = [Network.Mainnet, Network.xDAI, Network.Rinkeby]
-
-      const promises = NetworkList.filter((net) => net !== _networkId).map((network) =>
+      const promises = NETWORK_ID_SEARCH_LIST.filter((net) => net !== _networkId).map((network) =>
         getAccountOrders({ networkId: network, owner: ownerAddress, offset: 0, limit: 1 })
           .then((response) => {
-            return { network: Network[network], count: response.length }
+            if (!response.length) return
+
+            return { network: Network[network] }
           })
-          .catch(() => {
-            throw new Error(`Failed to fetch order in ${Network[_networkId]}`)
+          .catch((e) => {
+            console.error(`Failed to fetch order in ${Network[network]}`, e)
           }),
       )
 
-      try {
-        const networksHaveOrders = (await Promise.allSettled(promises)).filter(
-          (e) => e.status === 'fulfilled' && e.value.count,
-        )
-        setOrdersInNetworks(networksHaveOrders.map((e: PromiseFulfilledResult<OrdersInNetwork>) => e.value))
-      } catch (e) {
-        console.error(e.message)
-      }
+      const networksHaveOrders = (await Promise.allSettled(promises)).filter(
+        (e) => e.status === 'fulfilled' && e.value?.network,
+      )
+      setOrdersInNetworks(networksHaveOrders.map((e: PromiseFulfilledResult<OrdersInNetwork>) => e.value))
     },
     [ownerAddress],
   )
 
   useEffect(() => {
-    if (!networkId || isOrdersUndefined || !isOrdersLengthZero) return
+    if (!networkId || !isOrdersLengthZero) return
 
     fetchAnotherNetworks(networkId)
-  }, [fetchAnotherNetworks, isOrdersLengthZero, isOrdersUndefined, networkId])
+  }, [fetchAnotherNetworks, isOrdersLengthZero, networkId])
 
-  return renderMessageElement()
+  return { isLoading, ordersInNetworks, setLoadingState: setIsLoading }
 }
