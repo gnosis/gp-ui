@@ -95,6 +95,15 @@ describe('Basic view functions', () => {
     it('returns name', async () => {
       expect(await instance.name({ tokenAddress: FEE_TOKEN, networkId: NETWORK_ID })).toBe('Fee token')
     })
+
+    it("throws when there's no name 32bytes", async () => {
+      try {
+        await instance.name32Bytes({ tokenAddress: TOKEN_1, networkId: NETWORK_ID })
+        fail('Should not reach')
+      } catch (e) {
+        expect(e.message).toMatch(/token does not implement 'name32Bytes'/)
+      }
+    })
     it("throws when there's no name", async () => {
       try {
         await instance.name({ tokenAddress: TOKEN_1, networkId: NETWORK_ID })
@@ -109,6 +118,16 @@ describe('Basic view functions', () => {
     it('returns symbol', async () => {
       expect(await instance.symbol({ tokenAddress: FEE_TOKEN, networkId: NETWORK_ID })).toBe('FEET')
     })
+
+    it("throws when there's no symbol 32bytes", async () => {
+      try {
+        await instance.symbol32Bytes({ tokenAddress: TOKEN_1, networkId: NETWORK_ID })
+        fail('Should not reach')
+      } catch (e) {
+        expect(e.message).toMatch(/token does not implement 'symbol32Bytes'/)
+      }
+    })
+
     it("throws when there's no symbol", async () => {
       try {
         await instance.symbol({ tokenAddress: TOKEN_1, networkId: NETWORK_ID })
@@ -218,7 +237,7 @@ describe('Write functions', () => {
       await instance
         .transfer({ userAddress: USER_2, tokenAddress: TOKEN_1, toAddress: CONTRACT, amount, networkId: NETWORK_ID })
         .then(() => fail('Should not succeed'))
-        .catch(e => {
+        .catch((e) => {
           expect(e.message).toMatch(/^The user doesn't have enough balance$/)
         })
     })
@@ -303,7 +322,7 @@ describe('Write functions', () => {
         .then(() => {
           fail('Should not succeed')
         })
-        .catch(e => {
+        .catch((e) => {
           expect(e.message).toMatch(/^The user doesn't have enough balance$/)
         })
     })
@@ -321,7 +340,7 @@ describe('Write functions', () => {
         .then(() => {
           fail('Should not succeed')
         })
-        .catch(e => {
+        .catch((e) => {
           expect(e.message).toMatch(/^Not allowed to perform this transfer$/)
         })
     })

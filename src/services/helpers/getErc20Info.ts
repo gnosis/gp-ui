@@ -1,6 +1,6 @@
 import Web3 from 'web3'
 
-import { logDebug, silentPromise, parseStringOrBytes32v2 } from 'utils'
+import { logDebug, silentPromise, parseStringOrBytes32 } from 'utils'
 import { DEFAULT_PRECISION } from 'const'
 import { Erc20Api } from 'api/erc20/Erc20Api'
 import { TokenErc20 } from '@gnosis.pm/dex-js'
@@ -42,8 +42,8 @@ export async function getErc20Info({ tokenAddress, networkId, erc20Api, web3 }: 
   ])
   return {
     address: tokenAddress,
-    symbol: parseStringOrBytes32v2(symbol, 'UNKNOWN'),
-    name: parseStringOrBytes32v2(name, 'Unknown Token'),
+    symbol: parseStringOrBytes32(symbol, 'UNKNOWN'),
+    name: parseStringOrBytes32(name, 'Unknown Token'),
     decimals: decimals || DEFAULT_PRECISION,
   }
 }
