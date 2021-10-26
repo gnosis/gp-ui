@@ -56,7 +56,6 @@ export class Erc20ApiMock implements Erc20Api {
   }
   public async name32Bytes({ tokenAddress }: NameParams): Promise<string> {
     const erc20Info = this._initTokens(tokenAddress)
-
     // Throws when token without `name32Bytes` to mock contract behavior
     assert(erc20Info.name32Bytes, "token does not implement 'name32Bytes'")
 

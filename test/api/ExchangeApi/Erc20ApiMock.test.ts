@@ -96,6 +96,15 @@ describe('Basic view functions', () => {
       expect(await instance.name({ tokenAddress: FEE_TOKEN, networkId: NETWORK_ID })).toBe('Fee token')
     })
 
+    it('returns name32bytes', async () => {
+      expect(
+        await instance.name32Bytes({
+          tokenAddress: '0xF1290473E210b2108A85237fbCd7b6eb42Cc654F',
+          networkId: NETWORK_ID,
+        }),
+      ).toBe('0x4865646765547261646500000000000000000000000000000000000000000000')
+    })
+
     it("throws when there's no name 32bytes", async () => {
       try {
         await instance.name32Bytes({ tokenAddress: TOKEN_1, networkId: NETWORK_ID })
@@ -117,6 +126,15 @@ describe('Basic view functions', () => {
   describe('symbol', () => {
     it('returns symbol', async () => {
       expect(await instance.symbol({ tokenAddress: FEE_TOKEN, networkId: NETWORK_ID })).toBe('FEET')
+    })
+
+    it('returns symbol32bytes', async () => {
+      expect(
+        await instance.symbol32Bytes({
+          tokenAddress: '0xF1290473E210b2108A85237fbCd7b6eb42Cc654F',
+          networkId: NETWORK_ID,
+        }),
+      ).toBe('0x4845444700000000000000000000000000000000000000000000000000000000')
     })
 
     it("throws when there's no symbol 32bytes", async () => {
