@@ -115,10 +115,12 @@ export class Erc20ApiImpl implements Erc20Api {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ;(window as any).erc20 = this._contractPrototype
   }
+  
   public async name32Bytes({ tokenAddress }: NameParams): Promise<string> {
     this._contract32BytesPrototype.options.address = tokenAddress
     return this._contract32BytesPrototype.methods.name().call()
   }
+  
   public async symbol32Bytes({ tokenAddress }: NameParams): Promise<string> {
     this._contract32BytesPrototype.options.address = tokenAddress
     return this._contract32BytesPrototype.methods.symbol().call()
