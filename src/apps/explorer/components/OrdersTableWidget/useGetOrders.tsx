@@ -26,7 +26,7 @@ type Result = {
 export function useGetOrders(ownerAddress: string, limit = 1000, offset = 0, pageIndex?: number): Result {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
-  const [orders, setOrders] = useState<Order[]>()
+  const [orders, setOrders] = useState<Order[] | undefined>()
   const networkId = useNetworkId() || undefined
   const [erc20Addresses, setErc20Addresses] = useState<string[]>([])
   const { value: valueErc20s, isLoading: areErc20Loading } = useMultipleErc20({ networkId, addresses: erc20Addresses })
