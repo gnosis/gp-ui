@@ -154,7 +154,7 @@ const RowOrder: React.FC<RowProps> = ({ order, isPriceInverted }) => {
     setIsPriceInverted((previousValue) => !previousValue)
   }
 
-  const renderSpinnerIfDash = (textValue: string): JSX.Element | void => {
+  const renderSpinnerWhenNoValue = (textValue: string): JSX.Element | void => {
     if (textValue === '-') return <FontAwesomeIcon icon={faSpinner} spin size="1x" />
   }
 
@@ -185,7 +185,7 @@ const RowOrder: React.FC<RowProps> = ({ order, isPriceInverted }) => {
       <td>
         <HeaderTitle>Sell Amount</HeaderTitle>
         <HeaderValue>
-          {renderSpinnerIfDash(sellFormattedAmount) || (
+          {renderSpinnerWhenNoValue(sellFormattedAmount) || (
             <TextWithTooltip textInTooltip={`${sellFormattedAmount} ${sellTokenSymbol}`}>
               {formattedAmount(sellToken, sellAmount.plus(order.feeAmount), FormatAmountPrecision.highPrecision)}{' '}
               {sellToken && network && <TokenDisplay showAbbreviated erc20={sellToken} network={network} />}
@@ -196,7 +196,7 @@ const RowOrder: React.FC<RowProps> = ({ order, isPriceInverted }) => {
       <td>
         <HeaderTitle>Buy amount</HeaderTitle>
         <HeaderValue>
-          {renderSpinnerIfDash(buyFormattedAmount) || (
+          {renderSpinnerWhenNoValue(buyFormattedAmount) || (
             <TextWithTooltip textInTooltip={`${buyFormattedAmount} ${buyTokenSymbol}`}>
               {formattedAmount(buyToken, buyAmount, FormatAmountPrecision.highPrecision)}{' '}
               {buyToken && network && <TokenDisplay showAbbreviated erc20={buyToken} network={network} />}
@@ -208,7 +208,7 @@ const RowOrder: React.FC<RowProps> = ({ order, isPriceInverted }) => {
         <HeaderTitle>
           Limit price <Icon icon={faExchangeAlt} onClick={invertLimitPrice} />
         </HeaderTitle>
-        <HeaderValue>{renderSpinnerIfDash(limitPriceSettled) || limitPriceSettled}</HeaderValue>
+        <HeaderValue>{renderSpinnerWhenNoValue(limitPriceSettled) || limitPriceSettled}</HeaderValue>
       </td>
       <td>
         <HeaderTitle>Created</HeaderTitle>
