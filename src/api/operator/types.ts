@@ -19,7 +19,14 @@ export interface FeeInformation {
 
 export type OrderKind = 'sell' | 'buy'
 
-export type OrderStatus = 'open' | 'filled' | 'canceled' | 'expired'
+export type OrderStatus = 'open' | 'filled' | 'cancelled' | 'expired' | 'signature pending'
+export enum RawOrderStatusFromAPI {
+  signaturePending,
+  open,
+  fulfilled,
+  cancelled,
+  expired,
+}
 
 // Raw API response
 export type RawOrder = {

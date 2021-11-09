@@ -12,7 +12,7 @@ function setStatusColors({ theme, status }: { theme: DefaultTheme; status: Order
 
   switch (status) {
     case 'expired':
-    case 'canceled':
+    case 'cancelled':
       text = theme.orange
       background = theme.orangeOpacity
       break
@@ -21,6 +21,7 @@ function setStatusColors({ theme, status }: { theme: DefaultTheme; status: Order
       background = theme.greenOpacity
       break
     case 'open':
+    case 'signature pending':
       text = theme.labelTextOpen
       background = theme.labelBgOpen
       break
@@ -65,9 +66,10 @@ function getStatusIcon(status: OrderStatus): IconDefinition {
       return faClock
     case 'filled':
       return faCheckCircle
-    case 'canceled':
+    case 'cancelled':
       return faTimesCircle
     case 'open':
+    case 'signature pending':
       return faCircleNotch
   }
 }
