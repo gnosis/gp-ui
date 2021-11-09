@@ -44,7 +44,7 @@ interface RawOrderWithStatus extends RawOrder {
   status: RawOrderStatusFromAPI
 }
 
-function isRawOrderStatus(order: RawOrder): order is RawOrderWithStatus {
+function hasRawOrderStatus(order: RawOrder): order is RawOrderWithStatus {
   return (order as RawOrderWithStatus).status !== undefined
 }
 
@@ -55,7 +55,7 @@ export function getOrderStatus(order: RawOrder): OrderStatus {
     return 'cancelled'
   } else if (isOrderExpired(order)) {
     return 'expired'
-  } else if (isRawOrderStatus(order) && order.status === RawOrderStatusFromAPI.signaturePending) {
+  } else if (hasRawOrderStatus(order) && order.status === RawOrderStatusFromAPI.presignaturePending) {
     return 'signature pending'
   } else {
     return 'open'

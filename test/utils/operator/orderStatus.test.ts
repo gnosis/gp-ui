@@ -121,7 +121,7 @@ describe('Canceled status', () => {
       buyAmount: '10000',
       invalidated: true,
     }
-    expect(getOrderStatus(order)).toEqual('canceled')
+    expect(getOrderStatus(order)).toEqual('cancelled')
   })
   test('Sell order', () => {
     const order: RawOrder = {
@@ -130,7 +130,7 @@ describe('Canceled status', () => {
       sellAmount: '10000',
       invalidated: true,
     }
-    expect(getOrderStatus(order)).toEqual('canceled')
+    expect(getOrderStatus(order)).toEqual('cancelled')
   })
   test('Expired and invalidated', () => {
     const order: RawOrder = {
@@ -140,7 +140,7 @@ describe('Canceled status', () => {
       invalidated: true,
       validTo: _getPastTimestamp(),
     }
-    expect(getOrderStatus(order)).toEqual('canceled')
+    expect(getOrderStatus(order)).toEqual('cancelled')
   })
 })
 

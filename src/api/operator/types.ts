@@ -21,11 +21,11 @@ export type OrderKind = 'sell' | 'buy'
 
 export type OrderStatus = 'open' | 'filled' | 'cancelled' | 'expired' | 'signature pending'
 export enum RawOrderStatusFromAPI {
-  signaturePending,
-  open,
-  fulfilled,
-  cancelled,
-  expired,
+  presignaturePending = 'presignaturePending',
+  open = 'open',
+  fulfilled = 'fullfilled',
+  cancelled = 'cancelled',
+  expired = 'expired',
 }
 
 // Raw API response

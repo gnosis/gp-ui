@@ -76,7 +76,7 @@ function getStatusIcon(status: OrderStatus): IconDefinition {
 
 function StatusIcon({ status }: DisplayProps): JSX.Element {
   const icon = getStatusIcon(status)
-  const isOpen = status === 'open'
+  const isOpen = ['open', 'signature pending'].includes(status)
 
   return <StyledFAIcon icon={icon} spin={isOpen} />
 }
