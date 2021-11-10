@@ -1,6 +1,6 @@
-import { RawOrder } from 'api/operator'
+import { RawOrder, RawOrderStatusFromAPI } from 'api/operator'
 
-import { getOrderStatus } from 'utils'
+import { getOrderStatus, RawOrderWithStatus } from 'utils'
 
 import { RAW_ORDER } from '../../data'
 import { mockTimes, DATE } from '../../testHelpers'
@@ -238,6 +238,52 @@ describe('Open status', () => {
         validTo: _getCurrentTimestamp(),
       }
       expect(getOrderStatus(order)).toEqual('open')
+    })
+  })
+})
+
+describe('Presignature pending status', () => {
+  describe('Buy order', () => {
+    test('signature is pending', () => {
+      const statusFetched: RawOrderStatusFromAPI = 'presignaturePending'
+
+      const order: RawOrderWithStatus = {
+        ...RAW_ORDER,
+        kind: 'buy',
+        status: statusFetched,
+        buyAmount: '10000',
+        executedBuyAmount: '0',
+        validTo: _getCurrentTimestamp(),
+      }
+      expect(getOrderStatus(order)).toEqual('signature pending')
+    })
+    test('signature is not pending', () => {
+      const statusFetched: RawOrderStatusFromAPI = 'open'
+
+      const order: RawOrderWithStatus = {
+        ...RAW_ORDER,
+        kind: 'buy',
+        status: statusFetched,
+        buyAmount: '10000',
+        executedBuyAmount: '0',
+        validTo: _getCurrentTimestamp(),
+      }
+      expect(getOrderStatus(order)).not.toEqual('signature pending')
+    })
+  })
+  describe('Sell order', () => {
+    test('signature is pending', () => {
+      const statusFetched: RawOrderStatusFromAPI = 'presignaturePending'
+
+      const order: RawOrderWithStatus = {
+        ...RAW_ORDER,
+        kind: 'sell',
+        status: statusFetched,
+        sellAmount: '10000',
+        executedSellAmount: '0',
+        validTo: _getCurrentTimestamp(),
+      }
+      expect(getOrderStatus(order)).toEqual('signature pending')
     })
   })
 })

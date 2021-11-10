@@ -40,22 +40,24 @@ function isOrderPartiallyFilled(order: RawOrder): boolean {
   }
 }
 
-interface RawOrderWithStatus extends RawOrder {
+export interface RawOrderWithStatus extends RawOrder {
   status: RawOrderStatusFromAPI
 }
 
-function hasRawOrderStatus(order: RawOrder): order is RawOrderWithStatus {
-  return (order as RawOrderWithStatus).status !== undefined
+function isOrderPresigning(order: RawOrder): boolean {
+  return (order as RawOrderWithStatus).status === 'presignaturePending'
 }
 
 export function getOrderStatus(order: RawOrder): OrderStatus {
+  const date = new Date(order.creationDate)
+  if (date > new Date('2021-11-10T03:44:29.471646Z')) console.log(order)
   if (isOrderFilled(order)) {
     return 'filled'
   } else if (order.invalidated) {
     return 'cancelled'
   } else if (isOrderExpired(order)) {
     return 'expired'
-  } else if (hasRawOrderStatus(order) && order.status === RawOrderStatusFromAPI.presignaturePending) {
+  } else if (isOrderPresigning(order)) {
     return 'signature pending'
   } else {
     return 'open'

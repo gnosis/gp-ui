@@ -1,7 +1,14 @@
 import React from 'react'
-import styled, { DefaultTheme } from 'styled-components'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheckCircle, faCircleNotch, faClock, faTimesCircle, IconDefinition } from '@fortawesome/free-solid-svg-icons'
+import styled, { DefaultTheme, css, keyframes, FlattenSimpleInterpolation } from 'styled-components'
+import { FontAwesomeIcon, FontAwesomeIconProps } from '@fortawesome/react-fontawesome'
+import {
+  faCheckCircle,
+  faCircleNotch,
+  faClock,
+  faTimesCircle,
+  IconDefinition,
+  faKey,
+} from '@fortawesome/free-solid-svg-icons'
 
 import { OrderStatus } from 'api/operator'
 
@@ -50,8 +57,28 @@ const Label = styled.div<DisplayProps>`
   ${({ theme, status }): string => setStatusColors({ theme, status })}
 `
 
-const StyledFAIcon = styled(FontAwesomeIcon)`
+const frameAnimation = keyframes`
+    100% {
+      -webkit-mask-position: left;
+    }
+`
+type StyledFAIconProps = FontAwesomeIconProps & {
+  $shimming?: boolean
+}
+
+const StyledFAIcon = styled(FontAwesomeIcon)<StyledFAIconProps>`
   margin: 0 0.75rem 0 0;
+  ${(props): FlattenSimpleInterpolation | null =>
+    props.$shimming
+      ? css`
+          display: inline-block;
+          -webkit-mask: linear-gradient(-60deg, #000 30%, #0005, #000 70%) right/300% 100%;
+          mask: linear-gradient(-60deg, #000 30%, #0005, #000 70%) right/300% 100%;
+          background-repeat: no-repeat;
+          animation: shimmer 1.5s infinite;
+          animation-name: ${frameAnimation};
+        `
+      : null}
 `
 
 const PartialFill = styled.div`
@@ -68,17 +95,19 @@ function getStatusIcon(status: OrderStatus): IconDefinition {
       return faCheckCircle
     case 'cancelled':
       return faTimesCircle
-    case 'open':
     case 'signature pending':
+      return faKey
+    case 'open':
       return faCircleNotch
   }
 }
 
 function StatusIcon({ status }: DisplayProps): JSX.Element {
   const icon = getStatusIcon(status)
-  const isOpen = ['open', 'signature pending'].includes(status)
+  const isOpen = status === 'open'
+  const shimming = status === 'signature pending'
 
-  return <StyledFAIcon icon={icon} spin={isOpen} />
+  return <StyledFAIcon icon={icon} spin={isOpen} $shimming={shimming} />
 }
 
 export type Props = DisplayProps & { partiallyFilled: boolean }
