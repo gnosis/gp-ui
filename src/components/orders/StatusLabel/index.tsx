@@ -1,6 +1,6 @@
 import React from 'react'
 import styled, { DefaultTheme, css, keyframes, FlattenSimpleInterpolation } from 'styled-components'
-import { FontAwesomeIcon, FontAwesomeIconProps } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faCheckCircle,
   faCircleNotch,
@@ -45,8 +45,16 @@ const Wrapper = styled.div`
   align-items: center;
   font-size: ${({ theme }): string => theme.fontSizeDefault};
 `
+const frameAnimation = keyframes`
+    100% {
+      -webkit-mask-position: left;
+    }
+`
+type ShimmingProps = {
+  shimming?: boolean
+}
 
-const Label = styled.div<DisplayProps>`
+const Label = styled.div<DisplayProps & ShimmingProps>`
   font-weight: ${({ theme }): string => theme.fontBold};
   text-transform: capitalize;
   border-radius: 0.4rem;
@@ -55,21 +63,8 @@ const Label = styled.div<DisplayProps>`
   display: flex;
   align-items: center;
   ${({ theme, status }): string => setStatusColors({ theme, status })}
-`
-
-const frameAnimation = keyframes`
-    100% {
-      -webkit-mask-position: left;
-    }
-`
-type StyledFAIconProps = FontAwesomeIconProps & {
-  $shimming?: boolean
-}
-
-const StyledFAIcon = styled(FontAwesomeIcon)<StyledFAIconProps>`
-  margin: 0 0.75rem 0 0;
-  ${(props): FlattenSimpleInterpolation | null =>
-    props.$shimming
+  ${({ shimming }): FlattenSimpleInterpolation | null =>
+    shimming
       ? css`
           display: inline-block;
           -webkit-mask: linear-gradient(-60deg, #000 30%, #0005, #000 70%) right/300% 100%;
@@ -79,6 +74,10 @@ const StyledFAIcon = styled(FontAwesomeIcon)<StyledFAIconProps>`
           animation-name: ${frameAnimation};
         `
       : null}
+`
+
+const StyledFAIcon = styled(FontAwesomeIcon)`
+  margin: 0 0.75rem 0 0;
 `
 
 const PartialFill = styled.div`
@@ -105,19 +104,19 @@ function getStatusIcon(status: OrderStatus): IconDefinition {
 function StatusIcon({ status }: DisplayProps): JSX.Element {
   const icon = getStatusIcon(status)
   const isOpen = status === 'open'
-  const shimming = status === 'signing'
 
-  return <StyledFAIcon icon={icon} spin={isOpen} $shimming={shimming} />
+  return <StyledFAIcon icon={icon} spin={isOpen} />
 }
 
 export type Props = DisplayProps & { partiallyFilled: boolean }
 
 export function StatusLabel(props: Props): JSX.Element {
   const { status, partiallyFilled } = props
+  const shimming = status === 'signing'
 
   return (
     <Wrapper>
-      <Label status={status}>
+      <Label status={status} shimming={shimming}>
         <StatusIcon status={status} />
         {status}
       </Label>
