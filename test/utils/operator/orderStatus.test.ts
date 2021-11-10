@@ -1,6 +1,6 @@
 import { RawOrder, RawOrderStatusFromAPI } from 'api/operator'
 
-import { getOrderStatus, RawOrderWithStatus } from 'utils'
+import { getOrderStatus } from 'utils'
 
 import { RAW_ORDER } from '../../data'
 import { mockTimes, DATE } from '../../testHelpers'
@@ -247,7 +247,7 @@ describe('Presignature pending status', () => {
     test('signature is pending', () => {
       const statusFetched: RawOrderStatusFromAPI = 'presignaturePending'
 
-      const order: RawOrderWithStatus = {
+      const order: RawOrder = {
         ...RAW_ORDER,
         kind: 'buy',
         status: statusFetched,
@@ -260,7 +260,7 @@ describe('Presignature pending status', () => {
     test('signature is not pending', () => {
       const statusFetched: RawOrderStatusFromAPI = 'open'
 
-      const order: RawOrderWithStatus = {
+      const order: RawOrder = {
         ...RAW_ORDER,
         kind: 'buy',
         status: statusFetched,
@@ -275,7 +275,7 @@ describe('Presignature pending status', () => {
     test('signature is pending', () => {
       const statusFetched: RawOrderStatusFromAPI = 'presignaturePending'
 
-      const order: RawOrderWithStatus = {
+      const order: RawOrder = {
         ...RAW_ORDER,
         kind: 'sell',
         status: statusFetched,

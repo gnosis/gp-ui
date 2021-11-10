@@ -5,7 +5,7 @@ import { calculatePrice, invertPrice, TokenErc20 } from '@gnosis.pm/dex-js'
 
 import { FILLED_ORDER_EPSILON, ONE_BIG_NUMBER, ZERO_BIG_NUMBER } from 'const'
 
-import { Order, OrderStatus, RawOrderStatusFromAPI, RawOrder, RawTrade, Trade } from 'api/operator/types'
+import { Order, OrderStatus, RawOrder, RawTrade, Trade } from 'api/operator/types'
 
 import { formattingAmountPrecision, formatSmartMaxPrecision } from 'utils'
 
@@ -40,12 +40,8 @@ function isOrderPartiallyFilled(order: RawOrder): boolean {
   }
 }
 
-export interface RawOrderWithStatus extends RawOrder {
-  status: RawOrderStatusFromAPI
-}
-
 function isOrderPresigning(order: RawOrder): boolean {
-  return (order as RawOrderWithStatus).status === 'presignaturePending'
+  return order.status === 'presignaturePending'
 }
 
 export function getOrderStatus(order: RawOrder): OrderStatus {
