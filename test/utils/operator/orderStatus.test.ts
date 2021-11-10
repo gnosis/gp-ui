@@ -255,7 +255,7 @@ describe('Presignature pending status', () => {
         executedBuyAmount: '0',
         validTo: _getCurrentTimestamp(),
       }
-      expect(getOrderStatus(order)).toEqual('signature pending')
+      expect(getOrderStatus(order)).toEqual('signing')
     })
     test('signature is not pending', () => {
       const statusFetched: RawOrderStatusFromAPI = 'open'
@@ -268,7 +268,7 @@ describe('Presignature pending status', () => {
         executedBuyAmount: '0',
         validTo: _getCurrentTimestamp(),
       }
-      expect(getOrderStatus(order)).not.toEqual('signature pending')
+      expect(getOrderStatus(order)).not.toEqual('signing')
     })
   })
   describe('Sell order', () => {
@@ -283,7 +283,7 @@ describe('Presignature pending status', () => {
         executedSellAmount: '0',
         validTo: _getCurrentTimestamp(),
       }
-      expect(getOrderStatus(order)).toEqual('signature pending')
+      expect(getOrderStatus(order)).toEqual('signing')
     })
   })
 })

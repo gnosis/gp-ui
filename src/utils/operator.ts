@@ -49,8 +49,6 @@ function isOrderPresigning(order: RawOrder): boolean {
 }
 
 export function getOrderStatus(order: RawOrder): OrderStatus {
-  const date = new Date(order.creationDate)
-  if (date > new Date('2021-11-10T03:44:29.471646Z')) console.log(order)
   if (isOrderFilled(order)) {
     return 'filled'
   } else if (order.invalidated) {
@@ -58,7 +56,7 @@ export function getOrderStatus(order: RawOrder): OrderStatus {
   } else if (isOrderExpired(order)) {
     return 'expired'
   } else if (isOrderPresigning(order)) {
-    return 'signature pending'
+    return 'signing'
   } else {
     return 'open'
   }
