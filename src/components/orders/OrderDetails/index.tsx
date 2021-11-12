@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import { media } from 'theme/styles/media'
 
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -8,30 +7,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Order, Trade } from 'api/operator'
 
 import { DetailsTable } from 'components/orders/DetailsTable'
-import { OrderNotFound } from 'components/orders/OrderNotFound'
 import { RowWithCopyButton } from 'components/common/RowWithCopyButton'
-
-const Wrapper = styled.div`
-  padding: 1.6rem;
-  margin: 0 auto;
-  width: 100%;
-  max-width: 140rem;
-
-  ${media.mediumDown} {
-    max-width: 94rem;
-  }
-
-  ${media.mobile} {
-    max-width: 100%;
-  }
-
-  > h1 {
-    display: flex;
-    padding: 2.4rem 0 0.75rem;
-    align-items: center;
-    font-weight: ${({ theme }): string => theme.fontBold};
-  }
-`
+import { Redirect } from 'react-router-dom'
 
 const TitleUid = styled(RowWithCopyButton)`
   color: ${({ theme }): string => theme.grey};
@@ -43,7 +20,8 @@ const TitleUid = styled(RowWithCopyButton)`
 `
 
 export type Props = {
-  order: Order | null
+  order: Order | null | undefined
+  orderId?: string
   trades: Trade[]
   isOrderLoading: boolean
   areTradesLoading: boolean
@@ -51,7 +29,7 @@ export type Props = {
 }
 
 export const OrderDetails: React.FC<Props> = (props) => {
-  const { order, isOrderLoading, areTradesLoading, errors, trades } = props
+  const { order, orderId, isOrderLoading, areTradesLoading, errors, trades } = props
   const areTokensLoaded = order?.buyToken && order?.sellToken
   const isLoadingForTheFirstTime = isOrderLoading && !areTokensLoaded
 
@@ -59,16 +37,12 @@ export const OrderDetails: React.FC<Props> = (props) => {
   // Partially fillable order will have a tab only for the trades
   const txHash = order && !order.partiallyFillable && trades && trades.length === 1 ? trades[0].txHash : undefined
 
-  if (!order && !isOrderLoading) {
-    return (
-      <Wrapper>
-        <OrderNotFound />
-      </Wrapper>
-    )
+  if (order === null && !isOrderLoading) {
+    return <Redirect push={false} to={`/search/${orderId}`} />
   }
 
   return (
-    <Wrapper>
+    <>
       <h1>
         {order && 'Order details'}
         {order && <TitleUid textToCopy={order.uid} contentsToDisplay={order.shortId} />}
@@ -83,6 +57,6 @@ export const OrderDetails: React.FC<Props> = (props) => {
       ))}
       {/* TODO: create common loading indicator */}
       {isLoadingForTheFirstTime && <FontAwesomeIcon icon={faSpinner} spin size="3x" />}
-    </Wrapper>
+    </>
   )
 }

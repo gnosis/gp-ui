@@ -32,6 +32,7 @@ export const OrderWidget: React.FC = () => {
   return (
     <OrderDetails
       order={order}
+      orderId={orderId}
       trades={trades}
       isOrderLoading={isOrderLoading}
       areTradesLoading={areTradesLoading}

@@ -75,7 +75,7 @@ export const OrderNotFound: React.FC = () => {
 
   return (
     <>
-      <Title>Order not found</Title>
+      <Title>Order or Address not found</Title>
       <Content>
         <p>Sorry, no matches found for:</p>
         <p>
