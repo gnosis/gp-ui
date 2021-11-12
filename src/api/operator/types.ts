@@ -42,7 +42,7 @@ export type RawOrder = {
   kind: OrderKind
   partiallyFillable: boolean
   signature: string
-  status?: RawOrderStatusFromAPI
+  status: RawOrderStatusFromAPI
 }
 
 /**
