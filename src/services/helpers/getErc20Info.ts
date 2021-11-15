@@ -45,6 +45,6 @@ export async function getErc20Info({ tokenAddress, networkId, erc20Api, web3 }: 
     address: tokenAddress,
     symbol: parseStringOrBytes32(symbol, 'UNKNOWN'),
     name: parseStringOrBytes32(name, 'Unknown Token'),
-    decimals: decimals !== undefined && decimals >= 0 ? decimals : DEFAULT_PRECISION,
+    decimals: decimals ?? DEFAULT_PRECISION,
   }
 }
