@@ -118,7 +118,7 @@ const AppContent = (): JSX.Element => {
           <Route path={pathPrefix + '/'} exact component={Home} />
           <Route path={pathPrefix + '/orders/:orderId'} exact component={Order} />
           <Route path={pathPrefix + '/address/:address'} exact component={UserDetails} />
-          <Route path={pathPrefix + '/search/:orderId'} exact component={SearchNotFound} />
+          <Route path={pathPrefix + '/search/:searchString'} exact component={SearchNotFound} />
           <Route component={NotFound} />
         </Switch>
       </React.Suspense>

@@ -9,6 +9,7 @@ import { Order, Trade } from 'api/operator'
 import { DetailsTable } from 'components/orders/DetailsTable'
 import { RowWithCopyButton } from 'components/common/RowWithCopyButton'
 import { Redirect } from 'react-router-dom'
+import { useOrderIdParam } from 'hooks/useSanitizeOrderIdAndUpdateUrl'
 
 const TitleUid = styled(RowWithCopyButton)`
   color: ${({ theme }): string => theme.grey};
@@ -21,7 +22,6 @@ const TitleUid = styled(RowWithCopyButton)`
 
 export type Props = {
   order: Order | null | undefined
-  orderId?: string
   trades: Trade[]
   isOrderLoading: boolean
   areTradesLoading: boolean
@@ -29,9 +29,10 @@ export type Props = {
 }
 
 export const OrderDetails: React.FC<Props> = (props) => {
-  const { order, orderId, isOrderLoading, areTradesLoading, errors, trades } = props
+  const { order, isOrderLoading, areTradesLoading, errors, trades } = props
   const areTokensLoaded = order?.buyToken && order?.sellToken
   const isLoadingForTheFirstTime = isOrderLoading && !areTokensLoaded
+  const orderId = useOrderIdParam()
 
   // Only set txHash for fillOrKill orders, if any
   // Partially fillable order will have a tab only for the trades
