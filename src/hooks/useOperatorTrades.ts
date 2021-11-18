@@ -62,7 +62,7 @@ export function useTrades(params: Params): Result {
 /**
  * Fetches trades for given order
  */
-export function useOrderTrades(order: Order | null | undefined): Result {
+export function useOrderTrades(order: Order | null): Result {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const [trades, setTrades] = useState<Trade[]>([])

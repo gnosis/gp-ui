@@ -1,4 +1,5 @@
 import React from 'react'
+import { useParams } from 'react-router'
 import styled from 'styled-components'
 import { Search } from 'apps/explorer/components/common/Search'
 import SupportIcon from 'assets/img/support.png'
@@ -68,11 +69,9 @@ const Support = styled.a`
     text-decoration: none;
   }
 `
-interface OrderNorFoundProps {
-  searchString: string
-}
+export const OrderAddressNotFound: React.FC = (): JSX.Element => {
+  const { searchString } = useParams<{ searchString: string }>()
 
-export const OrderNotFound: React.FC<OrderNorFoundProps> = ({ searchString }): JSX.Element => {
   return (
     <>
       <Title>Order or Address not found</Title>

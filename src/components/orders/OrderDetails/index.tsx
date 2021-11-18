@@ -8,8 +8,7 @@ import { Order, Trade } from 'api/operator'
 
 import { DetailsTable } from 'components/orders/DetailsTable'
 import { RowWithCopyButton } from 'components/common/RowWithCopyButton'
-import { Redirect } from 'react-router-dom'
-import { useOrderIdParam } from 'hooks/useSanitizeOrderIdAndUpdateUrl'
+import { OrderAddressNotFound } from 'components/orders/OrderNotFound'
 
 const TitleUid = styled(RowWithCopyButton)`
   color: ${({ theme }): string => theme.grey};
@@ -21,7 +20,7 @@ const TitleUid = styled(RowWithCopyButton)`
 `
 
 export type Props = {
-  order: Order | null | undefined
+  order: Order | null
   trades: Trade[]
   isOrderLoading: boolean
   areTradesLoading: boolean
@@ -32,14 +31,13 @@ export const OrderDetails: React.FC<Props> = (props) => {
   const { order, isOrderLoading, areTradesLoading, errors, trades } = props
   const areTokensLoaded = order?.buyToken && order?.sellToken
   const isLoadingForTheFirstTime = isOrderLoading && !areTokensLoaded
-  const orderId = useOrderIdParam()
 
   // Only set txHash for fillOrKill orders, if any
   // Partially fillable order will have a tab only for the trades
   const txHash = order && !order.partiallyFillable && trades && trades.length === 1 ? trades[0].txHash : undefined
 
-  if (order === null && !isOrderLoading) {
-    return <Redirect push={false} to={`/search/${orderId}`} />
+  if (!order && !isOrderLoading) {
+    return <OrderAddressNotFound />
   }
 
   return (

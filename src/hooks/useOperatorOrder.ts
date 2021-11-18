@@ -11,7 +11,7 @@ import { Network } from 'types'
 import { NETWORK_ID_SEARCH_LIST } from 'apps/explorer/const'
 
 type UseOrderResult = {
-  order: Order | null | undefined
+  order: Order | null
   error?: string
   isLoading: boolean
   errorOrderPresentInNetworkId: Network | null
@@ -62,7 +62,7 @@ async function _getOrder(
 export function useOrderByNetwork(orderId: string, networkId: Network | null, updateInterval = 0): UseOrderResult {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
-  const [order, setOrder] = useState<Order | null | undefined>()
+  const [order, setOrder] = useState<Order | null>(null)
   const [errorOrderPresentInNetworkId, setErrorOrderPresentInNetworkId] = useState<Network | null>(null)
   // Hack to force component to update itself on demand
   const [forcedUpdate, setForcedUpdate] = useState({})
@@ -81,8 +81,9 @@ export function useOrderByNetwork(orderId: string, networkId: Network | null, up
           orderId,
         )
         console.log({ rawOrder, errorOrderPresentInNetworkIdRaw })
-        setOrder(rawOrder ? transformOrder(rawOrder) : null)
-
+        if (rawOrder) {
+          setOrder(transformOrder(rawOrder))
+        }
         if (errorOrderPresentInNetworkIdRaw) {
           setErrorOrderPresentInNetworkId(errorOrderPresentInNetworkIdRaw)
         }
@@ -123,7 +124,7 @@ export function useOrder(orderId: string, updateInterval?: number): UseOrderResu
 }
 
 type UseOrderAndErc20sResult = {
-  order: Order | null | undefined
+  order: Order | null
   isLoading: boolean
   errors: Record<string, string>
   errorOrderPresentInNetworkId: Network | null
