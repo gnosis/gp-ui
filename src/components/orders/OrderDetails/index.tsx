@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
@@ -8,7 +8,8 @@ import { Order, Trade } from 'api/operator'
 
 import { DetailsTable } from 'components/orders/DetailsTable'
 import { RowWithCopyButton } from 'components/common/RowWithCopyButton'
-import { OrderAddressNotFound } from 'components/orders/OrderNotFound'
+import { usePathPrefix, usePathSuffix } from 'state/network'
+import { Redirect } from 'react-router-dom'
 
 const TitleUid = styled(RowWithCopyButton)`
   color: ${({ theme }): string => theme.grey};
@@ -27,17 +28,39 @@ export type Props = {
   errors: Record<string, string>
 }
 
+function RedirectToSearch(): JSX.Element {
+  const prefix = usePathPrefix() || ''
+  const suffix = usePathSuffix() || ''
+  const pathMatchArray = suffix.match('orders(.*)')
+  const newPath =
+    pathMatchArray && pathMatchArray.length > 0 ? `/${prefix}/search${pathMatchArray[1]}` : `${prefix}${suffix}`
+
+  return <Redirect push={false} to={newPath} />
+}
+
 export const OrderDetails: React.FC<Props> = (props) => {
   const { order, isOrderLoading, areTradesLoading, errors, trades } = props
   const areTokensLoaded = order?.buyToken && order?.sellToken
   const isLoadingForTheFirstTime = isOrderLoading && !areTokensLoaded
+  const [redirectTo, setRedirectTo] = useState(false)
 
   // Only set txHash for fillOrKill orders, if any
   // Partially fillable order will have a tab only for the trades
   const txHash = order && !order.partiallyFillable && trades && trades.length === 1 ? trades[0].txHash : undefined
 
-  if (!order && !isOrderLoading) {
-    return <OrderAddressNotFound />
+  // Avoid redirecting until another network is searched again
+  useEffect(() => {
+    if (order || isOrderLoading) return
+
+    const timer = setTimeout(() => {
+      setRedirectTo(true)
+    }, 500)
+
+    return (): void => clearTimeout(timer)
+  })
+
+  if (redirectTo) {
+    return <RedirectToSearch />
   }
 
   return (
