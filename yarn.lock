@@ -23,9 +23,9 @@
     xlsx "^0.17.0"
 
 "@apollo/client@^3.1.5":
-  version "3.5.3"
-  resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.5.3.tgz#938181be042cdd31152948fd6ac915bae0dc1f70"
-  integrity sha512-Zo6OzaKIoLADsq0afpnuq0x/SI+gr9TXukDN5AvaIfU5Jwm37TNpzayDUx3Xgu1G4lmt5UBDTg7MUoaBa53yoQ==
+  version "3.5.4"
+  resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.5.4.tgz#a2c1c1c377c5ffb5822dd6269a741749b3ad5df3"
+  integrity sha512-6kybsXEdtRYGUDap4kOded6OFw501H+wL3/WGeRtO+NBcLfhuvRwkfCNpm0oTJWDDSxhQnWKCbxJgrLgoxCeFg==
   dependencies:
     "@graphql-typed-document-node/core" "^3.0.0"
     "@wry/context" "^0.6.0"
@@ -7608,9 +7608,9 @@ data-urls@^2.0.0:
     whatwg-url "^8.0.0"
 
 date-fns@^2.9.0:
-  version "2.25.0"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.25.0.tgz#8c5c8f1d958be3809a9a03f4b742eba894fc5680"
-  integrity sha512-ovYRFnTrbGPD4nqaEqescPEv1mNwvt+UTqI3Ay9SzNtey9NZnYu6E2qCcBBgJ6/2VF1zGGygpyTDITqpQQ5e+w==
+  version "2.26.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.26.0.tgz#fa45305543c392c4f914e50775fd2a4461e60fbd"
+  integrity sha512-VQI812dRi3cusdY/fhoBKvc6l2W8BPWU1FNVnFH9Nttjx4AFBRzfSVb/Eyc7jBT6e9sg1XtAGsYpBQ6c/jygbg==
 
 debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.0, debug@^2.6.9:
   version "2.6.9"
