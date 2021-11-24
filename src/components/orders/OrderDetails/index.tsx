@@ -8,8 +8,7 @@ import { Order, Trade } from 'api/operator'
 
 import { DetailsTable } from 'components/orders/DetailsTable'
 import { RowWithCopyButton } from 'components/common/RowWithCopyButton'
-import { usePathPrefix, usePathSuffix } from 'state/network'
-import { Redirect } from 'react-router-dom'
+import RedirectToSearch from 'components/RedirectToSearch'
 
 const TitleUid = styled(RowWithCopyButton)`
   color: ${({ theme }): string => theme.grey};
@@ -26,16 +25,6 @@ export type Props = {
   isOrderLoading: boolean
   areTradesLoading: boolean
   errors: Record<string, string>
-}
-
-function RedirectToSearch(): JSX.Element {
-  const prefix = usePathPrefix() || ''
-  const suffix = usePathSuffix() || ''
-  const pathMatchArray = suffix.match('orders(.*)')
-  const newPath =
-    pathMatchArray && pathMatchArray.length > 0 ? `/${prefix}/search${pathMatchArray[1]}` : `${prefix}${suffix}`
-
-  return <Redirect push={false} to={newPath} />
 }
 
 export const OrderDetails: React.FC<Props> = (props) => {
@@ -60,7 +49,7 @@ export const OrderDetails: React.FC<Props> = (props) => {
   })
 
   if (redirectTo) {
-    return <RedirectToSearch />
+    return <RedirectToSearch from="orders" />
   }
 
   return (
