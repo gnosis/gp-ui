@@ -8,7 +8,8 @@ import { Tooltip } from 'components/Tooltip'
 import { usePopperDefault } from 'hooks/usePopper'
 
 const IconWrapper = styled(FontAwesomeIcon)`
-  margin-right: 0.4rem;
+  padding: 0 0.6rem;
+  box-sizing: content-box;
 `
 
 interface DateDisplayProps {
