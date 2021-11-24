@@ -20,6 +20,7 @@ function setStatusColors({ theme, status }: { theme: DefaultTheme; status: Order
   switch (status) {
     case 'expired':
     case 'cancelled':
+    case 'cancelling':
       text = theme.orange
       background = theme.orangeOpacity
       break
@@ -93,6 +94,8 @@ function getStatusIcon(status: OrderStatus): IconDefinition {
       return faCheckCircle
     case 'cancelled':
       return faTimesCircle
+    case 'cancelling':
+      return faTimesCircle
     case 'signing':
       return faKey
     case 'open':
@@ -111,7 +114,7 @@ export type Props = DisplayProps & { partiallyFilled: boolean }
 
 export function StatusLabel(props: Props): JSX.Element {
   const { status, partiallyFilled } = props
-  const shimming = status === 'signing'
+  const shimming = status === 'signing' || status === 'cancelling'
 
   return (
     <Wrapper>
