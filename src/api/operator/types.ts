@@ -20,13 +20,7 @@ export interface FeeInformation {
 export type OrderKind = 'sell' | 'buy'
 
 export type OrderStatus = 'open' | 'filled' | 'cancelled' | 'cancelling' | 'expired' | 'signing'
-export type RawOrderStatusFromAPI =
-  | 'presignaturePending'
-  | 'open'
-  | 'fullfilled'
-  | 'cancelled'
-  | 'cancelling'
-  | 'expired'
+export type RawOrderStatusFromAPI = 'presignaturePending' | 'open' | 'fullfilled' | 'cancelled' | 'expired'
 
 // Raw API response
 export type RawOrder = {
