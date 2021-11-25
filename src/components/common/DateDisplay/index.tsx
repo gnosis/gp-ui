@@ -5,7 +5,7 @@ import { faClock } from '@fortawesome/free-regular-svg-icons'
 import { Placement } from '@popperjs/core'
 import styled from 'styled-components'
 import { Tooltip } from 'components/Tooltip'
-import { usePopperDefault } from 'hooks/usePopper'
+import { usePopperOnClick } from 'hooks/usePopper'
 
 const Wrapper = styled.div`
   display: flex;
@@ -16,6 +16,10 @@ const Wrapper = styled.div`
 const IconWrapper = styled(FontAwesomeIcon)`
   padding: 0 0.6rem;
   box-sizing: content-box;
+
+  :hover {
+    cursor: pointer;
+  }
 `
 
 interface DateDisplayProps {
@@ -25,7 +29,7 @@ interface DateDisplayProps {
 }
 
 export function DateDisplay({ date, showIcon, tooltipPlacement = 'top' }: DateDisplayProps): JSX.Element {
-  const { tooltipProps, targetProps } = usePopperDefault<HTMLInputElement>(tooltipPlacement)
+  const { tooltipProps, targetProps } = usePopperOnClick<HTMLInputElement>(tooltipPlacement)
   // '5 days ago', '1h from now' date format
   const distance = formatDistanceToNowStrict(date, { addSuffix: true })
   // Long localized date and time '04/29/1453 12:00:00 AM'
