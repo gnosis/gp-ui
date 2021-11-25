@@ -7,6 +7,12 @@ import styled from 'styled-components'
 import { Tooltip } from 'components/Tooltip'
 import { usePopperDefault } from 'hooks/usePopper'
 
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
 const IconWrapper = styled(FontAwesomeIcon)`
   padding: 0 0.6rem;
   box-sizing: content-box;
@@ -33,14 +39,14 @@ export function DateDisplay({ date, showIcon, tooltipPlacement = 'top' }: DateDi
       <Tooltip {...tooltipProps}>
         {distance} - {fullLocaleBased}
       </Tooltip>
-      <div>
+      <Wrapper>
         {showIcon && (
           <span {...targetProps}>
             <IconWrapper icon={faClock} />
           </span>
         )}{' '}
         {!showIcon ? <span {...targetProps}>{previewDate}</span> : <span>{previewDate}</span>}
-      </div>
+      </Wrapper>
     </span>
   )
 }
