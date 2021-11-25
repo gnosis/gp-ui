@@ -12,12 +12,14 @@ interface SearchProps {
 
 export const Search: React.FC<React.HTMLAttributes<HTMLDivElement> & SearchProps> = (props) => {
   const { className, searchString = '', submitSearchImmediatly = false } = props
-  const [query, setQuery] = useState(searchString)
+  const [query, setQuery] = useState('')
   const handleSubmit = useSearchSubmit()
 
   useEffect(() => {
-    if (query && submitSearchImmediatly) handleSubmit(query)
-  }, [handleSubmit, query, submitSearchImmediatly])
+    if (searchString && submitSearchImmediatly) {
+      handleSubmit(searchString)
+    }
+  }, [handleSubmit, searchString, submitSearchImmediatly])
 
   return (
     <Wrapper
