@@ -105,9 +105,7 @@ export const OrderAddressNotFound: React.FC = (): JSX.Element => {
             </p>
           </>
         ) : (
-          <>
-            <p>The search cannot be empty</p>
-          </>
+          <p>The search cannot be empty</p>
         )}
         <SearchSection>
           <SearchContent>
