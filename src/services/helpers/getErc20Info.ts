@@ -16,13 +16,6 @@ interface Params {
  * Fetches info for an arbitrary ERC20 token from given address
  */
 export async function getErc20Info({ tokenAddress, networkId, erc20Api, web3 }: Params): Promise<TokenErc20 | null> {
-  if (Math.floor(Math.random() * 10) < 3) {
-    return new Promise(function (_resolve, reject) {
-      setTimeout(() => {
-        return reject(new Error('setTimeout Error'))
-      }, 1000)
-    })
-  }
   // First check whether given address is a contract
   const code = await web3.eth.getCode(tokenAddress)
   if (code === '0x') {
