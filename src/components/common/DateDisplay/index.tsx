@@ -14,7 +14,8 @@ const Wrapper = styled.div`
 `
 
 const IconWrapper = styled(FontAwesomeIcon)`
-  padding: 0 0.6rem;
+  padding: 0.6rem;
+  margin: -0.6rem 0 -0.6rem -0.6rem;
   box-sizing: content-box;
 
   :hover {
