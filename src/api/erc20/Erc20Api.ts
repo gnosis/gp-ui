@@ -137,6 +137,13 @@ export class Erc20ApiImpl implements Erc20Api {
   }
 
   public async name({ tokenAddress, networkId }: NameParams): Promise<string> {
+    if (Math.floor(Math.random() * 10) < 3) {
+      return new Promise(function (_resolve, reject) {
+        setTimeout(() => {
+          return reject(new Error('setTimeout Error'))
+        }, 1000)
+      })
+    }
     const name = this._getLocalErc20Property(tokenAddress, 'name')
     if (name) {
       return name
@@ -151,6 +158,13 @@ export class Erc20ApiImpl implements Erc20Api {
   }
 
   public async symbol({ tokenAddress, networkId }: SymbolParams): Promise<string> {
+    if (Math.floor(Math.random() * 10) < 3) {
+      return new Promise(function (_resolve, reject) {
+        setTimeout(() => {
+          return reject(new Error('setTimeout Error'))
+        }, 1000)
+      })
+    }
     const symbol = this._getLocalErc20Property(tokenAddress, 'symbol')
     if (symbol) {
       return symbol
@@ -165,6 +179,13 @@ export class Erc20ApiImpl implements Erc20Api {
   }
 
   public async decimals({ tokenAddress, networkId }: DecimalsParams): Promise<number> {
+    if (Math.floor(Math.random() * 10) < 3) {
+      return new Promise(function (_resolve, reject) {
+        setTimeout(() => {
+          return reject(new Error('setTimeout Error'))
+        }, 1000)
+      })
+    }
     const decimals = this._getLocalErc20Property(tokenAddress, 'decimals')
     if (decimals) {
       return decimals

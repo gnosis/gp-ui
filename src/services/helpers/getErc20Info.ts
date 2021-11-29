@@ -1,6 +1,6 @@
 import Web3 from 'web3'
 
-import { logDebug, silentPromise, parseStringOrBytes32 } from 'utils'
+import { logDebug, silentPromise, parseStringOrBytes32, retry } from 'utils'
 import { DEFAULT_PRECISION } from 'const'
 import { Erc20Api } from 'api/erc20/Erc20Api'
 import { TokenErc20 } from '@gnosis.pm/dex-js'
@@ -16,6 +16,13 @@ interface Params {
  * Fetches info for an arbitrary ERC20 token from given address
  */
 export async function getErc20Info({ tokenAddress, networkId, erc20Api, web3 }: Params): Promise<TokenErc20 | null> {
+  if (Math.floor(Math.random() * 10) < 3) {
+    return new Promise(function (_resolve, reject) {
+      setTimeout(() => {
+        return reject(new Error('setTimeout Error'))
+      }, 1000)
+    })
+  }
   // First check whether given address is a contract
   const code = await web3.eth.getCode(tokenAddress)
   if (code === '0x') {
@@ -35,10 +42,20 @@ export async function getErc20Info({ tokenAddress, networkId, erc20Api, web3 }: 
 
   const errorMsg = '[services:helpers:getErc20Info] Failed to get ERC20 detail'
   // Query for optional details. Do not fail in case any is missing.
+  const retryOptions = { interval: 200 }
   const [symbol, name, decimals] = await Promise.all([
-    silentPromise(erc20Api.symbol({ tokenAddress, networkId }), errorMsg),
-    silentPromise(erc20Api.name({ tokenAddress, networkId }), errorMsg),
-    silentPromise(erc20Api.decimals({ tokenAddress, networkId }), errorMsg),
+    silentPromise(
+      retry(() => erc20Api.symbol({ tokenAddress, networkId }), retryOptions),
+      errorMsg,
+    ),
+    silentPromise(
+      retry(() => erc20Api.name({ tokenAddress, networkId }), retryOptions),
+      errorMsg,
+    ),
+    silentPromise(
+      retry(() => erc20Api.decimals({ tokenAddress, networkId }), retryOptions),
+      errorMsg,
+    ),
   ])
 
   return {
