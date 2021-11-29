@@ -23,9 +23,9 @@
     xlsx "^0.17.0"
 
 "@apollo/client@^3.1.5":
-  version "3.5.4"
-  resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.5.4.tgz#a2c1c1c377c5ffb5822dd6269a741749b3ad5df3"
-  integrity sha512-6kybsXEdtRYGUDap4kOded6OFw501H+wL3/WGeRtO+NBcLfhuvRwkfCNpm0oTJWDDSxhQnWKCbxJgrLgoxCeFg==
+  version "3.5.5"
+  resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.5.5.tgz#ce331403ee5f099e595430890f9b510c8435c932"
+  integrity sha512-EiQstc8VjeqosS2h21bwY9fhL3MCRRmACtRrRh2KYpp9vkDyx5pUfMnN3swgiBVYw1twdXg9jHmyZa1gZlvlog==
   dependencies:
     "@graphql-typed-document-node/core" "^3.0.0"
     "@wry/context" "^0.6.0"
@@ -15870,9 +15870,9 @@ prettier-linter-helpers@^1.0.0:
     fast-diff "^1.1.2"
 
 prettier@^2.1.2:
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.4.1.tgz#671e11c89c14a4cfc876ce564106c4a6726c9f5c"
-  integrity sha512-9fbDAXSBcc6Bs1mZrDYb3XKzDLm4EXXL9sC1LqKP5rZkT6KRr/rf9amVUcODVXgguK/isJz0d0hP72WeaKWsvA==
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.5.0.tgz#a6370e2d4594e093270419d9cc47f7670488f893"
+  integrity sha512-FM/zAKgWTxj40rH03VxzIPdXmj39SwSjwG0heUcNFwI+EMZJnY93yAiKXM3dObIKAM5TA88werc8T/EwhB45eg==
 
 prettier@~2.2.1:
   version "2.2.1"
