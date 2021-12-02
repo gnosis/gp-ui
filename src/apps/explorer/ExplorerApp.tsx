@@ -130,7 +130,7 @@ const AppContent = (): JSX.Element => {
           />
           <Route path={pathPrefix + '/orders/:orderId'} exact component={Order} />
           <Route path={pathPrefix + '/address/:address'} exact component={UserDetails} />
-          <Route path={pathPrefix + '/transactions/:transactionId'} exact component={TransactionDetails} />
+          <Route path={pathPrefix + '/tx/:hash'} exact component={TransactionDetails} />
           <Route path={pathPrefix + '/search/:searchString?'} exact component={SearchNotFound} />
           <Route component={NotFound} />
         </Switch>

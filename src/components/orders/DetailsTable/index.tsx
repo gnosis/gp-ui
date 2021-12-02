@@ -123,7 +123,7 @@ export function DetailsTable(props: Props): JSX.Element | null {
       action: 'Copy',
       label,
     })
-
+  console.log('txHash', txHash)
   return (
     <Table
       body={

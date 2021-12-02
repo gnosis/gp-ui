@@ -79,6 +79,15 @@ function getBlockscoutUrlSuffix(type: BlockExplorerLinkType, identifier: string)
   }
 }
 
+function getAppUrlSuffix(type: BlockExplorerLinkType, identifier: string): string {
+  switch (type) {
+    case 'tx':
+      return `tx/${identifier}`
+    case undefined:
+      return ''
+  }
+}
+
 function getBlockscoutUrl(networkId: number, type: BlockExplorerLinkType, identifier: string): string {
   return `https://blockscout.com/${getBlockscoutUrlPrefix(networkId)}/${getBlockscoutUrlSuffix(type, identifier)}`
 }
@@ -87,10 +96,20 @@ function getEtherscanUrl(networkId: number, type: BlockExplorerLinkType, identif
   return `https://${getEtherscanUrlPrefix(networkId)}etherscan.io/${getEtherscanUrlSuffix(type, identifier)}`
 }
 
+function getAppUrl(type: BlockExplorerLinkType, identifier: string): string {
+  console.log('getAppUrl', `/${getAppUrlSuffix(type, identifier)}`)
+  return `/${getAppUrlSuffix(type, identifier)}`
+}
+
 function getExplorerUrl(networkId: number, type: BlockExplorerLinkType, identifier: string): string {
-  return networkId === Network.xDAI
-    ? getBlockscoutUrl(networkId, type, identifier)
-    : getEtherscanUrl(networkId, type, identifier)
+  const exporerUrl =
+    networkId === Network.xDAI
+      ? getBlockscoutUrl(networkId, type, identifier)
+      : networkId === Network.Rinkeby
+      ? getAppUrl(type, identifier)
+      : getEtherscanUrl(networkId, type, identifier)
+  console.log('getAppUrl', getAppUrl(type, identifier), type, identifier)
+  return exporerUrl
 }
 
 /**
@@ -101,7 +120,7 @@ function getExplorerUrl(networkId: number, type: BlockExplorerLinkType, identifi
  */
 export const BlockExplorerLink: React.FC<Props> = (props: Props) => {
   const { type, identifier, label: labelProp, useUrlAsLabel = false, className, networkId } = props
-
+  console.log('typetype', type, identifier, props)
   if (!networkId || !identifier) {
     return null
   }

@@ -10,9 +10,9 @@ import { BlockExplorerLink } from 'components/common/BlockExplorerLink'
 import { TitleAddress, Wrapper } from 'apps/explorer/pages/styled'
 
 const TransactionDetails: React.FC = () => {
-  const { transactionId } = useParams<{ transactionId: string }>()
+  const { hash } = useParams<{ hash: string }>()
   const networkId = useNetworkId() || undefined
-  if (!isAddress(transactionId)) {
+  if (!isAddress(hash)) {
     return <NotFound />
   } else {
     return (
@@ -20,11 +20,11 @@ const TransactionDetails: React.FC = () => {
         <h1>
           Transaction details
           <TitleAddress
-            textToCopy={transactionId}
-            contentsToDisplay={<BlockExplorerLink type="address" networkId={networkId} identifier={transactionId} />}
+            textToCopy={hash}
+            contentsToDisplay={<BlockExplorerLink type="tx" networkId={networkId} identifier={hash} />}
           />
         </h1>
-        <OrdersTableWidget ownerAddress={transactionId} networkId={networkId} />
+        <OrdersTableWidget ownerAddress={hash} networkId={networkId} />
       </Wrapper>
     )
   }

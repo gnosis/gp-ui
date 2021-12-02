@@ -9,6 +9,5 @@ import { BlockExplorerLink, Props } from './BlockExplorerLink'
  */
 export function BlockExplorerLinkNetworkState(props: Props): JSX.Element {
   const networkId = useNetworkId() || undefined
-
-  return <BlockExplorerLink {...props} networkId={networkId} />
+  return <BlockExplorerLink {...props} type={props.type} networkId={networkId} />
 }
