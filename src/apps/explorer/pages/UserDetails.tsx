@@ -3,8 +3,6 @@ import { useParams } from 'react-router'
 import styled from 'styled-components'
 
 import { isAddress } from 'web3-utils'
-import { faSpinner } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { media } from 'theme/styles/media'
 import OrdersTableWidget from '../components/OrdersTableWidget'
@@ -14,6 +12,7 @@ import { RowWithCopyButton } from 'components/common/RowWithCopyButton'
 import RedirectToSearch from 'components/RedirectToSearch'
 import { isEns } from 'utils'
 import { resolveENS } from 'hooks/useSearchSubmit'
+import Spinner from 'components/common/Spinner'
 
 const Wrapper = styled.div`
   padding: 1.6rem;
@@ -56,6 +55,8 @@ const UserDetails: React.FC = () => {
       setResolvedAddress(address)
     } else if (isEns(address)) {
       _resolveENS()
+    } else {
+      setResolvedAddress(null)
     }
   }, [address, networkId])
 
@@ -84,7 +85,7 @@ const UserDetails: React.FC = () => {
           <OrdersTableWidget ownerAddress={resolvedAddress} networkId={networkId} />
         </>
       ) : (
-        <FontAwesomeIcon icon={faSpinner} spin size="3x" />
+        <Spinner size="3x" />
       )}
     </Wrapper>
   )
