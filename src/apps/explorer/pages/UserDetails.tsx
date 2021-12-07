@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useParams } from 'react-router'
 import styled from 'styled-components'
-
-import { isAddress } from 'web3-utils'
 
 import { media } from 'theme/styles/media'
 import OrdersTableWidget from '../components/OrdersTableWidget'
@@ -10,8 +8,7 @@ import { useNetworkId } from 'state/network'
 import { BlockExplorerLink } from 'components/common/BlockExplorerLink'
 import { RowWithCopyButton } from 'components/common/RowWithCopyButton'
 import RedirectToSearch from 'components/RedirectToSearch'
-import { isEns } from 'utils'
-import { resolveENS } from 'hooks/useSearchSubmit'
+import { useResolveEns, ResolvedEns } from 'hooks/useResolveEns'
 import Spinner from 'components/common/Spinner'
 
 const Wrapper = styled.div`
@@ -43,24 +40,9 @@ const TitleAddress = styled(RowWithCopyButton)`
 const UserDetails: React.FC = () => {
   const { address } = useParams<{ address: string }>()
   const networkId = useNetworkId() || undefined
-  const [resolvedAddress, setResolvedAddress] = useState<string | undefined | null>()
+  const resolvedAddress: ResolvedEns | undefined = useResolveEns(address)
 
-  useEffect(() => {
-    async function _resolveENS(): Promise<void> {
-      const _address = await resolveENS(address)
-      setResolvedAddress(_address)
-    }
-
-    if (isAddress(address)) {
-      setResolvedAddress(address)
-    } else if (isEns(address)) {
-      _resolveENS()
-    } else {
-      setResolvedAddress(null)
-    }
-  }, [address, networkId])
-
-  if (resolvedAddress === null) {
+  if (resolvedAddress?.address === null) {
     return <RedirectToSearch from="address" />
   }
 
@@ -71,18 +53,18 @@ const UserDetails: React.FC = () => {
           <h1>
             User details
             <TitleAddress
-              textToCopy={resolvedAddress}
+              textToCopy={resolvedAddress.address}
               contentsToDisplay={
                 <BlockExplorerLink
                   type="address"
                   networkId={networkId}
                   identifier={address}
-                  label={isEns(address) ? address : undefined}
+                  label={resolvedAddress.ens}
                 />
               }
             />
           </h1>
-          <OrdersTableWidget ownerAddress={resolvedAddress} networkId={networkId} />
+          <OrdersTableWidget ownerAddress={resolvedAddress.address} networkId={networkId} />
         </>
       ) : (
         <Spinner size="3x" />
