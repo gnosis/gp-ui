@@ -53,7 +53,7 @@ const UserDetails: React.FC = () => {
           <h1>
             User details
             <TitleAddress
-              textToCopy={resolvedAddress.address}
+              textToCopy={resolvedAddress.ens ? resolvedAddress.ens : resolvedAddress.address}
               contentsToDisplay={
                 <BlockExplorerLink
                   type="address"
