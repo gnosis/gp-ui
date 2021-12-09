@@ -41,10 +41,12 @@ export const NetworkSelector: React.FC<networkSelectorProps> = ({ networkId }) =
   const name = networkOptions.find((network) => network.id === networkId)?.name.toLowerCase()
   const [open, setOpen] = useState(false)
 
-  const redirectToNetwork = (newNetwork: string, currentNetwork: number): void =>
+  const redirectToNetwork = (newNetwork: string, currentNetwork: number): void => {
+    console.log('alla')
     history.push(
       replaceURL(currentNetwork === Network.Mainnet ? `/mainnet${location.pathname}` : location.pathname, newNetwork),
     )
+  }
 
   return (
     <SelectorContainer ref={selectContainer} onClick={(): void => setOpen(!open)}>
