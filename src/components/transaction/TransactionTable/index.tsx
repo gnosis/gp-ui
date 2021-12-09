@@ -153,7 +153,11 @@ const RowTransaction: React.FC<RowProps> = ({ transaction, isPriceInverted }) =>
   const sellTokenSymbol = sellToken ? safeTokenName(sellToken) : ''
   const sellFormattedAmount = formattedAmount(sellToken, sellAmount)
   const buyFormattedAmount = formattedAmount(buyToken, buyAmount)
-
+  const [_isPriceInverted, setIsPriceInverted] = useState(isPriceInverted)
+  const limitPriceSettled = getLimitPrice(transaction, _isPriceInverted)
+  const invertLimitPrice = (): void => {
+    setIsPriceInverted((previousValue) => !previousValue)
+  }
   const renderSpinnerWhenNoValue = (textValue: string): JSX.Element | void => {
     if (textValue === '-') return <FontAwesomeIcon icon={faSpinner} spin size="1x" />
   }
@@ -206,8 +210,11 @@ const RowTransaction: React.FC<RowProps> = ({ transaction, isPriceInverted }) =>
         </HeaderValue>
       </td>
       <td>
-        <HeaderTitle>Limit price</HeaderTitle>
-        <HeaderValue>{getLimitPrice(transaction, isPriceInverted)}</HeaderValue>
+        <HeaderTitle>
+          Limit price
+          <Icon icon={faExchangeAlt} onClick={invertLimitPrice} />
+        </HeaderTitle>
+        <HeaderValue>{renderSpinnerWhenNoValue(limitPriceSettled) || limitPriceSettled}</HeaderValue>
       </td>
       <td>
         <HeaderTitle>Created</HeaderTitle>
