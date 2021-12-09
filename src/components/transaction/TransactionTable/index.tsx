@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
 
-import { MockedTransaction } from 'api/operator'
+import { MockedTransaction, Trade } from 'api/operator'
 
 import { DateDisplay } from 'components/common/DateDisplay'
 import { RowWithCopyButton } from 'components/common/RowWithCopyButton'
@@ -45,6 +45,7 @@ const tooltip = {
 
 export type Props = StyledUserDetailsTableProps & {
   transactions: MockedTransaction[]
+  trades: Trade[]
 }
 
 interface RowProps {
