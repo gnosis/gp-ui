@@ -33,5 +33,5 @@ const Template: Story<TransactionTableProps> = (args) => <TransactionTable {...a
 export const Default = Template.bind({})
 Default.args = { transactions: [transactionEx], showBorderTable: true }
 
-export const EmptyTrades = Template.bind({})
-EmptyTrades.args = { transactions: [], showBorderTable: true }
+export const EmptyTransactions = Template.bind({})
+EmptyTransactions.args = { transactions: [], showBorderTable: true }
