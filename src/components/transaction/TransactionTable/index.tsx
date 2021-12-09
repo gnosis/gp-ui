@@ -239,7 +239,9 @@ const TransactionTable: React.FC<Props> = (props) => {
       tableContent = (
         <tr className="row-empty">
           <td className="row-td-empty">
-            <EmptyItemWrapper>No Details.</EmptyItemWrapper>
+            <EmptyItemWrapper>
+              Can&apos;t load details <br /> Please try again
+            </EmptyItemWrapper>
           </td>
         </tr>
       )
