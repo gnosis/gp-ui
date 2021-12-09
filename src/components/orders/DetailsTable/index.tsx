@@ -122,7 +122,7 @@ export function DetailsTable(props: Props): JSX.Element | null {
       action: 'Copy',
       label,
     })
-  console.log('txHash', txHash)
+
   return (
     <Table
       body={
@@ -173,7 +173,7 @@ export function DetailsTable(props: Props): JSX.Element | null {
                   <RowWithCopyButton
                     textToCopy={txHash}
                     onCopy={(): void => onCopy('settlementTx')}
-                    contentsToDisplay={<a href={`/tx/${txHash}`} />}
+                    contentsToDisplay={<LinkWithPrefixNetwork to={`/tx/${txHash}`}>{txHash}</LinkWithPrefixNetwork>}
                   />
                 ) : (
                   '-'
