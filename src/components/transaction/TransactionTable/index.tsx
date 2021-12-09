@@ -157,6 +157,8 @@ const RowTransaction: React.FC<RowProps> = ({ transaction, isPriceInverted }) =>
   const renderSpinnerWhenNoValue = (textValue: string): JSX.Element | void => {
     if (textValue === '-') return <FontAwesomeIcon icon={faSpinner} spin size="1x" />
   }
+
+  console.log('ORDERID', transaction, orderId)
   return (
     <tr key={orderId}>
       <td>
@@ -168,7 +170,7 @@ const RowTransaction: React.FC<RowProps> = ({ transaction, isPriceInverted }) =>
             className="span-copybtn-wrap"
             textToCopy={orderId}
             contentsToDisplay={
-              <LinkWithPrefixNetwork to={`/orders/${transaction.orderId}`} rel="noopener noreferrer" target="_blank">
+              <LinkWithPrefixNetwork to={`/tx/${transaction.orderId}`} rel="noopener noreferrer" target="_blank">
                 {getShortOrderId(orderId)}
               </LinkWithPrefixNetwork>
             }
