@@ -140,7 +140,7 @@ export type GetTradesParams = WithNetworkId & {
 
 export type MockedTransaction = Pick<
   Trade,
-  'buyToken' | 'buyAmount' | 'executionTime' | 'sellToken' | 'sellAmount' | 'kind'
+  'buyToken' | 'buyAmount' | 'executionTime' | 'sellToken' | 'sellAmount' | 'kind' | 'txHash'
 > & {
   orderId: string
   status: OrderStatus
