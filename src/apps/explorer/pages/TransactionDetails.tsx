@@ -12,7 +12,7 @@ import { TitleAddress, Wrapper } from 'apps/explorer/pages/styled'
 const TransactionDetails: React.FC = () => {
   const { address } = useParams<{ address: string }>()
   const networkId = useNetworkId() || undefined
-  console.log('address: ', address, 'NETWORKID: ', networkId, 'ISADDRESS: ', isAddress(address))
+
   if (!isAddress(address)) {
     return <NotFound />
   } else {

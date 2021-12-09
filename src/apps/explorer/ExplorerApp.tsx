@@ -115,7 +115,7 @@ const AppContent = (): JSX.Element => {
   const { path } = useRouteMatch()
 
   const pathPrefix = path == '/' ? '' : path
-  console.log(path)
+
   return (
     <GenericLayout header={<Header />}>
       <React.Suspense fallback={null}>
@@ -124,7 +124,7 @@ const AppContent = (): JSX.Element => {
         <Switch>
           <Route path={pathPrefix + '/'} exact component={Home} />
           <Route
-            path={[pathPrefix + '/address/', pathPrefix + '/orders/']}
+            path={[pathPrefix + '/address/', pathPrefix + '/orders/', pathPrefix + '/tx/']}
             exact
             component={(): JSX.Element => <Redirect to={pathPrefix + '/search/'} />}
           />
