@@ -15,7 +15,7 @@ export default {
   component: TransactionTable,
 } as Meta
 
-const transactionEx: MockedTransaction = {
+const transactionExBuy: MockedTransaction = {
   kind: 'buy',
   orderId: '0x489d8fd1efd43394c7c2b26216f36f1ab49b8d67623047e0fcb60efa2a2c420b',
   buyToken: WETH,
@@ -28,10 +28,23 @@ const transactionEx: MockedTransaction = {
   status: 'filled',
 }
 
+const transactionExSell: MockedTransaction = {
+  kind: 'sell',
+  orderId: '0x489d8fd1efd43394c7c2b26216f36f1ab49b8d67623047e0fcb60efa2a2c420b',
+  buyToken: WETH,
+  sellToken: TUSD,
+  buyAmount: new BigNumber('1500000000000000000'), // 1.5WETH
+  sellAmount: new BigNumber('7500000000000000000000'), // 7500 TUSD
+  executionTime: sub(new Date(), { hours: 1 }),
+  txHash: '0x489d8fd1efd43394c7c2b26216f36f1ab49b8d67623047e0fcb60efa2a2c420b',
+  partiallyFilled: false,
+  status: 'open',
+}
+
 const Template: Story<TransactionTableProps> = (args) => <TransactionTable {...args} />
 
 export const Default = Template.bind({})
-Default.args = { transactions: [transactionEx], showBorderTable: true }
+Default.args = { transactions: [transactionExBuy, transactionExSell], showBorderTable: true }
 
 export const EmptyTransactions = Template.bind({})
 EmptyTransactions.args = { transactions: [], showBorderTable: true }
