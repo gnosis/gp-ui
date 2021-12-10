@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { faExchangeAlt, faSpinner } from '@fortawesome/free-solid-svg-icons'
 
@@ -135,9 +135,10 @@ export type Props = StyledUserDetailsTableProps & {
 interface RowProps {
   transaction: MockedTransaction
   isPriceInverted: boolean
+  invertLimitPrice: () => void
 }
 
-const RowTransaction: React.FC<RowProps> = ({ transaction, isPriceInverted }) => {
+const RowTransaction: React.FC<RowProps> = ({ transaction, isPriceInverted, invertLimitPrice }) => {
   const {
     buyToken,
     buyAmount,
@@ -153,16 +154,11 @@ const RowTransaction: React.FC<RowProps> = ({ transaction, isPriceInverted }) =>
   const sellTokenSymbol = sellToken ? safeTokenName(sellToken) : ''
   const sellFormattedAmount = formattedAmount(sellToken, sellAmount)
   const buyFormattedAmount = formattedAmount(buyToken, buyAmount)
-  const [_isPriceInverted, setIsPriceInverted] = useState(isPriceInverted)
-  const limitPriceSettled = getLimitPrice(transaction, _isPriceInverted)
-  const invertLimitPrice = (): void => {
-    setIsPriceInverted((previousValue) => !previousValue)
-  }
   const renderSpinnerWhenNoValue = (textValue: string): JSX.Element | void => {
     if (textValue === '-') return <FontAwesomeIcon icon={faSpinner} spin size="1x" />
   }
+  const limitPriceSettled = getLimitPrice(transaction, isPriceInverted)
 
-  console.log('ORDERID', transaction, orderId)
   return (
     <tr key={orderId}>
       <td>
@@ -235,7 +231,9 @@ const RowTransaction: React.FC<RowProps> = ({ transaction, isPriceInverted }) =>
 const TransactionTable: React.FC<Props> = (props) => {
   const { transactions, showBorderTable = false } = props
   const [isPriceInverted, setIsPriceInverted] = useState(false)
-
+  useEffect(() => {
+    setIsPriceInverted(isPriceInverted)
+  }, [isPriceInverted])
   const invertLimitPrice = (): void => {
     setIsPriceInverted((previousValue) => !previousValue)
   }
@@ -255,8 +253,13 @@ const TransactionTable: React.FC<Props> = (props) => {
     } else {
       tableContent = (
         <>
-          {items.map((item) => (
-            <RowTransaction key={item.orderId} transaction={item} isPriceInverted={isPriceInverted} />
+          {items.map((item, i) => (
+            <RowTransaction
+              key={`${item.shortId}-${i}`}
+              invertLimitPrice={invertLimitPrice}
+              transaction={item}
+              isPriceInverted={isPriceInverted}
+            />
           ))}
         </>
       )

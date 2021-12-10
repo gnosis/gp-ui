@@ -145,4 +145,5 @@ export type MockedTransaction = Pick<
   orderId: string
   status: OrderStatus
   partiallyFilled: boolean
+  shortId: string
 }
