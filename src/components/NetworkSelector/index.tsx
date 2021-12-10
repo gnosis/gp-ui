@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useHistory } from 'react-router'
 import { useLocation } from 'react-router-dom'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
@@ -19,18 +19,18 @@ type NetworkOptions = {
 const networkOptions: NetworkOptions[] = [
   {
     id: Network.Mainnet,
-    name: 'Ethereum Mainnet',
+    name: 'Ethereum',
     url: 'mainnet',
-  },
-  {
-    id: Network.Rinkeby,
-    name: 'Rinkeby',
-    url: 'rinkeby',
   },
   {
     id: Network.xDAI,
     name: 'xDAI',
     url: 'xdai',
+  },
+  {
+    id: Network.Rinkeby,
+    name: 'Rinkeby',
+    url: 'rinkeby',
   },
 ]
 
@@ -41,12 +41,22 @@ export const NetworkSelector: React.FC<networkSelectorProps> = ({ networkId }) =
   const name = networkOptions.find((network) => network.id === networkId)?.name.toLowerCase()
   const [open, setOpen] = useState(false)
 
-  const redirectToNetwork = (newNetwork: string, currentNetwork: number): void => {
-    console.log('alla')
+  useEffect(() => {
+    const closeOpenSelector = (e: MouseEvent): void => {
+      if (selectContainer.current && open && !selectContainer.current.contains(e.target as HTMLElement)) {
+        setOpen(false)
+      }
+    }
+
+    window.addEventListener('mousedown', closeOpenSelector)
+
+    return (): void => window.removeEventListener('mousedown', closeOpenSelector)
+  }, [open])
+
+  const redirectToNetwork = (newNetwork: string, currentNetwork: number): void =>
     history.push(
       replaceURL(currentNetwork === Network.Mainnet ? `/mainnet${location.pathname}` : location.pathname, newNetwork),
     )
-  }
 
   return (
     <SelectorContainer ref={selectContainer} onClick={(): void => setOpen(!open)}>

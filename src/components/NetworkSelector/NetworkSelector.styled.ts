@@ -70,8 +70,8 @@ export const Option = styled.div`
     &.xdai {
       background: ${({ theme }): string => theme.orange1};
     }
-    &.mainnet {
-      background: ${({ theme }): string => theme.green};
+    &.ethereum {
+      background: ${({ theme }): string => theme.blue4};
     }
   }
 `
@@ -92,8 +92,8 @@ export const NetworkLabel = styled.span`
     color: ${({ theme }): string => theme.textSecondary1};
   }
 
-  &.mainnet {
-    background: ${({ theme }): string => theme.green};
+  &.ethereum {
+    background: ${({ theme }): string => theme.blue4};
     color: ${({ theme }): string => theme.textSecondary1};
   }
 

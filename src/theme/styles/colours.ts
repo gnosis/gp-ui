@@ -48,6 +48,7 @@ export interface Colors {
   blue1: Color
   blue2: Color
   blue3?: Color
+  blue4: Color
   orange: Color
   orangeOpacity: Color
   orange1: Color
@@ -67,6 +68,7 @@ export const BASE_COLOURS = {
   yellow2: '#f1851d',
   blue1: '#2172E5',
   blue2: '#3F77FF',
+  blue4: '#62688F',
   orange1: '#D96D49',
 }
 
