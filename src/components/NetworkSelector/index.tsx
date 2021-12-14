@@ -49,10 +49,8 @@ export const NetworkSelector: React.FC<networkSelectorProps> = ({ networkId }) =
           setOpen(false)
           return
         }
-      } else {
-        if (selectContainer.current && !selectContainer.current.contains(e.target as HTMLElement)) {
-          setOpen(false)
-        }
+      } else if (selectContainer.current && !selectContainer.current.contains(e.target as HTMLElement)) {
+        setOpen(false)
       }
     }
 
