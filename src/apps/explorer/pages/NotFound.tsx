@@ -58,7 +58,7 @@ const StyledLink = styled(Link)`
     text-decoration: none;
   }
 `
-const NotFound2: React.FC = () => {
+const NotFoundRequestPage: React.FC = () => {
   const networkId = useNetworkId() || 1
   const network = networkId !== 1 ? getNetworkFromId(networkId).toLowerCase() : ''
 
@@ -73,4 +73,4 @@ const NotFound2: React.FC = () => {
   )
 }
 
-export default NotFound2
+export default NotFoundRequestPage

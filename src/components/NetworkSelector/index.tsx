@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { SelectorContainer, OptionsContainer, Option, NetworkLabel, StyledFAIcon } from './NetworkSelector.styled'
 import { replaceURL } from 'utils/url'
+import { NO_REDIRECT_HOME_ROUTES } from 'const'
 import { Network } from 'types'
 
 type networkSelectorProps = {
@@ -20,7 +21,7 @@ const networkOptions: NetworkOptions[] = [
   {
     id: Network.Mainnet,
     name: 'Ethereum',
-    url: 'mainnet',
+    url: '',
   },
   {
     id: Network.xDAI,
@@ -64,17 +65,8 @@ export const NetworkSelector: React.FC<networkSelectorProps> = ({ networkId }) =
   }, [open])
 
   const redirectToNetwork = (newNetwork: string, currentNetwork: number): void => {
-    const NoRedirectHomeRoutes = ['/address']
-    const shouldNotRedirectHome = NoRedirectHomeRoutes.some((r: string) => location.pathname.includes(r))
-
-    history.push(
-      shouldNotRedirectHome
-        ? replaceURL(
-            currentNetwork === Network.Mainnet ? `/mainnet${location.pathname}` : location.pathname,
-            newNetwork,
-          )
-        : `/${newNetwork}`,
-    )
+    const shouldNotRedirectHome = NO_REDIRECT_HOME_ROUTES.some((r: string) => location.pathname.includes(r))
+    history.push(shouldNotRedirectHome ? replaceURL(location.pathname, newNetwork, currentNetwork) : `/${newNetwork}`)
   }
   return (
     <SelectorContainer ref={selectContainer} onClick={(): void => setOpen(!open)}>
