@@ -9,7 +9,7 @@ import { useNetworkId } from 'state/network'
 import { BlockExplorerLink } from 'components/common/BlockExplorerLink'
 import { TitleAddress, Wrapper } from 'apps/explorer/pages/styled'
 
-export const TransactionDetails: React.FC = () => {
+const TransactionDetails: React.FC = () => {
   const { hash } = useParams<{ hash: string }>()
   const networkId = useNetworkId() || undefined
   if (!isAddress(hash)) {

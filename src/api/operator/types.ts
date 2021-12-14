@@ -137,13 +137,3 @@ export type GetTradesParams = WithNetworkId & {
   owner?: string
   orderId?: string
 }
-
-export type MockedTransaction = Pick<
-  Trade,
-  'buyToken' | 'buyAmount' | 'executionTime' | 'sellToken' | 'sellAmount' | 'kind' | 'txHash'
-> & {
-  orderId: string
-  status: OrderStatus
-  partiallyFilled: boolean
-  shortId: string
-}

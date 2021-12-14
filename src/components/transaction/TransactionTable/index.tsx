@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { faExchangeAlt, faSpinner } from '@fortawesome/free-solid-svg-icons'
 
-import { MockedTransaction, Trade } from 'api/operator'
+import { Order, Trade } from 'api/operator'
 
 import { DateDisplay } from 'components/common/DateDisplay'
 import { RowWithCopyButton } from 'components/common/RowWithCopyButton'
@@ -109,7 +109,7 @@ const HeaderValue = styled.span`
   }
 `
 
-function getLimitPrice(transaction: MockedTransaction, isPriceInverted: boolean): string {
+function getLimitPrice(transaction: Order, isPriceInverted: boolean): string {
   if (!transaction.buyToken || !transaction.sellToken) return '-'
 
   const calculatedPrice = getOrderLimitPrice({
@@ -128,12 +128,12 @@ const tooltip = {
 }
 
 export type Props = StyledUserDetailsTableProps & {
-  transactions: MockedTransaction[]
+  transactions: Order[]
   trades: Trade[]
 }
 
 interface RowProps {
-  transaction: MockedTransaction
+  transaction: Order
   isPriceInverted: boolean
   invertLimitPrice: () => void
 }
@@ -142,12 +142,13 @@ const RowTransaction: React.FC<RowProps> = ({ transaction, isPriceInverted, inve
   const {
     buyToken,
     buyAmount,
-    executionTime,
+    expirationDate,
     partiallyFilled = false,
     sellToken,
     sellAmount,
     kind,
-    orderId,
+    txHash,
+    shortId,
   } = transaction
   const network = useNetworkId()
   const buyTokenSymbol = buyToken ? safeTokenName(buyToken) : ''
@@ -160,7 +161,7 @@ const RowTransaction: React.FC<RowProps> = ({ transaction, isPriceInverted, inve
   const limitPriceSettled = getLimitPrice(transaction, isPriceInverted)
 
   return (
-    <tr key={orderId}>
+    <tr key={txHash}>
       <td>
         <HeaderTitle>
           Order ID <HelpTooltip tooltip={tooltip} />
@@ -168,10 +169,10 @@ const RowTransaction: React.FC<RowProps> = ({ transaction, isPriceInverted, inve
         <HeaderValue>
           <RowWithCopyButton
             className="span-copybtn-wrap"
-            textToCopy={orderId}
+            textToCopy={shortId}
             contentsToDisplay={
-              <LinkWithPrefixNetwork to={`/tx/${transaction.orderId}`} rel="noopener noreferrer" target="_blank">
-                {getShortOrderId(orderId)}
+              <LinkWithPrefixNetwork to={`/tx/${transaction.txHash}`} rel="noopener noreferrer" target="_blank">
+                {getShortOrderId(shortId)}
               </LinkWithPrefixNetwork>
             }
           />
@@ -215,7 +216,7 @@ const RowTransaction: React.FC<RowProps> = ({ transaction, isPriceInverted, inve
       <td>
         <HeaderTitle>Created</HeaderTitle>
         <HeaderValue>
-          <DateDisplay date={executionTime} showIcon={true} />
+          <DateDisplay date={expirationDate} showIcon={true} />
         </HeaderValue>
       </td>
       <td>
@@ -238,7 +239,7 @@ const TransactionTable: React.FC<Props> = (props) => {
     setIsPriceInverted((previousValue) => !previousValue)
   }
 
-  const transactionItems = (items: MockedTransaction[]): JSX.Element => {
+  const transactionItems = (items: Order[]): JSX.Element => {
     let tableContent
     if (!items || items.length === 0) {
       tableContent = (
