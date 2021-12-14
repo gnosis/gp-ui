@@ -42,22 +42,42 @@ export const NetworkSelector: React.FC<networkSelectorProps> = ({ networkId }) =
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
-    const closeOpenSelector = (e: MouseEvent): void => {
-      if (selectContainer.current && open && !selectContainer.current.contains(e.target as HTMLElement)) {
-        setOpen(false)
+    const closeOpenSelector = (e: MouseEvent | KeyboardEvent): void => {
+      if (!open) return
+      if (e instanceof KeyboardEvent) {
+        if (e.key === 'Escape') {
+          setOpen(false)
+          return
+        }
+      } else {
+        if (selectContainer.current && !selectContainer.current.contains(e.target as HTMLElement)) {
+          setOpen(false)
+        }
       }
     }
 
     window.addEventListener('mousedown', closeOpenSelector)
+    window.addEventListener('keydown', closeOpenSelector)
 
-    return (): void => window.removeEventListener('mousedown', closeOpenSelector)
+    return (): void => {
+      window.removeEventListener('mousedown', closeOpenSelector)
+      window.removeEventListener('keydown', closeOpenSelector)
+    }
   }, [open])
 
-  const redirectToNetwork = (newNetwork: string, currentNetwork: number): void =>
-    history.push(
-      replaceURL(currentNetwork === Network.Mainnet ? `/mainnet${location.pathname}` : location.pathname, newNetwork),
-    )
+  const redirectToNetwork = (newNetwork: string, currentNetwork: number): void => {
+    const NoRedirectHomeRoutes = ['/address']
+    const shouldNotRedirectHome = NoRedirectHomeRoutes.some((r: string) => location.pathname.includes(r))
 
+    history.push(
+      shouldNotRedirectHome
+        ? replaceURL(
+            currentNetwork === Network.Mainnet ? `/mainnet${location.pathname}` : location.pathname,
+            newNetwork,
+          )
+        : `/${newNetwork}`,
+    )
+  }
   return (
     <SelectorContainer ref={selectContainer} onClick={(): void => setOpen(!open)}>
       <NetworkLabel className={name}>{name}</NetworkLabel>

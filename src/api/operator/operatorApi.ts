@@ -257,7 +257,7 @@ export async function getTrades(params: GetTradesParams): Promise<RawTrade[]> {
   }
 
   console.log(`[getTrades] Fetching trades on network ${networkId} with filters: owner=${owner} orderId=${orderId}`)
-  console.log(owner, orderId)
+
   const queryString = `/trades/` + buildSearchString({ owner, orderUid: orderId })
 
   return _fetchQuery(networkId, queryString)

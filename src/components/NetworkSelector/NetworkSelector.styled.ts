@@ -65,7 +65,7 @@ export const Option = styled.div`
     border-radius: 100%;
     margin-right: 9px;
     &.rinkeby {
-      background: ${({ theme }): string => theme.borderPrimary};
+      background: ${({ theme }): string => theme.yellow4};
     }
     &.xdai {
       background: ${({ theme }): string => theme.orange1};
@@ -88,8 +88,8 @@ export const NetworkLabel = styled.span`
   letter-spacing: 0.1rem;
 
   &.rinkeby {
-    background: ${({ theme }): string => theme.borderPrimary};
-    color: ${({ theme }): string => theme.textSecondary1};
+    background: ${({ theme }): string => theme.yellow4};
+    color: ${({ theme }): string => theme.black};
   }
 
   &.ethereum {
