@@ -3,29 +3,29 @@ import { useState, useEffect } from 'react'
 import { isEns } from 'utils'
 import { resolveENS } from './useSearchSubmit'
 
-export interface ResolvedEns {
+interface AddressAccount {
   address: string | null
   ens?: string
 }
 
-export function useResolveEns(address: string): ResolvedEns | undefined {
-  const [resolvedEns, setResolvedEns] = useState<ResolvedEns | undefined>()
+export function useResolveEns(address: string): AddressAccount | undefined {
+  const [addressAccount, setAddressAccount] = useState<AddressAccount | undefined>()
 
   useEffect(() => {
     async function _resolveENS(name: string): Promise<void> {
       const _address = await resolveENS(name)
-      setResolvedEns({ address: _address, ens: name })
+      setAddressAccount({ address: _address, ens: name })
     }
 
-    setResolvedEns(undefined)
+    setAddressAccount(undefined)
     if (isEns(address)) {
       _resolveENS(address)
     } else if (isAddress(address)) {
-      setResolvedEns({ address })
+      setAddressAccount({ address })
     } else {
-      setResolvedEns({ address: null })
+      setAddressAccount({ address: null })
     }
   }, [address])
 
-  return resolvedEns
+  return addressAccount
 }

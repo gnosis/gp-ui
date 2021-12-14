@@ -8,7 +8,7 @@ import { useNetworkId } from 'state/network'
 import { BlockExplorerLink } from 'components/common/BlockExplorerLink'
 import { RowWithCopyButton } from 'components/common/RowWithCopyButton'
 import RedirectToSearch from 'components/RedirectToSearch'
-import { useResolveEns, ResolvedEns } from 'hooks/useResolveEns'
+import { useResolveEns } from 'hooks/useResolveEns'
 import Spinner from 'components/common/Spinner'
 
 const Wrapper = styled.div`
@@ -40,31 +40,31 @@ const TitleAddress = styled(RowWithCopyButton)`
 const UserDetails: React.FC = () => {
   const { address } = useParams<{ address: string }>()
   const networkId = useNetworkId() || undefined
-  const resolvedAddress: ResolvedEns | undefined = useResolveEns(address)
+  const addressAccount = useResolveEns(address)
 
-  if (resolvedAddress?.address === null) {
+  if (addressAccount?.address === null) {
     return <RedirectToSearch from="address" />
   }
 
   return (
     <Wrapper>
-      {resolvedAddress ? (
+      {addressAccount ? (
         <>
           <h1>
             User details
             <TitleAddress
-              textToCopy={resolvedAddress.ens ? resolvedAddress.ens : resolvedAddress.address}
+              textToCopy={addressAccount.address}
               contentsToDisplay={
                 <BlockExplorerLink
                   type="address"
                   networkId={networkId}
                   identifier={address}
-                  label={resolvedAddress.ens}
+                  label={addressAccount.ens}
                 />
               }
             />
           </h1>
-          <OrdersTableWidget ownerAddress={resolvedAddress.address} networkId={networkId} />
+          <OrdersTableWidget ownerAddress={addressAccount.address} networkId={networkId} />
         </>
       ) : (
         <Spinner size="3x" />
