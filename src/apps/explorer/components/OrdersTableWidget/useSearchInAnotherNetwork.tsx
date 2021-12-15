@@ -2,6 +2,7 @@ import React, { useCallback, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
+import { abbreviateString } from 'utils'
 import { Network } from 'types'
 import { NETWORK_ID_SEARCH_LIST } from 'apps/explorer/const'
 import { BlockchainNetwork } from './context/OrdersTableContext'
@@ -77,7 +78,7 @@ export const EmptyOrdersMessage = ({
       ) : (
         <>
           <p>
-            No orders found on <strong>{Network[networkId]}</strong>.
+            No orders found on <strong>{Network[networkId]}</strong> for {abbreviateString(ownerAddress, 3, 4)}
           </p>
           <section>
             {' '}
