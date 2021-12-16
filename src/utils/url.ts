@@ -15,8 +15,9 @@ export function buildSearchString(params: Record<string, string | undefined>): s
 }
 
 export function replaceURL(url: string, strReplace: string, currentNetwork: number): string {
+  if (currentNetwork === Network.Mainnet) return url.replace(/^/, `/${strReplace}`)
   const re = strReplace ? /(([\w]+\/){0})([^/]+)(\/.+)*/gm : /(?:\/[^/]+){1}/
   const subst = strReplace ? '$1' + strReplace + '$4' : ''
-  if (currentNetwork === Network.Mainnet) return url.replace(/^/, `/${strReplace}`)
-  else return url.replace(re, subst)
+
+  return url.replace(re, subst)
 }
