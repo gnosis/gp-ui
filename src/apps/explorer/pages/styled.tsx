@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { media } from 'theme/styles/media'
 import { RowWithCopyButton } from 'components/common/RowWithCopyButton'
+import { Link } from 'react-router-dom'
 
 export const Wrapper = styled.div`
   padding: 1.6rem;
@@ -21,29 +22,7 @@ export const Wrapper = styled.div`
     padding: 2.4rem 0 2.35rem;
     align-items: center;
     font-weight: ${({ theme }): string => theme.fontBold};
-  }
-`
-
-export const WrapperPage = styled(Wrapper)`
-  max-width: 140rem;
-
-  > h1 {
-    padding: 2.4rem 0 0.75rem;
-  }
-`
-
-export const HomeWrapper = styled(WrapperPage)`
-  flex-flow: column wrap;
-  justify-content: center;
-  display: flex;
-
-  > h1 {
-    justify-content: center;
-    padding: 2.4rem 0 0.75rem;
-    width: 100%;
-    margin: 0 0 2.4rem;
-    font-size: 2.4rem;
-    line-height: 1;
+    margin: 0;
   }
 `
 
@@ -55,5 +34,43 @@ export const TitleAddress = styled(RowWithCopyButton)`
   align-items: center;
   ${media.tinyDown} {
     font-size: 1.2rem;
+  }
+`
+
+export const StyledLink = styled(Link)`
+  height: 5rem;
+  border: 0.1rem solid ${({ theme }): string => theme.borderPrimary};
+  border-radius: 0.6rem;
+  width: 16rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: ${({ theme }): string => theme.white} !important;
+
+  :hover {
+    background-color: ${({ theme }): string => theme.greyOpacity};
+    text-decoration: none;
+  }
+`
+
+export const Title = styled.h1`
+  margin: 3rem 0 2.95rem;
+  font-weight: ${({ theme }): string => theme.fontBold};
+`
+
+export const ContentCard = styled.div`
+  font-size: 1.6rem;
+  border: 0.1rem solid ${({ theme }): string => theme.borderPrimary};
+  padding: 20px;
+  border-radius: 0.4rem;
+  min-height: 23rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  p {
+    line-height: ${({ theme }): string => theme.fontLineHeight};
+    overflow-wrap: break-word;
   }
 `

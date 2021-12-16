@@ -101,7 +101,6 @@ function getExplorerUrl(networkId: number, type: BlockExplorerLinkType, identifi
  */
 export const BlockExplorerLink: React.FC<Props> = (props: Props) => {
   const { type, identifier, label: labelProp, useUrlAsLabel = false, className, networkId } = props
-  console.log('typetype', type, identifier, props)
   if (!networkId || !identifier) {
     return null
   }

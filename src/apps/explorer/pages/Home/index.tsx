@@ -1,13 +1,29 @@
 import React from 'react'
 import { Search } from 'apps/explorer/components/common/Search'
-import { HomeWrapper } from 'apps/explorer/pages/styled'
+import { Wrapper as WrapperMod } from 'apps/explorer/pages/styled'
+import styled from 'styled-components'
+
+const Wrapper = styled(WrapperMod)`
+  max-width: 140rem;
+  flex-flow: column wrap;
+  justify-content: center;
+  display: flex;
+
+  > h1 {
+    justify-content: center;
+    padding: 2.4rem 0 0.75rem;
+    margin: 0 0 2.4rem;
+    font-size: 2.4rem;
+    line-height: 1;
+  }
+`
 
 export const Home: React.FC = () => {
   return (
-    <HomeWrapper>
-      <h1>Search Order ID / ETH Address / ENS Address</h1>
+    <Wrapper>
+      <h1>Search on Gnosis Protocol Explorer</h1>
       <Search className="home" />
-    </HomeWrapper>
+    </Wrapper>
   )
 }
 
