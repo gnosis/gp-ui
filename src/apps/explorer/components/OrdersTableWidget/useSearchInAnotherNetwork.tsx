@@ -8,6 +8,7 @@ import { NETWORK_ID_SEARCH_LIST } from 'apps/explorer/const'
 import { BlockchainNetwork } from './context/OrdersTableContext'
 import { Order, getAccountOrders } from 'api/operator'
 import Spinner from 'components/common/Spinner'
+import { BlockExplorerLink } from 'components/common/BlockExplorerLink'
 
 const Wrapper = styled.div`
   display: flex;
@@ -78,7 +79,13 @@ export const EmptyOrdersMessage = ({
       ) : (
         <>
           <p>
-            No orders found on <strong>{Network[networkId]}</strong> for {abbreviateString(ownerAddress, 3, 4)}
+            No orders found on <strong>{Network[networkId]}</strong> for{' '}
+            <BlockExplorerLink
+              identifier={ownerAddress}
+              type="address"
+              label={abbreviateString(ownerAddress, 3, 4)}
+              networkId={networkId}
+            />
           </p>
           <section>
             {' '}
