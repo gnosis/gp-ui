@@ -1,27 +1,32 @@
 import React from 'react'
 import styled from 'styled-components'
-import { media } from 'theme/styles/media'
 import { ContentCard as Content, StyledLink, Title, Wrapper as WrapperTemplate } from 'apps/explorer/pages/styled'
+
+import { getNetworkFromId } from '@gnosis.pm/dex-js'
+import { useNetworkId } from 'state/network'
+import { media } from 'theme/styles/media'
 
 const Wrapper = styled(WrapperTemplate)`
   max-width: 118rem;
+
   ${media.mediumDown} {
     flex-flow: column wrap;
   }
-
-  ${media.mobile} {
-    max-width: 100%;
-  }
 `
 
-const NotFound2: React.FC = () => (
-  <Wrapper>
-    <Title>Page not found</Title>
-    <Content>
-      <p>We&apos;re sorry, the page you requested could not be found.</p>
-      <StyledLink to="/">Back Home</StyledLink>
-    </Content>
-  </Wrapper>
-)
+const NotFoundRequestPage: React.FC = () => {
+  const networkId = useNetworkId() || 1
+  const network = networkId !== 1 ? getNetworkFromId(networkId).toLowerCase() : ''
 
-export default NotFound2
+  return (
+    <Wrapper>
+      <Title>Page not found</Title>
+      <Content>
+        <p>We&apos;re sorry, the page you requested could not be found.</p>
+        <StyledLink to={`/${network}`}>Back Home</StyledLink>
+      </Content>
+    </Wrapper>
+  )
+}
+
+export default NotFoundRequestPage
