@@ -149,6 +149,7 @@ const RowTransaction: React.FC<RowProps> = ({ transaction, isPriceInverted, inve
     kind,
     txHash,
     shortId,
+    uid,
   } = transaction
   const network = useNetworkId()
   const buyTokenSymbol = buyToken ? safeTokenName(buyToken) : ''
@@ -169,7 +170,7 @@ const RowTransaction: React.FC<RowProps> = ({ transaction, isPriceInverted, inve
         <HeaderValue>
           <RowWithCopyButton
             className="span-copybtn-wrap"
-            textToCopy={shortId}
+            textToCopy={uid}
             contentsToDisplay={
               <LinkWithPrefixNetwork to={`/tx/${transaction.txHash}`} rel="noopener noreferrer" target="_blank">
                 {getShortOrderId(shortId)}
