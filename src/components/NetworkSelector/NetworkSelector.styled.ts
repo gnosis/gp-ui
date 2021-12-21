@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { COLOURS } from 'styles'
 
-const { fadedGreyishWhiteOpacity, white } = COLOURS
+const { fadedGreyishWhiteOpacity, white, hippieBlue } = COLOURS
 
 export const SelectorContainer = styled.div`
   display: flex;
@@ -68,7 +68,7 @@ export const Option = styled.div`
       background: ${({ theme }): string => theme.yellow4};
     }
     &.gnosischain {
-      background: ${({ theme }): string => theme.orange1};
+      background: ${(): string => hippieBlue};
     }
     &.ethereum {
       background: ${({ theme }): string => theme.blue4};
@@ -98,8 +98,8 @@ export const NetworkLabel = styled.span`
   }
 
   &.gnosischain {
-    background: ${({ theme }): string => theme.orangeOpacity};
-    color: ${({ theme }): string => theme.orange};
+    background: ${(): string => `rgb(72 169 166 / 25%);`};
+    color: ${(): string => hippieBlue};
   }
 `
 
