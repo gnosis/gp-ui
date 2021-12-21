@@ -46,7 +46,7 @@ export function DateDisplay({ date, showIcon, tooltipPlacement = 'top' }: DateDi
       </Tooltip>
       <Wrapper>
         {showIcon && (
-          <span style={{ minWidth: 30 }} {...targetProps}>
+          <span {...targetProps}>
             <IconWrapper icon={faClock} />
           </span>
         )}{' '}
