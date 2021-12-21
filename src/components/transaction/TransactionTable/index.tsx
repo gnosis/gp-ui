@@ -165,7 +165,7 @@ const RowTransaction: React.FC<RowProps> = ({ transaction, isPriceInverted, inve
     <tr key={txHash}>
       <td>
         <HeaderTitle>
-          Order ID <HelpTooltip tooltip={tooltip} />
+          Order ID <HelpTooltip tooltip={tooltip.tradeID} />
         </HeaderTitle>
         <HeaderValue>
           <RowWithCopyButton
