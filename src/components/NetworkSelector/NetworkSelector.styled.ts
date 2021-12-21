@@ -67,7 +67,7 @@ export const Option = styled.div`
     &.rinkeby {
       background: ${({ theme }): string => theme.yellow4};
     }
-    &.xdai {
+    &.gnosischain {
       background: ${({ theme }): string => theme.orange1};
     }
     &.ethereum {
@@ -97,7 +97,7 @@ export const NetworkLabel = styled.span`
     color: ${({ theme }): string => theme.textSecondary1};
   }
 
-  &.xdai {
+  &.gnosischain {
     background: ${({ theme }): string => theme.orangeOpacity};
     color: ${({ theme }): string => theme.orange};
   }
