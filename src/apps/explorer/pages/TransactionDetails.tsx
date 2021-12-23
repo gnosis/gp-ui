@@ -1,25 +1,26 @@
 import React from 'react'
 import { useParams } from 'react-router'
 
-import { useNetworkId } from 'state/network'
 import { BlockExplorerLink } from 'components/common/BlockExplorerLink'
 import { TitleAddress, Wrapper } from 'apps/explorer/pages/styled'
-import OrdersTableWidget from 'apps/explorer/components/OrdersTableWidget'
+import { useNetworkId } from 'state/network'
+import { TransactionsTableWidget } from 'apps/explorer/components/TransactionsTableWidget'
 
 const TransactionDetails: React.FC = () => {
-  const { address } = useParams<{ address: string }>()
+  const { txHash } = useParams<{ txHash: string }>()
   const networkId = useNetworkId() || undefined
 
+  // TODO Validate txHash
   return (
     <Wrapper>
       <h1>
         Transaction details
         <TitleAddress
-          textToCopy={address}
-          contentsToDisplay={<BlockExplorerLink type="tx" networkId={networkId} identifier={address} />}
+          textToCopy={txHash}
+          contentsToDisplay={<BlockExplorerLink type="tx" networkId={networkId} identifier={txHash} />}
         />
       </h1>
-      <OrdersTableWidget ownerAddress={address} networkId={networkId} />
+      <TransactionsTableWidget txHash={txHash} networkId={networkId} />
     </Wrapper>
   )
 }
