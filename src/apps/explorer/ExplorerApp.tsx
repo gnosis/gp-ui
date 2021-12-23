@@ -12,7 +12,7 @@ import { GenericLayout } from 'components/layout'
 import { Header } from './layout/Header'
 import { media } from 'theme/styles/media'
 
-import { NetworkUpdater, RedirectMainnet } from 'state/network'
+import { NetworkUpdater, RedirectMainnet, RedirectXdai } from 'state/network'
 import { initAnalytics } from 'api/analytics'
 import RouteAnalytics from 'components/analytics/RouteAnalytics'
 import NetworkAnalytics from 'components/analytics/NetworkAnalytics'
@@ -89,6 +89,14 @@ const UserDetails = React.lazy(
     ),
 )
 
+const TransactionDetails = React.lazy(
+  () =>
+    import(
+      /* webpackChunkName: "TransactionDetails_chunk"*/
+      './pages/TransactionDetails'
+    ),
+)
+
 /**
  * Update the global state
  */
@@ -117,12 +125,13 @@ const AppContent = (): JSX.Element => {
         <Switch>
           <Route path={pathPrefix + '/'} exact component={Home} />
           <Route
-            path={[pathPrefix + '/address/', pathPrefix + '/orders/']}
+            path={[pathPrefix + '/address/', pathPrefix + '/orders/', pathPrefix + '/tx/']}
             exact
             component={(): JSX.Element => <Redirect to={pathPrefix + '/search/'} />}
           />
           <Route path={pathPrefix + '/orders/:orderId'} exact component={Order} />
           <Route path={pathPrefix + '/address/:address'} exact component={UserDetails} />
+          <Route path={pathPrefix + '/tx/:txHash'} exact component={TransactionDetails} />
           <Route path={pathPrefix + '/search/:searchString?'} exact component={SearchNotFound} />
           <Route component={NotFound} />
         </Switch>
@@ -158,7 +167,8 @@ export const ExplorerApp: React.FC = () => {
         <StateUpdaters />
         <Switch>
           <Route path="/mainnet" component={RedirectMainnet} />
-          <Route path={['/xdai', '/rinkeby', '/']} component={AppContent} />
+          <Route path="/xdai" component={RedirectXdai} />
+          <Route path={['/gc', '/rinkeby', '/']} component={AppContent} />
         </Switch>
       </Router>
       {process.env.NODE_ENV === 'development' && <Console />}

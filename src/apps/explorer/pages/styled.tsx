@@ -43,10 +43,14 @@ export const Wrapper = styled.div`
     font-weight: ${({ theme }): string => theme.fontBold};
   }
 `
+
 export const TitleAddress = styled(RowWithCopyButton)`
   font-size: ${({ theme }): string => theme.fontSizeDefault};
   font-weight: ${({ theme }): string => theme.fontNormal};
   margin: 0 0 0 1.5rem;
   display: flex;
   align-items: center;
+  ${media.tinyDown} {
+    font-size: 1.2rem;
+  }
 `
