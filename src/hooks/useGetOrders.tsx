@@ -7,6 +7,7 @@ import { RawOrder } from 'api/operator/types'
 import { useNetworkId } from 'state/network'
 import { transformOrder } from 'utils'
 import { ORDERS_QUERY_INTERVAL } from 'apps/explorer/const'
+import { Props as ExplorerLinkProps } from 'components/common/BlockExplorerLink'
 
 function isObjectEmpty(object: Record<string, unknown>): boolean {
   // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
@@ -117,6 +118,42 @@ export function useGetTxOrders(txHash: string): Result {
   return { orders, error, isLoading }
 }
 
+export function useTxOrderExplorerLink(txHash: string): ExplorerLinkProps | Record<string, never> {
+  const networkId = useNetworkId() || undefined
+  const [isGPv2Tx, setGPv2Tx] = useState(false)
+  const [explorerLink, setExplorerLink] = useState({})
+
+  const fetchTxOrders = useCallback(
+    async (_txHash: string, networkId: Network): Promise<void> => {
+      const { config: networkIdList } = CONFIG.exchangeContractConfig
+      const availableNetworks = new Set(networkIdList.map(({ networkId }) => networkId))
+
+      for (const network of availableNetworks) {
+        try {
+          const ordersFetched = await getTxOrders({ networkId: Number(network), txHash: _txHash })
+          if (ordersFetched.length > 0) {
+            setGPv2Tx(true)
+            break
+          }
+        } catch (e) {
+          console.error(e)
+        }
+      }
+      if (!isGPv2Tx) setExplorerLink({ type: 'tx', networkId, identifier: txHash })
+    },
+    [isGPv2Tx, txHash],
+  )
+
+  useEffect(() => {
+    if (!networkId) {
+      return
+    }
+
+    fetchTxOrders(txHash, networkId)
+  }, [fetchTxOrders, networkId, txHash])
+
+  return explorerLink
+}
 export function useGetAccountOrders(ownerAddress: string, limit = 1000, offset = 0, pageIndex?: number): Result {
   const networkId = useNetworkId() || undefined
   const [isLoading, setIsLoading] = useState(false)
