@@ -31,7 +31,7 @@ yarn
 
 | App         |      Description                                   |  Run                              |  Notes                                 |
 |-------------|:----------------------------------------------:|--------------------------------------:|----------------------------------------|
-| Explorer    | Gnosis Protocol Explorer. It's the default app | `yarn start` or `yarn start:explorer` |                                        |
+| Explorer    | CoW Protocol Explorer. It's the default app | `yarn start` or `yarn start:explorer` |                                        |
 | Safe Swap   | Gnosis Safe's Swap UI                          | `yarn start:safe-swap`                | 🚧 `WIP: Under construction`           |
 | Trade UI    | Classical trading UI                           | `yarn start:trade`                    | 🚧 `WIP: Just a not working prototype` |
 | GP v1 Swap   |  Swap UI for Gnosis Protocol v1               | `yarn start:gp-v1`                    |                                        |
