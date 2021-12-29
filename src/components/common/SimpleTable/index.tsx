@@ -113,7 +113,7 @@ const Wrapper = styled.table<{ $numColumns?: number }>`
 
 export type Props = {
   header?: JSX.Element
-  body: JSX.Element
+  body?: JSX.Element
   className?: string
   numColumns?: number
 }
