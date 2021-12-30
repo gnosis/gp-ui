@@ -25,12 +25,12 @@ const EXPLORER_APP = {
     EXPLORER_APP_DOMAIN_REGEX_PROD: '^explorer\\.cow\\.fi',
     EXPLORER_APP_DOMAIN_REGEX_BARN: '^barn\\.explorer\\.cow\\.fi',
 
-    OPERATOR_URL_STAGING_MAINNET: 'https://protocol-mainnet.dev.gnosisdev.com/api',
-    OPERATOR_URL_STAGING_RINKEBY: 'https://protocol-rinkeby.dev.gnosisdev.com/api',
-    OPERATOR_URL_STAGING_XDAI: 'https://protocol-xdai.dev.gnosisdev.com/api',
-    OPERATOR_URL_PROD_MAINNET: 'https://protocol-mainnet.gnosis.io/api',
-    OPERATOR_URL_PROD_RINKEBY: 'https://protocol-rinkeby.gnosis.io/api',
-    OPERATOR_URL_PROD_XDAI: 'https://protocol-xdai.gnosis.io/api',
+    OPERATOR_URL_STAGING_MAINNET: 'https://bar.api.cow.fi/mainnet',
+    OPERATOR_URL_STAGING_RINKEBY: 'https://bar.api.cow.fi/rinkeby',
+    OPERATOR_URL_STAGING_XDAI: 'https://bar.api.cow.fi/xdai',
+    OPERATOR_URL_PROD_MAINNET: 'https://api.cow.fi/mainnet',
+    OPERATOR_URL_PROD_RINKEBY: 'https://api.cow.fi/rinkeby',
+    OPERATOR_URL_PROD_XDAI: 'https://api.cow.fi/xdai',
 
     GOOGLE_ANALYTICS_ID: undefined,
     REACT_APP_SENTRY_DSN: undefined,
