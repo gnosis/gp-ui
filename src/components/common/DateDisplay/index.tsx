@@ -46,7 +46,11 @@ export function DateDisplay({ date, showIcon, tooltipPlacement = 'top' }: DateDi
       </Tooltip>
       <Wrapper>
         <span {...targetProps}>
-          {showIcon && <IconWrapper icon={faClock} />}
+          {showIcon && (
+            <span {...targetProps}>
+              <IconWrapper icon={faClock} />
+            </span>
+          )}
           <span>{previewDate}</span>
         </span>
       </Wrapper>
