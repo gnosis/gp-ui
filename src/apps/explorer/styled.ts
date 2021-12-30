@@ -43,7 +43,7 @@ export const MainWrapper = styled.div`
     flex-flow: column wrap;
   }
 
-  ${media.mobile} {
+  ${media.xSmallDown} {
     max-width: 100%;
     flex-grow: 1;
     header {
