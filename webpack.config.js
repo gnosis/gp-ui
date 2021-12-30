@@ -22,8 +22,8 @@ const EXPLORER_APP = {
   envVars: {
     EXPLORER_APP_DOMAIN_REGEX_DEV: '^protocol-explorer\\.dev|^localhost:\\d{2,5}|^pr\\d+--gpui\\.review',
     EXPLORER_APP_DOMAIN_REGEX_STAGING: '^protocol-explorer\\.staging',
-    EXPLORER_APP_DOMAIN_REGEX_PROD: '^gnosis-protocol\\.io',
-    EXPLORER_APP_DOMAIN_REGEX_BARN: '^barn\\.gnosis-protocol\\.io',
+    EXPLORER_APP_DOMAIN_REGEX_PROD: '^explorer\\.cow\\.fi',
+    EXPLORER_APP_DOMAIN_REGEX_BARN: '^barn\\.explorer\\.cow\\.fi',
 
     OPERATOR_URL_STAGING_MAINNET: 'https://protocol-mainnet.dev.gnosisdev.com/api',
     OPERATOR_URL_STAGING_RINKEBY: 'https://protocol-rinkeby.dev.gnosisdev.com/api',
