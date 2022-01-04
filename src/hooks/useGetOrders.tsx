@@ -122,13 +122,12 @@ export function useTxOrderExplorerLink(txHash: string): ExplorerLinkProps | Reco
   const networkId = useNetworkId() || undefined
   const [isGPv2Tx, setGPv2Tx] = useState(false)
   const [explorerLink, setExplorerLink] = useState({})
+  const { config: networkIdList } = CONFIG.exchangeContractConfig
+  const availableNetworks = JSON.stringify(Array.from(new Set(networkIdList.map(({ networkId }) => networkId))))
 
   const fetchTxOrders = useCallback(
     async (_txHash: string, networkId: Network): Promise<void> => {
-      const { config: networkIdList } = CONFIG.exchangeContractConfig
-      const availableNetworks = new Set(networkIdList.map(({ networkId }) => networkId))
-
-      for (const network of availableNetworks) {
+      for (const network of JSON.parse(availableNetworks)) {
         try {
           const ordersFetched = await getTxOrders({ networkId: Number(network), txHash: _txHash })
           if (ordersFetched.length > 0) {
@@ -141,7 +140,7 @@ export function useTxOrderExplorerLink(txHash: string): ExplorerLinkProps | Reco
       }
       if (!isGPv2Tx) setExplorerLink({ type: 'tx', networkId, identifier: txHash })
     },
-    [isGPv2Tx, txHash],
+    [isGPv2Tx, txHash, availableNetworks],
   )
 
   useEffect(() => {
