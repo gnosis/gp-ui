@@ -27,7 +27,6 @@ const HeaderStyled = styled.header`
 `
 
 const Logo = styled(Link)`
-  height: 4.5rem;
   padding: 0;
   margin: 0 1rem 0 0;
   display: flex;
@@ -36,6 +35,7 @@ const Logo = styled(Link)`
 
   &:hover {
     text-decoration: none;
+    opacity: 0.85;
   }
 
   > img {
