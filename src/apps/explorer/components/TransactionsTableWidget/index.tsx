@@ -5,15 +5,19 @@ import { useGetTxOrders } from 'hooks/useGetOrders'
 import RedirectToSearch from 'components/RedirectToSearch'
 import Spinner from 'components/common/Spinner'
 import { BlockExplorerLink } from 'components/common/BlockExplorerLink'
-import { useNetworkId } from 'state/network'
+import { RedirectToNetwork, useNetworkId } from 'state/network'
 
 interface Props {
   txHash: string
 }
 
 export const TransactionsTableWidget: React.FC<Props> = ({ txHash }) => {
-  const { orders, isLoading: isTxLoading } = useGetTxOrders(txHash)
+  const { orders, isLoading: isTxLoading, errorTxPresentInNetworkId } = useGetTxOrders(txHash)
   const networkId = useNetworkId() || undefined
+
+  if (errorTxPresentInNetworkId && networkId != errorTxPresentInNetworkId) {
+    return <RedirectToNetwork networkId={errorTxPresentInNetworkId} />
+  }
 
   if (!isTxLoading && orders && orders.length < 1) {
     return <RedirectToSearch from="tx" />

@@ -2,11 +2,12 @@ import { useState, useEffect, useCallback } from 'react'
 
 import { Network } from 'types'
 import { useMultipleErc20 } from 'hooks/useErc20'
-import { getAccountOrders, getTxOrders, Order } from 'api/operator'
+import { getAccountOrders, Order } from 'api/operator'
 import { RawOrder } from 'api/operator/types'
 import { useNetworkId } from 'state/network'
 import { transformOrder } from 'utils'
 import { ORDERS_QUERY_INTERVAL } from 'apps/explorer/const'
+import { getTxOrderOnEveryNetwork } from './useOperatorOrder'
 
 function isObjectEmpty(object: Record<string, unknown>): boolean {
   // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
@@ -35,7 +36,14 @@ type Result = {
   orders: Order[] | undefined
   error: string
   isLoading: boolean
-  isThereNext?: boolean
+}
+
+type GetAccountOrdersResult = Result & {
+  isThereNext: boolean
+}
+
+type GetTxOrdersResult = Result & {
+  errorTxPresentInNetworkId: Network | null
 }
 
 interface UseOrdersWithTokenInfo {
@@ -76,11 +84,12 @@ function useOrdersWithTokenInfo(networkId: Network | undefined): UseOrdersWithTo
   return { orders, setOrders, setMountNewOrders, setErc20Addresses }
 }
 
-export function useGetTxOrders(txHash: string): Result {
+export function useGetTxOrders(txHash: string): GetTxOrdersResult {
   const networkId = useNetworkId() || undefined
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const { orders, setOrders, setMountNewOrders, setErc20Addresses } = useOrdersWithTokenInfo(networkId)
+  const [errorTxPresentInNetworkId, setErrorTxPresentInNetworkId] = useState<Network | null>(null)
 
   const fetchOrders = useCallback(
     async (network: Network, _txHash: string): Promise<void> => {
@@ -88,13 +97,20 @@ export function useGetTxOrders(txHash: string): Result {
       setError('')
 
       try {
-        const ordersFetched = await getTxOrders({ networkId: network, txHash: _txHash })
+        const { order: _orders, errorOrderPresentInNetworkId: errorTxPresentInNetworkIdRaw } =
+          await getTxOrderOnEveryNetwork(network, _txHash)
+        const ordersFetched = _orders || []
         const newErc20Addresses = filterDuplicateErc20Addresses(ordersFetched)
 
         setErc20Addresses(newErc20Addresses)
 
         setOrders(ordersFetched.map((order) => transformOrder(order)))
         setMountNewOrders(true)
+
+        if (errorTxPresentInNetworkIdRaw) {
+          console.log({ _orders, errorTxPresentInNetworkIdRaw })
+          setErrorTxPresentInNetworkId(errorTxPresentInNetworkIdRaw)
+        }
       } catch (e) {
         const msg = `Failed to fetch tx orders`
         console.error(msg, e)
@@ -114,10 +130,15 @@ export function useGetTxOrders(txHash: string): Result {
     fetchOrders(networkId, txHash)
   }, [fetchOrders, networkId, txHash])
 
-  return { orders, error, isLoading }
+  return { orders, error, isLoading, errorTxPresentInNetworkId }
 }
 
-export function useGetAccountOrders(ownerAddress: string, limit = 1000, offset = 0, pageIndex?: number): Result {
+export function useGetAccountOrders(
+  ownerAddress: string,
+  limit = 1000,
+  offset = 0,
+  pageIndex?: number,
+): GetAccountOrdersResult {
   const networkId = useNetworkId() || undefined
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')

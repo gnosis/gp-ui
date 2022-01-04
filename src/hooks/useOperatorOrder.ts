@@ -18,8 +18,11 @@ type UseOrderResult = {
   forceUpdate?: () => void
 }
 
-interface GetOrderResult {
-  order: RawOrder | null
+type SingleOrder = RawOrder | null
+type MultipleOrders = RawOrder[] | null
+
+interface GetOrderResult<R> {
+  order: R | null
   errorOrderPresentInNetworkId?: Network
 }
 
@@ -27,22 +30,22 @@ type GetOrderParamsApi<T> = {
   [K in keyof T]: T[K]
 }
 
-interface GetOrderApiFn<T> {
-  (params: GetOrderParamsApi<T>): Promise<RawOrder | null>
+interface GetOrderApiFn<T, R> {
+  (params: GetOrderParamsApi<T>): Promise<R>
 }
 
-type GetOrderApi<T> = {
-  api: GetOrderApiFn<T>
+type GetOrderApi<T, R> = {
+  api: GetOrderApiFn<T, R>
   defaultParams: GetOrderParamsApi<T>
 }
 
 type TypeOrderApiParams = GetOrderParams | GetTxOrdersParams
 
-async function tryGetOrderOnAllNetworks(
+async function tryGetOrderOnAllNetworks<TypeOrderResult>(
   networkId: Network,
-  getOrderApi: GetOrderApi<TypeOrderApiParams>,
+  getOrderApi: GetOrderApi<TypeOrderApiParams, TypeOrderResult>,
   networkIdSearchListRemaining: Network[] = NETWORK_ID_SEARCH_LIST,
-): Promise<GetOrderResult> {
+): Promise<GetOrderResult<TypeOrderResult>> {
   // Get order
   const order = await getOrderApi.api({ ...getOrderApi.defaultParams, networkId })
 
@@ -59,9 +62,8 @@ async function tryGetOrderOnAllNetworks(
   // Try to get the oder in another network (to see if the ID is OK, but the network not)
   const isOrderInDifferentNetwork = await getOrderApi
     .api({ ...getOrderApi.defaultParams, networkId: nextNetworkId })
-    .then((order) => order !== null)
+    .then((_order) => _order !== null)
 
-  console.log('is in different network', isOrderInDifferentNetwork)
   if (isOrderInDifferentNetwork) {
     // If the order exist in the other network
     return {
@@ -74,14 +76,14 @@ async function tryGetOrderOnAllNetworks(
   }
 }
 
-function _getOrder(networkId: Network, orderId: string): Promise<GetOrderResult> {
+function _getOrder(networkId: Network, orderId: string): Promise<GetOrderResult<SingleOrder>> {
   const defaultParams: GetOrderParams = { networkId, orderId }
-  const getOrderApi: GetOrderApi<GetOrderParams> = {
+  const getOrderApi: GetOrderApi<GetOrderParams, SingleOrder> = {
     api: (_defaultParams) => getOrder(_defaultParams),
     defaultParams,
   }
 
-  return tryGetOrderOnAllNetworks(networkId, getOrderApi)
+  return tryGetOrderOnAllNetworks<SingleOrder>(networkId, getOrderApi)
 }
 
 export function useOrderByNetwork(orderId: string, networkId: Network | null, updateInterval = 0): UseOrderResult {
@@ -189,53 +191,12 @@ export function useOrderAndErc20s(orderId: string, updateInterval = 0): UseOrder
   return { order, isLoading: isOrderLoading || areErc20Loading, errors, errorOrderPresentInNetworkId }
 }
 
-function _getTxOrder(networkId: Network, txHash: string): Promise<GetOrderResult> {
+export function getTxOrderOnEveryNetwork(networkId: Network, txHash: string): Promise<GetOrderResult<MultipleOrders>> {
   const defaultParams: GetTxOrdersParams = { networkId, txHash }
-  const getOrderApi: GetOrderApi<GetTxOrdersParams> = {
-    api: (_defaultParams) => getTxOrders(_defaultParams).then((orders) => orders[0] || null),
+  const getOrderApi: GetOrderApi<GetTxOrdersParams, MultipleOrders> = {
+    api: (_defaultParams) => getTxOrders(_defaultParams).then((orders) => (orders.length ? orders : null)),
     defaultParams,
   }
 
   return tryGetOrderOnAllNetworks(networkId, getOrderApi)
-}
-
-export function useTxOrderByNetwork(txHash: string): UseOrderResult {
-  const networkId = useNetworkId()
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState('')
-  const [order, setOrder] = useState<Order | null>(null)
-  const [errorOrderPresentInNetworkId, setErrorOrderPresentInNetworkId] = useState<Network | null>(null)
-
-  useEffect(() => {
-    async function fetchOrder(): Promise<void> {
-      if (!networkId) return
-
-      setIsLoading(true)
-      setError('')
-
-      try {
-        const { order: rawOrder, errorOrderPresentInNetworkId: errorOrderPresentInNetworkIdRaw } = await _getTxOrder(
-          networkId,
-          txHash,
-        )
-        console.log({ rawOrder, errorOrderPresentInNetworkIdRaw })
-        if (rawOrder) {
-          setOrder(transformOrder(rawOrder))
-        }
-        if (errorOrderPresentInNetworkIdRaw) {
-          setErrorOrderPresentInNetworkId(errorOrderPresentInNetworkIdRaw)
-        }
-      } catch (e) {
-        const msg = `Failed to fetch order of Tx: ${txHash}`
-        console.error(msg, e.message)
-        setError(msg)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    fetchOrder()
-  }, [networkId, txHash])
-
-  return { order, isLoading, error, errorOrderPresentInNetworkId }
 }
