@@ -28,9 +28,9 @@ const EXPLORER_APP = {
     OPERATOR_URL_STAGING_MAINNET: 'https://protocol-mainnet.dev.gnosisdev.com/api',
     OPERATOR_URL_STAGING_RINKEBY: 'https://protocol-rinkeby.dev.gnosisdev.com/api',
     OPERATOR_URL_STAGING_XDAI: 'https://protocol-xdai.dev.gnosisdev.com/api',
-    OPERATOR_URL_PROD_MAINNET: 'https://api.cow.fi/mainnet',
-    OPERATOR_URL_PROD_RINKEBY: 'https://api.cow.fi/rinkeby',
-    OPERATOR_URL_PROD_XDAI: 'https://api.cow.fi/xdai',
+    OPERATOR_URL_PROD_MAINNET: 'https://api.cow.fi/mainnet/api',
+    OPERATOR_URL_PROD_RINKEBY: 'https://api.cow.fi/rinkeby/api',
+    OPERATOR_URL_PROD_XDAI: 'https://api.cow.fi/xdai/api',
 
     GOOGLE_ANALYTICS_ID: undefined,
     REACT_APP_SENTRY_DSN: undefined,
