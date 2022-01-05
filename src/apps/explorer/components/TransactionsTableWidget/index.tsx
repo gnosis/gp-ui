@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { TitleAddress } from 'apps/explorer/pages/styled'
 import { useGetTxOrders } from 'hooks/useGetOrders'
@@ -14,16 +14,27 @@ interface Props {
 export const TransactionsTableWidget: React.FC<Props> = ({ txHash }) => {
   const { orders, isLoading: isTxLoading, errorTxPresentInNetworkId } = useGetTxOrders(txHash)
   const networkId = useNetworkId() || undefined
+  const [redirectTo, setRedirectTo] = useState(false)
+
+  // Avoid redirecting until another network is searched again
+  useEffect(() => {
+    if (orders?.length || isTxLoading) return
+
+    const timer = setTimeout(() => {
+      setRedirectTo(true)
+    }, 500)
+
+    return (): void => clearTimeout(timer)
+  })
 
   if (errorTxPresentInNetworkId && networkId != errorTxPresentInNetworkId) {
     return <RedirectToNetwork networkId={errorTxPresentInNetworkId} />
   }
-
-  if (!isTxLoading && orders && orders.length < 1) {
+  if (redirectTo) {
     return <RedirectToSearch from="tx" />
   }
 
-  if (!orders) {
+  if (!orders?.length) {
     return <Spinner spin size="3x" />
   }
 
@@ -37,7 +48,7 @@ export const TransactionsTableWidget: React.FC<Props> = ({ txHash }) => {
           contentsToDisplay={<BlockExplorerLink type="tx" networkId={networkId} identifier={txHash} />}
         />
       </h1>
-      <h2>{orders.length} Tx found.</h2>
+      <h2>{orders.length} Tx orders found.</h2>
     </>
   )
 }

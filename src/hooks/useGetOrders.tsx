@@ -48,6 +48,7 @@ type GetTxOrdersResult = Result & {
 
 interface UseOrdersWithTokenInfo {
   orders: Order[] | undefined
+  areErc20Loading: boolean
   setOrders: (value: Order[] | undefined) => void
   setMountNewOrders: (value: boolean) => void
   setErc20Addresses: (value: string[]) => void
@@ -81,14 +82,14 @@ function useOrdersWithTokenInfo(networkId: Network | undefined): UseOrdersWithTo
     setErc20Addresses([])
   }, [valueErc20s, networkId, areErc20Loading, mountNewOrders, orders])
 
-  return { orders, setOrders, setMountNewOrders, setErc20Addresses }
+  return { orders, areErc20Loading, setOrders, setMountNewOrders, setErc20Addresses }
 }
 
 export function useGetTxOrders(txHash: string): GetTxOrdersResult {
   const networkId = useNetworkId() || undefined
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
-  const { orders, setOrders, setMountNewOrders, setErc20Addresses } = useOrdersWithTokenInfo(networkId)
+  const { orders, areErc20Loading, setOrders, setMountNewOrders, setErc20Addresses } = useOrdersWithTokenInfo(networkId)
   const [errorTxPresentInNetworkId, setErrorTxPresentInNetworkId] = useState<Network | null>(null)
 
   const fetchOrders = useCallback(
@@ -130,7 +131,7 @@ export function useGetTxOrders(txHash: string): GetTxOrdersResult {
     fetchOrders(networkId, txHash)
   }, [fetchOrders, networkId, txHash])
 
-  return { orders, error, isLoading, errorTxPresentInNetworkId }
+  return { orders, error, isLoading: isLoading || areErc20Loading, errorTxPresentInNetworkId }
 }
 
 export function useGetAccountOrders(
