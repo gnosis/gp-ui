@@ -22,12 +22,12 @@ const EXPLORER_APP = {
   envVars: {
     EXPLORER_APP_DOMAIN_REGEX_DEV: '^protocol-explorer\\.dev|^localhost:\\d{2,5}|^pr\\d+--gpui\\.review',
     EXPLORER_APP_DOMAIN_REGEX_STAGING: '^protocol-explorer\\.staging',
-    EXPLORER_APP_DOMAIN_REGEX_PROD: '^explorer\\.cow\\.fi',
-    EXPLORER_APP_DOMAIN_REGEX_BARN: '^barn\\.explorer\\.cow\\.fi',
+    EXPLORER_APP_DOMAIN_REGEX_PROD: '^explorer\\.cow\\.fi|^gnosis-protocol\\.io',
+    EXPLORER_APP_DOMAIN_REGEX_BARN: '^barn\\.explorer\\.cow\\.fi|^barn\\.gnosis-protocol\\.io',
 
-    OPERATOR_URL_STAGING_MAINNET: 'https://barn.api.cow.fi/mainnet',
-    OPERATOR_URL_STAGING_RINKEBY: 'https://barn.api.cow.fi/rinkeby',
-    OPERATOR_URL_STAGING_XDAI: 'https://barn.api.cow.fi/xdai',
+    OPERATOR_URL_STAGING_MAINNET: 'https://protocol-mainnet.dev.gnosisdev.com/api',
+    OPERATOR_URL_STAGING_RINKEBY: 'https://protocol-rinkeby.dev.gnosisdev.com/api',
+    OPERATOR_URL_STAGING_XDAI: 'https://protocol-xdai.dev.gnosisdev.com/api',
     OPERATOR_URL_PROD_MAINNET: 'https://api.cow.fi/mainnet',
     OPERATOR_URL_PROD_RINKEBY: 'https://api.cow.fi/rinkeby',
     OPERATOR_URL_PROD_XDAI: 'https://api.cow.fi/xdai',
