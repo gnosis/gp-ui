@@ -45,7 +45,7 @@ const transactionExSell: Order = {
 const Template: Story<TransactionTableProps> = (args) => <TransactionTable {...args} />
 
 export const Default = Template.bind({})
-Default.args = { transactions: [transactionExBuy, transactionExSell], showBorderTable: true }
+Default.args = { orders: [transactionExBuy, transactionExSell], showBorderTable: true }
 
 export const TxDetailsError = Template.bind({})
-TxDetailsError.args = { transactions: [], showBorderTable: true }
+TxDetailsError.args = { orders: [], showBorderTable: true }

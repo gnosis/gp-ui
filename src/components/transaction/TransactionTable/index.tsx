@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { faExchangeAlt, faSpinner } from '@fortawesome/free-solid-svg-icons'
 
-import { Order, Trade } from 'api/operator'
+import { Order } from 'api/operator'
 
 import { DateDisplay } from 'components/common/DateDisplay'
 import { RowWithCopyButton } from 'components/common/RowWithCopyButton'
@@ -109,36 +109,35 @@ const HeaderValue = styled.span`
   }
 `
 
-function getLimitPrice(transaction: Order, isPriceInverted: boolean): string {
-  if (!transaction.buyToken || !transaction.sellToken) return '-'
+function getLimitPrice(order: Order, isPriceInverted: boolean): string {
+  if (!order.buyToken || !order.sellToken) return '-'
 
   const calculatedPrice = getOrderLimitPrice({
-    buyAmount: transaction.buyAmount,
-    sellAmount: transaction.sellAmount,
-    buyTokenDecimals: transaction.buyToken.decimals,
-    sellTokenDecimals: transaction.sellToken.decimals,
+    buyAmount: order.buyAmount,
+    sellAmount: order.sellAmount,
+    buyTokenDecimals: order.buyToken.decimals,
+    sellTokenDecimals: order.sellToken.decimals,
     inverted: isPriceInverted,
   })
 
-  return formatCalculatedPriceToDisplay(calculatedPrice, transaction.buyToken, transaction.sellToken, isPriceInverted)
+  return formatCalculatedPriceToDisplay(calculatedPrice, order.buyToken, order.sellToken, isPriceInverted)
 }
 
 const tooltip = {
-  tradeID: 'A unique identifier ID for this trade.',
+  orderID: 'A unique identifier ID for this order.',
 }
 
 export type Props = StyledUserDetailsTableProps & {
-  transactions: Order[]
-  trades: Trade[]
+  orders: Order[]
 }
 
 interface RowProps {
-  transaction: Order
+  order: Order
   isPriceInverted: boolean
   invertLimitPrice: () => void
 }
 
-const RowTransaction: React.FC<RowProps> = ({ transaction, isPriceInverted, invertLimitPrice }) => {
+const RowTransaction: React.FC<RowProps> = ({ order, isPriceInverted, invertLimitPrice }) => {
   const {
     buyToken,
     buyAmount,
@@ -150,7 +149,7 @@ const RowTransaction: React.FC<RowProps> = ({ transaction, isPriceInverted, inve
     txHash,
     shortId,
     uid,
-  } = transaction
+  } = order
   const network = useNetworkId()
   const buyTokenSymbol = buyToken ? safeTokenName(buyToken) : ''
   const sellTokenSymbol = sellToken ? safeTokenName(sellToken) : ''
@@ -159,20 +158,20 @@ const RowTransaction: React.FC<RowProps> = ({ transaction, isPriceInverted, inve
   const renderSpinnerWhenNoValue = (textValue: string): JSX.Element | void => {
     if (textValue === '-') return <FontAwesomeIcon icon={faSpinner} spin size="1x" />
   }
-  const limitPriceSettled = getLimitPrice(transaction, isPriceInverted)
+  const limitPriceSettled = getLimitPrice(order, isPriceInverted)
 
   return (
     <tr key={txHash}>
       <td>
         <HeaderTitle>
-          Order ID <HelpTooltip tooltip={tooltip.tradeID} />
+          Order ID <HelpTooltip tooltip={tooltip.orderID} />
         </HeaderTitle>
         <HeaderValue>
           <RowWithCopyButton
             className="span-copybtn-wrap"
             textToCopy={uid}
             contentsToDisplay={
-              <LinkWithPrefixNetwork to={`/tx/${transaction.txHash}`} rel="noopener noreferrer" target="_blank">
+              <LinkWithPrefixNetwork to={`/address/${order.txHash}`} rel="noopener noreferrer" target="_blank">
                 {getShortOrderId(shortId)}
               </LinkWithPrefixNetwork>
             }
@@ -223,7 +222,7 @@ const RowTransaction: React.FC<RowProps> = ({ transaction, isPriceInverted, inve
       <td>
         <HeaderTitle>Status</HeaderTitle>
         <HeaderValue>
-          <StatusLabel status={transaction.status} partiallyFilled={partiallyFilled} />
+          <StatusLabel status={order.status} partiallyFilled={partiallyFilled} />
         </HeaderValue>
       </td>
     </tr>
@@ -231,7 +230,7 @@ const RowTransaction: React.FC<RowProps> = ({ transaction, isPriceInverted, inve
 }
 
 const TransactionTable: React.FC<Props> = (props) => {
-  const { transactions, showBorderTable = false } = props
+  const { orders, showBorderTable = false } = props
   const [isPriceInverted, setIsPriceInverted] = useState(false)
   useEffect(() => {
     setIsPriceInverted(isPriceInverted)
@@ -240,7 +239,7 @@ const TransactionTable: React.FC<Props> = (props) => {
     setIsPriceInverted((previousValue) => !previousValue)
   }
 
-  const transactionItems = (items: Order[]): JSX.Element => {
+  const orderItems = (items: Order[]): JSX.Element => {
     let tableContent
     if (!items || items.length === 0) {
       tableContent = (
@@ -259,7 +258,7 @@ const TransactionTable: React.FC<Props> = (props) => {
             <RowTransaction
               key={`${item.shortId}-${i}`}
               invertLimitPrice={invertLimitPrice}
-              transaction={item}
+              order={item}
               isPriceInverted={isPriceInverted}
             />
           ))}
@@ -275,7 +274,7 @@ const TransactionTable: React.FC<Props> = (props) => {
       header={
         <tr>
           <th>
-            Order ID <HelpTooltip tooltip={tooltip.tradeID} />
+            Order ID <HelpTooltip tooltip={tooltip.orderID} />
           </th>
           <th>Type</th>
           <th>Sell Amount</th>
@@ -287,7 +286,7 @@ const TransactionTable: React.FC<Props> = (props) => {
           <th>Status</th>
         </tr>
       }
-      body={transactionItems(transactions)}
+      body={orderItems(orders)}
     />
   )
 }
