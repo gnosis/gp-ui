@@ -39,6 +39,6 @@ export const TransactionsTableWithData: React.FC = () => {
       <Spinner spin size="3x" />
     </EmptyItemWrapper>
   ) : (
-    <TransactionTable transactions={orders} />
+    <TransactionTable orders={orders} />
   )
 }
