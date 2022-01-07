@@ -2,12 +2,17 @@ import { useState, useEffect, useCallback } from 'react'
 
 import { Network } from 'types'
 import { useMultipleErc20 } from 'hooks/useErc20'
-import { getAccountOrders, Order } from 'api/operator'
-import { RawOrder } from 'api/operator/types'
+import { getAccountOrders, getTxOrders, Order } from 'api/operator'
+import { GetTxOrdersParams, RawOrder } from 'api/operator/types'
 import { useNetworkId } from 'state/network'
 import { transformOrder } from 'utils'
 import { ORDERS_QUERY_INTERVAL } from 'apps/explorer/const'
-import { getTxOrderOnEveryNetwork } from './useOperatorOrder'
+import {
+  GetOrderResult,
+  MultipleOrders,
+  GetOrderApi,
+  tryGetOrderOnAllNetworks,
+} from 'services/helpers/tryGetOrderOnAllNetworks'
 
 function isObjectEmpty(object: Record<string, unknown>): boolean {
   // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
@@ -52,6 +57,16 @@ interface UseOrdersWithTokenInfo {
   setOrders: (value: Order[] | undefined) => void
   setMountNewOrders: (value: boolean) => void
   setErc20Addresses: (value: string[]) => void
+}
+
+export function getTxOrderOnEveryNetwork(networkId: Network, txHash: string): Promise<GetOrderResult<MultipleOrders>> {
+  const defaultParams: GetTxOrdersParams = { networkId, txHash }
+  const getOrderApi: GetOrderApi<GetTxOrdersParams, MultipleOrders> = {
+    api: (_defaultParams) => getTxOrders(_defaultParams).then((orders) => (orders.length ? orders : null)),
+    defaultParams,
+  }
+
+  return tryGetOrderOnAllNetworks(networkId, getOrderApi)
 }
 
 function useOrdersWithTokenInfo(networkId: Network | undefined): UseOrdersWithTokenInfo {
