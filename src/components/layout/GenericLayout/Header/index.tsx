@@ -48,6 +48,10 @@ const Logo = styled(Link)`
       animation-duration: 1s;
       animation-iteration-count: infinite;
       animation-delay: 0.4s;
+
+      ${media.mediumDown} {
+        animation: none;
+      }
     }
 
     background: url(${LogoImage}) no-repeat center/contain;
