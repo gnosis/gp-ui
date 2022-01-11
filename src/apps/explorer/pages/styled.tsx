@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { media } from 'theme/styles/media'
 
 import { RowWithCopyButton } from 'components/common/RowWithCopyButton'
+import * as CSS from 'csstype'
 
 export const WrapperPage = styled.div`
   padding: 1.6rem;
@@ -34,4 +35,10 @@ export const TitleAddress = styled(RowWithCopyButton)`
   ${media.tinyDown} {
     font-size: 1.2rem;
   }
+`
+
+export const FlexWrap = styled.div<Partial<CSS.Properties & { grow?: number }>>`
+  display: flex;
+  align-items: center;
+  flex-grow: ${({ grow }): string => `${grow}` || '0'};
 `
