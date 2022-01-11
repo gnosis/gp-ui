@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
 import { FlexWrap } from 'apps/explorer/pages/styled'
+import { ExternalLink } from 'components/analytics/ExternalLink'
 
 export const Header: React.FC = () => {
   const ref = useRef<HTMLDivElement>(null)
@@ -41,13 +42,19 @@ export const Header: React.FC = () => {
             <Link to="/">Home</Link>
           </li>
           <li>
-            <Link to="cow.fi">CoW Protocol</Link>
+            <ExternalLink target={'_blank'} href={'https://cow.fi'}>
+              CoW Protocol
+            </ExternalLink>
           </li>
           <li>
-            <Link to="docs.cow.fi">Documentation</Link>
+            <ExternalLink target={'_blank'} href={'https://docs.cow.fi'}>
+              Documentation
+            </ExternalLink>
           </li>
           <li>
-            <Link to="chat.cowswap.exchange">Community</Link>
+            <ExternalLink target={'_blank'} href={'https://chat.cowswap.exchange'}>
+              Community
+            </ExternalLink>
           </li>
         </Navigation>
       </FlexWrap>

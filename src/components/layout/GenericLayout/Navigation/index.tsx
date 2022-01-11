@@ -87,7 +87,6 @@ export const Navigation = styled.ol<Partial<CSS.Properties & { isActive: boolean
     display: flex;
     align-items: center;
     position: relative;
-    font-family: inherit;
     margin: 0;
     border-radius: 0.6rem;
   }
