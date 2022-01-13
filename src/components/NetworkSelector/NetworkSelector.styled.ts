@@ -30,7 +30,7 @@ export const OptionsContainer = styled.div<{ width: number }>`
   width: ${(props: { width: number }): string => `${184 + props.width}px`};
   height: 128px;
   left: 15px;
-  top: 50px;
+  top: 54px;
   background: ${({ theme }): string => theme.bg1};
   border: ${(): string => `1px solid ${fadedGreyishWhiteOpacity}`};
   box-sizing: border-box;
