@@ -14,10 +14,10 @@ export const SelectorContainer = styled.div`
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
     border-bottom: ${({ theme }): string => `5px solid ${theme.grey}`};
-    transform: rotate(0deg);
+    transform: rotate(180deg);
     transition: transform 0.1s linear;
     &.open {
-      transform: rotate(180deg);
+      transform: rotate(0deg);
       transition: transform 0.1s linear;
     }
   }
