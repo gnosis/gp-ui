@@ -4,14 +4,15 @@ import { MenuBarToggle, Navigation } from 'components/layout/GenericLayout/Navig
 import { Header as GenericHeader } from 'components/layout/GenericLayout/Header'
 import { NetworkSelector } from 'components/NetworkSelector'
 import { PREFIX_BY_NETWORK_ID, useNetworkId } from 'state/network'
-import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars } from '@fortawesome/free-solid-svg-icons'
+import { faEllipsisH, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FlexWrap } from 'apps/explorer/pages/styled'
 import { ExternalLink } from 'components/analytics/ExternalLink'
+import { useHistory } from 'react-router'
 
 export const Header: React.FC = () => {
   const ref = useRef<HTMLDivElement>(null)
+  const history = useHistory()
   const [isBarActive, setBarActive] = useState(false)
 
   useEffect(() => {
@@ -30,16 +31,22 @@ export const Header: React.FC = () => {
 
   const prefixNetwork = PREFIX_BY_NETWORK_ID.get(networkId)
 
+  const handleNavigate = (e: any): void => {
+    e.preventDefault()
+    setBarActive(false)
+    history.push('/')
+  }
+
   return (
     <GenericHeader logoAlt="CoW Protocol Explorer" linkTo={`/${prefixNetwork || ''}`}>
       <NetworkSelector networkId={networkId} />
       <FlexWrap ref={ref} grow={1}>
         <MenuBarToggle isActive={isBarActive} onClick={(): void => setBarActive(!isBarActive)}>
-          <FontAwesomeIcon icon={faBars} />
+          <FontAwesomeIcon icon={isBarActive ? faTimes : faEllipsisH} />
         </MenuBarToggle>
         <Navigation isActive={isBarActive}>
           <li>
-            <Link to="/">Home</Link>
+            <a onClick={(e): void => handleNavigate(e)}>Home</a>
           </li>
           <li>
             <ExternalLink target={'_blank'} href={'https://cow.fi'}>

@@ -14,16 +14,29 @@ export const Navigation = styled.ol<Partial<CSS.Properties & { isActive: boolean
     flex-wrap: nowrap;
     justify-content: flex-start;
     margin: 0 0 0 auto;
-    position: fixed;
+    position: absolute;
     width: 100%;
+    top: 100%;
     max-width: 260px;
+    border: 1px solid var(--color-border);
+    transition: right 0.07s ease-in-out;
+    left: auto;
+    right: 15px;
+    background-color: var(--color-primary);
+    opacity: ${({ isActive }): string => (isActive ? '1' : '0')};
+    z-index: ${({ isActive }): string => (isActive ? '99' : '-1')};
+  }
+
+  ${media.xSmallDown} {
+    border-right: 1px solid var(--color-border);
+    max-width: 100%;
     top: 0;
     bottom: 0;
-    border-right: 1px solid var(--color-border);
-    transition: left 0.2s ease-in-out;
-    left: ${({ isActive }): string => (isActive ? '0' : '-260')}px;
-    background-color: var(--color-primary);
-    z-index: 99;
+    position: fixed;
+    transition: left 0.15s ease-in-out;
+    padding-top: 20%;
+    right: auto;
+    left: ${({ isActive }): string => (isActive ? '0' : '-100%')};
   }
 
   > li {
@@ -51,12 +64,14 @@ export const Navigation = styled.ol<Partial<CSS.Properties & { isActive: boolean
 
     ${media.mediumDownMd} {
       padding: 10px 15px;
+      text-align: center;
       &:not(:last-child):after {
-        right: 0;
-        left: 0;
+        right: auto;
+        left: 50%;
         top: auto;
         bottom: 0;
-        width: 100%;
+        width: calc(100% - 30px);
+        transform: translateX(-50%);
         height: 1px;
         background-color: var(--color-text-secondary2);
         opacity: 0.2;
@@ -77,7 +92,7 @@ export const Navigation = styled.ol<Partial<CSS.Properties & { isActive: boolean
 
   > li > div > a,
   > li > a {
-    font-weight: var(--font-weight-normal);
+    font-weight: var(--font-weight-bold);
     font-size: inherit;
     color: inherit;
     text-align: center;
@@ -88,6 +103,7 @@ export const Navigation = styled.ol<Partial<CSS.Properties & { isActive: boolean
     align-items: center;
     position: relative;
     margin: 0;
+    flex-grow: 1;
     border-radius: 0.6rem;
   }
 
@@ -98,15 +114,21 @@ export const Navigation = styled.ol<Partial<CSS.Properties & { isActive: boolean
 `
 
 export const MenuBarToggle = styled.button<Partial<CSS.Properties & { isActive: boolean }>>`
-  color: ${({ isActive }): string => (isActive ? 'var(--color-text-secondary1)' : 'var(--color-text-secondary2)')};
+  color: var(--color-text-secondary2);
   font-size: 17px;
   padding: 5px 10px;
-  border: 1px solid ${({ isActive }): string => (isActive ? 'var(--color-text-secondary2)' : 'var(--color-border)')};
+  border: 1px solid var(--color-border);
   display: none;
-  background-color: transparent;
+  width: 40px;
+  height: 30px;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-primary);
   background-image: none;
   margin-left: auto;
   ${media.mediumDownMd} {
     display: flex;
+    z-index: 100;
+    position: relative;
   }
 `
