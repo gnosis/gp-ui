@@ -19,6 +19,7 @@ export const Navigation = styled.ol<Partial<CSS.Properties & { isActive: boolean
     top: 100%;
     max-width: 260px;
     border: 1px solid var(--color-border);
+    border-radius: 6px;
     transition: right 0.07s ease-in-out;
     left: auto;
     right: 15px;
@@ -125,6 +126,7 @@ export const MenuBarToggle = styled.button<Partial<CSS.Properties & { isActive: 
   align-items: center;
   background-color: var(--color-primary);
   background-image: none;
+  border-radius: 6px;
   margin-left: auto;
   ${media.mediumDownMd} {
     display: flex;
