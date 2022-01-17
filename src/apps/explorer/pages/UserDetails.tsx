@@ -10,6 +10,7 @@ import { RowWithCopyButton } from 'components/common/RowWithCopyButton'
 import RedirectToSearch from 'components/RedirectToSearch'
 import { useResolveEns } from 'hooks/useResolveEns'
 import Spinner from 'components/common/Spinner'
+import { Notification } from 'components/Notification'
 
 const Wrapper = styled.div`
   padding: 1.6rem;
@@ -37,7 +38,12 @@ const TitleAddress = styled(RowWithCopyButton)`
   display: flex;
   align-items: center;
 `
-const UserDetails: React.FC = () => {
+
+export type Props = {
+  errors: Record<string, string>
+}
+
+const UserDetails: React.FC<Props> = ({ errors }) => {
   const { address } = useParams<{ address: string }>()
   const networkId = useNetworkId() || undefined
   const addressAccount = useResolveEns(address)
@@ -64,6 +70,9 @@ const UserDetails: React.FC = () => {
               }
             />
           </h1>
+          {Object.keys(errors).map((key) => (
+            <Notification key={key} type={'error'} message={errors[key]} />
+          ))}
           <OrdersTableWidget ownerAddress={addressAccount.address} networkId={networkId} />
         </>
       ) : (

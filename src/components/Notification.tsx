@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { transparentize } from 'polished'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faExclamation } from '@fortawesome/free-solid-svg-icons'
+import { faExclamationEllipsis, faExclamationTriangle } from './icons'
 
 interface NotificationProps {
   type: string
@@ -10,78 +10,74 @@ interface NotificationProps {
 }
 
 export const NotificationWrap = styled.p<{ isActive?: boolean; type: string }>`
-  border-radius: 4px;
-  padding: 10px 15px;
-  background-color: ${({ theme }): string => transparentize(0.8, theme.red4)};
+  border-radius: 6px;
+  padding: 10px 16px;
+  background-color: ${({ theme, type }): string =>
+    type === 'error' ? transparentize(0.8, theme.red4) : transparentize(0.8, theme.orange)};
   font-size: 12px;
   display: ${({ isActive }): string => (isActive ? 'flex' : 'none')};
   align-items: center;
-
-  button {
-    cursor: pointer;
-    border: 0;
-    background-color: transparent;
-    background-image: none;
-    padding: 0;
-    width: 40px;
-    min-height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    position: relative;
-    &:before,
-    &:after {
-      content: '';
-      display: block;
-      width: 20px;
-      height: 2px;
-      background-color: ${({ theme }): string => theme.textPrimary1};
-      position: absolute;
-    }
-    &:after {
-      transform: rotate(-45deg);
-      left: 50%;
-    }
-    &:before {
-      left: 50%;
-      transform: rotate(45deg);
-    }
-  }
+  margin: 0;
 
   span {
     flex-grow: 1;
-    margin: 0 20px;
+    margin: 0 16px;
+    line-height: 1.2;
+    max-width: calc(100% - 90px);
+  }
+
+  .svg-inline--fa {
+    color: ${({ theme, type }): string => (type === 'error' ? theme.red4 : theme.orange)};
+    width: 16px;
+    height: 16px;
+  }
+
+  &:not(:last-of-type) {
+    margin-bottom: 16px;
   }
 `
 
-const IconCircle = styled.p`
-  width: 20px;
-  height: 20px;
-  padding: 2px;
-  border: 2px solid ${({ theme }): string => theme.red4};
-  border-radius: 50%;
+const CloseButton = styled.button`
+  cursor: pointer;
+  border: 0;
+  background-color: transparent;
+  background-image: none;
+  padding: 0;
+  width: 40px;
+  min-height: 20px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin: 0;
-  svg,
-  svg.svg-inline--fa {
-    color: ${({ theme }): string => theme.red4};
-    width: 10px;
-    height: 11px;
+  justify-content: flex-end;
+  position: relative;
+  &:before,
+  &:after {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 2px;
+    background-color: ${({ theme }): string => theme.textPrimary1};
+    position: absolute;
+  }
+  &:after {
+    transform: rotate(-45deg);
+    left: 50%;
+  }
+  &:before {
+    left: 50%;
+    transform: rotate(45deg);
   }
 `
 
 export const Notification: React.FC<NotificationProps> = ({ type, message }: NotificationProps) => {
   const [isNoteActive, setIsNoteActive] = useState(true)
 
+  const icon = type === 'error' ? faExclamationEllipsis : faExclamationTriangle
+
   return (
     <NotificationWrap type={type} isActive={isNoteActive}>
-      <IconCircle>
-        <FontAwesomeIcon icon={faExclamation} />
-      </IconCircle>
+      <FontAwesomeIcon icon={icon} />
       <span>{message}</span>
-      <button onClick={(): void => setIsNoteActive(false)} />
+      <CloseButton onClick={(): void => setIsNoteActive(false)} />
     </NotificationWrap>
   )
 }
