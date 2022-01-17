@@ -75,21 +75,13 @@ const IconCircle = styled.p`
 export const Notification: React.FC<NotificationProps> = ({ type, message }: NotificationProps) => {
   const [isNoteActive, setIsNoteActive] = useState(true)
 
-  console.log('ok', isNoteActive)
-
-  const dismiss = (): void => {
-    console.log('ok', isNoteActive)
-    setIsNoteActive(false)
-    console.log('after', isNoteActive)
-  }
-
   return (
     <NotificationWrap type={type} isActive={isNoteActive}>
       <IconCircle>
         <FontAwesomeIcon icon={faExclamation} />
       </IconCircle>
       <span>{message}</span>
-      <button onClick={(): void => dismiss()} />
+      <button onClick={(): void => setIsNoteActive(false)} />
     </NotificationWrap>
   )
 }
