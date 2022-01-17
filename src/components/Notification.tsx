@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { transparentize } from 'polished'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExclamationEllipsis, faExclamationTriangle } from './icons'
+import { Link } from 'react-router-dom'
 
 interface NotificationProps {
   type: string
@@ -76,7 +77,12 @@ export const Notification: React.FC<NotificationProps> = ({ type, message }: Not
   return (
     <NotificationWrap type={type} isActive={isNoteActive}>
       <FontAwesomeIcon icon={icon} />
-      <span>{message}</span>
+      <span>
+        {message}{' '}
+        {type === 'error'
+          ? 'Please' + <Link to="/">try again</Link> + 'later.'
+          : 'Please try ' + <Link to="/">refresh</Link> + 'to see new stuff.'}
+      </span>
       <CloseButton onClick={(): void => setIsNoteActive(false)} />
     </NotificationWrap>
   )
