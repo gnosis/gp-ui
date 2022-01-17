@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import * as CSS from 'csstype'
 import { media } from 'theme/styles/media'
+import { BASE_COLOURS } from 'theme'
 
 export const Navigation = styled.ol<Partial<CSS.Properties & { isActive: boolean }>>`
   list-style: none;
@@ -19,7 +20,7 @@ export const Navigation = styled.ol<Partial<CSS.Properties & { isActive: boolean
     top: 100%;
     max-width: 260px;
     border: 1px solid var(--color-border);
-    border-radius: 6px;
+    border-radius: 0.4rem;
     transition: right 0.07s ease-in-out;
     left: auto;
     right: 15px;
@@ -115,22 +116,29 @@ export const Navigation = styled.ol<Partial<CSS.Properties & { isActive: boolean
 `
 
 export const MenuBarToggle = styled.button<Partial<CSS.Properties & { isActive: boolean }>>`
-  color: var(--color-text-secondary2);
+  color: ${({ isActive }): string => (isActive ? 'var(--color-text-secondary1)' : 'var(--color-text-secondary2)')};
   font-size: 17px;
   padding: 5px 10px;
   border: 1px solid var(--color-border);
   display: none;
   width: 40px;
-  height: 30px;
+  height: 40px;
   justify-content: center;
   align-items: center;
   background-color: var(--color-primary);
   background-image: none;
-  border-radius: 6px;
+  border-radius: 0.4rem;
   margin-left: auto;
+  cursor: pointer;
+  transition: 0.1s ease-in-out;
   ${media.mediumDownMd} {
     display: flex;
     z-index: 100;
     position: relative;
+  }
+
+  &:hover,
+  &:focus {
+    border: 1px solid ${BASE_COLOURS.blue4};
   }
 `
