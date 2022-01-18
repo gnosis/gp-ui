@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { transparentize } from 'polished'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExclamationEllipsis, faExclamationTriangle } from './icons'
-import { Link } from 'react-router-dom'
+import { BASE_COLOURS } from 'theme'
 
 interface NotificationProps {
   type: string
@@ -25,6 +25,9 @@ export const NotificationWrap = styled.p<{ isActive?: boolean; type: string }>`
     margin: 0 16px;
     line-height: 1.2;
     max-width: calc(100% - 90px);
+    a {
+      color: ${BASE_COLOURS.orange1};
+    }
   }
 
   .svg-inline--fa {
@@ -77,7 +80,8 @@ export const Notification: React.FC<NotificationProps> = ({ type, message }: Not
     <NotificationWrap type={type} isActive={isNoteActive}>
       <FontAwesomeIcon icon={icon} />
       <span>
-        {message}. Please&nbsp;<Link to="/">{type === 'error' ? 'try again' : 'refresh'}</Link>
+        {message}. Please&nbsp;
+        <a onClick={(): void => window.location.reload()}>{type === 'error' ? 'try again ' : 'refresh '}</a>
         {type === 'error' ? 'later.' : 'to see new stuff.'}
       </span>
       <CloseButton onClick={(): void => setIsNoteActive(false)} />
