@@ -40,7 +40,7 @@ const TitleAddress = styled(RowWithCopyButton)`
 `
 
 export type Props = {
-  errors: Record<string, string>
+  errors?: any
 }
 
 const UserDetails: React.FC<Props> = ({ errors }) => {
@@ -70,9 +70,10 @@ const UserDetails: React.FC<Props> = ({ errors }) => {
               }
             />
           </h1>
-          {Object.keys(errors).map((key) => (
-            <Notification key={key} type={'error'} message={errors[key]} />
-          ))}
+          {errors &&
+            Object.keys(errors).map((key) => (
+              <Notification key={key} type={navigator.onLine ? 'warn' : 'error'} message={errors[key]} />
+            ))}
           <OrdersTableWidget ownerAddress={addressAccount.address} networkId={networkId} />
         </>
       ) : (

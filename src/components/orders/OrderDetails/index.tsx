@@ -25,7 +25,7 @@ export type Props = {
   trades: Trade[]
   isOrderLoading: boolean
   areTradesLoading: boolean
-  errors: Record<string, string>
+  errors: any
 }
 
 export const OrderDetails: React.FC<Props> = (props) => {
@@ -60,7 +60,7 @@ export const OrderDetails: React.FC<Props> = (props) => {
         {order && <TitleUid textToCopy={order.uid} contentsToDisplay={order.shortId} />}
       </h1>
       {Object.keys(errors).map((key) => (
-        <Notification key={key} type={'error'} message={errors[key]} />
+        <Notification key={key} type={navigator.onLine ? 'warn' : 'error'} message={errors[key]} />
       ))}
       {/* TODO: add tabs (overview/fills) */}
       {order && areTokensLoaded && <DetailsTable order={{ ...order, txHash }} areTradesLoading={areTradesLoading} />}

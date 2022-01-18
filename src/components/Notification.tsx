@@ -73,15 +73,12 @@ export const Notification: React.FC<NotificationProps> = ({ type, message }: Not
   const [isNoteActive, setIsNoteActive] = useState(true)
 
   const icon = type === 'error' ? faExclamationEllipsis : faExclamationTriangle
-
   return (
     <NotificationWrap type={type} isActive={isNoteActive}>
       <FontAwesomeIcon icon={icon} />
       <span>
-        {message}{' '}
-        {type === 'error'
-          ? 'Please' + <Link to="/">try again</Link> + 'later.'
-          : 'Please try ' + <Link to="/">refresh</Link> + 'to see new stuff.'}
+        {message}. Please&nbsp;<Link to="/">{type === 'error' ? 'try again' : 'refresh'}</Link>
+        {type === 'error' ? 'later.' : 'to see new stuff.'}
       </span>
       <CloseButton onClick={(): void => setIsNoteActive(false)} />
     </NotificationWrap>
