@@ -171,7 +171,7 @@ const RowTransaction: React.FC<RowProps> = ({ order, isPriceInverted, invertLimi
             className="span-copybtn-wrap"
             textToCopy={uid}
             contentsToDisplay={
-              <LinkWithPrefixNetwork to={`/address/${order.txHash}`} rel="noopener noreferrer" target="_blank">
+              <LinkWithPrefixNetwork to={`/orders/${order.uid}`} rel="noopener noreferrer" target="_blank">
                 {getShortOrderId(shortId)}
               </LinkWithPrefixNetwork>
             }
