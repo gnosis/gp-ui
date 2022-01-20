@@ -9,7 +9,7 @@ type CommonState = {
   txHashParams: { networkId: BlockchainNetwork; txHash: string }
   error: string
   orders: Order[] | undefined
-  isOrdersLoading: boolean
+  isTxLoading: boolean
 }
 
 export const TransactionsTableContext = React.createContext({} as CommonState)

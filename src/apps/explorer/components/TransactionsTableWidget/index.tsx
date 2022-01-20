@@ -1,16 +1,17 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { BlockchainNetwork, TransactionsTableContext } from './context/TransactionsTableContext'
-import { StyledUserDetailsTableProps } from 'components/common/StyledUserDetailsTable'
-import styled from 'styled-components'
 import { useGetTxOrders } from 'hooks/useGetOrders'
-import ExplorerTabs from 'apps/explorer/components/common/ExplorerTabs/ExplorerTab'
-import { TabItemInterface } from 'components/common/Tabs/Tabs'
+import RedirectToSearch from 'components/RedirectToSearch'
 import Spinner from 'components/common/Spinner'
-import { TransactionsTableWithData } from 'apps/explorer/components/TransactionsTableWidget/TransactionsTableWithData'
+import { RedirectToNetwork, useNetworkId } from 'state/network'
 import { Order } from 'api/operator'
+import { TransactionsTableWithData } from 'apps/explorer/components/TransactionsTableWidget/TransactionsTableWithData'
+import { TabItemInterface } from 'components/common/Tabs/Tabs'
+import ExplorerTabs from '../common/ExplorerTabs/ExplorerTab'
+import styled from 'styled-components'
 
-export type Props = StyledUserDetailsTableProps & {
+interface Props {
   txHash: string
   networkId: BlockchainNetwork
   transactions?: Order[]
@@ -35,21 +36,43 @@ const tabItems = (isLoadingOrders: boolean): TabItemInterface[] => {
   ]
 }
 
-export const TransactionsTableWidget: React.FC<Props> = ({ txHash, networkId }) => {
-  const { orders, isLoading: isOrdersLoading, error } = useGetTxOrders(txHash)
+export const TransactionsTableWidget: React.FC<Props> = ({ txHash }) => {
+  const { orders, isLoading: isTxLoading, errorTxPresentInNetworkId, error } = useGetTxOrders(txHash)
+  const networkId = useNetworkId() || undefined
+  const [redirectTo, setRedirectTo] = useState(false)
   const txHashParams = { networkId, txHash }
+  // Avoid redirecting until another network is searched again
+  useEffect(() => {
+    if (orders?.length || isTxLoading) return
 
-  console.log('TransactionsTableWidget orders', orders, typeof orders)
+    const timer = setTimeout(() => {
+      setRedirectTo(true)
+    }, 500)
+
+    return (): void => clearTimeout(timer)
+  })
+
+  if (errorTxPresentInNetworkId && networkId != errorTxPresentInNetworkId) {
+    return <RedirectToNetwork networkId={errorTxPresentInNetworkId} />
+  }
+  if (redirectTo) {
+    return <RedirectToSearch from="tx" />
+  }
+
+  if (!orders?.length) {
+    return <Spinner spin size="3x" />
+  }
+
   return (
     <TransactionsTableContext.Provider
       value={{
         orders,
         txHashParams,
         error,
-        isOrdersLoading,
+        isTxLoading,
       }}
     >
-      <ExplorerTabs tabItems={tabItems(isOrdersLoading)} />
+      <ExplorerTabs tabItems={tabItems(isTxLoading)} />
     </TransactionsTableContext.Provider>
   )
 }
