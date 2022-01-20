@@ -263,8 +263,8 @@ const TransactionTable: React.FC<Props> = ({ orders, showBorderTable = false }) 
   const [ordersStored, setOrdersStored] = useState(orders)
   useEffect(() => {
     setIsPriceInverted(isPriceInverted)
-    orders && setOrdersStored(orders)
-  }, [isPriceInverted])
+    orders && orders.length > 0 && setOrdersStored(orders)
+  }, [isPriceInverted, orders])
   const invertLimitPrice = (): void => {
     setIsPriceInverted((previousValue) => !previousValue)
   }
