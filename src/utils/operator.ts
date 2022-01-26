@@ -44,15 +44,35 @@ function isOrderPresigning(order: RawOrder): boolean {
   return order.status === 'presignaturePending'
 }
 
+/**
+ * An order is considered cancelled if the `invalidated` flag is `true` and
+ * it has been at least `PENDING_ORDERS_BUFFER` since it has been created.
+ * The buffer is used to take into account race conditions where a solver might
+ * execute a transaction after the backend changed the order status.
+ *
+ * We assume the order is not fulfilled.
+ */
+function isOrderCancelled(order: Pick<RawOrder, 'creationDate' | 'invalidated'>): boolean {
+  const PENDING_ORDERS_BUFFER = 60 * 1000 //60s
+  const creationTime = new Date(order.creationDate).getTime()
+  return order.invalidated && Date.now() - creationTime > PENDING_ORDERS_BUFFER
+}
+
+function isOrderCancelling(order: RawOrder): boolean {
+  return order.status === 'cancelled' && order.invalidated
+}
+
 export function getOrderStatus(order: RawOrder): OrderStatus {
   if (isOrderFilled(order)) {
     return 'filled'
-  } else if (order.invalidated) {
+  } else if (isOrderCancelled(order)) {
     return 'cancelled'
   } else if (isOrderExpired(order)) {
     return 'expired'
   } else if (isOrderPresigning(order)) {
     return 'signing'
+  } else if (isOrderCancelling(order)) {
+    return 'cancelling'
   } else {
     return 'open'
   }
