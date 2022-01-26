@@ -14,7 +14,7 @@ function _getPastTimestamp(): number {
 }
 
 // mockTimes set's Date.now() to DATE const in the test context
-beforeEach(mockTimes)
+beforeEach(() => mockTimes)
 
 describe('Filled status', () => {
   describe('Buy order', () => {
@@ -114,6 +114,9 @@ describe('Filled status', () => {
 })
 
 describe('Canceled status', () => {
+  const currentDate = new Date(DATE.setFullYear(DATE.getFullYear() + 4))
+  beforeEach(() => mockTimes(currentDate))
+
   test('Buy order', () => {
     const order: RawOrder = {
       ...RAW_ORDER,
