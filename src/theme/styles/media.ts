@@ -36,9 +36,6 @@ export const media = {
   get desktopLarge(): string {
     return `@media only screen and (min-width: ${this.desktopScreenLarge})`
   },
-  get desktopMediumDown(): string {
-    return `@media only screen and (max-width : ${this.desktopScreenMedium})`
-  },
   get tabletPortrait(): string {
     return `@media (min-device-width: ${this.smallScreenUp}) and (max-device-width: ${this.mediumEnd}) and (orientation: portrait)`
   },
