@@ -14,7 +14,7 @@ import styled from 'styled-components'
 interface Props {
   txHash: string
   networkId: BlockchainNetwork
-  transactions: Order[]
+  transactions?: Order[]
 }
 
 const StyledTabLoader = styled.span`
