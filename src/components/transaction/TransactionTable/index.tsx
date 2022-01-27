@@ -124,11 +124,11 @@ function getLimitPrice(order: Order, isPriceInverted: boolean): string {
 }
 
 const tooltip = {
-  tradeID: 'A unique identifier ID for this trade.',
+  orderID: 'A unique identifier ID for this order.',
 }
 
 export type Props = StyledUserDetailsTableProps & {
-  orders: Order[] | undefined
+  orders: Order[]
 }
 
 interface RowProps {
@@ -164,7 +164,7 @@ const RowTransaction: React.FC<RowProps> = ({ order, isPriceInverted, invertLimi
     <tr key={txHash}>
       <td>
         <HeaderTitle>
-          Order ID <HelpTooltip tooltip={tooltip.tradeID} />
+          Order ID <HelpTooltip tooltip={tooltip.orderID} />
         </HeaderTitle>
         <HeaderValue>
           <RowWithCopyButton
@@ -229,44 +229,43 @@ const RowTransaction: React.FC<RowProps> = ({ order, isPriceInverted, invertLimi
   )
 }
 
-const transactionItems = (isLPInverted: boolean, setInvertLP: () => void, items?: Order[]): JSX.Element => {
-  let tableContent
-  if (!items || items.length === 0) {
-    tableContent = (
-      <tr className="row-empty">
-        <td className="row-td-empty">
-          <EmptyItemWrapper>
-            Can&apos;t load details <br /> Please try again
-          </EmptyItemWrapper>
-        </td>
-      </tr>
-    )
-  } else {
-    tableContent = (
-      <>
-        {items.map((item, i) => (
-          <RowTransaction
-            key={`${item.shortId}-${i}`}
-            invertLimitPrice={setInvertLP}
-            order={item}
-            isPriceInverted={isLPInverted}
-          />
-        ))}
-      </>
-    )
-  }
-  return tableContent
-}
-
-const TransactionTable: React.FC<Props> = ({ orders, showBorderTable = false }) => {
+const TransactionTable: React.FC<Props> = (props) => {
+  const { orders, showBorderTable = false } = props
   const [isPriceInverted, setIsPriceInverted] = useState(false)
-  const [ordersStored, setOrdersStored] = useState(orders)
   useEffect(() => {
     setIsPriceInverted(isPriceInverted)
-    orders && orders.length > 0 && setOrdersStored(orders)
-  }, [isPriceInverted, orders])
+  }, [isPriceInverted])
   const invertLimitPrice = (): void => {
     setIsPriceInverted((previousValue) => !previousValue)
+  }
+
+  const orderItems = (items: Order[]): JSX.Element => {
+    let tableContent
+    if (!items || items.length === 0) {
+      tableContent = (
+        <tr className="row-empty">
+          <td className="row-td-empty">
+            <EmptyItemWrapper>
+              Can&apos;t load details <br /> Please try again
+            </EmptyItemWrapper>
+          </td>
+        </tr>
+      )
+    } else {
+      tableContent = (
+        <>
+          {items.map((item, i) => (
+            <RowTransaction
+              key={`${item.shortId}-${i}`}
+              invertLimitPrice={invertLimitPrice}
+              order={item}
+              isPriceInverted={isPriceInverted}
+            />
+          ))}
+        </>
+      )
+    }
+    return tableContent
   }
 
   return (
@@ -275,7 +274,7 @@ const TransactionTable: React.FC<Props> = ({ orders, showBorderTable = false }) 
       header={
         <tr>
           <th>
-            Order ID <HelpTooltip tooltip={tooltip.tradeID} />
+            Order ID <HelpTooltip tooltip={tooltip.orderID} />
           </th>
           <th>Type</th>
           <th>Sell Amount</th>
@@ -287,7 +286,7 @@ const TransactionTable: React.FC<Props> = ({ orders, showBorderTable = false }) 
           <th>Status</th>
         </tr>
       }
-      body={transactionItems(isPriceInverted, invertLimitPrice, ordersStored)}
+      body={orderItems(orders)}
     />
   )
 }
