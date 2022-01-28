@@ -10,6 +10,8 @@ import { TransactionsTableWithData } from 'apps/explorer/components/Transactions
 import { TabItemInterface } from 'components/common/Tabs/Tabs'
 import ExplorerTabs from '../common/ExplorerTabs/ExplorerTab'
 import styled from 'styled-components'
+import { TitleAddress } from 'apps/explorer/pages/styled'
+import { BlockExplorerLink } from 'components/common/BlockExplorerLink'
 
 interface Props {
   txHash: string
@@ -64,15 +66,24 @@ export const TransactionsTableWidget: React.FC<Props> = ({ txHash }) => {
   }
 
   return (
-    <TransactionsTableContext.Provider
-      value={{
-        orders,
-        txHashParams,
-        error,
-        isTxLoading,
-      }}
-    >
-      <ExplorerTabs tabItems={tabItems(isTxLoading)} />
-    </TransactionsTableContext.Provider>
+    <>
+      <h1>
+        Transaction details
+        <TitleAddress
+          textToCopy={txHash}
+          contentsToDisplay={<BlockExplorerLink type="tx" networkId={networkId} identifier={txHash} />}
+        />
+      </h1>
+      <TransactionsTableContext.Provider
+        value={{
+          orders,
+          txHashParams,
+          error,
+          isTxLoading,
+        }}
+      >
+        <ExplorerTabs tabItems={tabItems(isTxLoading)} />
+      </TransactionsTableContext.Provider>
+    </>
   )
 }
