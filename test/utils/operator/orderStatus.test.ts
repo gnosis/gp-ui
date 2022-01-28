@@ -114,7 +114,8 @@ describe('Filled status', () => {
 })
 
 describe('Canceled status', () => {
-  const currentDate = new Date(DATE.setFullYear(DATE.getFullYear() + 4))
+  const years = 4 // The const DATE has the year 2017 (less than the creationDate)
+  const currentDate = new Date(DATE.setFullYear(DATE.getFullYear() + years))
   beforeEach(() => mockTimes(currentDate))
 
   test('Buy order', () => {
