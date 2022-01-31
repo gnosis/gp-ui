@@ -8,6 +8,7 @@ import { FILLED_ORDER_EPSILON, ONE_BIG_NUMBER, ZERO_BIG_NUMBER } from 'const'
 import { Order, OrderStatus, RawOrder, RawTrade, Trade } from 'api/operator/types'
 
 import { formattingAmountPrecision, formatSmartMaxPrecision } from 'utils'
+import { PENDING_ORDERS_BUFFER } from 'apps/explorer/const'
 
 function isOrderFilled(order: RawOrder): boolean {
   let amount, executedAmount
@@ -53,7 +54,6 @@ function isOrderPresigning(order: RawOrder): boolean {
  * We assume the order is not fulfilled.
  */
 function isOrderCancelled(order: Pick<RawOrder, 'creationDate' | 'invalidated'>): boolean {
-  const PENDING_ORDERS_BUFFER = 60 * 1000 //60s
   const creationTime = new Date(order.creationDate).getTime()
   return order.invalidated && Date.now() - creationTime > PENDING_ORDERS_BUFFER
 }
