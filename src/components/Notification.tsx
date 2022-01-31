@@ -5,8 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExclamationEllipsis, faExclamationTriangle } from './icons'
 import { BASE_COLOURS } from 'theme'
 
-interface NotificationProps {
-  type: string
+export interface NotificationProps {
+  type: 'warn' | 'error'
   message: string
 }
 
@@ -74,15 +74,15 @@ const CloseButton = styled.button`
 
 export const Notification: React.FC<NotificationProps> = ({ type, message }: NotificationProps) => {
   const [isNoteActive, setIsNoteActive] = useState(true)
-
-  const icon = type === 'error' ? faExclamationEllipsis : faExclamationTriangle
+  const isError = type === 'error'
+  const icon = isError ? faExclamationEllipsis : faExclamationTriangle
   return (
     <NotificationWrap type={type} isActive={isNoteActive}>
       <FontAwesomeIcon icon={icon} />
       <span>
         {message}. Please&nbsp;
-        <a onClick={(): void => window.location.reload()}>{type === 'error' ? 'try again ' : 'refresh '}</a>
-        {type === 'error' ? 'later.' : 'to see new stuff.'}
+        <a onClick={(): void => window.location.reload()}>{isError ? 'try again ' : 'refresh '}</a>
+        {isError ? 'later.' : 'to get the latest.'}
       </span>
       <CloseButton onClick={(): void => setIsNoteActive(false)} />
     </NotificationWrap>

@@ -19,6 +19,8 @@ const TitleUid = styled(RowWithCopyButton)`
   display: flex;
   align-items: center;
 `
+//TODO: use the type
+// type Errors = Record<string, NotificationProps>
 
 export type Props = {
   order: Order | null
