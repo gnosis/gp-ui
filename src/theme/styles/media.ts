@@ -7,6 +7,7 @@ export const media = {
   mediumScreenSmall: '850px',
   mediumEnd: '1024px',
   desktopScreen: '1025px',
+  desktopScreenMedium: '1180px',
   desktopScreenLarge: '1366px',
   get tinyDown(): string {
     return `@media only screen and (max-width : ${this.tinyScreen})`
@@ -28,6 +29,9 @@ export const media = {
   },
   get desktop(): string {
     return `@media only screen and (min-width : ${this.desktopScreen})`
+  },
+  get desktopMediumDown(): string {
+    return `@media only screen and (max-width : ${this.desktopScreenMedium})`
   },
   get desktopLarge(): string {
     return `@media only screen and (min-width: ${this.desktopScreenLarge})`
