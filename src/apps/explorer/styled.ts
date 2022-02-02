@@ -46,6 +46,19 @@ export const MainWrapper = styled.div`
   ${media.xSmallDown} {
     max-width: 100%;
     flex-grow: 1;
+
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row;
+      div.network-selector-container {
+        position: relative;
+        padding-top: 1rem;
+        order: 3;
+        justify-content: right;
+        width: 100%;
+      }
+    }
     footer {
       flex-direction: column;
       flex-wrap: nowrap;
