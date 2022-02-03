@@ -48,15 +48,11 @@ export const MainWrapper = styled.div`
     flex-grow: 1;
 
     header {
-      display: flex;
-      flex-wrap: wrap;
-      flex-direction: row;
+      img {
+        max-width: 98%;
+      }
       div.network-selector-container {
-        position: relative;
-        padding-top: 1rem;
-        order: 3;
-        justify-content: right;
-        width: 100%;
+        padding-right: 2rem;
       }
     }
     footer {
