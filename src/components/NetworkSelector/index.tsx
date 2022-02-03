@@ -70,11 +70,7 @@ export const NetworkSelector: React.FC<networkSelectorProps> = ({ networkId }) =
     history.push(shouldNotRedirectHome ? replaceURL(location.pathname, newNetwork, currentNetwork) : `/${newNetwork}`)
   }
   return (
-    <SelectorContainer
-      className="network-selector-container"
-      ref={selectContainer}
-      onClick={(): void => setOpen(!open)}
-    >
+    <SelectorContainer ref={selectContainer} onClick={(): void => setOpen(!open)}>
       <NetworkLabel className={cleanNetworkName(name)}>{name}</NetworkLabel>
       <span className={`arrow ${open && 'open'}`} />
       {open && (
