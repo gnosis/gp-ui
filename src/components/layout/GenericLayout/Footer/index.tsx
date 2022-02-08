@@ -37,6 +37,19 @@ const FooterStyled = styled.footer`
   }
 `
 
+const BetaWrapper = styled.div`
+  display: flex;
+  margin: 0;
+  height: 100%;
+  align-items: center;
+  padding: 0 1rem 0 0;
+  position: relative;
+
+  ${media.mediumDown} {
+    margin: 0 0 1.6rem;
+  }
+`
+
 const ContractsWrapper = styled.div`
   display: flex;
 
@@ -86,12 +99,13 @@ export interface FooterType {
 }
 
 export const Footer: React.FC<FooterType> = (props) => {
-  const { url = footerConfig.url } = props
+  const { isBeta = footerConfig.isBeta, url = footerConfig.url } = props
   const networkId = useNetworkId() || Network.Mainnet
   const settlementContractAddress = getGpV2ContractAddress(networkId, 'GPv2Settlement')
   const vaultRelayerContractAddress = getGpV2ContractAddress(networkId, 'GPv2VaultRelayer')
   return (
     <FooterStyled>
+      <BetaWrapper>{isBeta && 'This project is in beta. Use at your own risk.'}</BetaWrapper>
       <ContractsWrapper>
         {settlementContractAddress && (
           <VerifiedButton
