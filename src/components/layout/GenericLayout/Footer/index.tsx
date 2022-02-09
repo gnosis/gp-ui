@@ -5,7 +5,7 @@ import { getGpV2ContractAddress } from 'utils/contract'
 
 // Components
 import { BlockExplorerLink } from 'apps/gp-v1/components/common/BlockExplorerLink'
-
+import LogoWrapper, { LOGO_MAP } from 'components/common/LogoWrapper'
 // Hooks
 import { useNetworkId } from 'state/network'
 
@@ -52,8 +52,8 @@ const BetaWrapper = styled.div`
 
 const ContractsWrapper = styled.div`
   display: flex;
-
-  > :first-child {
+  align-items: center;
+  > :nth-child(2) {
     margin-right: 1rem;
   }
 `
@@ -81,11 +81,13 @@ const VersionsWrapper = styled.div`
     margin: 0 0 1.6rem;
   }
 
-  > a:not(:last-of-type) {
-    margin: 0 1rem 0 0;
-    flex-flow: row nowrap;
+  > a {
     display: flex;
-    position: relative;
+    align-items: center;
+    &:not(:last-of-type) {
+      margin: 0 1rem 0 0;
+      position: relative;
+    }
   }
 `
 export interface FooterType {
@@ -109,6 +111,7 @@ export const Footer: React.FC<FooterType> = (props) => {
       <ContractsWrapper>
         {settlementContractAddress && (
           <VerifiedButton
+            showLogo
             type="contract"
             identifier={settlementContractAddress}
             networkId={networkId}
@@ -117,6 +120,7 @@ export const Footer: React.FC<FooterType> = (props) => {
         )}
         {vaultRelayerContractAddress && (
           <VerifiedButton
+            showLogo
             type="contract"
             identifier={vaultRelayerContractAddress}
             networkId={networkId}
@@ -127,12 +131,12 @@ export const Footer: React.FC<FooterType> = (props) => {
       <VersionsWrapper>
         {url.web && VERSION && (
           <a target="_blank" rel="noopener noreferrer" href={url.web + VERSION}>
-            Web: v{VERSION}
+            Web: v{VERSION} <LogoWrapper className="github-logo" src={LOGO_MAP.github} />
           </a>
         )}
         {url.contracts && CONTRACT_VERSION && (
           <a target="_blank" rel="noopener noreferrer" href={url.contracts + CONTRACT_VERSION}>
-            Contracts: v{CONTRACT_VERSION}
+            Contracts: v{CONTRACT_VERSION} <LogoWrapper className="github-logo" src={LOGO_MAP.github} />
           </a>
         )}
       </VersionsWrapper>
