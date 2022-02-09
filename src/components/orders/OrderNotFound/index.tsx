@@ -42,7 +42,7 @@ const SearchContent = styled.div`
 
   @media ${MEDIA.mobile} {
     flex-flow: column wrap;
-    gap: 0;
+    gap: 1.5rem;
 
     form {
       width: 100%;
@@ -110,7 +110,7 @@ export const OrderAddressNotFound: React.FC = (): JSX.Element => {
         <SearchSection>
           <SearchContent>
             <Search searchString={wasRedirected ? '' : searchString} submitSearchImmediatly={!wasRedirected} />
-            <p>or</p>
+            <span>or</span>
             <Support href="https://chat.cowswap.exchange/" target="_blank" rel="noopener noreferrer">
               Get Support
               <img src={SupportIcon} />
