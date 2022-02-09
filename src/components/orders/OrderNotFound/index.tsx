@@ -40,7 +40,7 @@ const SearchContent = styled.div`
   align-items: center;
   gap: 2.5rem;
 
-  @media ${MEDIA.mobile} {
+  @media ${MEDIA.mediumDown} {
     flex-flow: column wrap;
     gap: 1.5rem;
 
