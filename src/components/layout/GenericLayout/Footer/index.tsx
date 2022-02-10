@@ -64,7 +64,7 @@ const VerifiedButton = styled(BlockExplorerLink)`
   align-items: center;
   height: 100%;
   padding: 0;
-
+  margin-right: 1rem;
   ${media.mediumDown} {
     margin: 0 0 1.6rem;
   }
@@ -131,12 +131,13 @@ export const Footer: React.FC<FooterType> = (props) => {
       <VersionsWrapper>
         {url.web && VERSION && (
           <a target="_blank" rel="noopener noreferrer" href={url.web + VERSION}>
-            Web: v{VERSION} <LogoWrapper className="github-logo" src={LOGO_MAP.github} />
+            Web: v{VERSION} <LogoWrapper className="github-logo" src={LOGO_MAP.github} title="Open it on Github" />
           </a>
         )}
         {url.contracts && CONTRACT_VERSION && (
           <a target="_blank" rel="noopener noreferrer" href={url.contracts + CONTRACT_VERSION}>
-            Contracts: v{CONTRACT_VERSION} <LogoWrapper className="github-logo" src={LOGO_MAP.github} />
+            Contracts: v{CONTRACT_VERSION}{' '}
+            <LogoWrapper className="github-logo" src={LOGO_MAP.github} title="Open it on Github" />
           </a>
         )}
       </VersionsWrapper>
