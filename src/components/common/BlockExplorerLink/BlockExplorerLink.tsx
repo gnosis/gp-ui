@@ -116,7 +116,7 @@ export const BlockExplorerLink: React.FC<Props> = (props: Props) => {
 
   return (
     <ExternalLink href={url} eventLabel={url} target="_blank" rel="noopener noreferrer" className={className}>
-      {label}
+      <span>{label}</span>
       {showLogo && <LogoWrapper title="Open it on Etherscan" src={LOGO_MAP.etherscan} />}
     </ExternalLink>
   )

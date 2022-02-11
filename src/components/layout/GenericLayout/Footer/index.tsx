@@ -64,10 +64,18 @@ const VerifiedButton = styled(BlockExplorerLink)`
   align-items: center;
   height: 100%;
   padding: 0;
-  margin-right: 1rem;
+  flex: 0 0 auto;
   ${media.mediumDown} {
     margin: 0 0 1.6rem;
   }
+  ${media.tinyDown} {
+    flex: 1;
+  }
+`
+
+const ContractContainer = styled.div`
+  display: flex;
+  margin-right: 2rem;
 `
 
 const VersionsWrapper = styled.div`
@@ -96,7 +104,11 @@ export interface FooterType {
   readonly url?: {
     readonly web: string
     readonly appId: string
-    readonly contracts: string
+    readonly contracts: {
+      readonly repo: string
+      readonly settlement: string
+      readonly vaultRelayer: string
+    }
   }
 }
 
@@ -110,22 +122,32 @@ export const Footer: React.FC<FooterType> = (props) => {
       {isBeta && <BetaWrapper>This project is in beta. Use at your own risk.</BetaWrapper>}
       <ContractsWrapper>
         {settlementContractAddress && (
-          <VerifiedButton
-            showLogo
-            type="contract"
-            identifier={settlementContractAddress}
-            networkId={networkId}
-            label="Settlement contract"
-          />
+          <ContractContainer>
+            <VerifiedButton
+              showLogo
+              type="contract"
+              identifier={settlementContractAddress}
+              networkId={networkId}
+              label="Settlement contract"
+            />
+            <a target="_blank" rel="noopener noreferrer" href={url.contracts.settlement}>
+              <LogoWrapper className="github-logo" src={LOGO_MAP.github} title="Open it on Github" />
+            </a>
+          </ContractContainer>
         )}
         {vaultRelayerContractAddress && (
-          <VerifiedButton
-            showLogo
-            type="contract"
-            identifier={vaultRelayerContractAddress}
-            networkId={networkId}
-            label="Vault Relayer contract"
-          />
+          <ContractContainer>
+            <VerifiedButton
+              showLogo
+              type="contract"
+              identifier={vaultRelayerContractAddress}
+              networkId={networkId}
+              label="Vault Relayer contract"
+            />
+            <a target="_blank" rel="noopener noreferrer" href={url.contracts.vaultRelayer}>
+              <LogoWrapper className="github-logo" src={LOGO_MAP.github} title="Open it on Github" />
+            </a>
+          </ContractContainer>
         )}
       </ContractsWrapper>
       <VersionsWrapper>
@@ -135,7 +157,7 @@ export const Footer: React.FC<FooterType> = (props) => {
           </a>
         )}
         {url.contracts && CONTRACT_VERSION && (
-          <a target="_blank" rel="noopener noreferrer" href={url.contracts + CONTRACT_VERSION}>
+          <a target="_blank" rel="noopener noreferrer" href={url.contracts.repo}>
             Contracts: v{CONTRACT_VERSION}{' '}
             <LogoWrapper className="github-logo" src={LOGO_MAP.github} title="Open it on Github" />
           </a>
