@@ -56,6 +56,10 @@ const ContractsWrapper = styled.div`
   > :nth-child(2) {
     margin-right: 1rem;
   }
+  ${media.tinyDown} {
+    flex-direction: column;
+    margin-bottom: 1.6rem;
+  }
 `
 
 const VerifiedButton = styled(BlockExplorerLink)`
@@ -68,14 +72,18 @@ const VerifiedButton = styled(BlockExplorerLink)`
   ${media.mediumDown} {
     margin: 0 0 1.6rem;
   }
-  ${media.tinyDown} {
-    flex: 1;
-  }
 `
 
 const ContractContainer = styled.div`
   display: flex;
   margin-right: 2rem;
+  ${media.tinyDown} {
+    a:nth-of-type(2) {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+  }
 `
 
 const VersionsWrapper = styled.div`
@@ -89,12 +97,20 @@ const VersionsWrapper = styled.div`
     margin: 0 0 1.6rem;
   }
 
+  ${media.tinyDown} {
+    flex-direction: column;
+    padding: 0;
+  }
+
   > a {
     display: flex;
     align-items: center;
     &:not(:last-of-type) {
       margin: 0 1rem 0 0;
       position: relative;
+      ${media.tinyDown} {
+        margin: 0 0 1.6rem;
+      }
     }
   }
 `
