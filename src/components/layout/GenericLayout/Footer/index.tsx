@@ -35,6 +35,9 @@ const FooterStyled = styled.footer`
       text-decoration: underline;
     }
   }
+  ${media.xSmallDown} {
+    align-items: flex-start;
+  }
 `
 
 const BetaWrapper = styled.div`
@@ -56,9 +59,8 @@ const ContractsWrapper = styled.div`
   > :nth-child(2) {
     margin-right: 1rem;
   }
-  ${media.tinyDown} {
+  ${media.xSmallDown} {
     flex-direction: column;
-    margin-bottom: 1.6rem;
   }
 `
 
@@ -69,16 +71,13 @@ const VerifiedButton = styled(BlockExplorerLink)`
   height: 100%;
   padding: 0;
   flex: 0 0 auto;
-  ${media.mediumDown} {
-    margin: 0 0 1.6rem;
-  }
 `
 
 const ContractContainer = styled.div`
   display: flex;
-  margin-right: 2rem;
-  ${media.tinyDown} {
-    a:nth-of-type(2) {
+  margin: 0 2rem 1.6rem 0;
+  a:nth-of-type(2) {
+    ${media.xSmallDown} {
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -90,16 +89,9 @@ const VersionsWrapper = styled.div`
   display: flex;
   margin: 0 0 0 auto;
   align-items: center;
-  padding: 0 0 0 1rem;
-  height: 100%;
 
   ${media.mediumDown} {
     margin: 0 0 1.6rem;
-  }
-
-  ${media.tinyDown} {
-    flex-direction: column;
-    padding: 0;
   }
 
   > a {
@@ -108,9 +100,6 @@ const VersionsWrapper = styled.div`
     &:not(:last-of-type) {
       margin: 0 1rem 0 0;
       position: relative;
-      ${media.tinyDown} {
-        margin: 0 0 1.6rem;
-      }
     }
   }
 `
@@ -170,12 +159,6 @@ export const Footer: React.FC<FooterType> = (props) => {
         {url.web && VERSION && (
           <a target="_blank" rel="noopener noreferrer" href={url.web + VERSION}>
             Web: v{VERSION} <LogoWrapper className="github-logo" src={LOGO_MAP.github} title="Open it on Github" />
-          </a>
-        )}
-        {url.contracts && CONTRACT_VERSION && (
-          <a target="_blank" rel="noopener noreferrer" href={url.contracts.repo}>
-            Contracts: v{CONTRACT_VERSION}{' '}
-            <LogoWrapper className="github-logo" src={LOGO_MAP.github} title="Open it on Github" />
           </a>
         )}
       </VersionsWrapper>
