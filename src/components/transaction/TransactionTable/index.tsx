@@ -1,27 +1,28 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { media } from 'theme/styles/media'
-import { faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
-import { safeTokenName } from '@gnosis.pm/dex-js'
+import { faExchangeAlt, faSpinner } from '@fortawesome/free-solid-svg-icons'
 
 import { Order } from 'api/operator'
-import { useNetworkId } from 'state/network'
 
 import { DateDisplay } from 'components/common/DateDisplay'
-import { TokenDisplay } from 'components/common/TokenDisplay'
 import { RowWithCopyButton } from 'components/common/RowWithCopyButton'
 import { getOrderLimitPrice, formatCalculatedPriceToDisplay, formattedAmount, FormatAmountPrecision } from 'utils'
-import { StatusLabel } from '../StatusLabel'
+import { getShortOrderId } from 'utils/operator'
 import { HelpTooltip } from 'components/Tooltip'
 import StyledUserDetailsTable, {
-  Props as StyledUserDetailsTableProps,
+  StyledUserDetailsTableProps,
   EmptyItemWrapper,
 } from '../../common/StyledUserDetailsTable'
 import Icon from 'components/Icon'
 import TradeOrderType from 'components/common/TradeOrderType'
 import { LinkWithPrefixNetwork } from 'components/common/LinkWithPrefixNetwork'
+import { StatusLabel } from 'components/orders/StatusLabel'
+import { media } from 'theme/styles/media'
 import { TextWithTooltip } from 'apps/explorer/components/common/TextWithTooltip'
-import Spinner from 'components/common/Spinner'
+import { TokenDisplay } from 'components/common/TokenDisplay'
+import { useNetworkId } from 'state/network'
+import { safeTokenName } from '@gnosis.pm/dex-js'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const Wrapper = styled(StyledUserDetailsTable)`
   > thead > tr,
@@ -38,7 +39,7 @@ const Wrapper = styled(StyledUserDetailsTable)`
       }
     }
   }
-  ${media.mediumDown} {
+  ${media.desktopMediumDown} {
     > thead > tr {
       display: none;
     }
@@ -91,7 +92,7 @@ const Wrapper = styled(StyledUserDetailsTable)`
 
 const HeaderTitle = styled.span`
   display: none;
-  ${media.mediumDown} {
+  ${media.desktopMediumDown} {
     font-weight: 600;
     align-items: center;
     display: flex;
@@ -102,7 +103,7 @@ const HeaderTitle = styled.span`
   }
 `
 const HeaderValue = styled.span`
-  ${media.mediumDown} {
+  ${media.desktopMediumDown} {
     flex-wrap: wrap;
     text-align: end;
   }
@@ -128,38 +129,39 @@ const tooltip = {
 
 export type Props = StyledUserDetailsTableProps & {
   orders: Order[] | undefined
-  messageWhenEmpty?: string | React.ReactNode
 }
 
 interface RowProps {
   order: Order
   isPriceInverted: boolean
+  invertLimitPrice: () => void
 }
 
-const RowOrder: React.FC<RowProps> = ({ order, isPriceInverted }) => {
-  const { creationDate, buyToken, buyAmount, sellToken, sellAmount, kind, partiallyFilled, shortId, uid } = order
-  const [_isPriceInverted, setIsPriceInverted] = useState(isPriceInverted)
+const RowTransaction: React.FC<RowProps> = ({ order, isPriceInverted, invertLimitPrice }) => {
+  const {
+    buyToken,
+    buyAmount,
+    expirationDate,
+    partiallyFilled = false,
+    sellToken,
+    sellAmount,
+    kind,
+    txHash,
+    shortId,
+    uid,
+  } = order
   const network = useNetworkId()
   const buyTokenSymbol = buyToken ? safeTokenName(buyToken) : ''
   const sellTokenSymbol = sellToken ? safeTokenName(sellToken) : ''
-  const sellFormattedAmount = formattedAmount(sellToken, sellAmount.plus(order.feeAmount))
+  const sellFormattedAmount = formattedAmount(sellToken, sellAmount)
   const buyFormattedAmount = formattedAmount(buyToken, buyAmount)
-  const limitPriceSettled = getLimitPrice(order, _isPriceInverted)
-
-  useEffect(() => {
-    setIsPriceInverted(isPriceInverted)
-  }, [isPriceInverted])
-
-  const invertLimitPrice = (): void => {
-    setIsPriceInverted((previousValue) => !previousValue)
-  }
-
   const renderSpinnerWhenNoValue = (textValue: string): JSX.Element | void => {
-    if (textValue === '-') return <Spinner spin size="1x" />
+    if (textValue === '-') return <FontAwesomeIcon icon={faSpinner} spin size="1x" />
   }
+  const limitPriceSettled = getLimitPrice(order, isPriceInverted)
 
   return (
-    <tr key={shortId}>
+    <tr key={txHash}>
       <td>
         <HeaderTitle>
           Order ID <HelpTooltip tooltip={tooltip.orderID} />
@@ -170,7 +172,7 @@ const RowOrder: React.FC<RowProps> = ({ order, isPriceInverted }) => {
             textToCopy={uid}
             contentsToDisplay={
               <LinkWithPrefixNetwork to={`/orders/${order.uid}`} rel="noopener noreferrer" target="_self">
-                {shortId}
+                {getShortOrderId(shortId)}
               </LinkWithPrefixNetwork>
             }
           />
@@ -179,7 +181,7 @@ const RowOrder: React.FC<RowProps> = ({ order, isPriceInverted }) => {
       <td>
         <HeaderTitle>Type</HeaderTitle>
         <span className="header-value">
-          <TradeOrderType kind={kind} />
+          <TradeOrderType kind={kind || 'sell'} />
         </span>
       </td>
       <td>
@@ -187,7 +189,7 @@ const RowOrder: React.FC<RowProps> = ({ order, isPriceInverted }) => {
         <HeaderValue>
           {renderSpinnerWhenNoValue(sellFormattedAmount) || (
             <TextWithTooltip textInTooltip={`${sellFormattedAmount} ${sellTokenSymbol}`}>
-              {formattedAmount(sellToken, sellAmount.plus(order.feeAmount), FormatAmountPrecision.highPrecision)}{' '}
+              {formattedAmount(sellToken, sellAmount, FormatAmountPrecision.highPrecision)}{' '}
               {sellToken && network && <TokenDisplay showAbbreviated erc20={sellToken} network={network} />}
             </TextWithTooltip>
           )}
@@ -206,14 +208,15 @@ const RowOrder: React.FC<RowProps> = ({ order, isPriceInverted }) => {
       </td>
       <td>
         <HeaderTitle>
-          Limit price <Icon icon={faExchangeAlt} onClick={invertLimitPrice} />
+          Limit price
+          <Icon icon={faExchangeAlt} onClick={invertLimitPrice} />
         </HeaderTitle>
         <HeaderValue>{renderSpinnerWhenNoValue(limitPriceSettled) || limitPriceSettled}</HeaderValue>
       </td>
       <td>
         <HeaderTitle>Created</HeaderTitle>
         <HeaderValue>
-          <DateDisplay date={creationDate} showIcon={true} />
+          <DateDisplay date={expirationDate} showIcon={true} />
         </HeaderValue>
       </td>
       <td>
@@ -226,31 +229,43 @@ const RowOrder: React.FC<RowProps> = ({ order, isPriceInverted }) => {
   )
 }
 
-const OrdersUserDetailsTable: React.FC<Props> = (props) => {
-  const { orders, showBorderTable = false, messageWhenEmpty } = props
+const TransactionTable: React.FC<Props> = (props) => {
+  const { orders, showBorderTable = false } = props
   const [isPriceInverted, setIsPriceInverted] = useState(false)
-
+  useEffect(() => {
+    setIsPriceInverted(isPriceInverted)
+  }, [isPriceInverted])
   const invertLimitPrice = (): void => {
     setIsPriceInverted((previousValue) => !previousValue)
   }
 
   const orderItems = (items: Order[] | undefined): JSX.Element => {
-    if (!items?.length)
-      return (
+    let tableContent
+    if (!items || items.length === 0) {
+      tableContent = (
         <tr className="row-empty">
           <td className="row-td-empty">
-            <EmptyItemWrapper>{messageWhenEmpty || 'No orders.'}</EmptyItemWrapper>
+            <EmptyItemWrapper>
+              Can&apos;t load details <br /> Please try again
+            </EmptyItemWrapper>
           </td>
         </tr>
       )
-
-    return (
-      <>
-        {items.map((item) => (
-          <RowOrder key={item.shortId} order={item} isPriceInverted={isPriceInverted} />
-        ))}
-      </>
-    )
+    } else {
+      tableContent = (
+        <>
+          {items.map((item, i) => (
+            <RowTransaction
+              key={`${item.shortId}-${i}`}
+              invertLimitPrice={invertLimitPrice}
+              order={item}
+              isPriceInverted={isPriceInverted}
+            />
+          ))}
+        </>
+      )
+    }
+    return tableContent
   }
 
   return (
@@ -262,8 +277,8 @@ const OrdersUserDetailsTable: React.FC<Props> = (props) => {
             Order ID <HelpTooltip tooltip={tooltip.orderID} />
           </th>
           <th>Type</th>
-          <th>Sell amount</th>
-          <th>Buy amount</th>
+          <th>Sell Amount</th>
+          <th>Buy Amount</th>
           <th>
             Limit price <Icon icon={faExchangeAlt} onClick={invertLimitPrice} />
           </th>
@@ -276,4 +291,4 @@ const OrdersUserDetailsTable: React.FC<Props> = (props) => {
   )
 }
 
-export default OrdersUserDetailsTable
+export default TransactionTable

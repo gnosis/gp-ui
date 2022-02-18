@@ -1,31 +1,23 @@
 import React from 'react'
-import styled from 'styled-components'
 import { Search } from 'apps/explorer/components/common/Search'
+import { Wrapper as WrapperMod } from 'apps/explorer/pages/styled'
+import styled from 'styled-components'
 import { media } from 'theme/styles/media'
 
-const Wrapper = styled.div`
-  display: flex;
-  justify-content: center;
+const Wrapper = styled(WrapperMod)`
+  max-width: 140rem;
   flex-flow: column wrap;
-  height: calc(100vh - 15rem);
-  padding: 1.6rem;
-  margin: 0 auto;
-  width: 100%;
+  justify-content: center;
+  display: flex;
 
   > h1 {
-    text-align: center;
+    justify-content: center;
     padding: 2.4rem 0 0.75rem;
-    font-weight: ${({ theme }): string => theme.fontBold};
-    width: 100%;
     margin: 0 0 2.4rem;
-    font-size: 2rem;
+    font-size: 2.4rem;
     line-height: 1;
-  }
 
-  ${media.mobile} {
-    > h1 {
-      line-height: 1.2;
-      margin-bottom: 1rem;
+    ${media.xSmallDown} {
       font-size: 1.7rem;
     }
   }
