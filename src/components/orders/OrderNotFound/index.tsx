@@ -35,6 +35,10 @@ const SearchSection = styled.div`
   background-color: ${({ theme }): string => theme.bg2};
 `
 
+const LinkData = styled.p`
+  font-size: 1.6rem;
+`
+
 const SearchContent = styled.div`
   display: flex;
   flex-flow: row;
@@ -105,11 +109,6 @@ export const OrderAddressNotFound: React.FC = (): JSX.Element => {
             <p>
               <strong>&quot;{searchString}&quot;</strong>
             </p>
-            {showLinkData && (
-              <p>
-                This is not a CowProtocol transaction. See it in the <BlockExplorerLink {...(data as never)} />
-              </p>
-            )}
           </>
         ) : (
           <p>The search cannot be empty</p>
@@ -125,6 +124,11 @@ export const OrderAddressNotFound: React.FC = (): JSX.Element => {
           </SearchContent>
         </SearchSection>
       </Content>
+      {showLinkData && (
+        <LinkData>
+          This is not a CowProtocol transaction. See it in the <BlockExplorerLink {...(data as never)} />
+        </LinkData>
+      )}
     </>
   )
 }

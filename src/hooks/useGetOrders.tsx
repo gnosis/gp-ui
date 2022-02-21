@@ -2,11 +2,13 @@ import { useState, useEffect, useCallback } from 'react'
 
 import { Network } from 'types'
 import { useMultipleErc20 } from 'hooks/useErc20'
+import { updateWeb3Provider } from 'api/web3'
+import { web3 } from 'apps/explorer/api'
 import { getAccountOrders, getTxOrders, Order } from 'api/operator'
 import { GetTxOrdersParams, RawOrder } from 'api/operator/types'
 import { useNetworkId } from 'state/network'
 import { transformOrder } from 'utils'
-import { ORDERS_QUERY_INTERVAL } from 'apps/explorer/const'
+import { ORDERS_QUERY_INTERVAL, NETWORK_ID_SEARCH_LIST } from 'apps/explorer/const'
 import { Props as ExplorerLinkProps } from 'components/common/BlockExplorerLink'
 import {
   GetOrderResult,
@@ -150,37 +152,39 @@ export function useGetTxOrders(txHash: string): GetTxOrdersResult {
   return { orders, error, isLoading: isLoading || areErc20Loading, errorTxPresentInNetworkId }
 }
 
-export function useTxOrderExplorerLink(txHash: string): ExplorerLinkProps | Record<string, never> {
+export function useTxOrderExplorerLink(
+  txHash: string,
+  orders: Order[] | undefined,
+): ExplorerLinkProps | Record<string, unknown> {
   const networkId = useNetworkId() || undefined
-  const [isGPv2Tx, setGPv2Tx] = useState(false)
-  const [explorerLink, setExplorerLink] = useState({})
-
-  const fetchTxOrders = useCallback(
-    async (_txHash: string, networkId: Network): Promise<void> => {
-      try {
-        const { order: _orders, errorOrderPresentInNetworkId: errorTxPresentInNetworkIdRaw } =
-          await getTxOrderOnEveryNetwork(networkId, _txHash)
-        const ordersFetched = _orders || []
-
-        if (errorTxPresentInNetworkIdRaw) console.log({ _orders, errorTxPresentInNetworkIdRaw })
-
-        if (ordersFetched.length > 0) setGPv2Tx(true)
-      } catch (e) {
-        console.error('Failed to get orders', e)
-      } finally {
-        if (!isGPv2Tx) setExplorerLink({ type: 'tx', networkId, identifier: txHash })
-      }
-    },
-    [isGPv2Tx, txHash],
-  )
+  const [explorerLink, setExplorerLink] = useState<ExplorerLinkProps | Record<string, unknown>>({})
 
   useEffect(() => {
     if (!networkId) {
       return
     }
 
-    fetchTxOrders(txHash, networkId)
-  }, [fetchTxOrders, networkId, txHash])
+    if (!orders?.length) {
+      for (const network of NETWORK_ID_SEARCH_LIST) {
+        //update provider to find tx in network
+        updateWeb3Provider(web3, network)
+        web3.eth.getTransaction(txHash).then((tx) => {
+          if (tx) {
+            setExplorerLink({
+              type: 'tx',
+              networkId: network,
+              identifier: txHash,
+              showLogo: true,
+              label: network === Network.xDAI ? 'Blockscout' : 'Etherscan',
+            })
+          }
+        })
+        if (Object.keys(explorerLink).length > 0) break
+      }
+      // reset provider
+      updateWeb3Provider(web3, networkId)
+    }
+  }, [explorerLink, networkId, orders, txHash])
 
   return explorerLink
 }
