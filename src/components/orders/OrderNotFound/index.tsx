@@ -37,6 +37,9 @@ const SearchSection = styled.div`
 
 const LinkData = styled.p`
   font-size: 1.6rem;
+  @media ${MEDIA.mobile} {
+    line-height: 1.5;
+  }
 `
 
 const SearchContent = styled.div`
