@@ -154,37 +154,33 @@ export function useGetTxOrders(txHash: string): GetTxOrdersResult {
 
 export function useTxOrderExplorerLink(
   txHash: string,
-  orders: Order[] | undefined,
+  isZeroOrders: boolean,
 ): ExplorerLinkProps | Record<string, unknown> {
   const networkId = useNetworkId() || undefined
   const [explorerLink, setExplorerLink] = useState<ExplorerLinkProps | Record<string, unknown>>({})
 
   useEffect(() => {
-    if (!networkId) {
-      return
-    }
+    if (!networkId || !isZeroOrders) return
 
-    if (!orders?.length) {
-      for (const network of NETWORK_ID_SEARCH_LIST) {
-        //update provider to find tx in network
-        updateWeb3Provider(web3, network)
-        web3.eth.getTransaction(txHash).then((tx) => {
-          if (tx) {
-            setExplorerLink({
-              type: 'tx',
-              networkId: network,
-              identifier: txHash,
-              showLogo: true,
-              label: network === Network.xDAI ? 'Blockscout' : 'Etherscan',
-            })
-          }
-        })
-        if (Object.keys(explorerLink).length > 0) break
-      }
-      // reset provider
-      updateWeb3Provider(web3, networkId)
+    for (const network of NETWORK_ID_SEARCH_LIST) {
+      //update provider to find tx in network
+      updateWeb3Provider(web3, network)
+      web3.eth.getTransaction(txHash).then((tx) => {
+        if (tx) {
+          setExplorerLink({
+            type: 'tx',
+            networkId: network,
+            identifier: txHash,
+            showLogo: true,
+            label: network === Network.xDAI ? 'Blockscout' : 'Etherscan',
+          })
+        }
+      })
+      if (Object.keys(explorerLink).length > 0) break
     }
-  }, [explorerLink, networkId, orders, txHash])
+    // reset provider
+    updateWeb3Provider(web3, networkId)
+  }, [explorerLink, isZeroOrders, networkId, txHash])
 
   return explorerLink
 }

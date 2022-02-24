@@ -44,7 +44,7 @@ export const TransactionsTableWidget: React.FC<Props> = ({ txHash }) => {
   const networkId = useNetworkId() || undefined
   const [redirectTo, setRedirectTo] = useState(false)
   const txHashParams = { networkId, txHash }
-  const notGpv2ExplorerData = useTxOrderExplorerLink(txHash, orders)
+  const notGpv2ExplorerData = useTxOrderExplorerLink(txHash, !orders?.length)
 
   // Avoid redirecting until another network is searched again
   useEffect(() => {
