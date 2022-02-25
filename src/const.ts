@@ -249,4 +249,4 @@ export const NATIVE_TOKEN_PER_NETWORK: Record<string, TokenErc20> = {
 
 export const NO_REDIRECT_HOME_ROUTES: Array<string> = ['/address']
 
-export const TENDERLY_API_URL = 'https://api.tenderly.co/api/v1/public-contract/'
+export const TENDERLY_API_URL = 'https://api.tenderly.co/api/v1/public-contract'

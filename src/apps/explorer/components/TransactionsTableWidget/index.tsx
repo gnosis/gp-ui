@@ -44,8 +44,10 @@ export const TransactionsTableWidget: React.FC<Props> = ({ txHash }) => {
   const networkId = useNetworkId() || undefined
   const [redirectTo, setRedirectTo] = useState(false)
   const txHashParams = { networkId, txHash }
-  // TODO remove
-  useTxBatchTrades(networkId, txHash)
+  // TODO use on draw tx view
+  const txBatchTrades = useTxBatchTrades(networkId, txHash)
+  console.log('txBatchTrades', txBatchTrades)
+
   // Avoid redirecting until another network is searched again
   useEffect(() => {
     if (orders?.length || isTxLoading) return

@@ -1,18 +1,28 @@
 import { useState, useCallback, useEffect } from 'react'
 
 import { Network } from 'types'
-import { fetchTradesAccounts, getTradesAndTransfers, Trade, Transfer, Account } from 'api/tenderly'
+import { getTradesAccount, getTradesAndTransfers, Trade, Transfer, Account } from 'api/tenderly'
+import { useMultipleErc20 } from './useErc20'
+import { SingleErc20State } from 'state/erc20'
 
 interface TxBatchTrades {
   trades: Trade[]
   transfers: Transfer[]
 }
 
-type Accounts = { [k: string]: Account } | undefined
+type Dict<T> = Record<string, T>
+
+type Accounts = Dict<Account> | undefined
+
+export interface Settlement {
+  tokens: Dict<SingleErc20State>
+  accounts: Accounts
+  transfers: Array<Transfer>
+  trades: Array<Trade>
+}
 
 type GetTxBatchTradesResult = {
-  txBatchTrades: TxBatchTrades
-  accounts: Accounts
+  txSettlement: Settlement
   error: string
   isLoading: boolean
 }
@@ -22,6 +32,8 @@ export function useTxBatchTrades(networkId: Network | undefined, txHash: string)
   const [error, setError] = useState('')
   const [txBatchTrades, setTxBatchTrades] = useState<TxBatchTrades>({ trades: [], transfers: [] })
   const [accounts, setAccounts] = useState<Accounts>()
+  const [erc20Addresses, setErc20Addresses] = useState<string[]>([])
+  const { value: valueErc20s, isLoading: areErc20Loading } = useMultipleErc20({ networkId, addresses: erc20Addresses })
 
   const _fetchTxTrades = useCallback(async (network: Network, _txHash: string): Promise<void> => {
     setIsLoading(true)
@@ -29,12 +41,13 @@ export function useTxBatchTrades(networkId: Network | undefined, txHash: string)
 
     try {
       const { transfers, trades } = await getTradesAndTransfers(network, _txHash)
-      const _accounts = Object.fromEntries(await fetchTradesAccounts(network, _txHash, trades, transfers))
+      const _accounts = Object.fromEntries(await getTradesAccount(network, _txHash, trades, transfers))
 
+      setErc20Addresses(transfers.map((transfer: Transfer): string => transfer.token))
       setTxBatchTrades({ trades, transfers })
       setAccounts(_accounts)
     } catch (e) {
-      const msg = `Failed to fetch tx orders`
+      const msg = `Failed to fetch tx batch trades`
       console.error(msg, e)
       setError(msg)
     } finally {
@@ -50,5 +63,9 @@ export function useTxBatchTrades(networkId: Network | undefined, txHash: string)
     _fetchTxTrades(networkId, txHash)
   }, [_fetchTxTrades, networkId, txHash])
 
-  return { txBatchTrades, accounts, error, isLoading: isLoading }
+  return {
+    txSettlement: { ...txBatchTrades, tokens: valueErc20s, accounts },
+    error,
+    isLoading: isLoading || areErc20Loading,
+  }
 }
