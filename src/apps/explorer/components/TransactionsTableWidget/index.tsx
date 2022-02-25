@@ -12,7 +12,7 @@ import ExplorerTabs from '../common/ExplorerTabs/ExplorerTab'
 import styled from 'styled-components'
 import { TitleAddress } from 'apps/explorer/pages/styled'
 import { BlockExplorerLink } from 'components/common/BlockExplorerLink'
-import { fetchTradesAndTransfers } from 'api/tenderly/TenderlyApi'
+import { useTxBatchTrades } from 'hooks/useTxBatchTrades'
 
 interface Props {
   txHash: string
@@ -44,10 +44,8 @@ export const TransactionsTableWidget: React.FC<Props> = ({ txHash }) => {
   const networkId = useNetworkId() || undefined
   const [redirectTo, setRedirectTo] = useState(false)
   const txHashParams = { networkId, txHash }
-  if (networkId) {
-    // TODO remove
-    fetchTradesAndTransfers(networkId, txHash)
-  }
+  // TODO remove
+  useTxBatchTrades(networkId, txHash)
   // Avoid redirecting until another network is searched again
   useEffect(() => {
     if (orders?.length || isTxLoading) return
