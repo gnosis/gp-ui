@@ -44,7 +44,8 @@ export const TransactionsTableWidget: React.FC<Props> = ({ txHash }) => {
   const networkId = useNetworkId() || undefined
   const [redirectTo, setRedirectTo] = useState(false)
   const txHashParams = { networkId, txHash }
-  const notGpv2ExplorerData = useTxOrderExplorerLink(txHash, !orders?.length)
+  const isZeroOrders = !!(orders && orders.length === 0)
+  const notGpv2ExplorerData = useTxOrderExplorerLink(txHash, isZeroOrders)
 
   // Avoid redirecting until another network is searched again
   useEffect(() => {
@@ -61,9 +62,7 @@ export const TransactionsTableWidget: React.FC<Props> = ({ txHash }) => {
     return <RedirectToNetwork networkId={errorTxPresentInNetworkId} />
   }
   if (redirectTo) {
-    return (
-      <RedirectToSearch data={Object.keys(notGpv2ExplorerData).length === 0 ? null : notGpv2ExplorerData} from="tx" />
-    )
+    return <RedirectToSearch data={notGpv2ExplorerData} from="tx" />
   }
 
   if (!orders?.length) {

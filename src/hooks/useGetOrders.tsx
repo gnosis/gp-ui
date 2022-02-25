@@ -155,9 +155,9 @@ export function useGetTxOrders(txHash: string): GetTxOrdersResult {
 export function useTxOrderExplorerLink(
   txHash: string,
   isZeroOrders: boolean,
-): ExplorerLinkProps | Record<string, unknown> {
+): ExplorerLinkProps | Record<string, unknown> | undefined {
   const networkId = useNetworkId() || undefined
-  const [explorerLink, setExplorerLink] = useState<ExplorerLinkProps | Record<string, unknown>>({})
+  const [explorerLink, setExplorerLink] = useState<ExplorerLinkProps | Record<string, unknown> | undefined>(undefined)
 
   useEffect(() => {
     if (!networkId || !isZeroOrders) return
@@ -176,7 +176,7 @@ export function useTxOrderExplorerLink(
           })
         }
       })
-      if (Object.keys(explorerLink).length > 0) break
+      if (explorerLink) break
     }
     // reset provider
     updateWeb3Provider(web3, networkId)
