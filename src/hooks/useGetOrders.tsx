@@ -157,7 +157,7 @@ export function useTxOrderExplorerLink(
   isZeroOrders: boolean,
 ): ExplorerLinkProps | Record<string, unknown> | undefined {
   const networkId = useNetworkId() || undefined
-  const [explorerLink, setExplorerLink] = useState<ExplorerLinkProps | Record<string, unknown> | undefined>(undefined)
+  const [explorerLink, setExplorerLink] = useState<ExplorerLinkProps | Record<string, unknown> | undefined>()
 
   useEffect(() => {
     if (!networkId || !isZeroOrders) return
