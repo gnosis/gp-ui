@@ -29,7 +29,7 @@ const tabItems = (isLoadingOrders: boolean): TabItemInterface[] => {
       id: 1,
       tab: (
         <>
-          Transactions
+          Orders
           <StyledTabLoader>{isLoadingOrders && <Spinner spin size="1x" />}</StyledTabLoader>
         </>
       ),
@@ -71,7 +71,7 @@ export const TransactionsTableWidget: React.FC<Props> = ({ txHash }) => {
         Transaction details
         <TitleAddress
           textToCopy={txHash}
-          contentsToDisplay={<BlockExplorerLink type="tx" networkId={networkId} identifier={txHash} />}
+          contentsToDisplay={<BlockExplorerLink type="tx" networkId={networkId} identifier={txHash} showLogo />}
         />
       </h1>
       <TransactionsTableContext.Provider
