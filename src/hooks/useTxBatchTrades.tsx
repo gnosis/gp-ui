@@ -27,7 +27,11 @@ type GetTxBatchTradesResult = {
   isLoading: boolean
 }
 
-export function useTxBatchTrades(networkId: Network | undefined, txHash: string): GetTxBatchTradesResult {
+export function useTxBatchTrades(
+  networkId: Network | undefined,
+  txHash: string,
+  ordersFoundInTx: number | undefined,
+): GetTxBatchTradesResult {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const [txBatchTrades, setTxBatchTrades] = useState<TxBatchTrades>({ trades: [], transfers: [] })
@@ -56,12 +60,12 @@ export function useTxBatchTrades(networkId: Network | undefined, txHash: string)
   }, [])
 
   useEffect(() => {
-    if (!networkId) {
+    if (!networkId || !ordersFoundInTx) {
       return
     }
 
     _fetchTxTrades(networkId, txHash)
-  }, [_fetchTxTrades, networkId, txHash])
+  }, [_fetchTxTrades, networkId, ordersFoundInTx, txHash])
 
   return {
     txSettlement: { ...txBatchTrades, tokens: valueErc20s, accounts },

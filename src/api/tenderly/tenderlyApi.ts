@@ -10,6 +10,7 @@ import {
   TypeOfTrace,
   IndexTradeInput,
   IndexTransferInput,
+  TxTradesAndTransfers,
 } from './types'
 
 function _urlAvailableNetwork(): Partial<Record<Network, string>> {
@@ -54,11 +55,13 @@ function _fetchTradesAccounts(networkId: Network, txHash: string): Promise<Contr
   return fetchQuery<Array<Contract>>({ get: () => _get(networkId, queryString) }, queryString)
 }
 
-export async function getTradesAndTransfers(
-  networkId: Network,
-  txHash: string,
-): Promise<{ transfers: Transfer[]; trades: Trade[] }> {
+export async function getTradesAndTransfers(networkId: Network, txHash: string): Promise<TxTradesAndTransfers> {
   const trace = await _fetchTrace(networkId, txHash)
+
+  return traceToTransfersTrades(trace)
+}
+
+export function traceToTransfersTrades(trace: Trace): TxTradesAndTransfers {
   const transfers: Array<Transfer> = []
   const trades: Array<Trade> = []
 
@@ -108,6 +111,15 @@ export async function getTradesAccount(
   transfers: Array<Transfer>,
 ): Promise<Map<string, Account>> {
   const contracts = await _fetchTradesAccounts(networkId, txHash)
+
+  return contractsInvolved(contracts, trades, transfers)
+}
+
+export function contractsInvolved(
+  contracts: Contract[],
+  trades: Array<Trade>,
+  transfers: Array<Transfer>,
+): Map<string, Account> {
   const result = new Map()
 
   try {

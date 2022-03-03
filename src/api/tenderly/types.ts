@@ -64,3 +64,8 @@ export enum IndexTradeInput {
   feeAmount,
   orderUid,
 }
+
+export interface TxTradesAndTransfers {
+  trades: PublicTrade[]
+  transfers: Transfer[]
+}
