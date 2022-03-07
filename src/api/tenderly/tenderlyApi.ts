@@ -112,10 +112,14 @@ export async function getTradesAccount(
 ): Promise<Map<string, Account>> {
   const contracts = await _fetchTradesAccounts(networkId, txHash)
 
-  return contractsInvolved(contracts, trades, transfers)
+  return accountAddressesInvolved(contracts, trades, transfers)
 }
 
-export function contractsInvolved(
+/**
+ * Allows to obtain a description of addresses involved
+ * in a tx
+ */
+export function accountAddressesInvolved(
   contracts: Contract[],
   trades: Array<Trade>,
   transfers: Array<Transfer>,
