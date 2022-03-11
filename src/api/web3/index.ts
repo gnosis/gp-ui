@@ -64,7 +64,7 @@ function websocketConnection(): boolean {
   // There's a bug in IOS affecting WebSocket connections reported in https://bugs.webkit.org/show_bug.cgi?id=228296
   // The issue comes with a new experimental feature in Safari "NSURLSession WebSocket" which is toggled on by default
   // and causes a termination on the connection which currently affects Infura. A solution until a fix is released (apparently in version 15.4)
-  // is to disable the "NSURLSession WebSocket" feature, but we could also fallback to https until the fixed is released.
+  // is to disable the "NSURLSession WebSocket" feature, but we could also fallback to https until the fix is released.
   // TODO: Re-test this issue after IOS 15.4 is released and remove this function
 
   const browserInfo = parseUserAgent(navigator.userAgent)
