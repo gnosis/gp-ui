@@ -53,14 +53,14 @@ function infuraProvider(networkId: Network): string {
 
   const network = getNetworkFromId(networkId).toLowerCase()
 
-  if (websocketConnection()) {
+  if (isWebsocketConnection()) {
     return `wss://${network}.infura.io/ws/v3/${INFURA_ID}`
   } else {
     return `https://${network}.infura.io/v3/${INFURA_ID}`
   }
 }
 
-function websocketConnection(): boolean {
+function isWebsocketConnection(): boolean {
   // There's a bug in IOS affecting WebSocket connections reported in https://bugs.webkit.org/show_bug.cgi?id=228296
   // The issue comes with a new experimental feature in Safari "NSURLSession WebSocket" which is toggled on by default
   // and causes a termination on the connection which currently affects Infura. A solution until a fix is released (apparently in version 15.4)
