@@ -1,11 +1,22 @@
-import React from 'react'
+import React, { useState, createRef } from 'react'
 
-import { Navigation } from 'components/layout/GenericLayout/Navigation'
+import { MenuBarToggle, Navigation } from 'components/layout/GenericLayout/Navigation'
 import { Header as GenericHeader } from 'components/layout/GenericLayout/Header'
 import { NetworkSelector } from 'components/NetworkSelector'
 import { PREFIX_BY_NETWORK_ID, useNetworkId } from 'state/network'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEllipsisH, faTimes } from '@fortawesome/free-solid-svg-icons'
+import { FlexWrap } from 'apps/explorer/pages/styled'
+import { ExternalLink } from 'components/analytics/ExternalLink'
+import { useHistory } from 'react-router'
+import useOnClickOutside from 'hooks/useOnClickOutside'
 
 export const Header: React.FC = () => {
+  const history = useHistory()
+  const [isBarActive, setBarActive] = useState(false)
+  const flexWrapDivRef = createRef<HTMLDivElement>()
+  useOnClickOutside(flexWrapDivRef, () => isBarActive && setBarActive(false))
+
   const networkId = useNetworkId()
   if (!networkId) {
     return null
@@ -13,22 +24,45 @@ export const Header: React.FC = () => {
 
   const prefixNetwork = PREFIX_BY_NETWORK_ID.get(networkId)
 
+  const handleNavigate = (e: React.MouseEvent<HTMLAnchorElement>): void => {
+    e.preventDefault()
+    setBarActive(false)
+    history.push('/')
+  }
+
   return (
     <GenericHeader logoAlt="CoW Protocol Explorer" linkTo={`/${prefixNetwork || ''}`}>
-      <Navigation>
-        <NetworkSelector networkId={networkId} />
-        {/*      
-        <li>
-          <Link to="/">Batches</Link>
-        </li>
-        <li>
-          <Link to="/trades">Trades</Link>
-        </li>
-        <li>
-          <Link to="/markets">Markets</Link>
-        </li>
-        */}
-      </Navigation>
+      <NetworkSelector networkId={networkId} />
+      <FlexWrap ref={flexWrapDivRef} grow={1}>
+        <MenuBarToggle isActive={isBarActive} onClick={(): void => setBarActive(!isBarActive)}>
+          <FontAwesomeIcon icon={isBarActive ? faTimes : faEllipsisH} />
+        </MenuBarToggle>
+        <Navigation isActive={isBarActive}>
+          <li>
+            <a onClick={(e): void => handleNavigate(e)}>Home</a>
+          </li>
+          <li>
+            <ExternalLink target={'_blank'} href={'https://cow.fi'}>
+              CoW Protocol
+            </ExternalLink>
+          </li>
+          <li>
+            <ExternalLink target={'_blank'} href={'https://docs.cow.fi'}>
+              Documentation
+            </ExternalLink>
+          </li>
+          <li>
+            <ExternalLink target={'_blank'} href={'https://chat.cowswap.exchange'}>
+              Community
+            </ExternalLink>
+          </li>
+          <li>
+            <ExternalLink target={'_blank'} href={'https://dune.xyz/gnosis.protocol/Gnosis-Protocol-V2'}>
+              Analytics
+            </ExternalLink>
+          </li>
+        </Navigation>
+      </FlexWrap>
     </GenericHeader>
   )
 }

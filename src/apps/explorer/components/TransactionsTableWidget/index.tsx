@@ -6,6 +6,7 @@ import RedirectToSearch from 'components/RedirectToSearch'
 import Spinner from 'components/common/Spinner'
 import { RedirectToNetwork, useNetworkId } from 'state/network'
 import { Order } from 'api/operator'
+import { useTxOrderExplorerLink } from 'hooks/useGetOrders'
 import { TransactionsTableWithData } from 'apps/explorer/components/TransactionsTableWidget/TransactionsTableWithData'
 import { TabItemInterface } from 'components/common/Tabs/Tabs'
 import ExplorerTabs from '../common/ExplorerTabs/ExplorerTab'
@@ -29,7 +30,7 @@ const tabItems = (isLoadingOrders: boolean): TabItemInterface[] => {
       id: 1,
       tab: (
         <>
-          Transactions
+          Orders
           <StyledTabLoader>{isLoadingOrders && <Spinner spin size="1x" />}</StyledTabLoader>
         </>
       ),
@@ -43,6 +44,9 @@ export const TransactionsTableWidget: React.FC<Props> = ({ txHash }) => {
   const networkId = useNetworkId() || undefined
   const [redirectTo, setRedirectTo] = useState(false)
   const txHashParams = { networkId, txHash }
+  const isZeroOrders = !!(orders && orders.length === 0)
+  const notGpv2ExplorerData = useTxOrderExplorerLink(txHash, isZeroOrders)
+
   // Avoid redirecting until another network is searched again
   useEffect(() => {
     if (orders?.length || isTxLoading) return
@@ -58,7 +62,7 @@ export const TransactionsTableWidget: React.FC<Props> = ({ txHash }) => {
     return <RedirectToNetwork networkId={errorTxPresentInNetworkId} />
   }
   if (redirectTo) {
-    return <RedirectToSearch from="tx" />
+    return <RedirectToSearch data={notGpv2ExplorerData} from="tx" />
   }
 
   if (!orders?.length) {
@@ -71,7 +75,7 @@ export const TransactionsTableWidget: React.FC<Props> = ({ txHash }) => {
         Transaction details
         <TitleAddress
           textToCopy={txHash}
-          contentsToDisplay={<BlockExplorerLink type="tx" networkId={networkId} identifier={txHash} />}
+          contentsToDisplay={<BlockExplorerLink type="tx" networkId={networkId} identifier={txHash} showLogo />}
         />
       </h1>
       <TransactionsTableContext.Provider
