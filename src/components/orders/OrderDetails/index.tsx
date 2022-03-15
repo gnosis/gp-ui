@@ -10,6 +10,7 @@ import { DetailsTable } from 'components/orders/DetailsTable'
 import { RowWithCopyButton } from 'components/common/RowWithCopyButton'
 import RedirectToSearch from 'components/RedirectToSearch'
 import { Notification } from 'components/Notification'
+import { Errors } from 'types'
 
 const TitleUid = styled(RowWithCopyButton)`
   color: ${({ theme }): string => theme.grey};
@@ -27,7 +28,7 @@ export type Props = {
   trades: Trade[]
   isOrderLoading: boolean
   areTradesLoading: boolean
-  errors: any
+  errors: Errors
 }
 
 export const OrderDetails: React.FC<Props> = (props) => {
@@ -62,7 +63,7 @@ export const OrderDetails: React.FC<Props> = (props) => {
         {order && <TitleUid textToCopy={order.uid} contentsToDisplay={order.shortId} />}
       </h1>
       {Object.keys(errors).map((key) => (
-        <Notification key={key} type={navigator.onLine ? 'warn' : 'error'} message={errors[key]} />
+        <Notification key={key} type={errors[key].type} message={errors[key].message} />
       ))}
       {/* TODO: add tabs (overview/fills) */}
       {order && areTokensLoaded && <DetailsTable order={{ ...order, txHash }} areTradesLoading={areTradesLoading} />}
