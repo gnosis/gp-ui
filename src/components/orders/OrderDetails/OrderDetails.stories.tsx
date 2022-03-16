@@ -35,4 +35,10 @@ export const TokensNotLoaded = Template.bind({})
 TokensNotLoaded.args = { ...defaultProps, order: { ...RICH_ORDER, buyToken: undefined } }
 
 export const WithErrors = Template.bind({})
-WithErrors.args = { ...defaultProps, errors: { error1: 'Failed something something', error2: 'Something else failed' } }
+WithErrors.args = {
+  ...defaultProps,
+  errors: {
+    error1: { message: 'Failed something something', type: 'error' },
+    error2: { message: 'Something else failed', type: 'error' },
+  },
+}

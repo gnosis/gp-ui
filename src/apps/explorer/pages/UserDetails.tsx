@@ -9,7 +9,6 @@ import RedirectToSearch from 'components/RedirectToSearch'
 import { useResolveEns } from 'hooks/useResolveEns'
 import Spinner from 'components/common/Spinner'
 import { TitleAddress, Wrapper as WrapperMod } from 'apps/explorer/pages/styled'
-import { ConnectionStatus } from 'components/ConnectionStatus'
 
 const Wrapper = styled(WrapperMod)`
   > h1 {
@@ -45,7 +44,6 @@ const UserDetails: React.FC = () => {
               }
             />
           </h1>
-          <ConnectionStatus />
           <OrdersTableWidget ownerAddress={addressAccount.address} networkId={networkId} />
         </>
       ) : (

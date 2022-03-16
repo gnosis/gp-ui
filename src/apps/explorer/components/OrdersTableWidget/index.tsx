@@ -9,6 +9,8 @@ import { OrdersTableContext, BlockchainNetwork } from './context/OrdersTableCont
 import PaginationOrdersTable from './PaginationOrdersTable'
 import { useGetAccountOrders } from 'hooks/useGetOrders'
 import Spinner from 'components/common/Spinner'
+import { ConnectionStatus } from 'components/ConnectionStatus'
+import { Notification } from 'components/Notification'
 
 const StyledTabLoader = styled.span`
   padding-left: 4px;
@@ -79,6 +81,8 @@ const OrdersTableWidget: React.FC<Props> = ({ ownerAddress, networkId }) => {
         handlePreviousPage,
       }}
     >
+      <ConnectionStatus />
+      {error && <Notification type={error.type} message={error.message} />}
       <StyledExplorerTabs tabItems={tabItems(isOrdersLoading)} extra={ExtraComponentNode} />
     </OrdersTableContext.Provider>
   )
