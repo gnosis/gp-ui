@@ -8,6 +8,7 @@ import { BASE_COLOURS } from 'theme'
 export interface NotificationProps {
   type: 'warn' | 'error'
   message: string
+  appendMessage?: boolean
 }
 
 export const NotificationWrap = styled.p<{ isActive?: boolean; type: string }>`
@@ -72,7 +73,11 @@ const CloseButton = styled.button`
   }
 `
 
-export const Notification: React.FC<NotificationProps> = ({ type, message }: NotificationProps) => {
+export const Notification: React.FC<NotificationProps> = ({
+  type,
+  message,
+  appendMessage = true,
+}: NotificationProps) => {
   const [isNoteActive, setIsNoteActive] = useState(true)
   const isError = type === 'error'
   const icon = isError ? faExclamationEllipsis : faExclamationTriangle
@@ -80,9 +85,14 @@ export const Notification: React.FC<NotificationProps> = ({ type, message }: Not
     <NotificationWrap type={type} isActive={isNoteActive}>
       <FontAwesomeIcon icon={icon} />
       <span>
-        {message}. Please&nbsp;
-        <a onClick={(): void => window.location.reload()}>{isError ? 'try again ' : 'refresh '}</a>
-        {isError ? 'later.' : 'to get the latest.'}
+        {message}
+        {appendMessage && (
+          <>
+            . Please&nbsp;
+            <a onClick={(): void => window.location.reload()}>{isError ? 'try again ' : 'refresh '}</a>
+            {isError ? 'later.' : 'to get the latest.'}
+          </>
+        )}
       </span>
       <CloseButton onClick={(): void => setIsNoteActive(false)} />
     </NotificationWrap>

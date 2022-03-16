@@ -11,6 +11,7 @@ import { RowWithCopyButton } from 'components/common/RowWithCopyButton'
 import RedirectToSearch from 'components/RedirectToSearch'
 import { Notification } from 'components/Notification'
 import { Errors } from 'types'
+import { ConnectionStatus } from 'components/ConnectionStatus'
 
 const TitleUid = styled(RowWithCopyButton)`
   color: ${({ theme }): string => theme.grey};
@@ -62,6 +63,7 @@ export const OrderDetails: React.FC<Props> = (props) => {
         {order && 'Order details'}
         {order && <TitleUid textToCopy={order.uid} contentsToDisplay={order.shortId} />}
       </h1>
+      <ConnectionStatus />
       {Object.keys(errors).map((key) => (
         <Notification key={key} type={errors[key].type} message={errors[key].message} />
       ))}

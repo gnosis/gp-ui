@@ -14,6 +14,10 @@ const StyledTabLoader = styled.span`
   padding-left: 4px;
 `
 
+const StyledExplorerTabs = styled(ExplorerTabs)`
+  margin: 1.6rem auto 0;
+`
+
 const tabItems = (isLoadingOrders: boolean): TabItemInterface[] => {
   return [
     {
@@ -75,7 +79,7 @@ const OrdersTableWidget: React.FC<Props> = ({ ownerAddress, networkId }) => {
         handlePreviousPage,
       }}
     >
-      <ExplorerTabs tabItems={tabItems(isOrdersLoading)} extra={ExtraComponentNode} />
+      <StyledExplorerTabs tabItems={tabItems(isOrdersLoading)} extra={ExtraComponentNode} />
     </OrdersTableContext.Provider>
   )
 }

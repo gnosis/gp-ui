@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { Order, getOrder, GetOrderParams } from 'api/operator'
 
-import { transformOrder } from 'utils'
+import { getShortOrderId, transformOrder } from 'utils'
 
 import { useNetworkId } from 'state/network'
 
@@ -62,9 +62,9 @@ export function useOrderByNetwork(orderId: string, networkId: Network | null, up
           setErrorOrderPresentInNetworkId(errorOrderPresentInNetworkIdRaw)
         }
       } catch (e) {
-        const msg = `Failed to fetch order: ${orderId}`
-        console.error(msg, e.message)
-        setError({ message: msg, type: 'error' })
+        const msg = `Failed to fetch order`
+        console.error(`${msg}: ${orderId}`, e.message)
+        setError({ message: `${msg}: ${getShortOrderId(orderId)}`, type: 'error' })
       } finally {
         setIsLoading(false)
       }
