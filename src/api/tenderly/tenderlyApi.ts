@@ -1,4 +1,4 @@
-import { TENDERLY_API_URL, ETH_NULL_ADDRESS } from 'const'
+import { TENDERLY_API_URL, ETH_NULL_ADDRESS, APP_NAME } from 'const'
 import { Network } from 'types'
 import { fetchQuery } from 'api/baseApi'
 import {
@@ -12,6 +12,11 @@ import {
   IndexTransferInput,
   TxTradesAndTransfers,
 } from './types'
+import { abbreviateString } from 'utils'
+
+export const ALIAS_TRADER_NAME = 'Trader'
+const COW_PROTOCOL_CONTRACT_NAME = 'GPv2Settlement'
+const API_BASE_URLs = _urlAvailableNetwork()
 
 function _urlAvailableNetwork(): Partial<Record<Network, string>> {
   const urlNetwork = (_networkId: Network): string => `${TENDERLY_API_URL}/${_networkId}`
@@ -22,9 +27,6 @@ function _urlAvailableNetwork(): Partial<Record<Network, string>> {
     [Network.xDAI]: urlNetwork(Network.xDAI),
   }
 }
-
-const API_BASE_URLs = _urlAvailableNetwork()
-const ALIAS_TRADER_NAME = 'Trader'
 
 function _getApiBaseUrl(networkId: Network): string {
   const baseUrl = API_BASE_URLs[networkId]
@@ -85,7 +87,7 @@ export function traceToTransfersTrades(trace: Trace): TxTradesAndTransfers {
           orderUid: log.inputs[IndexTradeInput.orderUid].value,
         }
         if (trade.buyToken === ETH_NULL_ADDRESS) {
-          //ETH transfers are not captured by ERC20 events, so we need to manyally add them to the Transfer list
+          //ETH transfers are not captured by ERC20 events, so we need to manually add them to the Transfer list
           transfers.push({
             token: ETH_NULL_ADDRESS,
             from: log.raw.address,
@@ -136,7 +138,7 @@ export function accountAddressesInvolved(
       })
       .forEach((contract: Contract) => {
         result.set(contract.address, {
-          alias: contract.contract_name,
+          alias: _contractName(contract.contract_name),
         })
       })
     trades.forEach((trade) => {
@@ -152,14 +154,20 @@ export function accountAddressesInvolved(
       .forEach((address) => {
         if (!result.get(address)) {
           result.set(address, {
-            alias: address,
+            alias: abbreviateString(address, 6, 4),
           })
         }
       })
   } catch (error) {
     console.error(`Unable to set contracts details transfers and trades`, error)
-    throw new Error(`Failed to parse contracts of tenderly API`)
+    throw new Error(`Failed to parse accounts addresses of tenderly API`)
   }
 
   return result
+}
+
+function _contractName(name: string): string {
+  if (name === COW_PROTOCOL_CONTRACT_NAME) return APP_NAME
+
+  return name
 }

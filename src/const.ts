@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import BN from 'bn.js'
-import { TokenErc20, UNLIMITED_ORDER_AMOUNT } from '@gnosis.pm/dex-js'
+import { TokenErc20, UNLIMITED_ORDER_AMOUNT, BATCH_TIME } from '@gnosis.pm/dex-js'
 export {
   UNLIMITED_ORDER_AMOUNT,
   FEE_DENOMINATOR,
@@ -16,7 +16,6 @@ export {
   ALLOWANCE_MAX_VALUE,
   ALLOWANCE_FOR_ENABLED_TOKEN,
 } from '@gnosis.pm/dex-js'
-import { BATCH_TIME } from '@gnosis.pm/dex-js'
 import { Network } from 'types'
 import { DisabledTokensMaps, TokenOverride, AddressToOverrideMap } from 'types/config'
 
@@ -50,7 +49,7 @@ export const MINIMUM_ALLOWANCE_DECIMALS = 10
 //    https://github.com/gnosis/gp-v1-ui/wiki/App-Ids-for-Forks
 export const MAX_APP_ID = 255
 
-export const APP_NAME = 'Gnosis Protocol v1 Web'
+export const APP_NAME = 'CoW Protocol'
 
 export const ETHER_PNG =
   'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png'
