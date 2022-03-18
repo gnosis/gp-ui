@@ -13,6 +13,7 @@ import { TypeNodeOnTx } from './types'
 import { APP_NAME } from 'const'
 import { HEIGHT_HEADER_FOOTER } from 'apps/explorer/const'
 import { STYLESHEET } from './styled'
+import { abbreviateString } from 'utils'
 
 const HEIGHT_SIZE = window.innerHeight - HEIGHT_HEADER_FOOTER
 const PROTOCOL_NAME = APP_NAME
@@ -23,15 +24,22 @@ const WrapperCytoscape = styled(CytoscapeComponent)`
   border-radius: 0.4rem;
 `
 
-function getTypeNode(element: Account): TypeNodeOnTx {
+function getTypeNode(account: Account): TypeNodeOnTx {
   let type = TypeNodeOnTx.Dex
-  if (element.alias === ALIAS_TRADER_NAME) {
+  if (account.alias === ALIAS_TRADER_NAME) {
     type = TypeNodeOnTx.Trader
-  } else if (element.alias === PROTOCOL_NAME) {
+  } else if (account.alias === PROTOCOL_NAME) {
     type = TypeNodeOnTx.CowProtocol
   }
 
   return type
+}
+
+function showTraderAddress(account: Account, address: string): Account {
+  if (account.alias === ALIAS_TRADER_NAME) {
+    account.alias = abbreviateString(address, 4, 4)
+  }
+  return account
 }
 
 function getNetworkParentNode(account: Account, networkName: string): string | undefined {
@@ -57,7 +65,7 @@ function getNodes(txSettlement: TxSettlement, networkId: Network): ElementDefini
         {
           id: key,
           type: getTypeNode(account),
-          entity: account,
+          entity: showTraderAddress(account, key),
         },
         parentNodeName,
       )
