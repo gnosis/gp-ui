@@ -26,12 +26,11 @@ export const STYLESHEET: Stylesheet[] = [
       color: 'black',
       'line-color': '#747a9e',
       'line-opacity': 0.8,
-      'text-margin-y': 10,
-
       'text-background-color': 'white',
       'text-background-opacity': 1,
       'text-background-padding': '2px',
       'text-background-shape': 'roundrectangle',
+      'font-size': '11px',
     },
   },
   {
