@@ -1,4 +1,5 @@
 import Cytoscape, { ElementDefinition, NodeSingular } from 'cytoscape'
+import popper from 'cytoscape-popper'
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import CytoscapeComponent from 'react-cytoscapejs'
 import styled from 'styled-components'
@@ -15,6 +16,7 @@ import { HEIGHT_HEADER_FOOTER } from 'apps/explorer/const'
 import { STYLESHEET } from './styled'
 import { abbreviateString } from 'utils'
 
+Cytoscape.use(popper)
 const HEIGHT_SIZE = window.innerHeight - HEIGHT_HEADER_FOOTER
 const PROTOCOL_NAME = APP_NAME
 const WrapperCytoscape = styled(CytoscapeComponent)`
@@ -111,6 +113,30 @@ function TransanctionBatchGraph({
     if (error || isLoading || !networkId) return
 
     setElements(getNodes(txSettlement, networkId))
+    const cy = cytoscapeRef.current
+    if (cy) {
+      cy.on('click', 'node', (_event): void => {
+        const node = _event.target
+        const popper = node.popper({
+          content: () => {
+            const div = document.createElement('div')
+            div.innerHTML = 'Popper Node tooltip'
+            document.body.appendChild(div)
+            return div
+          },
+          popper: {
+            placement: 'top',
+          }, // my popper options here
+        })
+        const update = (): void => {
+          popper.update()
+        }
+
+        node.on('position', update)
+
+        cy.on('pan zoom resize', update)
+      })
+    }
   }, [error, isLoading, networkId, txSettlement])
 
   if (isLoading) return <Spinner spin size="3x" />
