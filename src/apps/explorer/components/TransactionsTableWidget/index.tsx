@@ -15,6 +15,7 @@ import { TitleAddress } from 'apps/explorer/pages/styled'
 import { BlockExplorerLink } from 'components/common/BlockExplorerLink'
 import { ConnectionStatus } from 'components/ConnectionStatus'
 import { Notification } from 'components/Notification'
+import { useTxBatchTrades } from 'hooks/useTxBatchTrades'
 
 interface Props {
   txHash: string
@@ -48,6 +49,9 @@ export const TransactionsTableWidget: React.FC<Props> = ({ txHash }) => {
   const txHashParams = { networkId, txHash }
   const isZeroOrders = !!(orders && orders.length === 0)
   const notGpv2ExplorerData = useTxOrderExplorerLink(txHash, isZeroOrders)
+  // TODO use on draw tx view
+  const txBatchTrades = useTxBatchTrades(networkId, txHash, orders && orders.length)
+  console.log('txBatchTrades', txBatchTrades)
 
   // Avoid redirecting until another network is searched again
   useEffect(() => {
