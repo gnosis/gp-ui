@@ -8,7 +8,7 @@ import { GetTxBatchTradesResult as TxBatchData, Settlement as TxSettlement } fro
 import { networkOptions } from 'components/NetworkSelector'
 import { Network } from 'types'
 import { Account, ALIAS_TRADER_NAME } from 'api/tenderly'
-import ElementsBuilder from 'apps/explorer/components/TransanctionBatchGraph/elementsBuilder'
+import ElementsBuilder, { buildGridLayout } from 'apps/explorer/components/TransanctionBatchGraph/elementsBuilder'
 import { TypeNodeOnTx } from './types'
 import { APP_NAME } from 'const'
 import { HEIGHT_HEADER_FOOTER } from 'apps/explorer/const'
@@ -84,7 +84,9 @@ function getNodes(txSettlement: TxSettlement, networkId: Network): ElementDefini
     )
   })
 
-  return builder.build()
+  return builder.build(
+    buildGridLayout(builder._countTypes as Map<TypeNodeOnTx, number>, builder._center, builder._nodes),
+  )
 }
 
 interface GraphBatchTxParams {
@@ -115,23 +117,13 @@ function TransanctionBatchGraph({
 
   const layout = {
     name: 'grid',
-    position: function (node: NodeSingular): { row: undefined | number; col: number } {
-      let col
-      let row = undefined
-      if (node.data('type') === TypeNodeOnTx.Trader) {
-        col = 0
-      } else if (node.data('type') === TypeNodeOnTx.CowProtocol) {
-        col = 1
-        row = node.data('rowValue')
-      } else {
-        col = 2
-      }
-      return { row, col }
+    position: function (node: NodeSingular): { row: number; col: number } {
+      return { row: node.position('y'), col: node.position('x') }
     },
     fit: true, // whether to fit the viewport to the graph
-    padding: 20, // padding used on fit
+    padding: 10, // padding used on fit
     avoidOverlap: true, // prevents node overlap, may overflow boundingBox if not enough space
-    avoidOverlapPadding: 10, // extra spacing around nodes when avoidOverlap: true
+    avoidOverlapPadding: 100, // extra spacing around nodes when avoidOverlap: true
     nodeDimensionsIncludeLabels: false,
   }
 

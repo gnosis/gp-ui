@@ -53,26 +53,33 @@ export default class ElementsBuilder {
     return this
   }
 
-  build(): ElementDefinition[] {
+  build(customLayoutNodes?: CustomLayoutNodes): ElementDefinition[] {
+    if (!customLayoutNodes) {
+      return this._buildCoseLayout()
+    } else {
+      const { center, nodes } = customLayoutNodes
+      return [center, ...nodes, ...this._edges]
+    }
+  }
+
+  _buildCoseLayout(): ElementDefinition[] {
     if (!this._center) {
       throw new Error('Center node is required')
     }
-
-    const thirdOfTotalRows = Math.max(...this._countTypes.values()) / 3
     const center = {
       ...this._center,
-      position: { x: 100, y: 0 },
+      position: { x: 0, y: 0 },
     }
-    center['data']['rowValue'] = Math.floor(thirdOfTotalRows)
+    const nTypes = this._countTypes.size
 
-    const r = this._SIZE / 2 - 100
+    const r = this._SIZE / nTypes - 100 // get radio
 
-    const nodes = this._nodes.map((node, index) => {
+    const nodes = this._nodes.map((node: ElementDefinition, index: number) => {
       return {
         ...node,
         position: {
-          x: r * Math.cos((2 * Math.PI * index) / this._nodes.length),
-          y: r * Math.sin((2 * Math.PI * index) / this._nodes.length),
+          x: r * Math.cos((nTypes * Math.PI * index) / this._nodes.length),
+          y: r * Math.sin((nTypes * Math.PI * index) / this._nodes.length),
         },
       }
     })
@@ -81,7 +88,7 @@ export default class ElementsBuilder {
   }
 
   getById(id: string): ElementDefinition | undefined {
-    // split type:id and find by id
+    // split <type>:<id> and find by <id>
     if (this._center) {
       return [this._center, ...this._nodes].find((node) => node.data.id?.split(':')[1] === id)
     }
@@ -90,27 +97,66 @@ export default class ElementsBuilder {
   }
 }
 
-const columnTypeMap = new Map<TypeNodeOnTx, number>([
-  [TypeNodeOnTx.Trader, 0],
-  [TypeNodeOnTx.CowProtocol, 1],
-  [TypeNodeOnTx.Dex, 2],
-])
-
-interface GridPosition {
-  x: number
-  y: number
+interface CustomLayoutNodes {
+  center: ElementDefinition
+  nodes: ElementDefinition[]
 }
-export function getGridPosition(type: TypeNodeOnTx, index: number): undefined | GridPosition {
-  if (!columnTypeMap.has(type)) return
 
+export function getGridPosition(type: TypeNodeOnTx): number {
   let col
-  const row = index
   if (type === TypeNodeOnTx.Trader) {
     col = 0
   } else if (type === TypeNodeOnTx.CowProtocol) {
-    col = 1
+    col = 4
   } else {
-    col = 2
+    col = 8
   }
-  return { y: row, x: col }
+  return col
+}
+
+export function buildGridLayout(
+  countTypes: Map<TypeNodeOnTx, number>,
+  center: ElementDefinition | null,
+  nodes: ElementDefinition[],
+): { center: ElementDefinition; nodes: ElementDefinition[] } {
+  if (!center) {
+    throw new Error('Center node is required')
+  }
+  const maxRows = Math.max(...countTypes.values())
+  const middleOfTotalRows = Math.floor(maxRows / 2)
+  const _center = {
+    ...center,
+    position: { y: middleOfTotalRows, x: getGridPosition(center.data.type) },
+  }
+
+  const traders = countTypes.get(TypeNodeOnTx.Trader) || 0
+  const dexes = countTypes.get(TypeNodeOnTx.Dex) || 0
+  let counterRows = { [TypeNodeOnTx.Trader]: 0, [TypeNodeOnTx.Dex]: 0 }
+  if (traders > dexes) {
+    const difference = (traders - dexes) / 2
+    counterRows[TypeNodeOnTx.Dex] = Math.floor(difference)
+  } else if (traders < dexes) {
+    const difference = (dexes - traders) / 2
+    counterRows[TypeNodeOnTx.Trader] = Math.floor(difference)
+  }
+
+  const _nodes = nodes.map((node) => {
+    const _node = {
+      ...node,
+      position: {
+        y: counterRows[node.data.type],
+        x: getGridPosition(node.data.type),
+      },
+    }
+
+    if (node.data.type === TypeNodeOnTx.Trader) {
+      counterRows = { ...counterRows, [TypeNodeOnTx.Trader]: counterRows[TypeNodeOnTx.Trader] + 1 }
+    } else if (node.data.type === TypeNodeOnTx.Dex) {
+      counterRows = { ...counterRows, [TypeNodeOnTx.Dex]: counterRows[TypeNodeOnTx.Dex] + 1 }
+    }
+
+    return _node
+  })
+
+  return { center: _center, nodes: _nodes }
 }
