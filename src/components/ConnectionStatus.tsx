@@ -18,5 +18,5 @@ export const ConnectionStatus: React.FC = () => {
     }
   }, [handleConnectionChange])
 
-  return online ? null : <Notification type="warn" message="Your internet connection is down" appendMessage={false} />
+  return online ? null : <Notification type="warn" message="Your internet connection is down." appendMessage={false} />
 }
