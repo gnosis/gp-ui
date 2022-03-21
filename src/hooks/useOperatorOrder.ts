@@ -47,7 +47,6 @@ export function useOrderByNetwork(orderId: string, networkId: Network | null, up
       if (!networkId) return
 
       setIsLoading(true)
-      setError(undefined)
 
       try {
         const { order: rawOrder, errorOrderPresentInNetworkId: errorOrderPresentInNetworkIdRaw } = await _getOrder(
@@ -61,6 +60,7 @@ export function useOrderByNetwork(orderId: string, networkId: Network | null, up
         if (errorOrderPresentInNetworkIdRaw) {
           setErrorOrderPresentInNetworkId(errorOrderPresentInNetworkIdRaw)
         }
+        setError(undefined)
       } catch (e) {
         const msg = `Failed to fetch order`
         console.error(`${msg}: ${orderId}`, e.message)

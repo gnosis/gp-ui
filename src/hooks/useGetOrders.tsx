@@ -113,7 +113,6 @@ export function useGetTxOrders(txHash: string): GetTxOrdersResult {
   const fetchOrders = useCallback(
     async (network: Network, _txHash: string): Promise<void> => {
       setIsLoading(true)
-      setError(undefined)
 
       try {
         const { order: _orders, errorOrderPresentInNetworkId: errorTxPresentInNetworkIdRaw } =
@@ -125,6 +124,7 @@ export function useGetTxOrders(txHash: string): GetTxOrdersResult {
 
         setOrders(ordersFetched.map((order) => transformOrder(order)))
         setMountNewOrders(true)
+        setError(undefined)
 
         if (errorTxPresentInNetworkIdRaw) {
           console.log({ _orders, errorTxPresentInNetworkIdRaw })
@@ -200,7 +200,6 @@ export function useGetAccountOrders(
   const fetchOrders = useCallback(
     async (network: Network, owner: string): Promise<void> => {
       setIsLoading(true)
-      setError(undefined)
       const limitPlusOne = limit + 1
 
       try {
@@ -214,6 +213,7 @@ export function useGetAccountOrders(
 
         setOrders(ordersFetched.map((order) => transformOrder(order)))
         setMountNewOrders(true)
+        setError(undefined)
       } catch (e) {
         const msg = `Failed to fetch orders`
         console.error(msg, e)

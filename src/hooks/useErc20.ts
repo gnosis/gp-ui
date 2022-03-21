@@ -73,13 +73,13 @@ export function useErc20(params: UseErc20Params): Return<UiError, SingleErc20Sta
     }
 
     setIsLoading(true)
-    setError(undefined)
 
     const fetched = await _fetchErc20FromNetwork({ address, networkId, setError })
     if (fetched) {
       saveErc20s([fetched])
     }
 
+    setError(undefined)
     setIsLoading(false)
   }, [address, networkId, saveErc20s])
 

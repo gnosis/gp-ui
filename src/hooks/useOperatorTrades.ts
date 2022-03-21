@@ -32,13 +32,13 @@ export function useTrades(params: Params): Result {
 
   const fetchTrades = useCallback(async (networkId: Network, owner?: string, orderId?: string): Promise<void> => {
     setIsLoading(true)
-    setError(undefined)
 
     try {
       const trades = await getTrades({ networkId, owner, orderId })
 
       // TODO: fetch buy/sellToken objects
       setTrades(trades.map((trade) => transformTrade(trade)))
+      setError(undefined)
     } catch (e) {
       const msg = `Failed to fetch trades`
       console.error(msg, e)
@@ -73,7 +73,6 @@ export function useOrderTrades(order: Order | null): Result {
 
   const fetchTrades = useCallback(async (networkId: Network, order: Order): Promise<void> => {
     setIsLoading(true)
-    setError(undefined)
 
     const { uid: orderId, buyToken, sellToken } = order
 
@@ -81,6 +80,7 @@ export function useOrderTrades(order: Order | null): Result {
       const trades = await getTrades({ networkId, orderId })
 
       setTrades(trades.map((trade) => ({ ...transformTrade(trade), buyToken, sellToken })))
+      setError(undefined)
     } catch (e) {
       const msg = `Failed to fetch trades`
       console.error(msg, e)
