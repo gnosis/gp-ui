@@ -102,14 +102,19 @@ interface CustomLayoutNodes {
   nodes: ElementDefinition[]
 }
 
-export function getGridPosition(type: TypeNodeOnTx): number {
+export function getGridPosition(type: TypeNodeOnTx, traderRowsLength: number, dexRowsLenght: number): number {
   let col
+  const batchOf = 5
+  // Add a column for each batch of n
+  const leftPaddingCol = 1 + Math.round(traderRowsLength / batchOf)
+  const rightPaddingCol = leftPaddingCol + 1 + Math.round(dexRowsLenght / batchOf)
+
   if (type === TypeNodeOnTx.Trader) {
-    col = 0
+    col = 0 // first Column
   } else if (type === TypeNodeOnTx.CowProtocol) {
-    col = 4
+    col = leftPaddingCol
   } else {
-    col = 8
+    col = rightPaddingCol
   }
   return col
 }
@@ -122,15 +127,16 @@ export function buildGridLayout(
   if (!center) {
     throw new Error('Center node is required')
   }
+
   const maxRows = Math.max(...countTypes.values())
   const middleOfTotalRows = Math.floor(maxRows / 2)
-  const _center = {
-    ...center,
-    position: { y: middleOfTotalRows, x: getGridPosition(center.data.type) },
-  }
-
   const traders = countTypes.get(TypeNodeOnTx.Trader) || 0
   const dexes = countTypes.get(TypeNodeOnTx.Dex) || 0
+  const _center = {
+    ...center,
+    position: { y: middleOfTotalRows, x: getGridPosition(center.data.type, traders, dexes) },
+  }
+
   let counterRows = { [TypeNodeOnTx.Trader]: 0, [TypeNodeOnTx.Dex]: 0 }
   if (traders > dexes) {
     const difference = (traders - dexes) / 2
@@ -145,7 +151,7 @@ export function buildGridLayout(
       ...node,
       position: {
         y: counterRows[node.data.type],
-        x: getGridPosition(node.data.type),
+        x: getGridPosition(node.data.type, traders, dexes),
       },
     }
 
