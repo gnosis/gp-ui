@@ -1,4 +1,4 @@
-import Cytoscape, { ElementDefinition, NodeSingular } from 'cytoscape'
+import Cytoscape, { ElementDefinition, NodeSingular, NodeDataDefinition, EdgeDataDefinition } from 'cytoscape'
 import popper from 'cytoscape-popper'
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import CytoscapeComponent from 'react-cytoscapejs'
@@ -113,31 +113,75 @@ function TransanctionBatchGraph({
     if (error || isLoading || !networkId) return
 
     setElements(getNodes(txSettlement, networkId))
-    const cy = cytoscapeRef.current
-    if (cy) {
-      cy.on('click', 'node', (_event): void => {
-        const node = _event.target
-        const popper = node.popper({
-          content: () => {
-            const div = document.createElement('div')
-            div.innerHTML = 'Popper Node tooltip'
-            document.body.appendChild(div)
-            return div
-          },
-          popper: {
-            placement: 'top',
-          }, // my popper options here
-        })
-        const update = (): void => {
-          popper.update()
-        }
-
-        node.on('position', update)
-
-        cy.on('pan zoom resize', update)
-      })
-    }
   }, [error, isLoading, networkId, txSettlement])
+
+  useEffect(() => {
+    const cy = cytoscapeRef.current
+    if (!cy) return
+
+    cy.on('mouseover', 'node, edge', (event): void => {
+      const target = event.target
+      const targetData: NodeDataDefinition | EdgeDataDefinition = target.data()
+      if (targetData.type === TypeNodeOnTx.NetworkNode) return
+
+      const tooltipId = `popper-target-${targetData.id}`
+      const existingTarget = document.getElementById(tooltipId)
+
+      if (existingTarget) {
+        existingTarget.remove()
+      }
+      const popperRef = target.popper({
+        content: () => {
+          const tooltip = document.createElement('span')
+          tooltip.id = tooltipId
+          tooltip.classList.add('target-popper')
+
+          const table = document.createElement('table')
+          tooltip.append(table)
+
+          // loop through target data
+          for (const prop in targetData) {
+            const targetValue = targetData[prop]
+            // no recursive or reduce support
+            if (typeof targetValue === 'object') continue
+
+            const tr = table.insertRow()
+
+            const tdTitle = tr.insertCell()
+            const tdValue = tr.insertCell()
+
+            tdTitle.innerText = prop
+            tdValue.innerText = targetValue
+          }
+
+          document.body.appendChild(tooltip)
+
+          return tooltip
+        },
+        popper: {
+          placement: 'top-start',
+          removeOnDestroy: true,
+        },
+      })
+
+      const popperUpdate = (): (() => void) => popperRef.update()
+
+      target.on('position', () => popperUpdate)
+      target.cy().on('pan zoom resize', () => popperUpdate)
+      const newTarget = document.getElementById(tooltipId)
+      target
+        .on('mouseover', () => {
+          if (newTarget) {
+            newTarget.classList.add('active')
+          }
+        })
+        .on('mouseout', () => {
+          if (newTarget) {
+            newTarget.remove()
+          }
+        })
+    })
+  }, [cytoscapeRef])
 
   if (isLoading) return <Spinner spin size="3x" />
 
@@ -161,6 +205,7 @@ function TransanctionBatchGraph({
       stylesheet={STYLESHEET}
       cy={setCytoscape}
       wheelSensitivity={0.2}
+      className="tx-graph"
     />
   )
 }
