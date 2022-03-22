@@ -37,6 +37,7 @@ TokensNotLoaded.args = { ...defaultProps, order: { ...RICH_ORDER, buyToken: unde
 export const WithErrors = Template.bind({})
 WithErrors.args = {
   ...defaultProps,
+  isOrderLoading: true,
   errors: {
     error1: { message: 'Failed something something', type: 'error' },
     error2: { message: 'Something else failed', type: 'error' },
