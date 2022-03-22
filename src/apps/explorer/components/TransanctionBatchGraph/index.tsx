@@ -15,6 +15,7 @@ import { APP_NAME } from 'const'
 import { HEIGHT_HEADER_FOOTER } from 'apps/explorer/const'
 import { STYLESHEET } from './styled'
 import { abbreviateString } from 'utils'
+import './batchviewer.css'
 
 Cytoscape.use(popper)
 const HEIGHT_SIZE = window.innerHeight - HEIGHT_HEADER_FOOTER

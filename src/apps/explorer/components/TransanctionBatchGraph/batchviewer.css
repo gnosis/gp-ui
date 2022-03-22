@@ -1,0 +1,29 @@
+.target-popper {
+    max-width: 50rem;
+    padding: 1rem;
+    margin: 0 0 1rem 0;
+    text-align: left;
+    font-size: 1.2rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgb(25, 24, 29);
+    background: rgb(60, 62, 78);
+    line-height: 1.4rem; 
+    word-break: break-all;  
+}
+
+/* arrow tooltip
+.target-popper:after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0rem;
+    border-width: 6px;
+    border-style: solid;
+    border-color: rgb(60, 62, 78) transparent transparent transparent;
+} */
+
+.target-popper tr > td:first-child {
+    font-weight: bold;
+    text-transform: uppercase;
+    width: 6rem;
+}
