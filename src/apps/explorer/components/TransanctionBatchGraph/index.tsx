@@ -119,7 +119,7 @@ function TransanctionBatchGraph({
     const cy = cytoscapeRef.current
     if (!cy) return
 
-    cy.on('mouseover', 'node, edge', (event): void => {
+    cy.on('click tapstart', 'node, edge', (event): void => {
       const target = event.target
       const targetData: NodeDataDefinition | EdgeDataDefinition = target.data()
       if (targetData.type === TypeNodeOnTx.NetworkNode) return
@@ -170,12 +170,12 @@ function TransanctionBatchGraph({
       target.cy().on('pan zoom resize', () => popperUpdate)
       const newTarget = document.getElementById(tooltipId)
       target
-        .on('mouseover', () => {
+        .on('click tapstart', () => {
           if (newTarget) {
             newTarget.classList.add('active')
           }
         })
-        .on('mouseout', () => {
+        .on('mouseout tapend', () => {
           if (newTarget) {
             newTarget.remove()
           }
@@ -193,7 +193,7 @@ function TransanctionBatchGraph({
     fit: true, // whether to fit the viewport to the graph
     padding: 10, // padding used on fit
     avoidOverlap: true, // prevents node overlap, may overflow boundingBox if not enough space
-    avoidOverlapPadding: 100, // extra spacing around nodes when avoidOverlap: true
+    avoidOverlapPadding: 10, // extra spacing around nodes when avoidOverlap: true
     nodeDimensionsIncludeLabels: false,
   }
 
