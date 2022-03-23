@@ -22,6 +22,7 @@ export const STYLESHEET: Stylesheet[] = [
       label: 'data(label)',
       width: 3,
       'target-arrow-shape': 'triangle',
+      'target-arrow-color': '#979dbf',
       'curve-style': 'unbundled-bezier',
       color: 'black',
       'line-color': '#747a9e',
@@ -36,7 +37,9 @@ export const STYLESHEET: Stylesheet[] = [
   {
     selector: 'edge.hover',
     style: {
-      width: 5,
+      width: 4,
+      'line-color': '#D96D49',
+      'target-arrow-color': '#D96D49',
     },
   },
   {
