@@ -18,10 +18,9 @@ import { Account, ALIAS_TRADER_NAME } from 'api/tenderly'
 import ElementsBuilder, { buildGridLayout } from 'apps/explorer/components/TransanctionBatchGraph/elementsBuilder'
 import { TypeNodeOnTx } from './types'
 import { APP_NAME } from 'const'
-import { HEIGHT_HEADER_FOOTER } from 'apps/explorer/const'
+import { HEIGHT_HEADER_FOOTER, TOKEN_SYMBOL_UNKNOWN } from 'apps/explorer/const'
 import { STYLESHEET } from './styled'
-import { abbreviateString } from 'utils'
-import BigNumber from 'bignumber.js'
+import { abbreviateString, formatSmart } from 'utils'
 
 Cytoscape.use(popper)
 const HEIGHT_SIZE = window.innerHeight - HEIGHT_HEADER_FOOTER
@@ -82,10 +81,8 @@ function getNodes(txSettlement: TxSettlement, networkId: Network): ElementDefini
 
   txSettlement.transfers.forEach((transfer) => {
     const token = txSettlement.tokens[transfer.token]
-    const tokenSymbol = token?.symbol || 'UNKNOW'
-    const tokenAmount = token?.decimals
-      ? new BigNumber(transfer.value).div(new BigNumber(10).pow(token.decimals)).toFixed(2)
-      : '-'
+    const tokenSymbol = token?.symbol || TOKEN_SYMBOL_UNKNOWN
+    const tokenAmount = token?.decimals ? formatSmart(transfer.value, token.decimals) : '-'
 
     const source = builder.getById(transfer.from)
     const target = builder.getById(transfer.to)
@@ -104,19 +101,18 @@ function getNodes(txSettlement: TxSettlement, networkId: Network): ElementDefini
 
 function bindPopper(event: EventObject, targetData: Cytoscape.NodeDataDefinition | Cytoscape.EdgeDataDefinition): void {
   const tooltipId = `popper-target-${targetData.id}`
-  const existingTarget = document.getElementById(tooltipId)
+  const popperClassTarget = 'target-popper'
 
   // Remove if already existing
-  if (existingTarget) {
-    existingTarget.remove()
-  }
+  const existingTooltips: HTMLCollectionOf<Element> = document.getElementsByClassName(popperClassTarget)
+  Array.from(existingTooltips).forEach((ele: { remove: () => void }): void => ele && ele.remove())
 
   const target = event.target
   const popperRef = target.popper({
     content: () => {
       const tooltip = document.createElement('span')
       tooltip.id = tooltipId
-      tooltip.classList.add('target-popper')
+      tooltip.classList.add(popperClassTarget)
 
       const table = document.createElement('table')
       tooltip.append(table)
