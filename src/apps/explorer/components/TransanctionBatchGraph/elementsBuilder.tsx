@@ -1,5 +1,5 @@
 import { ElementDefinition } from 'cytoscape'
-import { Node, TypeNodeOnTx } from './types'
+import { InfoTooltip, Node, TypeNodeOnTx } from './types'
 
 export default class ElementsBuilder {
   _center: ElementDefinition | null = null
@@ -40,7 +40,12 @@ export default class ElementsBuilder {
     return this
   }
 
-  edge(source: Pick<Node, 'type' | 'id'>, target: Pick<Node, 'type' | 'id'>, label: string): this {
+  edge(
+    source: Pick<Node, 'type' | 'id'>,
+    target: Pick<Node, 'type' | 'id'>,
+    label: string,
+    tooltip?: InfoTooltip,
+  ): this {
     this._edges.push({
       group: 'edges',
       data: {
@@ -48,6 +53,7 @@ export default class ElementsBuilder {
         source: `${source.type}:${source.id}`,
         target: `${target.type}:${target.id}`,
         label,
+        tooltip,
       },
     })
     return this

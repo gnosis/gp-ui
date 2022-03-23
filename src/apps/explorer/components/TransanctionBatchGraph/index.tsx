@@ -1,4 +1,10 @@
-import Cytoscape, { ElementDefinition, NodeSingular, NodeDataDefinition, EdgeDataDefinition } from 'cytoscape'
+import Cytoscape, {
+  ElementDefinition,
+  NodeSingular,
+  NodeDataDefinition,
+  EdgeDataDefinition,
+  EventObject,
+} from 'cytoscape'
 import popper from 'cytoscape-popper'
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import CytoscapeComponent from 'react-cytoscapejs'
@@ -16,6 +22,7 @@ import { HEIGHT_HEADER_FOOTER } from 'apps/explorer/const'
 import { STYLESHEET } from './styled'
 import { abbreviateString } from 'utils'
 import './batchviewer.css'
+import BigNumber from 'bignumber.js'
 
 Cytoscape.use(popper)
 const HEIGHT_SIZE = window.innerHeight - HEIGHT_HEADER_FOOTER
@@ -39,10 +46,9 @@ function getTypeNode(account: Account): TypeNodeOnTx {
 }
 
 function showTraderAddress(account: Account, address: string): Account {
-  if (account.alias === ALIAS_TRADER_NAME) {
-    account.alias = abbreviateString(address, 4, 4)
-  }
-  return account
+  const alias = account.alias === ALIAS_TRADER_NAME ? abbreviateString(address, 4, 4) : account.alias
+
+  return { ...account, alias }
 }
 
 function getNetworkParentNode(account: Account, networkName: string): string | undefined {
@@ -76,20 +82,88 @@ function getNodes(txSettlement: TxSettlement, networkId: Network): ElementDefini
   }
 
   txSettlement.transfers.forEach((transfer) => {
-    const token = txSettlement.tokens[transfer.token] || { decimals: 1, symbol: 'UNKNOW' }
+    const token = txSettlement.tokens[transfer.token]
+    const tokenSymbol = token?.symbol || 'UNKNOW'
+    const tokenAmount = token?.decimals
+      ? new BigNumber(transfer.value).div(new BigNumber(10).pow(token.decimals)).toFixed(2)
+      : '-'
 
     const source = builder.getById(transfer.from)
     const target = builder.getById(transfer.to)
     builder.edge(
       { type: source?.data.type, id: transfer.from },
       { type: target?.data.type, id: transfer.to },
-      `${token.symbol}`,
+      `${tokenSymbol}`,
+      { from: transfer.from, to: transfer.to, amount: `${tokenAmount} ${tokenSymbol}` },
     )
   })
 
   return builder.build(
     buildGridLayout(builder._countTypes as Map<TypeNodeOnTx, number>, builder._center, builder._nodes),
   )
+}
+
+function bindPopper(event: EventObject, targetData: Cytoscape.NodeDataDefinition | Cytoscape.EdgeDataDefinition): void {
+  const tooltipId = `popper-target-${targetData.id}`
+  const existingTarget = document.getElementById(tooltipId)
+
+  // Remove if already existing
+  if (existingTarget) {
+    existingTarget.remove()
+  }
+
+  const target = event.target
+  const popperRef = target.popper({
+    content: () => {
+      const tooltip = document.createElement('span')
+      tooltip.id = tooltipId
+      tooltip.classList.add('target-popper')
+
+      const table = document.createElement('table')
+      tooltip.append(table)
+
+      // loop through target data [tooltip]
+      for (const prop in targetData.tooltip) {
+        const targetValue = targetData.tooltip[prop]
+
+        // no recursive or reduce support
+        if (typeof targetValue === 'object') continue
+
+        const tr = table.insertRow()
+
+        const tdTitle = tr.insertCell()
+        const tdValue = tr.insertCell()
+
+        tdTitle.innerText = prop
+        tdValue.innerText = targetValue
+      }
+
+      document.body.appendChild(tooltip)
+
+      return tooltip
+    },
+    popper: {
+      placement: 'top-start',
+      removeOnDestroy: true,
+    },
+  })
+
+  const popperUpdate = (): (() => void) => popperRef.update()
+
+  target.on('position', () => popperUpdate)
+  target.cy().on('pan zoom resize', () => popperUpdate)
+  const newTarget = document.getElementById(tooltipId)
+  target
+    .on('click tapstart', () => {
+      if (newTarget) {
+        newTarget.classList.add('active')
+      }
+    })
+    .on('mouseout tapend', () => {
+      if (newTarget) {
+        newTarget.remove()
+      }
+    })
 }
 
 interface GraphBatchTxParams {
@@ -120,67 +194,17 @@ function TransanctionBatchGraph({
     const cy = cytoscapeRef.current
     if (!cy) return
 
-    cy.on('click tapstart', 'node, edge', (event): void => {
+    cy.on('click tapstart', 'edge', (event): void => {
       const target = event.target
       const targetData: NodeDataDefinition | EdgeDataDefinition = target.data()
-      if (targetData.type === TypeNodeOnTx.NetworkNode) return
 
-      const tooltipId = `popper-target-${targetData.id}`
-      const existingTarget = document.getElementById(tooltipId)
-
-      if (existingTarget) {
-        existingTarget.remove()
-      }
-      const popperRef = target.popper({
-        content: () => {
-          const tooltip = document.createElement('span')
-          tooltip.id = tooltipId
-          tooltip.classList.add('target-popper')
-
-          const table = document.createElement('table')
-          tooltip.append(table)
-
-          // loop through target data
-          for (const prop in targetData) {
-            const targetValue = targetData[prop]
-            // no recursive or reduce support
-            if (typeof targetValue === 'object') continue
-
-            const tr = table.insertRow()
-
-            const tdTitle = tr.insertCell()
-            const tdValue = tr.insertCell()
-
-            tdTitle.innerText = prop
-            tdValue.innerText = targetValue
-          }
-
-          document.body.appendChild(tooltip)
-
-          return tooltip
-        },
-        popper: {
-          placement: 'top-start',
-          removeOnDestroy: true,
-        },
-      })
-
-      const popperUpdate = (): (() => void) => popperRef.update()
-
-      target.on('position', () => popperUpdate)
-      target.cy().on('pan zoom resize', () => popperUpdate)
-      const newTarget = document.getElementById(tooltipId)
-      target
-        .on('click tapstart', () => {
-          if (newTarget) {
-            newTarget.classList.add('active')
-          }
-        })
-        .on('mouseout tapend', () => {
-          if (newTarget) {
-            newTarget.remove()
-          }
-        })
+      bindPopper(event, targetData)
+    })
+    cy.on('mouseover', 'edge', (event): void => {
+      event.target.addClass('hover')
+    })
+    cy.on('mouseout', 'edge', (event): void => {
+      event.target.removeClass('hover')
     })
   }, [cytoscapeRef])
 

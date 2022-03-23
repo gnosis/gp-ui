@@ -34,6 +34,12 @@ export const STYLESHEET: Stylesheet[] = [
     },
   },
   {
+    selector: 'edge.hover',
+    style: {
+      width: 5,
+    },
+  },
+  {
     selector: 'node[type="trader"]',
     style: {
       'background-image': `url(${TraderOtherIcon})`,
