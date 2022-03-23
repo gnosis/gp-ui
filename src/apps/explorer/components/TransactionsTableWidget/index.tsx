@@ -11,6 +11,8 @@ import { TabItemInterface } from 'components/common/Tabs/Tabs'
 import ExplorerTabs from '../common/ExplorerTabs/ExplorerTab'
 import { TitleAddress, FlexContainer, StyledTabLoader, BVButton, Title } from 'apps/explorer/pages/styled'
 import { BlockExplorerLink } from 'components/common/BlockExplorerLink'
+import { ConnectionStatus } from 'components/ConnectionStatus'
+import { Notification } from 'components/Notification'
 import { useTxBatchTrades } from 'hooks/useTxBatchTrades'
 import { faListUl, faProjectDiagram } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -85,6 +87,8 @@ export const TransactionsTableWidget: React.FC<Props> = ({ txHash }) => {
           {batchViewerButtonName}
         </BVButton>
       </FlexContainer>
+      <ConnectionStatus />
+      {error && <Notification type={error.type} message={error.message} />}
       <TransactionsTableContext.Provider
         value={{
           orders,
