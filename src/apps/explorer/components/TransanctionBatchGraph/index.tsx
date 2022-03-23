@@ -192,7 +192,7 @@ function TransanctionBatchGraph({
 
   useEffect(() => {
     const cy = cytoscapeRef.current
-    if (!cy) return
+    if (!cy || !elements.length) return
 
     cy.on('click tapstart', 'edge', (event): void => {
       const target = event.target
@@ -206,7 +206,7 @@ function TransanctionBatchGraph({
     cy.on('mouseout', 'edge', (event): void => {
       event.target.removeClass('hover')
     })
-  }, [cytoscapeRef])
+  }, [cytoscapeRef, elements.length])
 
   if (isLoading) return <Spinner spin size="3x" />
 
