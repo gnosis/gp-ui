@@ -63,6 +63,8 @@ export const STYLESHEET: Stylesheet[] = [
     selector: 'node[type="cowProtocol"]',
     style: {
       'background-image': `url(${CowProtocolIcon})`,
+      height: '90',
+      width: '90',
       'text-valign': 'bottom',
       'text-margin-y': 8,
     },
