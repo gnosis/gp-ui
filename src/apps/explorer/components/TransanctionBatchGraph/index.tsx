@@ -21,7 +21,6 @@ import { APP_NAME } from 'const'
 import { HEIGHT_HEADER_FOOTER } from 'apps/explorer/const'
 import { STYLESHEET } from './styled'
 import { abbreviateString } from 'utils'
-// import 'apps/explorer/components/TransanctionBatchGraph/TransanctionBatchGraph.css'
 import BigNumber from 'bignumber.js'
 
 Cytoscape.use(popper)
