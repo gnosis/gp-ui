@@ -99,6 +99,9 @@ function getNodes(txSettlement: TxSettlement, networkId: Network): ElementDefini
   )
 }
 
+/**
+ * This allow bind a tooltip (popper.js) around to a cytoscape elements (node, edge)
+ */
 function bindPopper(event: EventObject, targetData: Cytoscape.NodeDataDefinition | Cytoscape.EdgeDataDefinition): void {
   const tooltipId = `popper-target-${targetData.id}`
   const popperClassTarget = 'target-popper'
