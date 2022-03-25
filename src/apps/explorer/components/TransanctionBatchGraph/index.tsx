@@ -8,7 +8,7 @@ import Cytoscape, {
 import popper from 'cytoscape-popper'
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import CytoscapeComponent from 'react-cytoscapejs'
-import styled from 'styled-components'
+import styled, { useTheme } from 'styled-components'
 
 import Spinner from 'components/common/Spinner'
 import { GetTxBatchTradesResult as TxBatchData, Settlement as TxSettlement } from 'hooks/useTxBatchTrades'
@@ -175,6 +175,7 @@ function TransanctionBatchGraph({
 }: GraphBatchTxParams): JSX.Element {
   const [elements, setElements] = useState<ElementDefinition[]>([])
   const cytoscapeRef = useRef<Cytoscape.Core | null>(null)
+  const theme = useTheme()
   const setCytoscape = useCallback(
     (ref: Cytoscape.Core) => {
       cytoscapeRef.current = ref
@@ -225,7 +226,7 @@ function TransanctionBatchGraph({
       elements={elements}
       layout={layout}
       style={{ width: '100%', height: HEIGHT_SIZE }}
-      stylesheet={STYLESHEET}
+      stylesheet={STYLESHEET(theme)}
       cy={setCytoscape}
       wheelSensitivity={0.2}
       className="tx-graph"
