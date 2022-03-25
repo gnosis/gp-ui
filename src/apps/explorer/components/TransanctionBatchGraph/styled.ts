@@ -11,7 +11,7 @@ export function STYLESHEET(theme: DefaultTheme): Stylesheet[] {
       selector: 'node[label]',
       style: {
         label: 'data(label)',
-        color: '#cfcfcf',
+        color: theme.textSecondary1,
         height: 50,
         width: 50,
         'background-color': theme.bg2,
@@ -22,14 +22,14 @@ export function STYLESHEET(theme: DefaultTheme): Stylesheet[] {
       selector: 'edge[label]',
       style: {
         label: 'data(label)',
-        width: 3,
+        width: 2,
         'target-arrow-shape': 'triangle',
-        'target-arrow-color': '#979dbf',
+        'target-arrow-color': theme.grey,
         'curve-style': 'unbundled-bezier',
-        color: 'black',
-        'line-color': '#747a9e',
+        color: theme.black,
+        'line-color': theme.grey,
         'line-opacity': 0.8,
-        'text-background-color': 'white',
+        'text-background-color': theme.labelTextOpen,
         'text-background-opacity': 1,
         'text-background-padding': '2px',
         'text-background-shape': 'roundrectangle',
@@ -39,9 +39,9 @@ export function STYLESHEET(theme: DefaultTheme): Stylesheet[] {
     {
       selector: 'edge.hover',
       style: {
-        width: 4,
-        'line-color': '#D96D49',
-        'target-arrow-color': '#D96D49',
+        width: 3,
+        'line-color': theme.orange1,
+        'target-arrow-color': theme.orange1,
       },
     },
     {
