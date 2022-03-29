@@ -9,6 +9,7 @@ import popper from 'cytoscape-popper'
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import CytoscapeComponent from 'react-cytoscapejs'
 import styled, { useTheme } from 'styled-components'
+import BigNumber from 'bignumber.js'
 
 import Spinner from 'components/common/Spinner'
 import { GetTxBatchTradesResult as TxBatchData, Settlement as TxSettlement } from 'hooks/useTxBatchTrades'
@@ -20,7 +21,7 @@ import { TypeNodeOnTx } from './types'
 import { APP_NAME } from 'const'
 import { HEIGHT_HEADER_FOOTER, TOKEN_SYMBOL_UNKNOWN } from 'apps/explorer/const'
 import { STYLESHEET } from './styled'
-import { abbreviateString, formatSmart } from 'utils'
+import { abbreviateString, FormatAmountPrecision, formattingAmountPrecision } from 'utils'
 
 Cytoscape.use(popper)
 const HEIGHT_SIZE = window.innerHeight - HEIGHT_HEADER_FOOTER
@@ -56,7 +57,7 @@ function getNetworkParentNode(account: Account, networkName: string): string | u
 function getNodes(txSettlement: TxSettlement, networkId: Network): ElementDefinition[] {
   if (!txSettlement.accounts) return []
 
-  const networkName = networkOptions.find((network) => network.id === networkId)?.name.toLowerCase()
+  const networkName = networkOptions.find((network) => network.id === networkId)?.name
   const networkNode = { alias: networkName || '' }
   const builder = new ElementsBuilder(HEIGHT_SIZE)
   builder.node({ type: TypeNodeOnTx.NetworkNode, entity: networkNode, id: networkNode.alias })
@@ -82,7 +83,9 @@ function getNodes(txSettlement: TxSettlement, networkId: Network): ElementDefini
   txSettlement.transfers.forEach((transfer) => {
     const token = txSettlement.tokens[transfer.token]
     const tokenSymbol = token?.symbol || TOKEN_SYMBOL_UNKNOWN
-    const tokenAmount = token?.decimals ? formatSmart(transfer.value, token.decimals) : '-'
+    const tokenAmount = token?.decimals
+      ? formattingAmountPrecision(new BigNumber(transfer.value), token, FormatAmountPrecision.highPrecision)
+      : '-'
 
     const source = builder.getById(transfer.from)
     const target = builder.getById(transfer.to)
