@@ -196,7 +196,7 @@ function TransanctionBatchGraph({
     const cy = cytoscapeRef.current
     if (!cy || !elements.length) return
 
-    cy.on('click tapstart', 'edge', (event): void => {
+    cy.on('mouseover touchstart', 'edge', (event): void => {
       const target = event.target
       const targetData: NodeDataDefinition | EdgeDataDefinition = target.data()
 
