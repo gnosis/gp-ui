@@ -34,14 +34,17 @@ export function STYLESHEET(theme: DefaultTheme): Stylesheet[] {
         'text-background-padding': '4px',
         'text-background-shape': 'roundrectangle',
         'font-size': '16px',
+        'min-zoomed-font-size': 8,
       },
     },
     {
-      selector: 'edge.hover',
+      selector: 'edge[label].hover',
       style: {
         width: 3,
         'line-color': theme.orange1,
         'target-arrow-color': theme.orange1,
+        'text-background-color': theme.orange,
+        color: theme.white,
       },
     },
     {
