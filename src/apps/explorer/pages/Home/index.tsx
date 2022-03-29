@@ -3,6 +3,7 @@ import { Search } from 'apps/explorer/components/common/Search'
 import { Wrapper as WrapperMod } from 'apps/explorer/pages/styled'
 import styled from 'styled-components'
 import { media } from 'theme/styles/media'
+import { SummaryCardsWidget } from 'apps/explorer/components/SummaryCardsWidget'
 
 const Wrapper = styled(WrapperMod)`
   max-width: 140rem;
@@ -26,6 +27,7 @@ const Wrapper = styled(WrapperMod)`
 export const Home: React.FC = () => {
   return (
     <Wrapper>
+      <SummaryCardsWidget />
       <h1>Search on CoW Protocol Explorer</h1>
       <Search className="home" />
     </Wrapper>

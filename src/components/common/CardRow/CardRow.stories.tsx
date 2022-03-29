@@ -4,9 +4,8 @@ import { Story, Meta } from '@storybook/react/types-6-0'
 
 import { GlobalStyles, ThemeToggler } from 'storybook/decorators'
 
-import { Card } from '../Card/index'
+import { Card, CardContent } from 'components/common/Card'
 import { CardRow, CardRowProps } from '.'
-import { CardContent } from '../Card/CardContent'
 
 import QuestionIcon from '../../../assets/img/question1.svg'
 

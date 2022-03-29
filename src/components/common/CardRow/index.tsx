@@ -1,5 +1,5 @@
 import React from 'react'
-import Grid from '@material-ui/core/Grid'
+import Grid, { GridProps } from '@material-ui/core/Grid'
 
 export type CardRowProps = { children?: React.ReactElement }
 
@@ -8,6 +8,10 @@ export type CardRowProps = { children?: React.ReactElement }
  *
  * Place cards side-by-side
  */
-export const CardRow: React.FC<CardRowProps> = ({ children }) => {
-  return <Grid container>{children}</Grid>
+export const CardRow: React.FC<GridProps> = ({ children, ...rest }) => {
+  return (
+    <Grid container {...rest}>
+      {children}
+    </Grid>
+  )
 }
