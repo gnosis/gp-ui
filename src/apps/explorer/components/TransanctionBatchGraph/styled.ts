@@ -31,9 +31,9 @@ export function STYLESHEET(theme: DefaultTheme): Stylesheet[] {
         'line-opacity': 0.8,
         'text-background-color': theme.labelTextOpen,
         'text-background-opacity': 1,
-        'text-background-padding': '2px',
+        'text-background-padding': '4px',
         'text-background-shape': 'roundrectangle',
-        'font-size': '11px',
+        'font-size': '16px',
       },
     },
     {
