@@ -125,6 +125,10 @@ export function getGridPosition(type: TypeNodeOnTx, traderRowsLength: number, de
   return col
 }
 
+/**
+ * Build a grid layout using the 'position' attribute
+ * using 'x' for the columns and 'y' for the rows.
+ */
 export function buildGridLayout(
   countTypes: Map<TypeNodeOnTx, number>,
   center: ElementDefinition | null,
