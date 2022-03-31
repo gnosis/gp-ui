@@ -233,6 +233,9 @@ function TransanctionBatchGraph({
       cy={setCytoscape}
       wheelSensitivity={0.2}
       className="tx-graph"
+      maxZoom={3}
+      minZoom={0.1}
+      zoom={1}
     />
   )
 }
