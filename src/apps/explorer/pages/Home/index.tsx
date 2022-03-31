@@ -26,7 +26,7 @@ const Wrapper = styled(WrapperMod)`
 
 const SummaryWrapper = styled.section`
   display: grid;
-  grid-template-columns: 35fr 65fr;
+  /* grid-template-columns: 35fr 65fr; // There will be 2 sections */
   grid-gap: 1 rem;
   padding-bottom: 5rem;
 `
@@ -35,7 +35,6 @@ export const Home: React.FC = () => {
   return (
     <Wrapper>
       <SummaryWrapper>
-        <article></article>
         <SummaryCardsWidget />
       </SummaryWrapper>
       <h1>Search on CoW Protocol Explorer</h1>
