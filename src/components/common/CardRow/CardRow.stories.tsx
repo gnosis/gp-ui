@@ -45,7 +45,7 @@ const Template: Story<CardRowProps> = (args) => (
       <Card>
         <span>Dummy Card</span>
       </Card>
-      <Card xs={12} sm={12} md={8} lg={6}>
+      <Card>
         <CardContent
           variant="double"
           direction="row"

@@ -8,7 +8,7 @@ import { SummaryCardsWidget } from 'apps/explorer/components/SummaryCardsWidget'
 const Wrapper = styled(WrapperMod)`
   max-width: 140rem;
   flex-flow: column wrap;
-  justify-content: center;
+  justify-content: flex-start;
   display: flex;
 
   > h1 {
@@ -24,10 +24,20 @@ const Wrapper = styled(WrapperMod)`
   }
 `
 
+const SummaryWrapper = styled.section`
+  display: grid;
+  grid-template-columns: 35fr 65fr;
+  grid-gap: 1 rem;
+  padding-bottom: 5rem;
+`
+
 export const Home: React.FC = () => {
   return (
     <Wrapper>
-      <SummaryCardsWidget />
+      <SummaryWrapper>
+        <article></article>
+        <SummaryCardsWidget />
+      </SummaryWrapper>
       <h1>Search on CoW Protocol Explorer</h1>
       <Search className="home" />
     </Wrapper>

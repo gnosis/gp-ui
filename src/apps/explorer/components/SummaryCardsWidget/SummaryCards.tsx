@@ -1,32 +1,62 @@
 import React from 'react'
 import styled from 'styled-components'
+import { media } from 'theme/styles/media'
 
 import { Card, CardContent } from 'components/common/Card'
-import { CardRow } from 'components/common/CardRow'
-import { Grid } from '@material-ui/core'
+import { TotalSummaryResponse } from '.'
 
-const WrapperDoubleContent = styled.div`
-  display: flex;
-  flex-direction: column;
+const Wrapper = styled.div`
+  display: grid;
+  grid-template-columns: 0.7fr 2.35fr;
+  grid-template-areas: 'one two';
 
-  > div:not(:last-child) {
-    padding-bottom: 5rem;
+  > div:first-child {
+    justify-content: flex-end;
   }
 `
 
-export function SummaryCards(): JSX.Element {
+const WrapperDoubleContent = styled.div<{ column?: boolean }>`
+  display: flex;
+  flex-direction: ${({ column }): string => (column ? 'column' : 'row')};
+  justify-content: flex-start;
+  flex: 1;
+  gap: 3.5rem;
+
+  > div {
+    text-align: center;
+  }
+
+  ${media.mediumDown} {
+    flex-direction: column;
+  }
+`
+const CardRow = styled.div`
+  grid-area: one;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+`
+const WrapperTwo = styled.div`
+  grid-area: two;
+  display: flex;
+  flex: 1;
+`
+
+export function SummaryCards({ summaryData }: { summaryData: TotalSummaryResponse }): JSX.Element {
+  const { batchInfo } = summaryData
+
   return (
-    <Grid container direction="row">
+    <Wrapper>
       <CardRow>
         <Card>
-          <WrapperDoubleContent>
-            <CardContent variant="3row" label1="Last Batch" value1="3m 42s Ago" />
-            <CardContent variant="3row" label1="Batch ID" value1="fd3f932" />
+          <WrapperDoubleContent column>
+            <CardContent variant="3row" label1="Last Batch" value1={batchInfo.lastBatchDate} />
+            <CardContent variant="3row" label1="Batch ID" value1={batchInfo.batchId} />
           </WrapperDoubleContent>
         </Card>
       </CardRow>
-      <CardRow>
-        <>
+      <WrapperTwo>
+        <CardRow>
           <Card>
             <CardContent variant="2row" label1="24h Transactions" value1="194" caption1="-3.45%" captionColor="red1" />
           </Card>
@@ -39,8 +69,8 @@ export function SummaryCards(): JSX.Element {
           <Card>
             <CardContent variant="2row" label1="30d Surplus" value1="$53.9K" caption1="+14.43%" captionColor="green" />
           </Card>
-        </>
-      </CardRow>
-    </Grid>
+        </CardRow>
+      </WrapperTwo>
+    </Wrapper>
   )
 }
