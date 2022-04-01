@@ -43,31 +43,52 @@ const WrapperTwo = styled.div`
 `
 
 export function SummaryCards({ summaryData }: { summaryData: TotalSummaryResponse }): JSX.Element {
-  const { batchInfo } = summaryData
+  const { batchInfo, dailyTransactions, totalTokens, dailyFees, monthSurplus, isLoading } = summaryData
 
   return (
     <Wrapper>
       <CardRow>
         <Card>
           <WrapperDoubleContent column>
-            <CardContent variant="3row" label1="Last Batch" value1={batchInfo.lastBatchDate} />
-            <CardContent variant="3row" label1="Batch ID" value1={batchInfo.batchId} />
+            <CardContent variant="3row" label1="Last Batch" value1={batchInfo.lastBatchDate} loading={isLoading} />
+            <CardContent variant="3row" label1="Batch ID" value1={batchInfo.batchId} loading={isLoading} />
           </WrapperDoubleContent>
         </Card>
       </CardRow>
       <WrapperTwo>
         <CardRow>
           <Card>
-            <CardContent variant="2row" label1="24h Transactions" value1="194" caption1="-3.45%" captionColor="red1" />
+            <CardContent
+              variant="2row"
+              label1="24h Transactions"
+              value1={dailyTransactions.now}
+              caption1={dailyTransactions.before}
+              captionColor="red1"
+              loading={isLoading}
+            />
           </Card>
           <Card>
-            <CardContent variant="2row" label1="Total Tokens" value1="193" />
+            <CardContent variant="2row" label1="Total Tokens" value1={totalTokens} loading={isLoading} />
           </Card>
           <Card>
-            <CardContent variant="2row" label1="24h fees" value1="$33.3K" caption1="+1.03%" captionColor="green" />
+            <CardContent
+              variant="2row"
+              label1="24h fees"
+              value1={dailyFees.now}
+              caption1={dailyFees.before}
+              captionColor="green"
+              loading={isLoading}
+            />
           </Card>
           <Card>
-            <CardContent variant="2row" label1="30d Surplus" value1="$53.9K" caption1="+14.43%" captionColor="green" />
+            <CardContent
+              variant="2row"
+              label1="30d Surplus"
+              value1={monthSurplus.now}
+              caption1={monthSurplus.before}
+              captionColor="green"
+              loading={isLoading}
+            />
           </Card>
         </CardRow>
       </WrapperTwo>

@@ -4,5 +4,5 @@
   "dailyTransactions": {"now": 194, "before": "+1.2%"},
   "totalTokens": 193,
   "dailyFees": {"now": "$33.3K", "before": "-3.23%"},
-  "monthSurplus": "$53.9K"
+  "monthSurplus": {"now": "$53.9K", "before": "14.49%"}
 }
