@@ -24,7 +24,6 @@ import { STYLESHEET } from './styled'
 import { abbreviateString, FormatAmountPrecision, formattingAmountPrecision } from 'utils'
 
 Cytoscape.use(popper)
-const HEIGHT_SIZE = window.innerHeight - HEIGHT_HEADER_FOOTER
 const PROTOCOL_NAME = APP_NAME
 const WrapperCytoscape = styled(CytoscapeComponent)`
   background-color: ${({ theme }): string => theme.bg1};
@@ -54,12 +53,12 @@ function getNetworkParentNode(account: Account, networkName: string): string | u
   return account.alias !== ALIAS_TRADER_NAME ? networkName : undefined
 }
 
-function getNodes(txSettlement: TxSettlement, networkId: Network): ElementDefinition[] {
+function getNodes(txSettlement: TxSettlement, networkId: Network, heightSize: number): ElementDefinition[] {
   if (!txSettlement.accounts) return []
 
   const networkName = networkOptions.find((network) => network.id === networkId)?.name
   const networkNode = { alias: networkName || '' }
-  const builder = new ElementsBuilder(HEIGHT_SIZE)
+  const builder = new ElementsBuilder(heightSize)
   builder.node({ type: TypeNodeOnTx.NetworkNode, entity: networkNode, id: networkNode.alias })
 
   for (const key in txSettlement.accounts) {
@@ -179,6 +178,7 @@ function TransanctionBatchGraph({
   const [elements, setElements] = useState<ElementDefinition[]>([])
   const cytoscapeRef = useRef<Cytoscape.Core | null>(null)
   const theme = useTheme()
+  const heightSize = window.innerHeight - HEIGHT_HEADER_FOOTER
   const setCytoscape = useCallback(
     (ref: Cytoscape.Core) => {
       cytoscapeRef.current = ref
@@ -187,10 +187,11 @@ function TransanctionBatchGraph({
   )
 
   useEffect(() => {
+    setElements([])
     if (error || isLoading || !networkId) return
 
-    setElements(getNodes(txSettlement, networkId))
-  }, [error, isLoading, networkId, txSettlement])
+    setElements(getNodes(txSettlement, networkId, heightSize))
+  }, [heightSize, error, isLoading, networkId, txSettlement])
 
   useEffect(() => {
     const cy = cytoscapeRef.current
@@ -228,7 +229,7 @@ function TransanctionBatchGraph({
     <WrapperCytoscape
       elements={elements}
       layout={layout}
-      style={{ width: '100%', height: HEIGHT_SIZE }}
+      style={{ width: '100%', height: heightSize }}
       stylesheet={STYLESHEET(theme)}
       cy={setCytoscape}
       wheelSensitivity={0.2}
